@@ -1,0 +1,274 @@
+:root {
+  --paper: #f5f5f0;
+  --card: #ffffff;
+  --ink: #17263e;
+  --ink-2: #4a5870;
+  --ink-3: #7d8aa0;
+  --board: #101d33;
+  --board-2: #1b2c4b;
+  --chalk: #e6eaf2;
+  --chalk-dim: #94a1b8;
+  --cobalt: #2b54d4;
+  --cobalt-deep: #1f3fa3;
+  --cobalt-soft: #e5eafb;
+  --gold: #d9a621;
+  --gold-soft: #f7ecce;
+  --line: #e2e1d8;
+  --bad: #b3403a;
+  --bad-soft: #f9e9e8;
+  --radius: 10px;
+  --font-display: 'Spectral', Georgia, serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --shadow-1: 0 1px 2px rgba(23, 38, 62, 0.06), 0 2px 8px rgba(23, 38, 62, 0.05);
+  --shadow-2: 0 2px 4px rgba(23, 38, 62, 0.08), 0 10px 28px rgba(23, 38, 62, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+/* Shared primitives */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  background: var(--cobalt);
+  color: #fff;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--cobalt-deep);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--cobalt);
+  border: 1px solid var(--line);
+}
+
+.btn.ghost:hover:not(:disabled) {
+  background: var(--cobalt-soft);
+  border-color: var(--cobalt-soft);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.field input,
+.field textarea {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--cobalt);
+  box-shadow: 0 0 0 3px var(--cobalt-soft);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.error-note {
+  background: var(--bad-soft);
+  color: var(--bad);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13.5px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+
+/* Rendered markdown + math. Color and size inherit from the surrounding
+   context so containers (chalk notes, statements...) can set them. */
+.math-content {
+  line-height: 1.65;
+  color: inherit;
+  overflow-wrap: break-word;
+}
+
+.math-content p {
+  margin: 0 0 0.8em;
+}
+
+.math-content p:last-child {
+  margin-bottom: 0;
+}
+
+.math-content h1,
+.math-content h2,
+.math-content h3,
+.math-content h4 {
+  font-family: var(--font-display);
+  margin: 1.1em 0 0.45em;
+  line-height: 1.25;
+}
+
+.math-content h1 { font-size: 1.25em; }
+.math-content h2 { font-size: 1.15em; }
+.math-content h3, .math-content h4 { font-size: 1.05em; }
+
+.math-content ul,
+.math-content ol {
+  margin: 0.4em 0 0.9em;
+  padding-left: 1.4em;
+}
+
+.math-content li {
+  margin-bottom: 0.3em;
+}
+
+.math-content code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+.math-content pre code {
+  display: block;
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.math-content blockquote {
+  margin: 0.8em 0;
+  padding: 6px 14px;
+  border-left: 3px solid var(--gold);
+  background: var(--gold-soft);
+  border-radius: 0 6px 6px 0;
+}
+
+.math-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+/* Statement blocks: run the "Definition 1." label into the first paragraph,
+   like the LaTeX original. Global because component styles cannot reach
+   inside app-math-content. */
+.statement app-math-content,
+.statement app-math-content > .math-content {
+  display: contents;
+}
+
+.statement .block-label + app-math-content .math-content > p:first-child {
+  display: inline;
+}
+
+/* Glossary terms (global: injected via innerHTML inside app-math-content).
+   The affordance only shows when the viewer has definitions enabled. */
+.doc.defs-on .math-content .gloss {
+  border-bottom: 1.5px dotted var(--cobalt);
+  cursor: help;
+}
+
+/* Chalkboard tutor notes — content rules live here (global) because
+   component styles cannot reach inside app-math-content. */
+.chalk-note {
+  color: var(--chalk);
+}
+
+.chalk-note .math-content strong {
+  color: #ffffff;
+}
+
+.chalk-note .math-content code {
+  background: var(--board-2);
+  border-color: var(--board-2);
+  color: var(--chalk);
+}
+
+.chalk-note .math-content blockquote {
+  background: var(--board-2);
+  border-left-color: var(--gold);
+  color: var(--chalk);
+}
+
+.chalk-note .math-content a {
+  color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,71 @@
+<div class="page">
+  @if (lesson(); as l) {
+    <nav class="crumbs">
+      <a routerLink="/courses">Courses</a>
+      <span class="crumb-sep">/</span>
+      <a [routerLink]="['/courses', l.course_id]">{{ l.course?.title }}</a>
+      <span class="crumb-sep">/</span>
+      <span>{{ l.title }}</span>
+    </nav>
+
+    <header class="page-head">
+      <div>
+        <p class="eyebrow">Lesson {{ l.position.toString().padStart(2, '0') }}</p>
+        <h1>{{ l.title }}</h1>
+      </div>
+      <button class="btn" (click)="showForm.set(!showForm())">
+        {{ showForm() ? 'Cancel' : 'Add PDF' }}
+      </button>
+    </header>
+
+    @if (showForm()) {
+      <form class="pdf-form" (ngSubmit)="upload()">
+        <div class="field">
+          <label for="p-file">PDF file</label>
+          <input id="p-file" name="file" type="file" accept="application/pdf" (change)="onFile($event)" required />
+        </div>
+        <div class="field">
+          <label for="p-title">Title</label>
+          <input id="p-title" name="title" [(ngModel)]="pdfTitle" placeholder="Chapter 1 — Probability spaces" />
+        </div>
+        <div class="field">
+          <label for="p-teacher">Teacher</label>
+          <input id="p-teacher" name="teacher" [(ngModel)]="pdfTeacher" placeholder="Teacher's name" />
+        </div>
+        <button class="btn" type="submit" [disabled]="uploading() || !file">
+          {{ uploading() ? 'Uploading…' : 'Upload PDF' }}
+        </button>
+      </form>
+    }
+
+    @if (error()) {
+      <p class="error-note">{{ error() }}</p>
+    }
+
+    @if (l.pdfs && l.pdfs.length > 0) {
+      <div class="pdf-grid">
+        @for (pdf of l.pdfs; track pdf.id) {
+          <a class="pdf-card" [routerLink]="['/pdfs', pdf.id]">
+            <span class="pdf-icon" aria-hidden="true">PDF</span>
+            <span class="pdf-info">
+              <span class="pdf-title">{{ pdf.title }}</span>
+              @if (pdf.teacher) {
+                <span class="pdf-teacher">{{ pdf.teacher }}</span>
+              }
+            </span>
+            <span class="pdf-open">Open &rarr;</span>
+          </a>
+        }
+      </div>
+    } @else if (!showForm()) {
+      <div class="empty">
+        <h2>No PDFs yet</h2>
+        <p>Upload the teacher's PDF for this lesson with <strong>Add PDF</strong>.</p>
+      </div>
+    }
+  } @else if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  } @else {
+    <p class="loading">Loading lesson…</p>
+  }
+</div>

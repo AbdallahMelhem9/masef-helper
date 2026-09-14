@@ -1,0 +1,62 @@
+<div class="page">
+  @if (course(); as c) {
+    <nav class="crumbs">
+      <a routerLink="/courses">Courses</a>
+      <span class="crumb-sep">/</span>
+      <span>{{ c.title }}</span>
+    </nav>
+
+    <header class="page-head">
+      <div>
+        @if (c.teacher) {
+          <p class="eyebrow">{{ c.teacher }}</p>
+        }
+        <h1>{{ c.title }}</h1>
+        @if (c.description) {
+          <p class="course-desc">{{ c.description }}</p>
+        }
+      </div>
+      <button class="btn" (click)="showForm.set(!showForm())">
+        {{ showForm() ? 'Cancel' : 'New lesson' }}
+      </button>
+    </header>
+
+    @if (showForm()) {
+      <form class="lesson-form" (ngSubmit)="addLesson()">
+        <div class="field">
+          <label for="l-title">Lesson title</label>
+          <input id="l-title" name="title" [(ngModel)]="lessonTitle" required placeholder="Measure spaces and probability" />
+        </div>
+        <button class="btn" type="submit" [disabled]="saving()">{{ saving() ? 'Saving…' : 'Add lesson' }}</button>
+      </form>
+    }
+
+    @if (error()) {
+      <p class="error-note">{{ error() }}</p>
+    }
+
+    @if (c.lessons && c.lessons.length > 0) {
+      <ol class="lesson-list">
+        @for (lesson of c.lessons; track lesson.id; let i = $index) {
+          <li>
+            <a class="lesson-row" [routerLink]="['/lessons', lesson.id]">
+              <span class="lesson-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+              <span class="lesson-title">{{ lesson.title }}</span>
+              <span class="lesson-meta">{{ lesson.pdfCount }} {{ lesson.pdfCount === 1 ? 'PDF' : 'PDFs' }}</span>
+              <span class="lesson-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </li>
+        }
+      </ol>
+    } @else if (!showForm()) {
+      <div class="empty">
+        <h2>No lessons yet</h2>
+        <p>Add the first lesson of this course with <strong>New lesson</strong>.</p>
+      </div>
+    }
+  } @else if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  } @else {
+    <p class="loading">Loading course…</p>
+  }
+</div>

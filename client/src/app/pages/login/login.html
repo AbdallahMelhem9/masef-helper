@@ -1,0 +1,45 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="path-strip">
+      <app-brownian-path [seed]="42" [width]="520" [height]="90" [animated]="true" />
+    </div>
+
+    <p class="eyebrow">Universit&eacute; Paris-Dauphine &middot; MASEF</p>
+    <h1 class="login-title">MASEF Helper</h1>
+    <p class="login-sub">
+      Your course companion for the year ahead &mdash; teacher PDFs, section by section,
+      with an AI tutor at your side.
+    </p>
+
+    @if (firstRun()) {
+      <p class="first-run-note">First visit &mdash; choose the email and password you'll sign in with.</p>
+    }
+
+    <form class="login-form" (ngSubmit)="submit()">
+      @if (firstRun()) {
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" [(ngModel)]="name" placeholder="Abdallah" autocomplete="name" />
+        </div>
+      }
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="you@example.com" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" [(ngModel)]="password" required
+          [placeholder]="firstRun() ? 'Choose a password' : 'Your password'"
+          [autocomplete]="firstRun() ? 'new-password' : 'current-password'" />
+      </div>
+
+      @if (error()) {
+        <p class="error-note">{{ error() }}</p>
+      }
+
+      <button class="btn" type="submit" [disabled]="loading()">
+        {{ loading() ? 'Signing in…' : firstRun() ? 'Create account' : 'Sign in' }}
+      </button>
+    </form>
+  </div>
+</div>

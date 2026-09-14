@@ -1,0 +1,10 @@
+node_modules/
+client/dist/
+client/.angular/
+server/data/
+server/uploads/
+server/logs/
+*.log
+
+.env
+*.env

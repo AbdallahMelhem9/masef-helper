@@ -1,0 +1,70 @@
+.login-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 500px at 80% -10%, var(--board-2), transparent),
+    var(--board);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--card);
+  border-radius: 14px;
+  box-shadow: var(--shadow-2);
+  padding: 0 40px 36px;
+  overflow: hidden;
+  animation: card-up 0.5s ease-out;
+}
+
+@keyframes card-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.path-strip {
+  margin: 0 -40px 22px;
+  background: var(--board);
+  padding: 18px 0 10px;
+}
+
+.login-title {
+  font-size: 30px;
+  margin: 6px 0 10px;
+}
+
+.login-sub {
+  color: var(--ink-2);
+  font-size: 14px;
+  margin: 0 0 22px;
+}
+
+.first-run-note {
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-form .btn {
+  margin-top: 6px;
+  justify-content: center;
+}

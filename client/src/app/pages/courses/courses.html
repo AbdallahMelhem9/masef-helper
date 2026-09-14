@@ -1,0 +1,62 @@
+<div class="page">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Programme &middot; 2026&ndash;2027</p>
+      <h1>Courses</h1>
+    </div>
+    <button class="btn" (click)="showForm.set(!showForm())">
+      {{ showForm() ? 'Cancel' : 'New course' }}
+    </button>
+  </header>
+
+  @if (showForm()) {
+    <form class="course-form" (ngSubmit)="create()">
+      <div class="field">
+        <label for="c-title">Title</label>
+        <input id="c-title" name="title" [(ngModel)]="title" required placeholder="Probability revision" />
+      </div>
+      <div class="field">
+        <label for="c-teacher">Teacher</label>
+        <input id="c-teacher" name="teacher" [(ngModel)]="teacher" placeholder="Teacher's name" />
+      </div>
+      <div class="field">
+        <label for="c-desc">Description</label>
+        <textarea id="c-desc" name="description" [(ngModel)]="description" rows="2" placeholder="What this course covers"></textarea>
+      </div>
+      <button class="btn" type="submit" [disabled]="saving()">{{ saving() ? 'Saving…' : 'Add course' }}</button>
+    </form>
+  }
+
+  @if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  }
+
+  @if (courses(); as list) {
+    @if (list.length === 0 && !showForm()) {
+      <div class="empty">
+        <div class="empty-path">
+          <app-brownian-path [seed]="11" [width]="420" [height]="80" stroke="#c9c6b8" />
+        </div>
+        <h2>No courses yet</h2>
+        <p>Your probability revision course will land here first. Add it with <strong>New course</strong> when you're ready.</p>
+      </div>
+    } @else {
+      <div class="course-grid">
+        @for (course of list; track course.id) {
+          <a class="course-card" [routerLink]="['/courses', course.id]">
+            <h2 class="course-title">{{ course.title }}</h2>
+            @if (course.teacher) {
+              <p class="course-teacher">{{ course.teacher }}</p>
+            }
+            @if (course.description) {
+              <p class="course-desc">{{ course.description }}</p>
+            }
+            <span class="course-meta">{{ course.lessonCount }} {{ course.lessonCount === 1 ? 'lesson' : 'lessons' }}</span>
+          </a>
+        }
+      </div>
+    }
+  } @else {
+    <p class="loading">Loading courses…</p>
+  }
+</div>

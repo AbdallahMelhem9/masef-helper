@@ -1,0 +1,264 @@
+<div class="viewer">
+  @if (pdf(); as p) {
+    <header class="viewer-head">
+      <nav class="crumbs">
+        <a routerLink="/courses">Courses</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/courses', p.course?.id]">{{ p.course?.title }}</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/lessons', p.lesson_id]">{{ p.lesson?.title }}</a>
+      </nav>
+      <div class="head-main">
+        <h1>{{ p.title }}</h1>
+        <div class="head-side">
+          <div class="layer-toggles" role="group" aria-label="Reading layers">
+            <button class="layer-toggle" [class.on]="showExplanations()" (click)="toggleExplanations()"
+              title="Show or hide explanations, proofs and chats">
+              <span class="toggle-dot"></span> Explanations
+            </button>
+            <button class="layer-toggle" [class.on]="showNotes()" (click)="toggleNotes()"
+              title="Show or hide the tutor's own notes">
+              <span class="toggle-dot"></span> Tutor's notes
+            </button>
+            <button class="layer-toggle defs-toggle" [class.on]="showDefs()" (click)="toggleDefs()"
+              title="Hover definitions: measure-theory terms in explanations get a dotted underline — hover or tap one to see its definition">
+              <span class="toggle-dot defs-dot"></span> Definitions
+            </button>
+            <button class="layer-toggle deep-toggle" [class.on]="showDeep()" (click)="toggleDeep()"
+              title="Show or hide the deep-dive panels — intuition-first explanations assuming no measure theory">
+              <span class="toggle-dot deep-dot"></span> Deep dives
+            </button>
+            <button class="layer-toggle ex-toggle" [class.on]="showExamples()" (click)="toggleExamples()"
+              title="Show or hide the worked-example panels">
+              <span class="toggle-dot ex-dot"></span> Examples
+            </button>
+            <button class="layer-toggle shortcut-toggle" [class.on]="showShortcut()" (click)="toggleShortcut()"
+              title="Highlight the essential blocks in yellow — the shortcut path through this lesson. In this mode, click a block's marker square to add or remove it.">
+              <span class="marker-swatch"></span> Shortcut
+            </button>
+          </div>
+          @if (p.teacher) {
+            <span class="teacher-tag">{{ p.teacher }}</span>
+          }
+          <a class="pdf-link" [href]="fileHref" target="_blank" rel="noopener">Original PDF &nearr;</a>
+        </div>
+      </div>
+      @if (p.status === 'processing') {
+        <p class="processing-note">
+          <span class="dot"></span>
+          Claude is working through this lesson — statements appear first, explanations fill in behind them.
+        </p>
+      }
+    </header>
+
+    <div class="doc" [class.clean]="!showExplanations() && !showNotes()" [class.shortcut]="showShortcut()"
+      [class.defs-on]="showDefs()" (mouseover)="onGlossOver($event)" (mouseout)="onGlossOut($event)" (click)="onGlossOver($event)">
+      @if (blocks().length === 0) {
+        <div class="empty">
+          @if (p.status === 'processing') {
+            <h2>Preparing this lesson&hellip;</h2>
+            <p>Claude is reading the PDF and splitting it into statements. The first blocks should appear within a couple of minutes.</p>
+          } @else {
+            <h2>Nothing here yet</h2>
+            <p>This lesson hasn't been decomposed yet.</p>
+          }
+        </div>
+      }
+
+      @for (vm of blocks(); track vm.section.id) {
+        <!-- Subsection headings flow as plain headings -->
+        @if (vm.section.kind === 'heading') {
+          <h2 class="flow-heading">{{ vm.section.title }}</h2>
+        } @else if (vm.section.kind === 'tutor_note') {
+          <!-- The tutor's own additions: chalkboard style, clearly not the teacher's material -->
+          @if (showNotes()) {
+            <aside class="chalk-note">
+              <p class="chalk-label">Tutor's note — my own addition</p>
+              @if (vm.section.content_text) {
+                <app-math-content [content]="vm.section.content_text" />
+              } @else {
+                <p class="thinking chalk-thinking">writing&hellip;</p>
+              }
+            </aside>
+          }
+        } @else {
+          <article class="block kind-{{ vm.section.kind }}" [class.plain]="vm.section.kind === 'text'" [class.marked]="vm.section.highlight === 1">
+            @if (showShortcut()) {
+              <button
+                class="mark-btn"
+                [class.active]="vm.section.highlight === 1"
+                (click)="toggleMark(vm)"
+                [title]="vm.section.highlight ? 'Remove from the shortcut path' : 'Add to the shortcut path'"
+                [attr.aria-pressed]="vm.section.highlight === 1"
+              ></button>
+            }
+            <!-- The teacher's statement -->
+            <div class="statement">
+              @if (vm.section.title) {
+                <span class="block-label">{{ vm.section.title }}.</span>
+              }
+              <app-math-content [content]="vm.section.content_text || ''" />
+            </div>
+
+            <!-- Brief explanation directly under the statement -->
+            @if (showExplanations() && (vm.section.ai_explanation || vm.explaining || isStatement(vm.section))) {
+              <div class="explain">
+                @if (vm.explaining) {
+                  <p class="thinking">Claude is writing&hellip;</p>
+                } @else if (vm.section.ai_explanation) {
+                  <app-math-content [content]="vm.section.ai_explanation" [gloss]="showDefs()" />
+                  @if (p.aiEnabled !== false) {
+                    <div class="explain-tools">
+                      <button class="tool-btn" (click)="openRegen(vm)">Re-explain&hellip;</button>
+                    </div>
+                  }
+                  @if (vm.regenOpen) {
+                    <form class="regen-form" (ngSubmit)="submitRegen(vm)">
+                      <input
+                        [name]="'regen-' + vm.section.id"
+                        [(ngModel)]="vm.regenText"
+                        placeholder="How should I explain it this time? e.g. shorter, with an example, en français…"
+                        autocomplete="off"
+                      />
+                      <div class="regen-row">
+                        <button type="button" class="tool-btn" (click)="regenWith(vm, 'Shorter and simpler.')">Shorter</button>
+                        <button type="button" class="tool-btn" (click)="regenWith(vm, 'Add a small concrete worked example.')">With an example</button>
+                        <button type="button" class="tool-btn" (click)="regenWith(vm, 'Go deeper and be more precise.')">Deeper</button>
+                        <span class="regen-spacer"></span>
+                        <button class="btn regen-go" type="submit">Rewrite</button>
+                      </div>
+                    </form>
+                  }
+                } @else if (p.status === 'processing') {
+                  <p class="thinking">explanation coming&hellip;</p>
+                } @else if (p.aiEnabled !== false) {
+                  <button class="tool-btn" (click)="explain(vm)">Explain this</button>
+                }
+                @if (vm.explainError) {
+                  <p class="error-note">{{ vm.explainError }}</p>
+                }
+              </div>
+            }
+
+            <!-- Deep dive: intuition assuming no measure theory -->
+            @if (vm.section.extra_explanation && showDeep()) {
+              <div class="deep">
+                <p class="panel-label deep-label">Deep dive</p>
+                <app-math-content [content]="vm.section.extra_explanation" />
+              </div>
+            }
+
+            <!-- Worked example -->
+            @if (vm.section.extra_example && showExamples()) {
+              <div class="example">
+                <p class="panel-label ex-label">Worked example</p>
+                <app-math-content [content]="vm.section.extra_example" />
+              </div>
+            }
+
+            <!-- Proof with importance tag -->
+            @if (vm.section.proof && showExplanations()) {
+              <div class="proof" [class.open]="vm.proofOpen">
+                <button class="proof-head" (click)="toggleProof(vm)">
+                  <span class="proof-title">Proof</span>
+                  @if (vm.section.importance) {
+                    <span class="imp-badge imp-{{ vm.section.importance === 'imp' ? 'high' : vm.section.importance === 'half imp' ? 'mid' : 'low' }}">
+                      {{ vm.section.importance }}
+                    </span>
+                  }
+                  <span class="proof-chevron">{{ vm.proofOpen ? '−' : '+' }}</span>
+                </button>
+                @if (vm.proofOpen) {
+                  <div class="proof-body">
+                    <app-math-content [content]="vm.section.proof" />
+                  </div>
+                }
+              </div>
+            }
+
+            <!-- Tutor's aside on this statement -->
+            @if (vm.section.tutor_note && showNotes()) {
+              <aside class="chalk-note inline-note">
+                <p class="chalk-label">Tutor's note — my own addition</p>
+                <app-math-content [content]="vm.section.tutor_note" />
+              </aside>
+            }
+
+            <!-- Small chat for this block -->
+            @if (showExplanations() && (isStatement(vm.section) || vm.section.kind === 'text')) {
+              <div class="chat" [class.open]="vm.chatOpen">
+                @if (!vm.chatOpen) {
+                  <button class="chat-opener" (click)="toggleChat(vm)">
+                    Ask about {{ vm.section.title || 'this' }}&hellip;
+                    @if ((vm.section.messageCount || 0) > 0 && vm.messages.length === 0) {
+                      <span class="saved-count">{{ vm.section.messageCount }} saved</span>
+                    } @else if (vm.messages.length > 0) {
+                      <span class="saved-count">{{ vm.messages.length }} saved</span>
+                    }
+                  </button>
+                } @else {
+                  <div class="chat-head">
+                    <p class="panel-label">Ask about {{ vm.section.title || 'this passage' }}</p>
+                    <button class="chat-close" (click)="toggleChat(vm)" aria-label="Close chat">&times;</button>
+                  </div>
+
+                  @if (vm.messages.length > 0) {
+                    <div class="chat-thread">
+                      @for (msg of vm.messages; track msg.id) {
+                        <div class="chat-msg" [class.mine]="msg.role === 'user'">
+                          @if (msg.role === 'assistant') {
+                            <app-math-content [content]="msg.content" />
+                          } @else {
+                            <p class="user-text">{{ msg.content }}</p>
+                          }
+                        </div>
+                      }
+                      @if (vm.sending) {
+                        <div class="chat-msg">
+                          <p class="thinking">{{ vm.slow ? "Still working — Claude's servers are slow right now. Your question is queued; this can take a few minutes. Don't resend." : 'Claude is thinking…' }}</p>
+                        </div>
+                      }
+                    </div>
+                  } @else if (vm.sending) {
+                    <p class="thinking">{{ vm.slow ? "Still working — Claude's servers are slow right now. Your question is queued; this can take a few minutes. Don't resend." : 'Claude is thinking…' }}</p>
+                  }
+
+                  @if (vm.chatError) {
+                    <p class="error-note">{{ vm.chatError }}</p>
+                  }
+
+                  @if (p.aiEnabled !== false) {
+                    <form class="chat-input" (ngSubmit)="send(vm)">
+                      <input
+                        [name]="'draft-' + vm.section.id"
+                        [(ngModel)]="vm.draft"
+                        placeholder="Your question…"
+                        [disabled]="vm.sending"
+                        autocomplete="off"
+                      />
+                      <button class="btn" type="submit" [disabled]="vm.sending || !vm.draft.trim()">Send</button>
+                    </form>
+                  } @else {
+                    <p class="ai-off-note">The AI tutor runs on the local install only — saved answers above remain readable.</p>
+                  }
+                }
+              </div>
+            }
+          </article>
+        }
+      }
+    </div>
+  } @else if (error()) {
+    <p class="error-note viewer-error">{{ error() }}</p>
+  } @else {
+    <p class="loading">Loading document&hellip;</p>
+  }
+
+  @if (popover(); as p) {
+    <div class="gloss-popover" [style.left.px]="p.x" [style.top.px]="p.y">
+      <p class="gloss-term-name">{{ p.term }}</p>
+      <div class="math-content gloss-def" [innerHTML]="p.html"></div>
+      <p class="gloss-src">{{ p.src }}</p>
+    </div>
+  }
+</div>

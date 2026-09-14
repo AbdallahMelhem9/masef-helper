@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: masef-helper
+    runtime: node
+    plan: free
+    buildCommand: cd client && npm install && npm run build && cd ../server && npm install && node scripts/fetch-uploads.js
+    startCommand: cd server && node src/server.js
+    envVars:
+      - key: AI_DISABLED
+        value: "1"
+      - key: NODE_VERSION
+        value: "24.11.1"

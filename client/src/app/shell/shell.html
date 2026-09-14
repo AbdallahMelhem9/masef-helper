@@ -1,0 +1,24 @@
+<div class="shell">
+  <aside class="sidebar">
+    <a routerLink="/courses" class="brand">
+      <span class="brand-sigma">&sigma;</span>
+      <span class="brand-text">
+        <span class="brand-name">MASEF Helper</span>
+        <span class="brand-sub">Dauphine &middot; 2026&ndash;2027</span>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <a routerLink="/courses" routerLinkActive="active" class="nav-link">Courses</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span class="user-email" [title]="auth.email() || ''">{{ auth.email() }}</span>
+      <button class="logout" (click)="logout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>
