@@ -1,0 +1,97 @@
+<div class="notes">
+  @if (pdf(); as p) {
+    <header class="notes-head">
+      <nav class="crumbs">
+        <a routerLink="/courses">Courses</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/courses', p.course?.id]">{{ p.course?.title }}</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/pdfs', p.id]">{{ p.lesson?.title }}</a>
+      </nav>
+      <div class="head-main">
+        <h1>
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <path d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm0 2v16h12V4H6zm2 3h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z" fill="currentColor"/>
+            <path d="M3 6h2v2H3zm0 5h2v2H3zm0 5h2v2H3z" fill="currentColor"/>
+          </svg>
+          My notes
+          <span class="lesson-name">{{ p.lesson?.title }}</span>
+        </h1>
+        <div class="head-side">
+          <app-pen-button [active]="penActive()" (toggle)="togglePen()">
+            <app-pen-palette
+              [tool]="penTool()"
+              [canUndo]="canUndo()"
+              [fingerDraws]="fingerDraws()"
+              (toolChange)="penTool.set($event)"
+              (undo)="inkLayer?.undo()"
+              (clear)="inkLayer?.clearAll()"
+              (fingerDrawsChange)="setFingerDraws($event)"
+            />
+          </app-pen-button>
+          <button type="button" class="head-btn" [class.on]="typedOpen()" (click)="typedOpen.set(!typedOpen())">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 5h16v2H4zm0 4h16v2H4zm0 4h10v2H4zm0 4h7v2H4z" fill="currentColor"/></svg>
+            Typed notes
+          </button>
+          <button type="button" class="head-btn" (click)="addPage()" title="Make the paper one page longer">+ Page</button>
+          <a class="back-link" [routerLink]="['/pdfs', p.id]">Back to the lesson &rarr;</a>
+        </div>
+      </div>
+      @if (penActive()) {
+        <div class="pen-bar">
+          <app-pen-palette
+            [tool]="penTool()"
+            [canUndo]="canUndo()"
+            [fingerDraws]="fingerDraws()"
+            (toolChange)="penTool.set($event)"
+            (undo)="inkLayer?.undo()"
+            (clear)="inkLayer?.clearAll()"
+            (fingerDrawsChange)="setFingerDraws($event)"
+          />
+          <span class="pen-status">
+            <span class="pen-hint">Write anywhere on the paper &middot; two fingers scroll</span>
+            @if (statusLabel()) {
+              <span class="pen-saved">{{ statusLabel() }}</span>
+            }
+          </span>
+        </div>
+      }
+    </header>
+
+    @if (doc(); as d) {
+      @if (typedOpen()) {
+        <section class="typed">
+          <label class="typed-label" for="typed-notes">Typed notes</label>
+          <textarea
+            id="typed-notes"
+            [ngModel]="d.text || ''"
+            (ngModelChange)="onText($event)"
+            placeholder="Anything you would rather type than write: key formulas, questions for the next class, to-do…"
+            rows="6"
+          ></textarea>
+        </section>
+      }
+
+      <div class="paper" [style.minHeight.px]="paperHeight">
+        <app-ink-layer
+          [strokes]="d.strokes"
+          [active]="penActive()"
+          [tool]="penTool()"
+          [fingerDraws]="fingerDraws()"
+          (strokesChange)="onStrokes($event)"
+          (canUndoChange)="canUndo.set($event)"
+        />
+        <div class="paper-foot">
+          <span>{{ pageCount }} page{{ pageCount > 1 ? 's' : '' }}</span>
+          <button type="button" class="head-btn" (click)="addPage()">+ Add a page</button>
+        </div>
+      </div>
+    } @else if (!error()) {
+      <p class="loading">Opening your notebook&hellip;</p>
+    }
+  } @else if (error()) {
+    <p class="error-note viewer-error">{{ error() }}</p>
+  } @else {
+    <p class="loading">Loading&hellip;</p>
+  }
+</div>

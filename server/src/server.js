@@ -6,7 +6,7 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { db, UPLOADS_DIR } from './db.js';
 import { hashPassword, verifyPassword, createSession, userCount, requireAuth } from './auth.js';
-import { annotateBlock, reExplainBlock, answerQuestion } from './ai.js';
+import { annotateBlock, reExplainBlock, answerQuestion, ANSWER_LENGTHS } from './ai.js';
 import { ingestPdf } from './ingest.js';
 import { GLOSSARY } from './glossary.js';
 
@@ -18,7 +18,8 @@ const AI_ENABLED = !process.env.AI_DISABLED;
 const AI_OFF_MSG = 'The AI tutor only runs on the local install (it uses the local Claude subscription). Saved answers remain readable here.';
 
 const app = express();
-app.use(express.json({ limit: '2mb' }));
+// 25mb: handwritten ink documents can be large.
+app.use(express.json({ limit: '25mb' }));
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -274,10 +275,14 @@ app.post('/api/sections/:id/messages', requireAuth, async (req, res) => {
 
   const { section, pdf, course } = ctx;
   const history = db.prepare('SELECT role, content FROM messages WHERE section_id = ? ORDER BY id').all(section.id);
+  // 'auto' (default) lets the tutor detect short / mid / expanded from the
+  // question; the chat's length chips can force one.
+  const length = ANSWER_LENGTHS.includes(req.body?.length) ? req.body.length : 'auto';
 
   const userInfo = db.prepare('INSERT INTO messages (section_id, role, content) VALUES (?, ?, ?)').run(section.id, 'user', question);
   try {
     const answer = await answerQuestion({
+      length,
       courseTitle: course.title,
       pdfTitle: pdf.title,
       sectionTitle: section.title,
@@ -286,6 +291,7 @@ app.post('/api/sections/:id/messages', requireAuth, async (req, res) => {
       proof: section.proof,
       extraExplanation: section.extra_explanation,
       extraExample: section.extra_example,
+      refresh: section.refresh,
       history,
       question,
     });
@@ -301,6 +307,38 @@ app.post('/api/sections/:id/messages', requireAuth, async (req, res) => {
     console.error('chat failed:', err);
     res.status(500).json({ error: `AI answer failed: ${err.message}` });
   }
+});
+
+// ---------- Handwritten ink: pen layer over a lesson, and its notebook ----------
+const INK_KINDS = new Set(['page', 'notes']);
+
+app.get('/api/pdfs/:id/ink/:kind', requireAuth, (req, res) => {
+  if (!INK_KINDS.has(req.params.kind)) return res.status(400).json({ error: 'Unknown ink kind' });
+  const row = db
+    .prepare('SELECT data, updated_at FROM ink WHERE user_id = ? AND pdf_id = ? AND kind = ?')
+    .get(req.user.id, req.params.id, req.params.kind);
+  if (!row) return res.json({ data: null, updated_at: null });
+  let data = null;
+  try {
+    data = JSON.parse(row.data);
+  } catch {
+    data = null;
+  }
+  res.json({ data, updated_at: row.updated_at });
+});
+
+app.put('/api/pdfs/:id/ink/:kind', requireAuth, (req, res) => {
+  if (!INK_KINDS.has(req.params.kind)) return res.status(400).json({ error: 'Unknown ink kind' });
+  const pdf = db.prepare('SELECT id FROM pdfs WHERE id = ?').get(req.params.id);
+  if (!pdf) return res.status(404).json({ error: 'PDF not found' });
+  const { data, updated_at } = req.body || {};
+  if (!data || typeof data !== 'object') return res.status(400).json({ error: 'data object required' });
+  const stamp = typeof updated_at === 'string' && updated_at ? updated_at : new Date().toISOString();
+  db.prepare(
+    `INSERT INTO ink (user_id, pdf_id, kind, data, updated_at) VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT (user_id, pdf_id, kind) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`
+  ).run(req.user.id, pdf.id, req.params.kind, JSON.stringify(data), stamp);
+  res.json({ ok: true, updated_at: stamp });
 });
 
 // ---------- Static Angular build (production mode) ----------

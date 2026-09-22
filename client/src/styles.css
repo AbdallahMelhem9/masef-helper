@@ -55,6 +55,23 @@ button {
   font-family: var(--font-body);
 }
 
+/* Touch: no double-tap zoom on controls; 16px inputs stop iOS from zooming
+   into a field when it gets focus. */
+button,
+a,
+label,
+summary {
+  touch-action: manipulation;
+}
+
+@media (pointer: coarse) {
+  input:not([type='checkbox']):not([type='radio']),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
 /* Shared primitives */
 .btn {
   display: inline-flex;

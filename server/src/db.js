@@ -89,6 +89,20 @@ db.exec(`
     content TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  -- Handwritten ink, one document per (user, lesson page, kind): 'page' is
+  -- the pen layer drawn over the lesson, 'notes' the lesson's notebook page.
+  -- data is JSON (strokes, typed text, paper height); updated_at is the
+  -- client's ISO timestamp so the browser copy and this one can be compared.
+  CREATE TABLE IF NOT EXISTS ink (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    pdf_id INTEGER NOT NULL REFERENCES pdfs(id) ON DELETE CASCADE,
+    kind TEXT NOT NULL CHECK (kind IN ('page', 'notes')),
+    data TEXT NOT NULL DEFAULT '{}',
+    updated_at TEXT NOT NULL,
+    UNIQUE (user_id, pdf_id, kind)
+  );
 `);
 
 // Migrations for databases created before these columns existed.
@@ -101,6 +115,9 @@ for (const [name, ddl] of [
   ['highlight', 'ALTER TABLE sections ADD COLUMN highlight INTEGER NOT NULL DEFAULT 0'],
   ['extra_explanation', 'ALTER TABLE sections ADD COLUMN extra_explanation TEXT'],
   ['extra_example', 'ALTER TABLE sections ADD COLUMN extra_example TEXT'],
+  // One short reminder (a definition or result the block relies on), shown
+  // before the explanation; NULL when the block needs none.
+  ['refresh', 'ALTER TABLE sections ADD COLUMN refresh TEXT'],
 ]) {
   if (!sectionCols.includes(name)) db.exec(ddl);
 }

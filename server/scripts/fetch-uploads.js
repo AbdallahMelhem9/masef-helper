@@ -17,6 +17,8 @@ const SOURCES = {
   'valuation-bouchard.pdf': 'http://www.ressources-actuarielles.net/EXT/ISFA/fp-isfa.nsf/0/063a577cf80dcbbbc125735000356c88/$FILE/PolyMathFi.pdf',
   'mcmc-robert.pdf': 'https://www.ceremade.dauphine.fr/~xian/coursMC.pdf',
   'lob-survey.pdf': 'https://arxiv.org/pdf/1012.0349',
+  'hoffmann-ch1.pdf': 'https://www.ceremade.dauphine.fr/~cosco/Chapter1.pdf',
+  'hoffmann-ch2.pdf': 'https://www.ceremade.dauphine.fr/~cosco/Chapter2_in_progress.pdf',
 };
 
 for (const [name, url] of Object.entries(SOURCES)) {

@@ -15,7 +15,8 @@ db.exec('PRAGMA wal_checkpoint(TRUNCATE)');
 fs.copyFileSync(path.join(DATA_DIR, 'masef.db'), seedPath);
 
 const seed = new DatabaseSync(seedPath);
-seed.exec('DELETE FROM sessions; DELETE FROM users; VACUUM;');
+// Personal handwritten ink is never published either.
+seed.exec('DELETE FROM sessions; DELETE FROM users; DELETE FROM ink; VACUUM;');
 const counts = {
   courses: seed.prepare('SELECT COUNT(*) n FROM courses').get().n,
   sections: seed.prepare('SELECT COUNT(*) n FROM sections').get().n,

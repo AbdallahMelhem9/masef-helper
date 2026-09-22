@@ -1,0 +1,271 @@
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 12 (Existence of Brownian motion: Lévy's construction — Forien §8.2 and Lemma 3)
+IMPORTANCE: half imp
+HIGHLIGHT: 0
+STATEMENT:
+Brownian motion exists: on any probability space carrying a sequence of independent \(\mathcal{N}(0, 1)\) variables there is a Brownian motion.
+
+Construction on \([0, 1]\). Let \(h_0 = \mathbf{1}_{[0,1]}\) and, for \(n \ge 0\), \(0 \le k < 2^n\),
+\[
+h_{n,k} = 2^{n/2}\Big(\mathbf{1}_{\left[\frac{2k}{2^{n+1}}, \frac{2k+1}{2^{n+1}}\right)} - \mathbf{1}_{\left[\frac{2k+1}{2^{n+1}}, \frac{2k+2}{2^{n+1}}\right)}\Big),
+\]
+the **Haar basis**, an orthonormal basis of \(L^2([0, 1])\) (admitted). Let \(g_0(t) = t\) and \(g_{n,k}(t) = \int_0^th_{n,k}(s)\, ds\), the **Schauder functions**: tents of height \(2^{-n/2-1}\) supported on \([2k2^{-n-1}, (2k + 2)2^{-n-1}]\). Let \(Z_0, Z_{n,k}\) be i.i.d. \(\mathcal{N}(0, 1)\). Then
+
+1. the map \(\Phi : L^2([0, 1]) \to L^2(\Omega)\), \(\Phi(f) = \langle f, h_0\rangle Z_0 + \sum_{n}\sum_{k}\langle f, h_{n,k}\rangle Z_{n,k}\) (an \(L^2\)-convergent series), is a linear isometry, \(\mathbb{E}[\Phi(f)\Phi(g)] = \langle f, g\rangle_{L^2}\), and \(\Phi(f) \sim \mathcal{N}(0, \|f\|_{L^2}^2)\) for every \(f\);
+2. almost surely, the series \(B_t = Z_0g_0(t) + \sum_n\sum_kZ_{n,k}g_{n,k}(t)\) converges uniformly on \([0, 1]\); setting \(B \equiv 0\) on the exceptional null set, \((B_t)_{t \in [0, 1]}\) has continuous paths and \(B_t = \Phi(\mathbf{1}_{[0,t]})\) a.s. for every \(t\);
+3. \((B_t)_{t \in [0,1]}\) is a Brownian motion on \([0, 1]\); pasting independent copies end to end gives a Brownian motion on \(\mathbb{R}_+\).
+PROOF:
+**1.** For an orthonormal basis \((e_i)\) and \(f = \sum_i\langle f, e_i\rangle e_i\), the partial sums \(\sum_{i \le N}\langle f, e_i\rangle Z_i\) are Cauchy in \(L^2(\Omega)\): their differences have variance \(\sum_{N < i \le M}\langle f, e_i\rangle^2 \to 0\) (Parseval). So \(\Phi(f)\) is defined, linear, and \(\mathbb{E}[\Phi(f)\Phi(g)] = \lim\sum_{i \le N}\langle f, e_i\rangle\langle g, e_i\rangle = \langle f, g\rangle\) (independence of the \(Z_i\), continuity of the scalar product). Each partial sum is \(\mathcal{N}(0, \sum_{i \le N}\langle f, e_i\rangle^2)\), so the \(L^2\) limit is \(\mathcal{N}(0, \|f\|^2)\) (Corollary 2 (3)).
+
+**2.** Let \(F_n(t) = \sum_kZ_{n,k}g_{n,k}(t)\). The \(g_{n,k}\), \(k < 2^n\), have disjoint supports, so \(\|F_n\|_\infty = 2^{-n/2-1}\max_k|Z_{n,k}|\), and
+\[
+\mathbb{P}\big(\|F_n\|_\infty \ge 2^{-n/4}\big) \le 2^n\,\mathbb{P}\big(|Z_0| \ge 2^{n/4+1}\big) \le 2^n\exp\big(-2^{n/2+1}\big)
+\]
+by the Gaussian tail bound (Definition/Proposition 13 (4)). The series converges, so by Borel–Cantelli there is \(\Omega_0\) with \(\mathbb{P}(\Omega_0) = 1\) on which \(\|F_n\|_\infty < 2^{-n/4}\) for all large \(n\), hence \(\sum_n\|F_n\|_\infty < \infty\): the series of continuous functions converges uniformly on \([0, 1]\), and its sum is continuous. For fixed \(t\), the partial sums converge to \(B_t\) a.s. and to \(\Phi(\mathbf{1}_{[0,t]})\) in \(L^2\) (since \(\langle \mathbf{1}_{[0,t]}, h_{n,k}\rangle = g_{n,k}(t)\)), so \(B_t = \Phi(\mathbf{1}_{[0,t]})\) a.s.
+
+**3.** By 1, \(\sum_j\lambda_jB_{t_j} = \Phi(\sum_j\lambda_j\mathbf{1}_{[0,t_j]})\) a.s. is Gaussian, so \(B\) is a centred Gaussian process, with \(\mathbb{E}[B_sB_t] = \langle \mathbf{1}_{[0,s]}, \mathbf{1}_{[0,t]}\rangle = s \wedge t\); with continuous paths, Proposition 16 applies. Pasting: with independent copies \(B^{(0)}, B^{(1)}, \dots\), set \(B_t = B^{(k)}_{t-k} + \sum_{j < k}B^{(j)}_1\) for \(t \in [k, k + 1]\); paths are continuous, and increments over disjoint intervals are independent centred Gaussians with the right variances (sums of independent increments of the copies), so Definition 11 is satisfied. \(\square\)
+REFRESH:
+**\(L^2\) limits of Gaussians** (Corollary 2 (3)): if \(X_n \sim \mathcal{N}(0, \sigma_n^2)\) converge in \(L^2\) to \(X\), then \(X \sim \mathcal{N}(0, \lim\sigma_n^2)\). **Borel–Cantelli** (Proposition 8): summable probabilities give "only finitely many", a.s.
+EXPLANATION:
+This theorem shows that the definition of Brownian motion is not empty, by writing down a random function that satisfies it. The idea has two parts. First, the covariance \(s \wedge t\) is the scalar product of the indicators \(\mathbf{1}_{[0,s]}\) and \(\mathbf{1}_{[0,t]}\) in \(L^2([0, 1])\); an isometry \(\Phi\) from \(L^2([0, 1])\) into Gaussian random variables, built by sending an orthonormal basis to independent standard Gaussians, therefore produces a Gaussian process \(B_t = \Phi(\mathbf{1}_{[0,t]})\) with the right law. This is exactly Hoffmann's Theorem 10. Second, one needs continuous paths, and here the choice of basis matters: with the Haar basis, the series for \(B_t\) is a sum of random tents of rapidly decreasing height, and a Gaussian tail bound plus Borel–Cantelli show it converges uniformly, almost surely. Hoffmann obtains continuity differently, by Kolmogorov's criterion.
+DEEP:
+The goal is to follow the construction in its two movements: the isometry that produces the law, and the uniform convergence that produces the paths. Plan: the isometry, the identification of the marginals, the estimate of the tents, Borel–Cantelli, the identification of the two limits.
+
+**Step 1: the isometry.** Let \((e_i)\) be an orthonormal basis of \(L^2([0, 1])\) (here the Haar functions) and \((Z_i)\) i.i.d. standard Gaussians, an orthonormal family in \(L^2(\Omega)\) (\(\mathbb{E}[Z_iZ_j] = \delta_{ij}\)). For \(f \in L^2([0, 1])\), Parseval gives \(\sum_i\langle f, e_i\rangle^2 = \|f\|^2 < \infty\), so the partial sums \(S_N = \sum_{i \le N}\langle f, e_i\rangle Z_i\) satisfy \(\|S_M - S_N\|_{L^2(\Omega)}^2 = \sum_{N < i \le M}\langle f, e_i\rangle^2 \to 0\): a Cauchy sequence, convergent by completeness of \(L^2(\Omega)\) (Definition 4). Call the limit \(\Phi(f)\). Linearity is clear, and \(\mathbb{E}[\Phi(f)\Phi(g)] = \langle f, g\rangle\) by passing to the limit in \(\mathbb{E}[S_N(f)S_N(g)] = \sum_{i \le N}\langle f, e_i\rangle\langle g, e_i\rangle\). Each \(S_N\) is a centred Gaussian (a linear combination of independent Gaussians), so \(\Phi(f)\), its \(L^2\) limit, is \(\mathcal{N}(0, \|f\|^2)\) by Corollary 2 (3). The image of \(\Phi\) is a Gaussian space in Hoffmann's sense, and \(\Phi\) is his \(X(h)\).
+
+**Step 2: the marginals are right.** Put \(B_t = \Phi(\mathbf{1}_{[0,t]})\), defined for each \(t\) up to a null set. Any linear combination \(\sum_j\lambda_jB_{t_j} = \Phi(\sum_j\lambda_j\mathbf{1}_{[0,t_j]})\) is Gaussian, so the finite-dimensional vectors are Gaussian; the mean is \(0\) and \(\mathbb{E}[B_sB_t] = \langle \mathbf{1}_{[0,s]}, \mathbf{1}_{[0,t]}\rangle = \int_0^1\mathbf{1}_{[0,s]}\mathbf{1}_{[0,t]} = s \wedge t\). By Proposition 16 all that is missing for a Brownian motion is continuity of paths, which makes no sense yet: \(B_t\) is only defined almost surely for each \(t\), an uncountable family of null sets.
+
+**Step 3: choosing the basis to get continuity.** With the Haar basis, \(\langle \mathbf{1}_{[0,t]}, h_{n,k}\rangle = \int_0^th_{n,k} = g_{n,k}(t)\), a tent of height \(2^{n/2}\cdot 2^{-n-1} = 2^{-n/2-1}\) at the midpoint of the dyadic interval of generation \(n + 1\) indexed by \(k\), and \(\langle \mathbf{1}_{[0,t]}, h_0\rangle = t\). So the series of Step 1 for \(f = \mathbf{1}_{[0,t]}\) reads \(B_t = Z_0t + \sum_nF_n(t)\) with \(F_n = \sum_kZ_{n,k}g_{n,k}\), and the point is to show that this series of random continuous functions converges uniformly in \(t\), for almost every \(\omega\). Since the tents of generation \(n\) have disjoint supports, \(\|F_n\|_\infty = 2^{-n/2-1}\max_{k < 2^n}|Z_{n,k}|\): the height decays geometrically, but the maximum of \(2^n\) Gaussians grows like \(\sqrt{n}\); the decay wins.
+
+**Step 4: the estimate and Borel–Cantelli.** By the union bound and the tail estimate \(\mathbb{P}(|Z| \ge x) \le e^{-x^2/2}\),
+\[
+\mathbb{P}\big(\|F_n\|_\infty \ge 2^{-n/4}\big) = \mathbb{P}\big(\max_k|Z_{n,k}| \ge 2^{n/4+1}\big) \le 2^n\mathbb{P}\big(|Z| \ge 2^{n/4+1}\big) \le 2^n\exp\big(-2^{n/2+1}\big),
+\]
+a summable sequence (the double exponential crushes the factor \(2^n\)). Borel–Cantelli gives an event \(\Omega_0\) of probability \(1\) on which \(\|F_n\|_\infty < 2^{-n/4}\) for all but finitely many \(n\); on \(\Omega_0\), \(\sum_n\|F_n\|_\infty < \infty\), so the partial sums \(B_N(\omega) = Z_0t + \sum_{n \le N}F_n\) converge uniformly on \([0, 1]\) to a continuous function \(t \mapsto B_t(\omega)\). Off \(\Omega_0\), set \(B \equiv 0\).
+
+**Step 5: identifying the two limits.** For a fixed \(t\), the partial sums \(B_N(t)\) converge to \(B_t(\omega)\) for \(\omega \in \Omega_0\) (Step 4) and to \(\Phi(\mathbf{1}_{[0,t]})\) in \(L^2\) (Step 1); an \(L^2\) limit and an a.s. limit of the same sequence coincide a.s. (Proposition 9). So the continuous process of Step 4 has the marginals of Step 2: it is a Brownian motion on \([0, 1]\). Extension to \(\mathbb{R}_+\) by pasting independent copies is routine.
+
+**Comparison with Hoffmann.** Steps 1–2 are his Theorem 10 with \(L^2([0, 1])\) in place of \(L^2(\mathbb{R}_+)\) and an arbitrary basis; Steps 3–5 are replaced by Kolmogorov's continuity criterion, whose core is the same "union bound over dyadic points, Gaussian moments, Borel–Cantelli" argument, applied to increments rather than to basis coefficients. Both proofs show more than continuity: paths are Hölder of every exponent \(< \frac12\).
+EXAMPLE:
+The first terms of the series: \(B_t \approx Z_0t + Z_{0,0}g_{0,0}(t) + Z_{1,0}g_{1,0}(t) + Z_{1,1}g_{1,1}(t)\), where \(g_{0,0}\) is the tent of height \(\frac12\) on \([0, 1]\) peaked at \(\frac12\), and \(g_{1,0}, g_{1,1}\) are tents of height \(2^{-3/2}\) on \([0, \frac12]\) and \([\frac12, 1]\). At \(t = \frac12\): \(B_{1/2} = \frac12Z_0 + \frac12Z_{0,0}\) exactly, since all later tents vanish at \(\frac12\), and indeed \(\mathrm{Var}(B_{1/2}) = \frac14 + \frac14 = \frac12\). At \(t = 1\): \(B_1 = Z_0\). The construction is thus an interpolation: \(Z_0\) fixes the endpoint, \(Z_{0,0}\) the midpoint given the endpoints (a Brownian bridge value, variance \(\frac14 = \frac{(1/2)(1/2)}{1}\), cf. Lesson 4), and generation \(n\) fills in the dyadic points of level \(n + 1\).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 13 (Brownian filtration, stopping times and the past before a stopping time — Forien Def. 32–34, Exercises 7–8)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(B\) be a Brownian motion. Its **natural filtration** is \(\mathcal{F}_t = \sigma(B_s, 0 \le s \le t)\), with \(\mathcal{F}_\infty = \sigma(B_t, t \ge 0)\) and \(\mathcal{F}_{t+} = \bigcap_{s > t}\mathcal{F}_s\). A **stopping time** is a random variable \(T : \Omega \to [0, +\infty]\) with \(\{T \le t\} \in \mathcal{F}_t\) for every \(t \ge 0\). Examples: constants; the **hitting time** of a level, \(T_a = \inf\{t \ge 0 : B_t = a\}\), for which \(\{T_a \le t\} = \{\sup_{[0,t]}B \ge a\}\) when \(a > 0\); \(S \wedge T\) and \(S \vee T\) for stopping times \(S, T\). Unlike discrete time, the condition "\(\{T = t\} \in \mathcal{F}_t\) for all \(t\)" is not equivalent and is not the right definition.
+
+The **\(\sigma\)-field of the past before \(T\)** is
+\[
+\mathcal{F}_T = \big\{A \in \mathcal{F}_\infty : A \cap \{T \le t\} \in \mathcal{F}_t \text{ for every } t \ge 0\big\}.
+\]
+It is a \(\sigma\)-algebra; \(T\) is \(\mathcal{F}_T\)-measurable; \(\mathcal{F}_T = \mathcal{F}_t\) for \(T \equiv t\); \(S \le T\) implies \(\mathcal{F}_S \subset \mathcal{F}_T\); and \(B_T\mathbf{1}_{\{T < \infty\}}\) is \(\mathcal{F}_T\)-measurable. On \(\{T < \infty\}\) the **shifted process** \(B^{(T)}_t = B_{T+t} - B_T\) is well defined, with continuous paths.
+PROOF:
+**Hitting time.** For \(a > 0\), by continuity of paths, \(\{T_a \le t\} = \{\sup_{s \le t}B_s \ge a\} = \bigcap_k\bigcup_{s \in \mathbb{Q} \cap [0,t]}\{B_s > a - 1/k\} \in \mathcal{F}_t\). \(\{S \wedge T \le t\} = \{S \le t\} \cup \{T \le t\}\), \(\{S \vee T \le t\} = \{S \le t\} \cap \{T \le t\}\).
+
+**\(\mathcal{F}_T\).** The three axioms hold slice by slice on \(\{T \le t\}\), as in Definition 8. \(\{T \le s\} \cap \{T \le t\} = \{T \le s \wedge t\} \in \mathcal{F}_t\), so \(T\) is \(\mathcal{F}_T\)-measurable. For \(T \equiv t_0\), \(A \cap \{T \le t\}\) is \(A\) or \(\varnothing\) according to \(t \ge t_0\), so \(\mathcal{F}_T = \mathcal{F}_{t_0}\). For \(S \le T\) and \(A \in \mathcal{F}_S\): \(A \cap \{T \le t\} = (A \cap \{S \le t\}) \cap \{T \le t\} \in \mathcal{F}_t\).
+
+**\(B_T\) is \(\mathcal{F}_T\)-measurable.** Fix \(t\). The map \((s, \omega) \mapsto B_s(\omega)\) on \([0, t] \times \Omega\) is \(\mathcal{B}([0, t]) \otimes \mathcal{F}_t\)-measurable, as the pointwise limit of the step approximations \(B_{\lfloor 2^ns\rfloor 2^{-n} \wedge t}(\omega)\), each of which is measurable (path continuity). The map \(\omega \mapsto (T(\omega) \wedge t, \omega)\) is measurable from \((\Omega, \mathcal{F}_t)\) to \(([0, t] \times \Omega, \mathcal{B} \otimes \mathcal{F}_t)\) since \(\{T \wedge t \le s\} \in \mathcal{F}_s \subset \mathcal{F}_t\). Composing, \(B_{T \wedge t}\) is \(\mathcal{F}_t\)-measurable, and \(\{B_T\mathbf{1}_{\{T < \infty\}} \in A\} \cap \{T \le t\} = \{B_{T \wedge t} \in A\} \cap \{T \le t\} \in \mathcal{F}_t\). \(\square\)
+REFRESH:
+**Discrete-time stopping times** (Definition 8): \(\{T \le n\} \in \mathcal{F}_n\); \(\mathcal{F}_T\) is the set of events decidable at time \(T\); \(X_T\) is \(\mathcal{F}_T\)-measurable.
+EXPLANATION:
+These are the discrete-time notions of Lesson 3 transported to continuous time, with one change of emphasis: the definition must use \(\{T \le t\}\), because in continuous time the events \(\{T = t\}\) are typically null and carry no information (an independent random time with a continuous law satisfies \(\{T = t\} \in \mathcal{F}_t\) trivially, once null sets are added to the filtration, without being a stopping time). Hitting times of levels are stopping times because, by continuity of paths, "the level has been reached by time \(t\)" is decided by the path on \([0, t]\), through countably many rational times. The \(\sigma\)-algebra \(\mathcal{F}_T\) is the information at the random time \(T\), and \(B_T\) is known at that time; the small measurability argument in the proof is the price of uncountable time.
+DEEP:
+The goal is to see what changes in continuous time and to prove the properties that are not word for word those of Definition 8.
+
+**Step 1: why \(\{T \le t\}\) and not \(\{T = t\}\).** In discrete time the two forms were equivalent because \(\{T \le n\}\) is a finite union of the \(\{T = k\}\). In continuous time \(\{T \le t\} = \bigcup_{s \le t}\{T = s\}\) is an uncountable union, and no such reduction exists. The condition \(\{T \le t\} \in \mathcal{F}_t\) is the one that says "at time \(t\) I know whether \(T\) has occurred", which is what every use of stopping times needs (discretisation from above in Theorem 13, in particular). One also checks that \(\{T < t\} = \bigcup_n\{T \le t - 1/n\} \in \mathcal{F}_t\), so both strict and non-strict versions are available.
+
+**Step 2: hitting times.** For a level \(a > 0\), the path is continuous and starts at \(0 < a\), so \(T_a \le t\) if and only if \(\sup_{[0, t]}B \ge a\), and the supremum over \([0, t]\) equals the supremum over the rationals of \([0, t]\): a countable supremum of \(\mathcal{F}_t\)-measurable variables is \(\mathcal{F}_t\)-measurable. For a general closed set \(F\), the first entrance time \(\inf\{t : B_t \in F\}\) is a stopping time by the same argument with the distance to \(F\); for open sets one needs \(\mathcal{F}_{t+}\), which is why Hoffmann and every later course work with right-continuous filtrations.
+
+**Step 3: \(\mathcal{F}_T\) and its properties.** The verifications are those of Definition 8 with \(\{T \le t\}\) in place of \(\{T = n\}\): closure under complements uses \(A^c \cap \{T \le t\} = \{T \le t\} \setminus (A \cap \{T \le t\})\); \(T\) is measurable because \(\{T \le s\} \cap \{T \le t\} = \{T \le s \wedge t\}\); monotonicity \(\mathcal{F}_S \subset \mathcal{F}_T\) for \(S \le T\) because \(\{T \le t\} \subset \{S \le t\}\), so \(A \cap \{T \le t\} = (A \cap \{S \le t\}) \cap \{T \le t\}\).
+
+**Step 4: \(B_T\) is known at time \(T\).** In discrete time \(B_T = \sum_nB_n\mathbf{1}_{\{T = n\}}\) was a countable sum of measurable pieces. Here one uses joint measurability of \((s, \omega) \mapsto B_s(\omega)\), which holds because paths are continuous: \(B_s\) is the limit of \(B_{s_n}\) with \(s_n = \lfloor 2^ns\rfloor 2^{-n}\), and \((s, \omega) \mapsto B_{s_n}(\omega)\) takes countably many measurable "values in \(\omega\)" on measurable "cells in \(s\)". Then \(B_{T \wedge t}\) is the composition of the measurable map \(\omega \mapsto (T \wedge t, \omega)\) with this jointly measurable map, so it is \(\mathcal{F}_t\)-measurable, which is exactly the statement \(B_T\mathbf{1}_{\{T < \infty\}} \in \mathcal{F}_T\). The same argument shows that \(\omega \mapsto B_{T + t}(\omega)\) is measurable on \(\{T < \infty\}\), so the shifted process \(B^{(T)}\) is a genuine process, with continuous paths since those of \(B\) are.
+
+Used next: Theorem 13 (strong Markov property), Theorem 14 (reflection at \(T_a\)); Hoffmann's Chapter 2 uses \(\mathcal{F}_t\) and \(\mathcal{F}_{t+}\) for the Markov property, and later chapters the stopping times for localisation of stochastic integrals.
+EXAMPLE:
+Let \(T_1 = \inf\{t : B_t = 1\}\) and \(T = \inf\{t : |B_t| = 1\} = T_1 \wedge T_{-1}\), both stopping times. The event \(\{B_T = 1\}\) ("exit through the top") is in \(\mathcal{F}_T\), since \(B_T\) is \(\mathcal{F}_T\)-measurable. By contrast \(L = \sup\{t \le 1 : B_t = 0\}\), the last zero before time \(1\), is not a stopping time: deciding \(\{L \le t\}\) requires knowing that the path does not return to \(0\) on \((t, 1]\), which \(\mathcal{F}_t\) cannot tell. Consistently, the process \(B_{L + s}\) restarted at \(L\) is not a Brownian motion: it never returns to \(0\) before time \(1 - L\), while a Brownian motion returns to \(0\) immediately (Proposition 18).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 18 (Blumenthal's 0–1 law and its consequences — Forien Prop. 22, Cor. 4–6)
+IMPORTANCE: half imp
+HIGHLIGHT: 0
+STATEMENT:
+Let \(B\) be a Brownian motion with natural filtration \((\mathcal{F}_t)\).
+
+1. **(Blumenthal's \(0\)–\(1\) law)** The \(\sigma\)-algebra \(\mathcal{F}_{0+} = \bigcap_{t > 0}\mathcal{F}_t\) is trivial: every \(A \in \mathcal{F}_{0+}\) has \(\mathbb{P}(A) \in \{0, 1\}\).
+2. Almost surely, for every \(\varepsilon > 0\), \(\sup_{[0, \varepsilon]}B > 0\) and \(\inf_{[0, \varepsilon]}B < 0\): the path changes sign infinitely often on every interval \((0, \varepsilon)\), and, by the Markov property, immediately after any fixed time.
+3. Almost surely, \(\limsup_{t \to \infty}B_t = +\infty\) and \(\liminf_{t \to \infty}B_t = -\infty\). Consequently every level is reached: \(T_a = \inf\{t : B_t = a\} < \infty\) a.s. for every \(a \in \mathbb{R}\), and every level is visited at arbitrarily large times.
+4. **(Kolmogorov's \(0\)–\(1\) law)** The tail \(\sigma\)-algebra \(\bigcap_{t \ge 0}\sigma(B_s, s \ge t)\) is trivial.
+PROOF:
+**1.** Let \(A \in \mathcal{F}_{0+}\), \(0 \le t_1 < \dots < t_k\) and \(f : \mathbb{R}^k \to \mathbb{R}\) bounded continuous. For \(\varepsilon > 0\), \(A \in \mathcal{F}_\varepsilon\) and \((B_{t_i + \varepsilon} - B_\varepsilon)_i\) is independent of \(\mathcal{F}_\varepsilon\) with the law of \((B_{t_i})_i\) (Proposition 17 (3)), so \(\mathbb{E}[\mathbf{1}_Af(B_{t_1+\varepsilon} - B_\varepsilon, \dots)] = \mathbb{P}(A)\mathbb{E}[f(B_{t_1+\varepsilon} - B_\varepsilon, \dots)] = \mathbb{P}(A)\mathbb{E}[f(B_{t_1}, \dots, B_{t_k})]\). As \(\varepsilon \to 0\), path continuity and dominated convergence give \(\mathbb{E}[\mathbf{1}_Af(B_{t_1}, \dots, B_{t_k})] = \mathbb{P}(A)\mathbb{E}[f(B_{t_1}, \dots, B_{t_k})]\). Approximating indicators of cylinder sets by such \(f\) (monotone class, Theorem 1), \(A\) is independent of the \(\pi\)-system of cylinder events, hence of \(\mathcal{F}_\infty \ni A\). So \(\mathbb{P}(A) = \mathbb{P}(A \cap A) = \mathbb{P}(A)^2\).
+
+**2.** \(A = \bigcap_{n \ge 1}\{\sup_{[0, 1/n]}B > 0\}\) belongs to \(\mathcal{F}_s\) for every \(s > 0\) (only the terms with \(1/n \le s\) matter), so \(A \in \mathcal{F}_{0+}\). The events decrease, so \(\mathbb{P}(A) = \lim_n\mathbb{P}(\sup_{[0, 1/n]}B > 0) \ge \lim_n\mathbb{P}(B_{1/n} > 0) = \frac12\); by 1, \(\mathbb{P}(A) = 1\). Symmetry (Proposition 17 (1)) gives the infimum. Sign changes: on \(A\) the path takes positive and negative values on every \((0, \varepsilon)\), and vanishes in between by continuity.
+
+**3.** By continuity, \(\{\limsup_tB_t = +\infty\} = \{\sup_{t \ge 0}B_t = +\infty\}\). For \(a > 0\) and \(n \ge 1\), scaling gives \(\mathbb{P}(\sup_{[0, n]}B > a) = \mathbb{P}(\sup_{[0, 1]}B > a/\sqrt n) \to \mathbb{P}(\sup_{[0, 1]}B > 0) = 1\), so \(\mathbb{P}(\sup_{t \ge 0}B > a) = 1\) for all \(a\), i.e. \(\sup B = +\infty\) a.s.; symmetry for the infimum. Unbounded above and below with continuous paths, \(B\) crosses every level, at arbitrarily large times.
+
+**4.** Time inversion (Proposition 17 (4)) maps the tail \(\sigma\)-algebra of \(B\) onto \(\mathcal{F}_{0+}\) of the Brownian motion \(\tilde B\), which is trivial by 1. \(\square\)
+REFRESH:
+**Simple Markov property** (Proposition 17 (3)): for fixed \(\varepsilon\), \((B_{\varepsilon + t} - B_\varepsilon)_{t \ge 0}\) is a Brownian motion independent of \(\mathcal{F}_\varepsilon\).
+EXPLANATION:
+Blumenthal's law says that nothing random can be decided by looking at a Brownian path on an infinitesimal interval \([0, \varepsilon]\) for all \(\varepsilon\): such an event has probability \(0\) or \(1\). The proof shows that an event of \(\mathcal{F}_{0+}\) is independent of the whole future, hence of itself. The consequences are the qualitative picture of a Brownian path: it starts by oscillating around \(0\), crossing it infinitely often in every \((0, \varepsilon)\), and by the Markov property it does the same after every fixed time, so it is nowhere monotone; at large times it is unbounded in both directions and therefore visits every level infinitely often. The last fact is what makes the hitting times \(T_a\) finite, a prerequisite for the reflection principle. Kolmogorov's law is Blumenthal's law seen through time inversion.
+DEEP:
+The goal is to prove the \(0\)–\(1\) law and to derive the path properties from it. Plan: independence of \(\mathcal{F}_{0+}\) from the future by the Markov property and a limit; then two events of \(\mathcal{F}_{0+}\) with probability at least \(\frac12\); then scaling.
+
+**Step 1: an event of \(\mathcal{F}_{0+}\) is independent of the future.** Take \(A \in \mathcal{F}_{0+}\), times \(t_1 < \dots < t_k\) and a bounded continuous \(f\). For every \(\varepsilon > 0\), \(A \in \mathcal{F}_\varepsilon\), and the restarted process \(B^{(\varepsilon)}\) is a Brownian motion independent of \(\mathcal{F}_\varepsilon\) (Proposition 17 (3)). Hence \(\mathbb{E}[\mathbf{1}_Af(B^{(\varepsilon)}_{t_1}, \dots, B^{(\varepsilon)}_{t_k})] = \mathbb{P}(A)\,\mathbb{E}[f(B_{t_1}, \dots, B_{t_k})]\), the second factor not depending on \(\varepsilon\) because \(B^{(\varepsilon)} \overset{d}{=} B\). Now let \(\varepsilon \to 0\): \(B^{(\varepsilon)}_{t_i} = B_{t_i + \varepsilon} - B_\varepsilon \to B_{t_i}\) by continuity of paths, \(f\) is continuous and bounded, so dominated convergence gives \(\mathbb{E}[\mathbf{1}_Af(B_{t_1}, \dots, B_{t_k})] = \mathbb{P}(A)\,\mathbb{E}[f(B_{t_1}, \dots, B_{t_k})]\). The bounded functions \(g\) of \((B_{t_1}, \dots, B_{t_k})\) for which \(\mathbb{E}[\mathbf{1}_Ag] = \mathbb{P}(A)\mathbb{E}[g]\) form a vector space stable under bounded increasing limits and containing the continuous ones, hence all bounded Borel ones (Theorem 1, using that indicators of products of half-lines are increasing limits of continuous functions). So \(A\) is independent of every cylinder event, and these form a \(\pi\)-system generating \(\mathcal{F}_\infty\); by Definition 5 (1), \(A\) is independent of \(\mathcal{F}_\infty\).
+
+**Step 2: independent of itself.** Since \(A \in \mathcal{F}_{0+} \subset \mathcal{F}_\infty\), \(A\) is independent of \(A\): \(\mathbb{P}(A) = \mathbb{P}(A \cap A) = \mathbb{P}(A)^2\), so \(\mathbb{P}(A) \in \{0, 1\}\).
+
+**Step 3: oscillation at \(0\).** Let \(A = \bigcap_n\{\sup_{[0, 1/n]}B > 0\}\). For \(s > 0\), \(A\) equals the intersection over \(n \ge 1/s\) only (the events decrease in \(n\)), and each of these is in \(\mathcal{F}_s\); so \(A \in \mathcal{F}_s\) for all \(s > 0\), i.e. \(A \in \mathcal{F}_{0+}\). By continuity from above, \(\mathbb{P}(A) = \lim_n\mathbb{P}(\sup_{[0, 1/n]}B > 0) \ge \lim_n\mathbb{P}(B_{1/n} > 0) = \frac12\), because \(B_{1/n}\) is a centred Gaussian with positive variance. Blumenthal forces \(\mathbb{P}(A) = 1\). The same for \(-B\). On the intersection, the path takes positive and negative values in every \((0, \varepsilon)\), hence vanishes there infinitely often, by the intermediate value theorem. Applying the Markov property at a fixed time \(t\): the path is not monotone on any \([t, t + \varepsilon]\), a.s. (for each fixed \(t\); "for all \(t\) simultaneously" needs the rationals and a small extra argument).
+
+**Step 4: unboundedness.** Since paths are continuous, \(\limsup_{t \to \infty}B_t = +\infty\) if and only if \(\sup_{t \ge 0}B_t = +\infty\). Fix \(a > 0\). By scaling with \(\lambda = n\), \(\sup_{[0, n]}B \overset{d}{=} \sqrt n\sup_{[0, 1]}B\), so \(\mathbb{P}(\sup_{[0, n]}B > a) = \mathbb{P}(\sup_{[0, 1]}B > a/\sqrt n)\), which increases to \(\mathbb{P}(\sup_{[0, 1]}B > 0) = 1\) by Step 3. Hence \(\mathbb{P}(\sup_{t \ge 0}B > a) = 1\) for every \(a\), and \(\sup B = +\infty\) a.s.; symmetry handles the infimum. A continuous function unbounded above and below takes every value, at arbitrarily large times: \(T_a < \infty\) a.s., and the set \(\{t : B_t = a\}\) is unbounded.
+
+**Step 5: Kolmogorov's law.** Under time inversion, \(\sigma(B_s, s \ge t) = \sigma(\tilde B_u, u \le 1/t)\), so the tail \(\sigma\)-algebra of \(B\) is \(\bigcap_{u > 0}\sigma(\tilde B_v, v \le u) = \tilde{\mathcal{F}}_{0+}\), trivial by Step 2 applied to the Brownian motion \(\tilde B\).
+
+Used next: Theorem 14 needs \(T_a < \infty\); Hoffmann's later chapters use \(\mathcal{F}_{t+}\) and Blumenthal's law to justify working with the right-continuous filtration.
+EXAMPLE:
+The event \(A = \{B_t > 0 \text{ for all } t \in (0, \varepsilon) \text{ for some } \varepsilon > 0\}\) ("the path starts by going up") is in \(\mathcal{F}_{0+}\), so its probability is \(0\) or \(1\); by symmetry it equals the probability of "starts by going down", and the two events are disjoint, so both have probability \(0\): a Brownian path never starts with a definite sign, which is point 2. Another one: \(\limsup_{t \downarrow 0}B_t/\sqrt t\) is \(\mathcal{F}_{0+}\)-measurable, hence a.s. constant; scaling shows the constant is \(0\) or \(+\infty\), and it is \(+\infty\) (the law of the iterated logarithm, outside these notes, gives the exact rate \(\sqrt{2t\ln\ln(1/t)}\)). Finally, since \(T_1 < \infty\) a.s., one can ask for the law of \(T_1\): Theorem 14 gives it.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 13 (Strong Markov property — Forien Thm 22)
+IMPORTANCE: imp
+HIGHLIGHT: 0
+STATEMENT:
+Let \(B\) be a Brownian motion and \(T\) a stopping time of its natural filtration with \(\mathbb{P}(T < \infty) > 0\). Under the conditional probability \(\mathbb{P}(\,\cdot \mid T < \infty)\), the shifted process
+\[
+B^{(T)} : t \ge 0 \longmapsto B_{T + t} - B_T
+\]
+is a Brownian motion independent of \(\mathcal{F}_T\). Equivalently: for every \(A \in \mathcal{F}_T\) with \(A \subset \{T < \infty\}\), every \(0 \le t_1 < \dots < t_k\) and every bounded continuous \(f : \mathbb{R}^k \to \mathbb{R}\),
+\[
+\mathbb{E}\big[\mathbf{1}_A\,f(B^{(T)}_{t_1}, \dots, B^{(T)}_{t_k})\big] = \mathbb{P}(A)\,\mathbb{E}\big[f(B_{t_1}, \dots, B_{t_k})\big].
+\]
+When \(T < \infty\) a.s., the conditioning disappears. The statement fails for random times that are not stopping times.
+PROOF:
+Assume \(T < \infty\) a.s. (in general replace \(A\) by \(A \cap \{T < \infty\}\) and divide by \(\mathbb{P}(T < \infty)\)). Discretise from above: \(T_n = \lceil nT\rceil/n = \inf\{k/n : k/n \ge T\}\). Then \(T \le T_n < T + 1/n\), and \(T_n\) is a stopping time with values in \(\frac1n\mathbb{N}\).
+
+**Step 1: the identity for \(T_n\).** For \(A \in \mathcal{F}_T\) and \(k \in \mathbb{N}\), \(A \cap \{T_n = k/n\} = (A \cap \{T \le k/n\}) \setminus (A \cap \{T \le (k-1)/n\}) \in \mathcal{F}_{k/n}\). By the simple Markov property at time \(k/n\) (Proposition 17 (3)), \(B^{(k/n)}\) is a Brownian motion independent of \(\mathcal{F}_{k/n}\), so
+\[
+\mathbb{E}\big[\mathbf{1}_Af(B^{(T_n)}_{t_1}, \dots)\big] = \sum_k\mathbb{E}\big[\mathbf{1}_{A \cap \{T_n = k/n\}}f(B^{(k/n)}_{t_1}, \dots)\big] = \sum_k\mathbb{P}(A \cap \{T_n = k/n\})\,\mathbb{E}[f(B_{t_1}, \dots)] = \mathbb{P}(A)\,\mathbb{E}[f(B_{t_1}, \dots)],
+\]
+the exchange of sum and expectation being justified by dominated convergence (\(f\) bounded).
+
+**Step 2: \(n \to \infty\).** \(T_n \downarrow T\), so by continuity of paths \(B^{(T_n)}_{t_i} = B_{T_n + t_i} - B_{T_n} \to B_{T + t_i} - B_T\) for every \(\omega\), and \(f\) is bounded continuous; dominated convergence passes the identity to the limit.
+
+**Step 3: conclusion.** With \(A = \Omega\), the finite-dimensional marginals of \(B^{(T)}\) are those of \(B\) (bounded continuous \(f\) determine laws, Proposition 9 (7)); its paths are continuous; so it is a Brownian motion (Proposition 16). The identity for general \(A\) then says that the cylinder events of \(B^{(T)}\) are independent of \(\mathcal{F}_T\), and a \(\pi\)-system argument (Definition 5 (1)) gives independence of \(\sigma(B^{(T)})\) and \(\mathcal{F}_T\). \(\square\)
+REFRESH:
+**Simple Markov property** (Proposition 17 (3)): for a fixed time \(s\), \((B_{s+t} - B_s)_{t \ge 0}\) is a Brownian motion independent of \(\mathcal{F}_s\). **\(\mathcal{F}_T\)** (Definition 13): \(A \in \mathcal{F}_T\) if \(A \cap \{T \le t\} \in \mathcal{F}_t\) for all \(t\).
+EXPLANATION:
+The simple Markov property says Brownian motion restarts afresh at any fixed time. The strong Markov property says it also restarts afresh at any stopping time, such as the first time it hits a level: what happens after \(T\), viewed from \(B_T\), is a new Brownian motion, independent of everything known at time \(T\). The proof is a discretisation: replace \(T\) by the next multiple of \(1/n\), a stopping time taking countably many values; at each value \(k/n\), the simple Markov property applies, and the pieces add up because \(A \cap \{T_n = k/n\}\) is decidable at time \(k/n\); then let \(n \to \infty\) using continuity of paths. The stopping-time hypothesis is exactly what makes the pieces measurable at the right times; for the last zero before time \(1\), the restarted process is not Brownian.
+DEEP:
+The goal is to prove the identity of the statement, and to see precisely where "stopping time" is used. Plan: discretise \(T\) from above, apply the simple Markov property at each dyadic value, pass to the limit.
+
+**Step 1: discretising the stopping time.** Set \(T_n = \lceil nT\rceil/n\), the smallest multiple of \(1/n\) that is \(\ge T\). Then \(T \le T_n < T + 1/n\), so \(T_n \downarrow T\), and \(T_n\) takes values in \(\{k/n : k \in \mathbb{N}\}\). It is a stopping time: \(\{T_n \le k/n\} = \{T \le k/n\} \in \mathcal{F}_{k/n}\). Discretising from above, not below, is essential: \(\lfloor nT\rfloor/n\) is not a stopping time in general (knowing that \(T < (k+1)/n\) at time \(k/n\) would require looking ahead).
+
+**Step 2: the key measurability.** For \(A \in \mathcal{F}_T\), the set \(A \cap \{T_n = k/n\} = A \cap \{(k-1)/n < T \le k/n\}\) equals \((A \cap \{T \le k/n\}) \setminus (A \cap \{T \le (k-1)/n\})\), a difference of two sets in \(\mathcal{F}_{k/n}\) (the second is even in \(\mathcal{F}_{(k-1)/n}\)). This is the only place where \(A \in \mathcal{F}_T\) and the stopping-time property of \(T\) are used, and they are used exactly as the definition of \(\mathcal{F}_T\) was designed for.
+
+**Step 3: the simple Markov property at each value.** On \(\{T_n = k/n\}\), \(B^{(T_n)} = B^{(k/n)}\), and \(B^{(k/n)}\) is a Brownian motion independent of \(\mathcal{F}_{k/n}\) (Proposition 17 (3)). Hence
+\[
+\mathbb{E}\big[\mathbf{1}_{A \cap \{T_n = k/n\}}f(B^{(k/n)}_{t_1}, \dots, B^{(k/n)}_{t_k})\big] = \mathbb{P}(A \cap \{T_n = k/n\})\,\mathbb{E}[f(B_{t_1}, \dots, B_{t_k})].
+\]
+Summing over \(k\) (legitimate by dominated convergence, \(f\) being bounded and the events \(\{T_n = k/n\}\) partitioning \(\{T < \infty\}\)) gives the identity of the statement with \(T_n\) in place of \(T\): \(\mathbb{E}[\mathbf{1}_Af(B^{(T_n)}_{t_1}, \dots)] = \mathbb{P}(A)\,\mathbb{E}[f(B_{t_1}, \dots)]\).
+
+**Step 4: letting \(n \to \infty\).** Since \(T_n \to T\) and paths are continuous, \(B^{(T_n)}_{t_i} = B_{T_n + t_i} - B_{T_n} \to B_{T + t_i} - B_T = B^{(T)}_{t_i}\) for every \(\omega\); \(f\) is continuous and bounded, so \(f(B^{(T_n)}_{t_1}, \dots) \to f(B^{(T)}_{t_1}, \dots)\) with a constant dominant, and dominated convergence gives the identity for \(T\).
+
+**Step 5: reading off the conclusions.** With \(A = \Omega\): \(\mathbb{E}[f(B^{(T)}_{t_1}, \dots)] = \mathbb{E}[f(B_{t_1}, \dots)]\) for all bounded continuous \(f\), so the finite-dimensional marginals of \(B^{(T)}\) are those of \(B\) (two laws with the same integrals of bounded continuous functions coincide); with continuous paths, \(B^{(T)}\) is a Brownian motion by Proposition 16. For general \(A \in \mathcal{F}_T\), the identity says \(\mathbb{E}[\mathbf{1}_Ag] = \mathbb{P}(A)\mathbb{E}[g]\) for \(g\) a bounded continuous function of finitely many coordinates of \(B^{(T)}\), hence, by the monotone class argument of Proposition 18, for all bounded functions of finitely many coordinates: the cylinder events of \(B^{(T)}\) are independent of \(\mathcal{F}_T\), and the \(\pi\)-system criterion extends this to \(\sigma(B^{(T)})\).
+
+**Where the hypothesis bites.** Take \(L = \sup\{t \le 1 : B_t = 0\}\), not a stopping time. The process \(B_{L + t} - B_L = B_{L + t}\) has no zero on \((0, 1 - L)\), whereas a Brownian motion has zeros in every \((0, \varepsilon)\) (Proposition 18): the restarted process is not Brownian. Step 2 is what fails.
+
+Used next: Theorem 14, where \(T = T_a\); in Hoffmann's course the strong Markov property is behind hitting-time distributions, barrier options, and the Feynman–Kac representation with stopping.
+EXAMPLE:
+Let \(T_a = \inf\{t : B_t = a\}\) with \(a > 0\), finite a.s. by Proposition 18. The strong Markov property says that \((B_{T_a + t} - a)_{t \ge 0}\) is a Brownian motion independent of \(\mathcal{F}_{T_a}\), in particular of \(T_a\). Consequence: for \(b > a\), \(T_b - T_a\) is the hitting time of \(b - a\) by this new Brownian motion, so \(T_b - T_a \overset{d}{=} T_{b - a}\) and it is independent of \(T_a\): the process \((T_a)_{a \ge 0}\) has independent, stationary increments (it is a stable subordinator of index \(\frac12\), outside these notes). Another consequence: \(\mathbb{P}(B_{T_a + 1} > a) = \frac12\), whatever the time \(T_a\) at which the level was first reached.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 14 (Reflection principle; laws of the maximum and of hitting times — Forien Thm 23 and the remark after it)
+IMPORTANCE: imp
+HIGHLIGHT: 0
+STATEMENT:
+Let \(B\) be a Brownian motion, \(S_t = \sup_{s \le t}B_s\) its running maximum, and \(T_a = \inf\{t : B_t = a\}\).
+
+1. **(Reflection)** For \(t > 0\), \(a \ge 0\) and \(b \le a\): \(\mathbb{P}(S_t \ge a,\ B_t \le b) = \mathbb{P}(B_t \ge 2a - b)\).
+2. **(Law of the maximum)** \(S_t \overset{d}{=} |B_t|\): for \(a \ge 0\), \(\mathbb{P}(S_t \ge a) = 2\mathbb{P}(B_t \ge a) = \mathbb{P}(|B_t| \ge a)\), and \(S_t\) has density \(\frac{2}{\sqrt{2\pi t}}e^{-x^2/2t}\mathbf{1}_{x \ge 0}\).
+3. **(Law of a hitting time)** For \(a > 0\), \(\mathbb{P}(T_a \le t) = \mathbb{P}(|B_t| \ge a) = \mathbb{P}(|B_1| \ge a/\sqrt t)\), so \(T_a \overset{d}{=} a^2/B_1^2\), with density \(\frac{a}{\sqrt{2\pi t^3}}e^{-a^2/2t}\mathbf{1}_{t > 0}\); \(T_a < \infty\) a.s. but \(\mathbb{E}[T_a] = +\infty\).
+4. \(\sup_{[0, 1]}|B| \le S_1 + S'_1\) with \(S'_1 = \sup_{[0,1]}(-B) \overset{d}{=} S_1\); hence \(\mathbb{E}[\sup_{[0, 1]}|B|] \le 2\mathbb{E}|B_1| < \infty\), and \(S_1 \in L^p\) for every \(p < \infty\).
+PROOF:
+**1.** By continuity, \(\{S_t \ge a\} = \{T_a \le t\}\), and on this event \(B_{T_a} = a\). The strong Markov property (Theorem 13) says \(B^{(T_a)}\) is a Brownian motion independent of \(\mathcal{F}_{T_a}\), hence of \(T_a\); by symmetry \(-B^{(T_a)}\) is also a Brownian motion independent of \(T_a\), so the pairs \((T_a, B^{(T_a)})\) and \((T_a, -B^{(T_a)})\) have the same law. On \(\{T_a \le t\}\), \(B_t = a + B^{(T_a)}_{t - T_a}\), and the event \(\{T_a \le t, B^{(T_a)}_{t - T_a} \le b - a\}\) is a measurable function of the pair; therefore
+\[
+\mathbb{P}(T_a \le t,\ B_t \le b) = \mathbb{P}\big(T_a \le t,\ B^{(T_a)}_{t - T_a} \le b - a\big) = \mathbb{P}\big(T_a \le t,\ -B^{(T_a)}_{t - T_a} \le b - a\big) = \mathbb{P}(T_a \le t,\ B_t \ge 2a - b).
+\]
+Since \(2a - b \ge a\), \(\{B_t \ge 2a - b\} \subset \{S_t \ge a\} = \{T_a \le t\}\), and the last probability is \(\mathbb{P}(B_t \ge 2a - b)\).
+
+**2.** \(\mathbb{P}(S_t \ge a) = \mathbb{P}(S_t \ge a, B_t > a) + \mathbb{P}(S_t \ge a, B_t \le a) = \mathbb{P}(B_t > a) + \mathbb{P}(B_t \ge a) = \mathbb{P}(|B_t| \ge a)\), using 1 with \(b = a\) and symmetry; the density follows.
+
+**3.** \(\{T_a \le t\} = \{S_t \ge a\}\) and 2, then scaling \(B_t \overset{d}{=} \sqrt tB_1\): \(\mathbb{P}(T_a \le t) = \mathbb{P}(B_1^2 \ge a^2/t) = \mathbb{P}(a^2/B_1^2 \le t)\). Differentiating \(\mathbb{P}(|B_1| \ge a/\sqrt t) = 2\int_{a/\sqrt t}^\infty\frac{e^{-x^2/2}}{\sqrt{2\pi}}dx\) in \(t\) gives the density. \(\mathbb{E}[T_a] = a^2\,\mathbb{E}[B_1^{-2}] = a^2\int\frac{e^{-x^2/2}}{x^2\sqrt{2\pi}}dx = +\infty\) (non-integrable at \(0\)).
+
+**4.** \(|B_s| \le \max(B_s, -B_s) \le S_1 + S'_1\) for \(s \le 1\); \(\mathbb{E}[S_1] = \mathbb{E}|B_1| = \sqrt{2/\pi}\); \(\mathbb{E}[S_1^p] = \mathbb{E}|B_1|^p < \infty\). \(\square\)
+REFRESH:
+**Strong Markov property** (Theorem 13): for a stopping time \(T < \infty\) a.s., \(B^{(T)} = (B_{T+t} - B_T)_t\) is a Brownian motion independent of \(\mathcal{F}_T\). **Symmetry** (Proposition 17 (1)): \(-B\) is a Brownian motion.
+EXPLANATION:
+The reflection principle computes the joint law of the maximum and the endpoint of a Brownian path by a picture: a path that reaches the level \(a\) before time \(t\) and ends below \(b\) can be reflected about the horizontal line at height \(a\) after its first visit to \(a\); the reflected path ends above \(2a - b\), and by the strong Markov property and symmetry, reflection preserves the law. Two consequences follow immediately: the running maximum \(S_t\) has the same law as \(|B_t|\), and the hitting time of a level \(a\) has an explicit law, with heavy tails, finite almost surely but with infinite mean. Point 4, integrability of the supremum of \(|B|\) on \([0, 1]\), was used in the time-inversion property. In finance, point 1 is the price of a barrier option.
+DEEP:
+The goal is to make the reflection argument rigorous, and to derive the three laws. Plan: express the event through \(T_a\) and the restarted motion, use the strong Markov property to reflect, then specialise.
+
+**Step 1: the event through \(T_a\).** By continuity of paths, \(S_t \ge a\) if and only if the level \(a\) has been reached by time \(t\), i.e. \(T_a \le t\), and then \(B_{T_a} = a\). So \(\mathbb{P}(S_t \ge a, B_t \le b) = \mathbb{P}(T_a \le t, B_t \le b)\), and on \(\{T_a \le t\}\) we can write \(B_t = a + B^{(T_a)}_{t - T_a}\), where \(B^{(T_a)}\) is the motion restarted at \(T_a\). The condition \(B_t \le b\) becomes \(B^{(T_a)}_{t - T_a} \le b - a\).
+
+**Step 2: reflecting.** By the strong Markov property, \(B^{(T_a)}\) is a Brownian motion independent of \(\mathcal{F}_{T_a}\), and \(T_a\) is \(\mathcal{F}_{T_a}\)-measurable; so the pair \((T_a, B^{(T_a)})\) has the law "independent product of the law of \(T_a\) and the Wiener measure". By symmetry, \(-B^{(T_a)}\) is a Brownian motion, still independent of \(\mathcal{F}_{T_a}\), so \((T_a, -B^{(T_a)})\) has the same joint law as \((T_a, B^{(T_a)})\). The event \(\{T_a \le t, B^{(T_a)}_{t - T_a} \le b - a\}\) is of the form \(\{(T_a, B^{(T_a)}) \in E\}\) for a measurable set \(E\) of pairs (time, path) (the map \((s, f) \mapsto f(t - s)\) is jointly measurable, by continuity). Replacing \(B^{(T_a)}\) by \(-B^{(T_a)}\) does not change its probability:
+\[
+\mathbb{P}\big(T_a \le t,\ B^{(T_a)}_{t - T_a} \le b - a\big) = \mathbb{P}\big(T_a \le t,\ -B^{(T_a)}_{t - T_a} \le b - a\big) = \mathbb{P}\big(T_a \le t,\ B_t \ge 2a - b\big),
+\]
+the last equality because \(-B^{(T_a)}_{t - T_a} \le b - a\) means \(B_t - a \ge a - b\).
+
+**Step 3: removing the condition \(T_a \le t\).** Since \(b \le a\), we have \(2a - b \ge a\), so \(B_t \ge 2a - b\) forces \(S_t \ge a\), i.e. \(T_a \le t\); the condition is automatic, and \(\mathbb{P}(S_t \ge a, B_t \le b) = \mathbb{P}(B_t \ge 2a - b)\). This is where the hypothesis \(b \le a\) is needed; for \(b > a\) the formula would be false (the right-hand side does not even depend on \(t\) correctly).
+
+**Step 4: the maximum.** Split \(\{S_t \ge a\}\) according to \(B_t > a\) or \(B_t \le a\). The first part is \(\{B_t > a\}\) (if the endpoint is above \(a\), the maximum is too). The second is given by Step 3 with \(b = a\): \(\mathbb{P}(B_t \ge a)\). Adding, \(\mathbb{P}(S_t \ge a) = 2\mathbb{P}(B_t \ge a) = \mathbb{P}(|B_t| \ge a)\) by symmetry of \(B_t\). So \(S_t \overset{d}{=} |B_t|\), a half-Gaussian of variance \(t\): the maximum of a Brownian path on \([0, t]\) is typically of order \(\sqrt t\), like the endpoint.
+
+**Step 5: hitting times.** \(\mathbb{P}(T_a \le t) = \mathbb{P}(S_t \ge a) = \mathbb{P}(|B_t| \ge a) = \mathbb{P}(|B_1| \ge a/\sqrt t)\) by scaling; as \(t \to \infty\) this tends to \(1\), confirming \(T_a < \infty\) a.s., and it is the distribution function of \(a^2/B_1^2\). The density \(\frac{a}{\sqrt{2\pi t^3}}e^{-a^2/2t}\) decays like \(t^{-3/2}\), so \(\mathbb{E}[T_a] = \int_0^\infty t\cdot\frac{a}{\sqrt{2\pi t^3}}e^{-a^2/2t}dt\) diverges at infinity: Brownian motion reaches every level, but the expected time to do so is infinite. This is the continuous analogue of the simple random walk hitting \(1\) with \(\mathbb{E}[T] = \infty\) (Theorem 7), and the reason the optional stopping theorem needs care at \(T_a\).
+
+**Step 6: integrability of the supremum.** \(\sup_{[0,1]}|B| \le S_1 + S'_1\) where \(S'_1\) is the maximum of \(-B\), also distributed as \(|B_1|\); so all moments are finite. This closes the argument for time inversion in Proposition 17.
+
+Used next: barrier and lookback options in the valuation course; the joint law of \((S_t, B_t)\), with density \(\frac{2(2a - b)}{\sqrt{2\pi t^3}}e^{-(2a - b)^2/2t}\) on \(\{a \ge 0, b \le a\}\), obtained by differentiating point 1; Hoffmann's later chapters revisit these laws with the exponential martingale.
+EXAMPLE:
+Probability that a Brownian path exceeds \(1\) before time \(1\): \(\mathbb{P}(S_1 \ge 1) = \mathbb{P}(|B_1| \ge 1) = 2(1 - \Phi(1)) \approx 0.317\). Probability that it exceeds \(1\) but ends below \(0\): \(\mathbb{P}(S_1 \ge 1, B_1 \le 0) = \mathbb{P}(B_1 \ge 2) = 1 - \Phi(2) \approx 0.023\). Median of the hitting time of \(1\): \(\mathbb{P}(T_1 \le t) = \frac12\) when \(\mathbb{P}(|B_1| \ge 1/\sqrt t) = \frac12\), i.e. \(1/\sqrt t = 0.674\), \(t \approx 2.2\); yet \(\mathbb{E}[T_1] = \infty\), the heavy tail \(\mathbb{P}(T_1 > t) \approx \sqrt{2/(\pi t)}\) for large \(t\) being responsible. A barrier check: for an up-and-out option that pays \(\mathbf{1}_{\{S_t < a\}}(B_t - K)^+\), point 1 gives the joint law needed to price it in closed form.
+NOTE:
+(none)
+
+===NOTE===
+TITLE: Ready for Hoffmann: where each block is used
+CONTENT:
+This is the map from the condensed course to Marc Hoffmann's own notes, [Chapter 1: Brownian motion as a Gaussian process](/pdfs/63) and [Chapter 2: Brownian motion as a Markov process](/pdfs/64). Everything he assumes is here; the numbering below is that of this course.
+
+**Chapter 1** builds \(B_t = X(\mathbf{1}_{[0,t]})\) from an isometry \(L^2(\mathbb{R}_+) \to L^2(\Omega)\), then gives it continuous paths and a canonical space.
+
+- His Definition 1, Proposition 2, Lemma 3 (Gaussian variables, \(L^2\) limits of Gaussians): Definition/Proposition 13, Corollary 2 (3), and behind them Definition 4 (what passes to \(L^2\) limits), Definition/Proposition 10 and Theorem 5 (characteristic functions, Lévy). His proof of Lemma 3 quotes uniform integrability: Definition 9 (iii) and Theorem 9.
+- His Definitions 4–5, Example 6 (Gaussian space, Gaussian process, law fixed by the covariance): Definition 10, Proposition 14, Definition 11, Proposition 16.
+- His Proposition 7 and Corollary 8 (independence from orthogonality; projection versus conditional expectation): Corollary 1, Theorem 4, Theorem 6, Proposition 15 and Remark 9's content is the last paragraph of Proposition 15's deep dive. Corollary 8 (ii) is the freezing rule, Proposition 11 (6).
+- His Theorem 10 (existence of a Gaussian process with a given covariance): the isometry of Theorem 12, Step 1, with an arbitrary orthonormal basis; completeness of \(L^2\) is Definition 4.
+- His Definition 12, Notation 13, Proposition 14 (Brownian motion and its basic properties): Definition 11, Proposition 16, Proposition 17; Corollary 2 (1) for linear images.
+- His Definitions 15–16, Proposition 17 (modifications, indistinguishability): the remarks of Definition 11 and the example \(B_t + \mathbf{1}_{\{t = U\}}\) in its deep dive.
+- His Theorem 18 and Corollary 19 (Kolmogorov's continuity criterion): the argument "moment bound, Markov, Borel–Cantelli" of Proposition 7, Step 4, and Proposition 8; the Gaussian moments \(\mathbb{E}|B_t - B_s|^{2k} = \frac{(2k)!}{2^kk!}(t - s)^k\) from Definition/Proposition 13 (1); the conclusion "limits in probability are a.s. unique" is Proposition 9 (7). Compare with Theorem 12, Steps 3–5, which obtains continuity by the same tools in a different way.
+- His Definition 20 and Theorem 21 (Wiener measure): Definition 12, whose proof uses Proposition 1 on cylinder events; the "concluding remark" on non-measurability of continuity is discussed in Definition 12, Step 1.
+
+**Chapter 2** turns the Gaussian description into a Markov one.
+
+- His Proposition 1 (simple Markov property): Proposition 17 (3), whose proof is the same, and, for the conditional-expectation form \(\mathbb{E}[f(B_{t+s}) \mid \mathcal{F}_t] = P_sf(B_t)\), the freezing rule of Proposition 11 (6), the identification "\(\sigma(B_t)\)-measurable means a function of \(B_t\)" of Proposition 5, and the function version of the monotone class theorem, Theorem 1, to pass from \(f(B_{t_1}, \dots, B_{t_n})\) to all bounded \(\mathcal{F}\)-measurable variables.
+- His Lemma 2 (Chapman–Kolmogorov): the tower property, Proposition 11 (3), and Fubini, Theorem 3, for the convolution of Gaussian kernels; the kernel \(p_t(x, y)\) is the conditional density of Proposition 12 and of the example of Proposition 15.
+- His Proposition 3 (properties of the semigroup): dominated convergence, Theorem 2, in every item; the heat equation by differentiation under the integral, Proposition 3; scaling, Proposition 17 (2).
+- His use of \(\mathcal{F}_t\), \(\mathcal{F}_{t+}\) and stopping times: Definition 13; Blumenthal's law, Proposition 18, when right-continuity of the filtration comes up.
+- What he defers (strong Markov property, reflection): Theorems 13 and 14 here, to read when he gets there.
+
+**Three checks before starting.** Write \(\mathbb{E}[e^{itY}]\) for \(Y \sim \mathcal{N}(m, \sigma^2)\) and explain in one line why an \(L^2\) limit of centred Gaussians is a centred Gaussian (Corollary 2). For a Gaussian vector, explain why \(\mathbb{E}[X_iX_j] = 0\) forces independence and give the counterexample without joint Gaussianity (Corollary 1, Definition 10). If \(\sum_n\mathbb{P}(M_n > 2^{-\alpha n}) < \infty\), explain why \(M_n \le 2^{-\alpha n}\) for all large \(n\) almost surely (Proposition 8). If the three answers come easily, Chapter 1 will read as a review; if not, the blocks named are where to go back.

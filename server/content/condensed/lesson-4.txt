@@ -1,0 +1,311 @@
+===LESSON===
+TITLE: Gaussian variables and vectors
+DESCRIPTION: Forien §4 (Gaussian part, LLN, CLT) and §7 condensed: the Gaussian law and its characteristic function, Gaussian vectors, the law determined by mean and covariance, uncorrelated equals independent, stability under linear maps and limits, Gaussian conditioning, the laws of large numbers and the central limit theorem. 7 statements instead of 24.
+INTRO:
+Hoffmann's first chapter is titled "Brownian motion as a Gaussian process", and its first three pages redo, faster, what this lesson does slowly. Everything rests on two facts about Gaussian vectors that look like accidents and are not. First, the law of a Gaussian vector is completely determined by its mean and its covariance matrix (Proposition 14): to specify the joint law of \((B_{t_1}, \dots, B_{t_n})\) for a Brownian motion, it suffices to say \(\mathbb{E}[B_t] = 0\) and \(\mathbb{E}[B_sB_t] = s \wedge t\). Second, within a Gaussian vector, uncorrelated means independent (Corollary 1): independence of the increments of Brownian motion is a covariance computation, and the Markov property of Chapter 2 is proved by checking that increments after time \(t\) are uncorrelated with the past.
+
+Both facts come from the characteristic function \(\exp(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle)\), which is why Lesson 2 insisted on characteristic functions. The rest of the lesson is what one does with them: Gaussian vectors are stable under linear maps and under \(L^2\) limits (Corollary 2), which is how Hoffmann's Gaussian spaces, closed subspaces of \(L^2\) made of Gaussian variables, come to exist; and conditioning within a Gaussian vector is a linear regression (Proposition 15), the one case where the orthogonal projection on the span of \(Y\) and the conditional expectation on \(\sigma(Y)\) coincide, which is the content of Hoffmann's Corollary 8 and Remark 9.
+
+The last block states the law of large numbers and the central limit theorem. Hoffmann says to skip them, and for Chapters 1 and 2 you can; they are here because the central limit theorem is the reason Gaussian laws appear at all, because its proof is the cleanest application of Lévy's theorem, and because the strong law is used once, in the time-inversion property of Brownian motion.
+
+Seven statements out of twenty-four. Left out: the proof of the strong law, Kolmogorov's \(0\)–\(1\) law, and the remark on the Cholesky decomposition beyond its statement.
+
+===BLOCK===
+KIND: proposition
+TITLE: Definition/Proposition 13 (Gaussian random variables — Forien Def. 16 and its exercise, Def. 25, Prop. 16, Lemma 4)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+The **standard Gaussian law** \(\mathcal{N}(0, 1)\) is the probability measure on \(\mathbb{R}\) with density \(\frac{1}{\sqrt{2\pi}}e^{-x^2/2}\). A real random variable \(X\) is **Gaussian** with parameters \(m \in \mathbb{R}\) and \(\sigma \ge 0\), written \(X \sim \mathcal{N}(m, \sigma^2)\), if \(X \overset{d}{=} m + \sigma Z\) with \(Z \sim \mathcal{N}(0, 1)\); for \(\sigma > 0\) this means that \(X\) has the density \(\frac{1}{\sigma\sqrt{2\pi}}\exp\big(-\frac{(x - m)^2}{2\sigma^2}\big)\), and for \(\sigma = 0\) that \(X = m\) a.s. (a **degenerate** Gaussian).
+
+1. The density integrates to \(1\). If \(Z \sim \mathcal{N}(0, 1)\), then \(Z\) has moments of all orders, \(\mathbb{E}[Z^{2k+1}] = 0\) and \(\mathbb{E}[Z^{2k}] = \frac{(2k)!}{2^kk!}\); in particular \(\mathbb{E}[Z] = 0\), \(\mathbb{E}[Z^2] = 1\), \(\mathbb{E}[Z^4] = 3\).
+2. \(X \sim \mathcal{N}(m, \sigma^2)\) has mean \(m\), variance \(\sigma^2\), characteristic function and Laplace transform
+\[
+\phi_X(t) = \exp\Big(imt - \frac{\sigma^2t^2}{2}\Big), \qquad \mathbb{E}[e^{\lambda X}] = \exp\Big(\lambda m + \frac{\lambda^2\sigma^2}{2}\Big), \qquad t, \lambda \in \mathbb{R}.
+\]
+Conversely, a variable whose characteristic function is \(e^{imt - \sigma^2t^2/2}\) is \(\mathcal{N}(m, \sigma^2)\).
+3. If \(X \sim \mathcal{N}(m, \sigma^2)\) and \(a, b \in \mathbb{R}\), then \(aX + b \sim \mathcal{N}(am + b, a^2\sigma^2)\). If \(X_1 \sim \mathcal{N}(m_1, \sigma_1^2)\) and \(X_2 \sim \mathcal{N}(m_2, \sigma_2^2)\) are independent, then \(X_1 + X_2 \sim \mathcal{N}(m_1 + m_2, \sigma_1^2 + \sigma_2^2)\).
+4. **(Tail bound)** For \(Z \sim \mathcal{N}(0, 1)\) and \(x \ge 0\), \(\mathbb{P}(|Z| \ge x) \le e^{-x^2/2}\).
+PROOF:
+**1.** With \(I = \int e^{-x^2/2}\, dx\), polar coordinates give \(I^2 = \int\!\!\int e^{-(x^2 + y^2)/2}\, dx\, dy = \int_0^{2\pi}\!\!\int_0^\infty e^{-r^2/2}r\, dr\, d\theta = 2\pi\). Moments: \(\mathbb{E}|Z|^k < \infty\) since \(|x|^ke^{-x^2/2}\) is integrable. Integrating by parts with \(xe^{-x^2/2} = -(e^{-x^2/2})'\): \(\mathbb{E}[Z^{k+2}] = \frac{1}{\sqrt{2\pi}}\int x^{k+1}\cdot xe^{-x^2/2}\, dx = (k + 1)\mathbb{E}[Z^k]\); with \(\mathbb{E}[Z^0] = 1\), \(\mathbb{E}[Z] = 0\), induction gives the formulas.
+
+**2.** Let \(g(t) = \phi_Z(t) = \int e^{itx}\frac{e^{-x^2/2}}{\sqrt{2\pi}}\, dx\). By Proposition 3 (domination by \(|x|e^{-x^2/2}\)), \(g'(t) = \int ixe^{itx}\frac{e^{-x^2/2}}{\sqrt{2\pi}}\, dx\), and integrating by parts, \(g'(t) = \frac{i}{\sqrt{2\pi}}\int e^{itx}\big(-\tfrac{d}{dx}e^{-x^2/2}\big)dx = \frac{i}{\sqrt{2\pi}}\int (it)e^{itx}e^{-x^2/2}\, dx = -tg(t)\). So \((g(t)e^{t^2/2})' = 0\), \(g(t) = e^{-t^2/2}\). Then \(\phi_X(t) = e^{imt}\phi_Z(\sigma t)\). The Laplace transform: complete the square, \(\int e^{\lambda x - x^2/2}\, dx = e^{\lambda^2/2}\int e^{-(x - \lambda)^2/2}\, dx\). Mean and variance from \(X = m + \sigma Z\). Converse: injectivity of characteristic functions (Definition/Proposition 10).
+
+**3.** \(\phi_{aX + b}(t) = e^{ibt}\phi_X(at) = e^{i(am + b)t - a^2\sigma^2t^2/2}\); \(\phi_{X_1 + X_2} = \phi_{X_1}\phi_{X_2} = e^{i(m_1 + m_2)t - (\sigma_1^2 + \sigma_2^2)t^2/2}\); conclude by the converse in 2.
+
+**4.** Let \(Z_1, Z_2\) be independent \(\mathcal{N}(0, 1)\). By independence \(\mathbb{P}(|Z| \ge x)^2 = \mathbb{P}(|Z_1| \ge x, |Z_2| \ge x) \le \mathbb{P}(Z_1^2 + Z_2^2 \ge 2x^2)\), and in polar coordinates \(\mathbb{P}(Z_1^2 + Z_2^2 \ge s) = \frac{1}{2\pi}\int_0^{2\pi}\!\!\int_{\sqrt s}^\infty e^{-r^2/2}r\, dr\, d\theta = e^{-s/2}\). With \(s = 2x^2\), take square roots. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+This block collects everything about one Gaussian variable. The standard Gaussian is defined by its bell-shaped density; a general Gaussian is an affine image \(m + \sigma Z\), which conveniently includes the constant case \(\sigma = 0\). The single most useful formula is the characteristic function \(e^{imt - \sigma^2t^2/2}\): it determines the law, it makes the stability under affine maps and independent sums a one-line computation, and it is the reason Gaussian vectors are described by two parameters only. The Laplace transform \(e^{\lambda m + \lambda^2\sigma^2/2}\) is the source of the exponential martingale \(e^{\sigma B_t - \sigma^2t/2}\), and the tail bound \(e^{-x^2/2}\) is what makes Borel–Cantelli arguments on Gaussian sequences work.
+DEEP:
+The goal is to establish the formulas and see which computation drives each. Plan: normalisation and moments by integration by parts; the characteristic function by a differential equation; the stability properties by injectivity; the tail bound by a two-dimensional trick.
+
+**Step 1: the density is a probability density.** The trick is to compute the square of \(I = \int_{\mathbb{R}}e^{-x^2/2}\, dx\) as a double integral over the plane and pass to polar coordinates: \(I^2 = \int\!\!\int e^{-(x^2 + y^2)/2}\, dx\, dy = \int_0^{2\pi}\!\!\int_0^\infty e^{-r^2/2}r\, dr\, d\theta = 2\pi\cdot 1\), because \(re^{-r^2/2}\) has the explicit primitive \(-e^{-r^2/2}\). So \(I = \sqrt{2\pi}\).
+
+**Step 2: moments.** All moments exist because \(e^{-x^2/2}\) beats any power. The recursion \(\mathbb{E}[Z^{k+2}] = (k + 1)\mathbb{E}[Z^k]\) comes from integrating by parts once, using \(xe^{-x^2/2} = -(e^{-x^2/2})'\) and the vanishing of the boundary terms. Odd moments vanish by symmetry of the density; even ones give \(1, 3, 15, \dots\), i.e. \(\mathbb{E}[Z^{2k}] = (2k - 1)(2k - 3)\cdots 1 = \frac{(2k)!}{2^kk!}\).
+
+**Step 3: the characteristic function.** Let \(g(t) = \mathbb{E}[e^{itZ}]\). Differentiation under the integral is allowed by Proposition 3, with the integrable dominating function \(|x|e^{-x^2/2}/\sqrt{2\pi}\), and gives \(g'(t) = \mathbb{E}[iZe^{itZ}]\). Integrating by parts in the same way as in Step 2 turns the factor \(x\) into a derivative of \(e^{-x^2/2}\), and the derivative of \(e^{itx}\) produces a factor \(it\): the result is \(g'(t) = -tg(t)\). This linear differential equation with \(g(0) = 1\) has the unique solution \(g(t) = e^{-t^2/2}\) (the function \(g(t)e^{t^2/2}\) has zero derivative). For \(X = m + \sigma Z\), the affine rule of Definition/Proposition 10 gives \(\phi_X(t) = e^{imt}g(\sigma t)\). The Laplace transform is computed directly by completing the square in the exponent, \(\lambda x - \frac{x^2}{2} = \frac{\lambda^2}{2} - \frac{(x - \lambda)^2}{2}\), and recognising a shifted Gaussian density; the same formula with \(\lambda = it\) is the characteristic function, but that substitution needs a justification (analytic continuation), which is why we proved it separately.
+
+**Step 4: stability.** Affine images and independent sums are handled by the characteristic function: it is a product of the two, and it is again of Gaussian form. The converse statement in 2, that a Gaussian characteristic function forces a Gaussian law, is the injectivity of Definition/Proposition 10; without it the computations would show nothing.
+
+**Step 5: the tail bound.** The event \(\{|Z_1| \ge x, |Z_2| \ge x\}\), of probability \(\mathbb{P}(|Z| \ge x)^2\), is contained in the disc complement \(\{Z_1^2 + Z_2^2 \ge 2x^2\}\), whose probability is exactly \(e^{-x^2}\) by the polar computation of Step 1 (the radial variable \(R^2 = Z_1^2 + Z_2^2\) is exponential of parameter \(\frac12\)). Taking square roots gives \(\mathbb{P}(|Z| \ge x) \le e^{-x^2/2}\). The true decay is \(\sim \sqrt{2/\pi}\,e^{-x^2/2}/x\), so the bound is sharp up to the polynomial factor, which is all Borel–Cantelli needs.
+
+Used next: Proposition 14, which is Step 3 applied to \(\langle \xi, X\rangle\); the exponential martingale \(e^{\sigma B_t - \sigma^2t/2}\); the tail bound in Lévy's construction (Lesson 5) and in the Borel–Cantelli example of Lesson 2; Hoffmann's Proposition 2 uses Step 3 and injectivity.
+EXAMPLE:
+Let \(X \sim \mathcal{N}(1, 4)\), i.e. \(m = 1\), \(\sigma = 2\). Then \(\mathbb{P}(X > 3) = \mathbb{P}(Z > 1) \approx 0.159\), \(\mathbb{E}[e^X] = e^{1 + 2} = e^3\), and \(\mathbb{E}[X^2] = \mathrm{Var}(X) + m^2 = 5\). If \(Y \sim \mathcal{N}(-1, 5)\) is independent of \(X\), then \(X - 2Y \sim \mathcal{N}(1 + 2, 4 + 4\cdot 5) = \mathcal{N}(3, 24)\). For a Brownian increment \(B_t - B_s \sim \mathcal{N}(0, t - s)\): \(\mathbb{E}[(B_t - B_s)^4] = 3(t - s)^2\), the moment estimate that Kolmogorov's criterion needs in Hoffmann's Corollary 19, and \(\mathbb{E}[e^{\sigma(B_t - B_s)}] = e^{\sigma^2(t - s)/2}\), which is exactly what makes \(e^{\sigma B_t - \sigma^2t/2}\) a martingale.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 10 (Gaussian vectors, mean and covariance — Forien Def. 26–27 and the Remark after Def. 26)
+IMPORTANCE: not imp
+HIGHLIGHT: 1
+STATEMENT:
+A random vector \(X = (X_1, \dots, X_d)\) is a **Gaussian vector** (its components are **jointly Gaussian**) if every linear combination \(\langle \lambda, X\rangle = \lambda_1X_1 + \dots + \lambda_dX_d\), \(\lambda \in \mathbb{R}^d\), is a Gaussian variable, possibly degenerate. Its **mean** is the vector \(m = (\mathbb{E}X_1, \dots, \mathbb{E}X_d)\) and its **covariance matrix** is \(\Sigma = (\mathrm{Cov}(X_i, X_j))_{1 \le i, j \le d}\); \(\Sigma\) is symmetric and positive semi-definite, with \(\langle \lambda, \Sigma\lambda\rangle = \mathrm{Var}(\langle \lambda, X\rangle) \ge 0\).
+
+Examples: if \(Z_1, \dots, Z_d\) are independent \(\mathcal{N}(0, 1)\), then \(Z = (Z_1, \dots, Z_d)\) is a Gaussian vector with mean \(0\) and covariance \(I_d\), the **standard Gaussian vector** of \(\mathbb{R}^d\), with density \((2\pi)^{-d/2}e^{-|x|^2/2}\); every vector \(m + AZ\) with \(A\) a \(d \times d\) matrix is a Gaussian vector (Corollary 2). Warning: a vector whose components are each Gaussian need not be a Gaussian vector.
+PROOF:
+**Covariance matrix.** Symmetry of \(\mathrm{Cov}\) is clear; by bilinearity, \(\mathrm{Var}(\langle \lambda, X\rangle) = \sum_{i,j}\lambda_i\lambda_j\mathrm{Cov}(X_i, X_j) = \langle \lambda, \Sigma\lambda\rangle\), and a variance is non-negative.
+
+**Standard Gaussian vector.** \(\langle \lambda, Z\rangle\) is a sum of independent Gaussians, hence Gaussian by Definition/Proposition 13 (3); \(\mathrm{Cov}(Z_i, Z_j) = \delta_{ij}\) by independence; the density of the vector is the product of the densities (Definition 5 (2)).
+
+**Counterexample.** Let \(Z \sim \mathcal{N}(0, 1)\) and \(\varepsilon\) independent of \(Z\) with \(\mathbb{P}(\varepsilon = \pm 1) = \frac12\); put \(X = (Z, \varepsilon Z)\). Both components are \(\mathcal{N}(0, 1)\) (\(\varepsilon Z \overset{d}{=} Z\) by symmetry), but \(Z + \varepsilon Z\) equals \(0\) with probability \(\frac12\) and \(2Z\) otherwise: it has an atom at \(0\) without being constant, so it is not Gaussian. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+A Gaussian vector is not just a vector of Gaussian coordinates: the definition asks that every one-dimensional projection \(\langle \lambda, X\rangle\) be Gaussian, which is a statement about the joint law. This is the right definition because it is coordinate-free and stable under linear maps, and because it will make the characteristic function computable from two parameters, the mean vector and the covariance matrix. The covariance matrix is the quadratic form giving the variances of all projections; it is symmetric and positive semi-definite, possibly singular when the vector lives on a lower-dimensional subspace. The standard example is a vector of independent standard Gaussians, and, as Corollary 2 will show, every Gaussian vector is an affine image of it.
+DEEP:
+The goal is to understand what the definition requires and what it does not.
+
+**Step 1: why all linear combinations.** Suppose one only asked each \(X_i\) to be Gaussian. The counterexample \((Z, \varepsilon Z)\) shows the joint law can then be far from Gaussian: the pair takes values on the two diagonals \(y = \pm x\) only, with no density on \(\mathbb{R}^2\), and the sum has an atom at \(0\). With the full definition, all projections are Gaussian, so no such degeneracy along a direction can occur unless it is the honest degeneracy of a constant.
+
+**Step 2: the covariance matrix as a quadratic form.** Bilinearity of the covariance gives \(\mathrm{Var}(\sum_i\lambda_iX_i) = \sum_{i,j}\lambda_i\lambda_j\mathrm{Cov}(X_i, X_j) = \langle \lambda, \Sigma\lambda\rangle\). So \(\Sigma\) is the matrix of the quadratic form "variance of the projection in direction \(\lambda\)"; it is positive semi-definite because variances are non-negative, and \(\langle \lambda, \Sigma\lambda\rangle = 0\) means exactly that \(\langle \lambda, X\rangle\) is a.s. constant, i.e. \(X\) lies a.s. in an affine hyperplane orthogonal to \(\lambda\). Hence \(\Sigma\) is invertible if and only if \(X\) does not live on a proper affine subspace.
+
+**Step 3: the standard Gaussian vector.** For independent \(Z_1, \dots, Z_d \sim \mathcal{N}(0, 1)\), a combination \(\sum_i\lambda_iZ_i\) is a sum of independent Gaussians \(\lambda_iZ_i \sim \mathcal{N}(0, \lambda_i^2)\), hence \(\mathcal{N}(0, |\lambda|^2)\) by Definition/Proposition 13 (3). The density of the vector is the product \(\prod_i\frac{e^{-x_i^2/2}}{\sqrt{2\pi}} = (2\pi)^{-d/2}e^{-|x|^2/2}\), rotation invariant: this is why the Gaussian law is the natural "isotropic" noise, and why an orthogonal change of coordinates of \(Z\) is again a standard Gaussian vector (Corollary 2).
+
+**Step 4: the counterexample in detail.** With \(X = (Z, \varepsilon Z)\): \(\mathrm{Cov}(Z, \varepsilon Z) = \mathbb{E}[\varepsilon]\mathbb{E}[Z^2] = 0\), so the two components are uncorrelated; they are not independent (\(|\varepsilon Z| = |Z|\)). This is the standard warning attached to Corollary 1: "uncorrelated ⇒ independent" requires joint Gaussianity, and the components of this pair are Gaussian but not jointly Gaussian.
+
+Used next: Proposition 14 computes the characteristic function from \((m, \Sigma)\); Corollary 2 shows every \(\mathcal{N}(m, \Sigma)\) is \(m + AZ\); in Lesson 5, a Gaussian process is a process all of whose finite-dimensional marginals are Gaussian vectors, and Brownian motion is the one with covariance \(s \wedge t\).
+EXAMPLE:
+Let \(Z_1, Z_2\) be independent \(\mathcal{N}(0, 1)\) and \(X = (Z_1, Z_1 + Z_2, Z_1 - Z_2)\). Every combination \(\lambda_1Z_1 + \lambda_2(Z_1 + Z_2) + \lambda_3(Z_1 - Z_2) = (\lambda_1 + \lambda_2 + \lambda_3)Z_1 + (\lambda_2 - \lambda_3)Z_2\) is Gaussian, so \(X\) is a Gaussian vector, with mean \(0\) and covariance matrix
+\[
+\Sigma = \begin{pmatrix} 1 & 1 & 1 \\ 1 & 2 & 0 \\ 1 & 0 & 2 \end{pmatrix},
+\]
+which is singular (\(X_2 + X_3 = 2X_1\), so \(X\) lives in a plane of \(\mathbb{R}^3\) and has no density there). The second and third components are uncorrelated, \(\mathrm{Cov}(Z_1 + Z_2, Z_1 - Z_2) = 1 - 1 = 0\), and Corollary 1 will confirm that they are independent.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 14 (The law of a Gaussian vector is determined by its mean and covariance — Forien Prop. 17)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(X\) be a Gaussian vector in \(\mathbb{R}^d\) with mean \(m\) and covariance matrix \(\Sigma\). Then for every \(\xi \in \mathbb{R}^d\),
+\[
+\phi_X(\xi) = \mathbb{E}\big[e^{i\langle \xi, X\rangle}\big] = \exp\Big(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle\Big).
+\]
+Consequently the law of \(X\) is determined by \((m, \Sigma)\); one writes \(X \sim \mathcal{N}(m, \Sigma)\). Conversely, a random vector with this characteristic function is a Gaussian vector with mean \(m\) and covariance \(\Sigma\). Each component satisfies \(X_i \sim \mathcal{N}(m_i, \Sigma_{ii})\), and more generally \(\langle \lambda, X\rangle \sim \mathcal{N}(\langle \lambda, m\rangle, \langle \lambda, \Sigma\lambda\rangle)\).
+PROOF:
+Fix \(\xi\). The variable \(\langle \xi, X\rangle\) is Gaussian by definition, with mean \(\langle \xi, m\rangle\) (linearity) and variance \(\langle \xi, \Sigma\xi\rangle\) (Definition 10). Its characteristic function at \(t = 1\) is \(\phi_X(\xi)\), so Definition/Proposition 13 (2) gives the formula. Two Gaussian vectors with the same \((m, \Sigma)\) have the same characteristic function, hence the same law by injectivity (Definition/Proposition 10). Conversely, if \(\phi_X\) has this form, then \(\phi_{\langle \lambda, X\rangle}(t) = \phi_X(t\lambda) = \exp(it\langle \lambda, m\rangle - \frac12t^2\langle \lambda, \Sigma\lambda\rangle)\), so \(\langle \lambda, X\rangle \sim \mathcal{N}(\langle \lambda, m\rangle, \langle \lambda, \Sigma\lambda\rangle)\) for every \(\lambda\): \(X\) is Gaussian with these mean and variances, hence with mean \(m\) and covariance \(\Sigma\) (polarisation). \(\square\)
+REFRESH:
+**Injectivity of characteristic functions** (Definition/Proposition 10): \(\phi_X = \phi_Y\) implies \(\mathcal{L}_X = \mathcal{L}_Y\).
+EXPLANATION:
+This is the first of the two facts on which everything rests: a Gaussian vector is known once its mean and covariance are known, and its characteristic function is an explicit exponential of a quadratic polynomial. The proof is two lines, because the definition was chosen to make it so: \(\langle \xi, X\rangle\) is a Gaussian variable, we know its mean and variance, and we know the characteristic function of a Gaussian variable. Injectivity of the Fourier transform turns the formula into a characterisation. This is why one can define Brownian motion by prescribing only \(\mathbb{E}[B_t] = 0\) and \(\mathbb{E}[B_sB_t] = s \wedge t\), and why Hoffmann's Example 6 says that the law of a Gaussian process is determined by its mean and covariance functions.
+DEEP:
+The goal is to compute \(\phi_X\) and to draw the consequences. Plan: reduce to one dimension, then invoke injectivity.
+
+**Step 1: reduction to one dimension.** For fixed \(\xi \in \mathbb{R}^d\), the real variable \(Y = \langle \xi, X\rangle\) is Gaussian by the very definition of a Gaussian vector. Its mean is \(\mathbb{E}[Y] = \sum_i\xi_i\mathbb{E}[X_i] = \langle \xi, m\rangle\) and its variance is \(\langle \xi, \Sigma\xi\rangle\) (Definition 10, Step 2 of its deep dive). Definition/Proposition 13 (2) gives \(\phi_Y(t) = \exp(it\langle \xi, m\rangle - \frac12t^2\langle \xi, \Sigma\xi\rangle)\), and \(\phi_X(\xi) = \mathbb{E}[e^{iY}] = \phi_Y(1)\). That is the formula.
+
+**Step 2: determination of the law.** If \(X\) and \(X'\) are Gaussian vectors with the same mean and covariance, Step 1 gives \(\phi_X = \phi_{X'}\), hence \(\mathcal{L}_X = \mathcal{L}_{X'}\) by injectivity. So \(\mathcal{N}(m, \Sigma)\) is an unambiguous name for a law on \(\mathbb{R}^d\), although we have not yet shown that such a vector exists for every symmetric positive semi-definite \(\Sigma\) (Corollary 2 does).
+
+**Step 3: the converse.** Suppose \(\phi_X(\xi) = \exp(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle)\). For \(\lambda \in \mathbb{R}^d\), \(\phi_{\langle \lambda, X\rangle}(t) = \phi_X(t\lambda) = \exp(it\langle \lambda, m\rangle - \frac12t^2\langle \lambda, \Sigma\lambda\rangle)\), which is the characteristic function of \(\mathcal{N}(\langle \lambda, m\rangle, \langle \lambda, \Sigma\lambda\rangle)\); by the converse of Definition/Proposition 13 (2), \(\langle \lambda, X\rangle\) is Gaussian with this mean and variance. So \(X\) is a Gaussian vector; taking \(\lambda = e_i\) gives \(\mathbb{E}X_i = m_i\), and taking \(\lambda = e_i + e_j\) gives \(\mathrm{Var}(X_i + X_j) = \Sigma_{ii} + 2\Sigma_{ij} + \Sigma_{jj}\), which identifies \(\mathrm{Cov}(X_i, X_j) = \Sigma_{ij}\) (polarisation).
+
+**Step 4: marginals.** \(\lambda = e_i\) in Step 3 gives \(X_i \sim \mathcal{N}(m_i, \Sigma_{ii})\); more generally any sub-vector \((X_{i_1}, \dots, X_{i_k})\) is a Gaussian vector (its combinations are combinations of \(X\)) with the corresponding sub-matrix of \(\Sigma\). Note that the marginals do not determine the joint law: \((Z_1, Z_2)\) independent standard and \((Z_1, Z_1)\) have the same marginals and different covariance matrices.
+
+**What the formula shows at a glance.** The modulus \(|\phi_X(\xi)| = e^{-\frac12\langle \xi, \Sigma\xi\rangle}\) depends only on \(\Sigma\) and the phase only on \(m\); the covariance matrix is read off the second derivatives at \(0\), \(\partial_i\partial_j\phi_X(0) = -(\Sigma_{ij} + m_im_j)\), consistent with Definition/Proposition 10 (4). When \(\Sigma\) is diagonal, the exponent splits as a sum over coordinates and the characteristic function factorises: this is Corollary 1.
+
+Used next: Corollaries 1 and 2, Proposition 15; in Lesson 5, Proposition 16 characterises Brownian motion by its covariance \(s \wedge t\) through this proposition; Hoffmann's Example 6 and Theorem 10 rest on it.
+EXAMPLE:
+Let \(X = (X_1, X_2)\) be a Gaussian vector with mean \(0\), \(\mathrm{Var}(X_1) = \mathrm{Var}(X_2) = 1\) and correlation \(\rho = \mathrm{Cov}(X_1, X_2) \in (-1, 1)\). Then \(\phi_X(\xi_1, \xi_2) = \exp\big(-\frac12(\xi_1^2 + 2\rho\xi_1\xi_2 + \xi_2^2)\big)\), and \(X_1 + X_2 \sim \mathcal{N}(0, 2 + 2\rho)\), \(X_1 - X_2 \sim \mathcal{N}(0, 2 - 2\rho)\). For Brownian motion, \((B_s, B_t)\) with \(s < t\) has covariance \(\begin{pmatrix} s & s \\ s & t \end{pmatrix}\), so \(\phi_{(B_s, B_t)}(\xi_1, \xi_2) = \exp\big(-\frac12(s\xi_1^2 + 2s\xi_1\xi_2 + t\xi_2^2)\big)\) and \(B_t - B_s \sim \mathcal{N}(0, s - 2s + t) = \mathcal{N}(0, t - s)\): the law of the increment is read off the covariance function.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: corollary
+TITLE: Corollary 1 (Uncorrelated jointly Gaussian variables are independent — Forien Cor. 1)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(X = (X_1, \dots, X_d)\) be a Gaussian vector.
+
+1. \(X_1, \dots, X_d\) are independent if and only if they are pairwise uncorrelated, i.e. \(\Sigma\) is diagonal.
+2. More generally, split \(X = (Y, W)\) with \(Y \in \mathbb{R}^p\), \(W \in \mathbb{R}^q\). Then the vectors \(Y\) and \(W\) are independent if and only if \(\mathrm{Cov}(Y_i, W_j) = 0\) for all \(i, j\), i.e. \(\Sigma\) is block-diagonal.
+
+Joint Gaussianity is essential: two uncorrelated Gaussian variables that are not jointly Gaussian need not be independent (Definition 10).
+PROOF:
+Independent implies uncorrelated always (Definition 5 (2)). Conversely, suppose \(\Sigma = \begin{pmatrix}\Sigma_Y & 0 \\ 0 & \Sigma_W\end{pmatrix}\) and \(m = (m_Y, m_W)\). For \(\xi = (\eta, \zeta)\), \(\langle \xi, \Sigma\xi\rangle = \langle \eta, \Sigma_Y\eta\rangle + \langle \zeta, \Sigma_W\zeta\rangle\) and \(\langle m, \xi\rangle = \langle m_Y, \eta\rangle + \langle m_W, \zeta\rangle\), so by Proposition 14
+\[
+\phi_X(\eta, \zeta) = \exp\Big(i\langle m_Y, \eta\rangle - \tfrac12\langle \eta, \Sigma_Y\eta\rangle\Big)\exp\Big(i\langle m_W, \zeta\rangle - \tfrac12\langle \zeta, \Sigma_W\zeta\rangle\Big) = \phi_Y(\eta)\phi_W(\zeta),
+\]
+\(Y\) and \(W\) being Gaussian vectors with parameters \((m_Y, \Sigma_Y)\), \((m_W, \Sigma_W)\). The product measure \(\mathcal{L}_Y \otimes \mathcal{L}_W\) has characteristic function \(\phi_Y(\eta)\phi_W(\zeta)\) (Tonelli), so \(\mathcal{L}_{(Y, W)} = \mathcal{L}_Y \otimes \mathcal{L}_W\) by injectivity, which is independence (Definition 5 (2)). Point 1 is the case of \(d\) blocks of size \(1\), iterated. \(\square\)
+REFRESH:
+**Independence and product laws** (Definition 5 (2)): \(Y\) and \(W\) are independent if and only if the law of \((Y, W)\) is \(\mathcal{L}_Y \otimes \mathcal{L}_W\).
+EXPLANATION:
+This is the second fact everything rests on. In general, uncorrelated is much weaker than independent: it says only that \(\mathbb{E}[YW] = \mathbb{E}[Y]\mathbb{E}[W]\), one equation, while independence says infinitely many. For jointly Gaussian variables the two coincide, because the joint law is determined by the covariance matrix, and a block-diagonal covariance matrix makes the characteristic function factorise, which is the characteristic function of the product law. The consequence is that independence questions about Brownian motion, a Gaussian process, are settled by computing covariances: \(\mathbb{E}[B_s(B_t - B_s)] = s - s = 0\) for \(s < t\) proves that the increment is independent of the past. Hoffmann's Proposition 7 is this corollary for Gaussian spaces.
+DEEP:
+The goal is to see why the block-diagonal covariance forces independence, and where joint Gaussianity enters. Plan: write the characteristic function, factorise, identify the product law.
+
+**Step 1: the easy direction.** If \(Y\) and \(W\) are independent, then for \(Y_i, W_j \in L^2\), \(\mathbb{E}[Y_iW_j] = \mathbb{E}[Y_i]\mathbb{E}[W_j]\) by the factorisation property, so all cross-covariances vanish. No Gaussianity needed.
+
+**Step 2: factorising the characteristic function.** Suppose the cross-covariances vanish. For \(\xi = (\eta, \zeta)\), the quadratic form \(\langle \xi, \Sigma\xi\rangle = \sum_{i,j}\xi_i\xi_j\Sigma_{ij}\) splits into the \(Y\)-part, the \(W\)-part and cross terms; the cross terms are \(2\sum_{i,j}\eta_i\zeta_j\mathrm{Cov}(Y_i, W_j) = 0\). The linear form \(\langle m, \xi\rangle\) splits likewise. Hence, by Proposition 14, \(\phi_X(\eta, \zeta) = \exp(i\langle m_Y, \eta\rangle - \frac12\langle \eta, \Sigma_Y\eta\rangle)\exp(i\langle m_W, \zeta\rangle - \frac12\langle \zeta, \Sigma_W\zeta\rangle)\). Here joint Gaussianity is used: Proposition 14 applies to \(X\) as a whole. The two factors are \(\phi_Y(\eta)\) and \(\phi_W(\zeta)\), because \(Y\) and \(W\) are themselves Gaussian vectors (sub-vectors of \(X\)) with parameters \((m_Y, \Sigma_Y)\) and \((m_W, \Sigma_W)\).
+
+**Step 3: identifying the product law.** Let \(\tilde X = (\tilde Y, \tilde W)\) be a vector with \(\tilde Y \overset{d}{=} Y\), \(\tilde W \overset{d}{=} W\) and \(\tilde Y, \tilde W\) independent (for instance built on a product space). Its characteristic function is \(\mathbb{E}[e^{i\langle \eta, \tilde Y\rangle}e^{i\langle \zeta, \tilde W\rangle}] = \phi_Y(\eta)\phi_W(\zeta)\) by the factorisation property of independent variables. So \(\phi_X = \phi_{\tilde X}\), and injectivity gives \(\mathcal{L}_{(Y, W)} = \mathcal{L}_Y \otimes \mathcal{L}_W\), which is independence by Definition 5 (2).
+
+**Step 4: from two blocks to \(d\) components.** With \(\Sigma\) diagonal, apply Step 3 to \(Y = X_1\), \(W = (X_2, \dots, X_d)\), then again inside \(W\); or directly: \(\phi_X(\xi) = \prod_k e^{im_k\xi_k - \Sigma_{kk}\xi_k^2/2} = \prod_k\phi_{X_k}(\xi_k)\), and Definition/Proposition 10 (3) concludes.
+
+**Where the hypothesis bites.** For \((Z, \varepsilon Z)\) of Definition 10, the covariance vanishes but the components are not independent; Step 2 fails because Proposition 14 does not apply to a non-Gaussian vector. In practice: to use this corollary, first check that the variables are jointly Gaussian, typically because they are linear functionals of one Gaussian vector or of one Gaussian process. Increments of Brownian motion qualify, since \((B_{t_1}, \dots, B_{t_n})\) is a Gaussian vector and increments are linear combinations of it.
+
+Used next: Proposition 15 (the residual of a Gaussian regression is independent of the regressor); Lesson 5, Proposition 16 (independence of Brownian increments from the covariance \(s \wedge t\)); Hoffmann's Proposition 7 and Corollary 8, and the proof of the Markov property in Chapter 2, which is this corollary applied to \((B_{s_1}, \dots, B_{s_m}, B_{t_1} - B_t, \dots, B_{t_n} - B_t)\).
+EXAMPLE:
+Let \(Z_1, Z_2\) be independent \(\mathcal{N}(0, 1)\) and \(\theta \in \mathbb{R}\). The rotated pair \((U, V) = (\cos\theta\,Z_1 + \sin\theta\,Z_2,\ -\sin\theta\,Z_1 + \cos\theta\,Z_2)\) is a Gaussian vector with \(\mathrm{Var}(U) = \mathrm{Var}(V) = 1\) and \(\mathrm{Cov}(U, V) = -\cos\theta\sin\theta + \sin\theta\cos\theta = 0\): \(U\) and \(V\) are independent standard Gaussians, for every angle. For Brownian motion with \(0 < s < t\): \((B_s, B_t - B_s)\) is a Gaussian vector, \(\mathrm{Cov}(B_s, B_t - B_s) = \mathbb{E}[B_sB_t] - \mathbb{E}[B_s^2] = s - s = 0\), so \(B_s\) and \(B_t - B_s\) are independent. By contrast \(\mathrm{Cov}(B_s, B_t) = s \neq 0\): \(B_s\) and \(B_t\) are not independent.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: corollary
+TITLE: Corollary 2 (Stability of Gaussian vectors: linear maps, existence, limits — Forien Cor. 2–3, the Remark after Cor. 2, Lemma 3)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+1. **(Linear images)** If \(X \sim \mathcal{N}(m, \Sigma)\) in \(\mathbb{R}^d\), \(A\) is a \(k \times d\) matrix and \(b \in \mathbb{R}^k\), then \(AX + b \sim \mathcal{N}(Am + b, A\Sigma A^{\mathsf T})\). In particular sub-vectors, sums of components and rotations of Gaussian vectors are Gaussian.
+2. **(Existence and density)** For every \(m \in \mathbb{R}^d\) and every symmetric positive semi-definite \(\Sigma\), there is a Gaussian vector \(\mathcal{N}(m, \Sigma)\): take \(X = m + AZ\) with \(Z\) standard Gaussian and \(A\) any \(d \times d\) matrix with \(AA^{\mathsf T} = \Sigma\), for instance the symmetric square root \(\Sigma^{1/2}\) or the lower-triangular Cholesky factor (this is how Gaussian vectors are simulated). If \(\Sigma\) is invertible, \(X\) has the density
+\[
+\frac{1}{(2\pi)^{d/2}\sqrt{\det\Sigma}}\exp\Big(-\frac12\big\langle x - m, \Sigma^{-1}(x - m)\big\rangle\Big);
+\]
+if not, \(X\) lives a.s. in the affine subspace \(m + \mathrm{range}(\Sigma)\) and has no density on \(\mathbb{R}^d\).
+3. **(Limits)** If \(X_n \sim \mathcal{N}(m_n, \Sigma_n)\) with \(m_n \to m\) and \(\Sigma_n \to \Sigma\), then \(X_n \Rightarrow \mathcal{N}(m, \Sigma)\). If Gaussian vectors \(X_n\) converge in \(L^2\) (componentwise) to \(X\), then \(X\) is a Gaussian vector with \(m = \lim m_n\), \(\Sigma = \lim\Sigma_n\). In particular an \(L^2\) limit of Gaussian variables is Gaussian.
+PROOF:
+**1.** Every combination \(\langle \lambda, AX + b\rangle = \langle A^{\mathsf T}\lambda, X\rangle + \langle \lambda, b\rangle\) is Gaussian, so \(AX + b\) is a Gaussian vector; its mean is \(Am + b\) and \(\mathrm{Cov}((AX)_i, (AX)_j) = \sum_{k,l}A_{ik}A_{jl}\Sigma_{kl} = (A\Sigma A^{\mathsf T})_{ij}\). Proposition 14 identifies the law.
+
+**2.** Diagonalise \(\Sigma = ODO^{\mathsf T}\) with \(O\) orthogonal and \(D \ge 0\) diagonal, and take \(A = OD^{1/2}\), so \(AA^{\mathsf T} = \Sigma\); then \(X = m + AZ \sim \mathcal{N}(m, \Sigma)\) by 1. If \(\Sigma\) is invertible, so is \(A\), and the change of variables \(x = m + Az\) in \(\mathbb{P}(X \in C) = \int\mathbf{1}_C(m + Az)(2\pi)^{-d/2}e^{-|z|^2/2}\, dz\) gives the density, since \(|A^{-1}(x - m)|^2 = \langle x - m, \Sigma^{-1}(x - m)\rangle\) and \(|\det A| = \sqrt{\det\Sigma}\). If \(\Sigma\lambda = 0\) for some \(\lambda \neq 0\), then \(\mathrm{Var}\langle \lambda, X\rangle = 0\), so \(X\) lies a.s. in a hyperplane, which has Lebesgue measure \(0\).
+
+**3.** \(\phi_{X_n}(\xi) = \exp(i\langle m_n, \xi\rangle - \frac12\langle \xi, \Sigma_n\xi\rangle) \to \exp(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle)\) for every \(\xi\), and Theorem 5 gives convergence in law. If \(X_n \to X\) in \(L^2\), then \(m_n \to m := \mathbb{E}X\) and \(\Sigma_n \to \Sigma := \mathrm{Cov}(X)\) (Definition 4), and \(X_n \to X\) in probability, hence in law, so \(\phi_X = \lim\phi_{X_n}\) is the Gaussian characteristic function with parameters \((m, \Sigma)\); Proposition 14 (converse) concludes. \(\square\)
+REFRESH:
+**What passes to \(L^2\) limits** (Definition 4): if \(X_n \to X\) in \(L^2\), then \(\mathbb{E}X_n \to \mathbb{E}X\), \(\mathrm{Var}X_n \to \mathrm{Var}X\), and \(X_n \to X\) in probability.
+EXPLANATION:
+Gaussian vectors form a class stable under all the operations used in this course: linear maps (point 1), which is immediate from the definition; and limits in \(L^2\) (point 3), which is where characteristic functions and Lévy's theorem do the work, since the parameters converge and the limit characteristic function is again Gaussian. Point 2 shows that every pair \((m, \Sigma)\) with \(\Sigma\) symmetric positive semi-definite is realised, as an affine image of a standard Gaussian vector, and gives the density in the non-degenerate case. Point 3 is the statement Hoffmann uses to build Gaussian spaces: the closure in \(L^2\) of a family of centred Gaussian variables consists of centred Gaussian variables, which is his Proposition 2, and Forien's Lemma 3 for the construction of Brownian motion.
+DEEP:
+The goal is to prove the three stability statements. Plan: 1 from the definition and Proposition 14; 2 by diagonalisation and a change of variables; 3 by characteristic functions.
+
+**Step 1: linear images.** A combination of the components of \(AX + b\) is \(\langle \lambda, AX + b\rangle = \langle A^{\mathsf T}\lambda, X\rangle + \langle \lambda, b\rangle\), a combination of the components of \(X\) plus a constant, hence Gaussian: so \(AX + b\) is a Gaussian vector. Its mean is \(Am + b\) by linearity of the expectation, and its covariance is \(\mathrm{Cov}((AX)_i, (AX)_j) = \mathrm{Cov}(\sum_kA_{ik}X_k, \sum_lA_{jl}X_l) = \sum_{k,l}A_{ik}\Sigma_{kl}A_{jl} = (A\Sigma A^{\mathsf T})_{ij}\) by bilinearity. Proposition 14 then names the law. Alternatively, \(\phi_{AX + b}(\xi) = e^{i\langle \xi, b\rangle}\phi_X(A^{\mathsf T}\xi)\) gives the same result by direct substitution.
+
+**Step 2: existence.** A symmetric positive semi-definite \(\Sigma\) diagonalises in an orthonormal basis, \(\Sigma = ODO^{\mathsf T}\) with \(D = \mathrm{diag}(d_1, \dots, d_d)\), \(d_i \ge 0\). Set \(A = OD^{1/2}\); then \(AA^{\mathsf T} = ODO^{\mathsf T} = \Sigma\). With \(Z\) a standard Gaussian vector, Step 1 gives \(m + AZ \sim \mathcal{N}(m, AI_dA^{\mathsf T}) = \mathcal{N}(m, \Sigma)\). Any other factorisation \(\Sigma = AA^{\mathsf T}\) works as well; the Cholesky factor (lower triangular) is the one used in simulations because it is cheap to compute. When \(\Sigma\) is invertible, \(A\) is invertible, and the image of the density of \(Z\) under the affine bijection \(z \mapsto m + Az\) is the stated density: the Jacobian is \(|\det A|^{-1} = (\det\Sigma)^{-1/2}\) and \(|z|^2 = |A^{-1}(x - m)|^2 = \langle x - m, (AA^{\mathsf T})^{-1}(x - m)\rangle\). When \(\Sigma\) is singular there is a direction \(\lambda\) with \(\langle \lambda, \Sigma\lambda\rangle = 0\), i.e. \(\langle \lambda, X\rangle\) is a.s. constant: the law charges a hyperplane, which has Lebesgue measure zero, so no density exists.
+
+**Step 3: limits in law.** The characteristic functions \(\phi_{X_n}(\xi) = \exp(i\langle m_n, \xi\rangle - \frac12\langle \xi, \Sigma_n\xi\rangle)\) converge pointwise to the Gaussian characteristic function with parameters \((m, \Sigma)\), which is continuous; Theorem 5 gives \(X_n \Rightarrow \mathcal{N}(m, \Sigma)\).
+
+**Step 4: limits in \(L^2\).** Suppose Gaussian vectors \(X_n\) converge to \(X\) in \(L^2\). By Definition 4 (Step 4 of its deep dive), means, variances and covariances converge, so \(m_n \to m = \mathbb{E}X\) and \(\Sigma_n \to \Sigma = \mathrm{Cov}(X)\). Convergence in \(L^2\) implies convergence in probability, hence in law (Proposition 9), hence \(\phi_X(\xi) = \lim_n\phi_{X_n}(\xi) = \exp(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle)\) for every \(\xi\) (Theorem 5, the easy direction). By the converse part of Proposition 14, \(X\) is a Gaussian vector with parameters \((m, \Sigma)\). For a single variable this reads: an \(L^2\) limit of \(\mathcal{N}(m_n, \sigma_n^2)\) variables is \(\mathcal{N}(\lim m_n, \lim\sigma_n^2)\); for centred variables the limit is centred.
+
+**Why this matters for Hoffmann.** A Gaussian space is a closed linear subspace of \(L^2(\Omega)\) all of whose elements are centred Gaussian variables. Step 1 (linear combinations of jointly Gaussian variables are Gaussian) and Step 4 (limits) are exactly what is needed to show that the closed span of a family of jointly Gaussian centred variables is a Gaussian space; that is Hoffmann's Proposition 2 and the first ingredient of his Theorem 10, where \(X(h) = \sum_i\langle h, e_i\rangle\xi_i\) is an \(L^2\)-convergent series of independent Gaussians.
+
+Used next: Proposition 15; Lesson 5, where the finite-dimensional marginals of Brownian motion are obtained from independent increments by a linear map, and where Lévy's construction defines \(B_t\) as an \(L^2\) limit of Gaussian variables.
+EXAMPLE:
+To simulate \((X_1, X_2) \sim \mathcal{N}(0, \Sigma)\) with \(\Sigma = \begin{pmatrix} 1 & \rho \\ \rho & 1\end{pmatrix}\), \(|\rho| < 1\), take independent standard \(Z_1, Z_2\) and set \(X_1 = Z_1\), \(X_2 = \rho Z_1 + \sqrt{1 - \rho^2}\,Z_2\): this is \(X = AZ\) with the Cholesky factor \(A = \begin{pmatrix} 1 & 0 \\ \rho & \sqrt{1 - \rho^2}\end{pmatrix}\), and indeed \(AA^{\mathsf T} = \Sigma\). For a limit: \(X_n = \sum_{k=1}^n 2^{-k/2}Z_k\) with \(Z_k\) i.i.d. standard Gaussians is \(\mathcal{N}(0, \sum_{k \le n}2^{-k})\); the series converges in \(L^2\) (Cauchy: \(\|X_m - X_n\|_{L^2}^2 = \sum_{n < k \le m}2^{-k} \to 0\)), so the limit \(X = \sum_{k \ge 1}2^{-k/2}Z_k\) is \(\mathcal{N}(0, 1)\) by point 3. This is the mechanism of Hoffmann's Theorem 10 with \(\langle h, e_k\rangle = 2^{-k/2}\).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 15 (Gaussian conditioning is linear regression — Forien Prop. 18)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \((X, Y)\) be a Gaussian vector in \(\mathbb{R}^2\) with mean \((m_X, m_Y)\) and covariance matrix \(\begin{pmatrix}\sigma_{XX} & \sigma_{XY} \\ \sigma_{XY} & \sigma_{YY}\end{pmatrix}\), with \(\sigma_{YY} > 0\). Then
+\[
+\mathbb{E}[X \mid Y] = m_X + \frac{\sigma_{XY}}{\sigma_{YY}}(Y - m_Y),
+\]
+and the residual \(W = X - \mathbb{E}[X \mid Y]\) is independent of \(Y\), with law \(\mathcal{N}\big(0, \sigma_{XX} - \sigma_{XY}^2/\sigma_{YY}\big)\). Hence the conditional law of \(X\) given \(Y\) is Gaussian, with mean \(\mathbb{E}[X \mid Y]\) and the constant variance \(\sigma_{XX} - \sigma_{XY}^2/\sigma_{YY}\).
+
+More generally, if \((X, Y)\) is a Gaussian vector with \(X \in \mathbb{R}^p\), \(Y \in \mathbb{R}^q\), covariance blocks \(\Sigma_{XX}, \Sigma_{XY}, \Sigma_{YY}\) and \(\Sigma_{YY}\) invertible, then \(\mathbb{E}[X \mid Y] = m_X + \Sigma_{XY}\Sigma_{YY}^{-1}(Y - m_Y)\), and \(X - \mathbb{E}[X \mid Y]\) is independent of \(Y\), Gaussian with covariance \(\Sigma_{XX} - \Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX}\). For Gaussian vectors, the conditional expectation given \(Y\) coincides with the orthogonal projection onto the affine functions of \(Y\).
+PROOF:
+Put \(\beta = \sigma_{XY}/\sigma_{YY}\) and \(W = X - m_X - \beta(Y - m_Y)\). The pair \((W, Y)\) is a linear image of \((X, Y)\), hence a Gaussian vector (Corollary 2), and \(\mathrm{Cov}(W, Y) = \sigma_{XY} - \beta\sigma_{YY} = 0\), so \(W\) and \(Y\) are independent by Corollary 1. Then, by Proposition 11 (taking out what is known, independence),
+\[
+\mathbb{E}[X \mid Y] = m_X + \beta(Y - m_Y) + \mathbb{E}[W \mid Y] = m_X + \beta(Y - m_Y) + \mathbb{E}[W] = m_X + \beta(Y - m_Y).
+\]
+\(W\) is centred Gaussian with \(\mathrm{Var}(W) = \sigma_{XX} - 2\beta\sigma_{XY} + \beta^2\sigma_{YY} = \sigma_{XX} - \sigma_{XY}^2/\sigma_{YY}\). The vector case is identical with \(\beta = \Sigma_{XY}\Sigma_{YY}^{-1}\): \(\mathrm{Cov}(W, Y) = \Sigma_{XY} - \beta\Sigma_{YY} = 0\) and \(\mathrm{Cov}(W) = \Sigma_{XX} - \Sigma_{XY}\Sigma_{YY}^{-1}\Sigma_{YX}\). The projection statement: \(m_X + \beta(Y - m_Y)\) is affine in \(Y\) and \(X - \mathbb{E}[X \mid Y]\) is orthogonal to every affine function of \(Y\) (\(\mathbb{E}[W] = 0\), \(\mathbb{E}[WY] = 0\)), so it is the projection of Theorem 4 on \(\mathrm{span}(1, Y)\). \(\square\)
+REFRESH:
+**Freezing and independence** (Proposition 11): if \(W\) is independent of \(\sigma(Y)\), then \(\mathbb{E}[W \mid Y] = \mathbb{E}[W]\); if \(V\) is \(\sigma(Y)\)-measurable, \(\mathbb{E}[V \mid Y] = V\).
+EXPLANATION:
+For jointly Gaussian variables the conditional expectation, in general a complicated measurable function of \(Y\), is an affine function of \(Y\): the regression line, with slope \(\mathrm{Cov}(X, Y)/\mathrm{Var}(Y)\). The reason is the corollary just proved: subtract from \(X\) its best affine predictor, the residual is uncorrelated with \(Y\), hence independent of \(Y\) because the pair is Gaussian, and an independent residual contributes nothing to the conditional expectation. The same computation shows that the conditional law of \(X\) given \(Y\) is Gaussian with a variance that does not depend on the observed value of \(Y\). In Hoffmann's Chapter 1, this is why projecting on a Gaussian subspace and conditioning on the \(\sigma\)-algebra it generates give the same result (Corollary 8 and Remark 9).
+DEEP:
+The goal is to prove the formula and to understand why the answer is affine in \(Y\). Plan: subtract the affine predictor, show the residual is independent of \(Y\), then apply the rules of Proposition 11.
+
+**Step 1: the residual is uncorrelated with \(Y\).** Let \(\beta = \sigma_{XY}/\sigma_{YY}\) and \(W = X - m_X - \beta(Y - m_Y)\). Then \(\mathbb{E}[W] = 0\) and \(\mathrm{Cov}(W, Y) = \mathrm{Cov}(X, Y) - \beta\,\mathrm{Var}(Y) = \sigma_{XY} - \sigma_{XY} = 0\). The value of \(\beta\) is chosen precisely to kill this covariance; it is the slope of the least-squares line, as in the worked example of Theorem 4.
+
+**Step 2: uncorrelated implies independent here.** The pair \((W, Y)\) is the image of the Gaussian vector \((X, Y)\) by the affine map \((x, y) \mapsto (x - m_X - \beta(y - m_Y), y)\), hence a Gaussian vector (Corollary 2 (1)). Its covariance matrix is diagonal, so \(W\) and \(Y\) are independent (Corollary 1). This is the only place where Gaussianity is used, and it is essential: for a non-Gaussian pair, the residual of the regression line is uncorrelated with \(Y\) but generally not independent of it, and \(\mathbb{E}[X \mid Y]\) is not affine.
+
+**Step 3: computing the conditional expectation.** Write \(X = m_X + \beta(Y - m_Y) + W\). The first two terms are \(\sigma(Y)\)-measurable, so they come out of the conditional expectation unchanged (taking out what is known); \(W\) is independent of \(\sigma(Y)\), so \(\mathbb{E}[W \mid Y] = \mathbb{E}[W] = 0\). Hence \(\mathbb{E}[X \mid Y] = m_X + \beta(Y - m_Y)\).
+
+**Step 4: the conditional law.** \(W\) is a centred Gaussian variable with \(\mathrm{Var}(W) = \sigma_{XX} - 2\beta\sigma_{XY} + \beta^2\sigma_{YY} = \sigma_{XX} - \sigma_{XY}^2/\sigma_{YY}\), independent of \(Y\). By the freezing rule (Proposition 11 (6)), for bounded \(f\), \(\mathbb{E}[f(X) \mid Y] = g(Y)\) with \(g(y) = \mathbb{E}[f(m_X + \beta(y - m_Y) + W)]\): given \(Y = y\), \(X\) is \(\mathcal{N}(m_X + \beta(y - m_Y), \mathrm{Var}(W))\). The conditional variance is constant, smaller than \(\sigma_{XX}\) by the factor \(1 - \rho^2\) where \(\rho\) is the correlation: observing \(Y\) reduces the uncertainty on \(X\) by a fixed proportion, whatever the value observed.
+
+**Step 5: the vector case and the projection.** With matrices, \(\beta = \Sigma_{XY}\Sigma_{YY}^{-1}\) gives \(\mathrm{Cov}(W, Y) = \Sigma_{XY} - \beta\Sigma_{YY} = 0\), and the rest is identical. Finally, since \(\mathbb{E}[X \mid Y]\) is affine in \(Y\) and the residual is orthogonal to \(1\) and to \(Y\), the conditional expectation is the orthogonal projection of \(X\) on the closed subspace \(\mathrm{span}(1, Y)\) of \(L^2\) (Theorem 4). In general the projection on \(L^2(\sigma(Y))\), a much larger space containing all functions of \(Y\), differs from the projection on the affine functions; for Gaussian pairs the two coincide.
+
+Used next: Hoffmann's Corollary 8 (projection on a Gaussian subspace versus conditional expectation) and Remark 9; the Brownian bridge and the conditional law of \(B_s\) given \(B_t\) (worked example); later, Kalman filtering and Gaussian process regression rest on the vector formula.
+EXAMPLE:
+Let \(B\) be a Brownian motion and \(0 < s < t\). The pair \((B_s, B_t)\) is Gaussian with \(\mathrm{Var}(B_s) = s\), \(\mathrm{Var}(B_t) = t\), \(\mathrm{Cov}(B_s, B_t) = s\). Conditioning the future on the present: \(\mathbb{E}[B_t \mid B_s] = \frac{s}{s}B_s = B_s\), with conditional variance \(t - s^2/s = t - s\): given \(B_s\), \(B_t\) is \(\mathcal{N}(B_s, t - s)\), the Markov kernel of Hoffmann's Chapter 2. Conditioning the past on the future: \(\mathbb{E}[B_s \mid B_t] = \frac{s}{t}B_t\), with conditional variance \(s - \frac{s^2}{t} = \frac{s(t - s)}{t}\): given the endpoint \(B_t\), the path at time \(s\) is Gaussian around the straight line \(\frac{s}{t}B_t\), with a variance vanishing at both ends. This is the Brownian bridge.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 11 (Laws of large numbers and central limit theorem — Forien Thm 9–12 and Thm 21)
+IMPORTANCE: half imp
+HIGHLIGHT: 0
+STATEMENT:
+Let \((X_n)_{n \ge 1}\) be i.i.d. real random variables and \(S_n = X_1 + \dots + X_n\).
+
+1. **(Weak law of large numbers)** If \(X_1\) is integrable with mean \(m\), then \(S_n/n \to m\) in probability.
+2. **(Strong law of large numbers)** Under the same hypothesis, \(S_n/n \to m\) almost surely. (Admitted; proved in the full prérentrée.)
+3. **(Central limit theorem)** If \(\mathbb{E}[X_1^2] < \infty\), with mean \(m\) and variance \(\sigma^2 > 0\), then
+\[
+\frac{S_n - nm}{\sigma\sqrt n} \;\Longrightarrow\; \mathcal{N}(0, 1).
+\]
+4. **(Central limit theorem in \(\mathbb{R}^d\))** If the \(X_n\) are i.i.d. random vectors with square-integrable components, mean \(m\) and covariance matrix \(\Sigma\), then \((S_n - nm)/\sqrt n \Rightarrow \mathcal{N}(0, \Sigma)\).
+PROOF:
+**A lemma.** If \(z_n \to z\) in \(\mathbb{C}\), then \((1 + z_n/n)^n \to e^z\): for \(n\) large, \(|z_n/n| < \frac12\) and the principal logarithm gives \(n\log(1 + z_n/n) = z_n + O(|z_n|^2/n) \to z\).
+
+**1.** By Definition/Proposition 10 (4) with \(k = 1\), \(\phi_{X_1}(s) = 1 + ims + o(s)\) as \(s \to 0\). By independence, \(\phi_{S_n/n}(t) = \phi_{X_1}(t/n)^n = (1 + \frac{imt + o(1)}{n})^n \to e^{imt}\), the characteristic function of the constant \(m\). Theorem 5 gives \(S_n/n \Rightarrow m\), and Proposition 9 (4) upgrades convergence in law to a constant into convergence in probability.
+
+**3.** Let \(Y_k = (X_k - m)/\sigma\), i.i.d. centred with unit variance; \(\phi_{Y_1}(s) = 1 - \frac{s^2}{2} + o(s^2)\) (Definition/Proposition 10 (4), \(k = 2\)). Then \(\phi_{(S_n - nm)/(\sigma\sqrt n)}(t) = \phi_{Y_1}(t/\sqrt n)^n = \big(1 - \frac{t^2/2 + o(1)}{n}\big)^n \to e^{-t^2/2}\), and Theorem 5 concludes.
+
+**4.** For fixed \(\xi \in \mathbb{R}^d\), the scalar variables \(\langle \xi, X_n\rangle\) are i.i.d. with mean \(\langle \xi, m\rangle\) and variance \(\langle \xi, \Sigma\xi\rangle\); by 3 (or trivially if this variance is \(0\)), \(\langle \xi, (S_n - nm)/\sqrt n\rangle \Rightarrow \mathcal{N}(0, \langle \xi, \Sigma\xi\rangle)\), so its characteristic function at \(1\) converges: \(\phi_{(S_n - nm)/\sqrt n}(\xi) \to e^{-\frac12\langle \xi, \Sigma\xi\rangle}\). Theorem 5 in \(\mathbb{R}^d\) concludes.
+
+**2.** Admitted. \(\square\)
+REFRESH:
+**Expansion of a characteristic function at \(0\)** (Definition/Proposition 10 (4)): if \(X \in L^2\) with mean \(m\) and variance \(\sigma^2\), then \(\phi_X(t) = 1 + imt - \frac{(m^2 + \sigma^2)t^2}{2} + o(t^2)\).
+EXPLANATION:
+The two theorems describe the sum of many independent copies of a variable at two scales. At scale \(n\), the average converges to the mean: the law of large numbers, in probability (proved here) or almost surely (admitted). At scale \(\sqrt n\), the centred sum has fluctuations of order \(\sqrt n\) and their law converges to a Gaussian, whatever the law of \(X_1\), provided the variance is finite: the central limit theorem. Both proofs are the same three lines: the characteristic function of the normalised sum is a power of \(\phi_{X_1}\) at a small argument, a Taylor expansion of \(\phi_{X_1}\) at \(0\) shows the power converges to \(e^{imt}\) or \(e^{-t^2/2}\), and Lévy's theorem translates this into convergence in law. The vector version is the scalar one applied to every projection.
+DEEP:
+The goal is to see the characteristic-function proof of the central limit theorem in full, and to understand its scope. Plan: the elementary lemma on \((1 + z_n/n)^n\); the weak law; the central limit theorem; the reduction of the vector case to the scalar one.
+
+**Step 1: the lemma.** For complex \(z_n \to z\) and \(n\) large enough that \(|z_n/n| < \frac12\), the principal logarithm satisfies \(\log(1 + w) = w + O(|w|^2)\) for \(|w| < \frac12\), so \(n\log(1 + z_n/n) = z_n + O(|z_n|^2/n) \to z\), and exponentiating gives \((1 + z_n/n)^n \to e^z\). This is the only analysis needed.
+
+**Step 2: the weak law.** Since \(X_1\) is integrable, \(\phi_{X_1}\) is differentiable at \(0\) with \(\phi_{X_1}'(0) = im\) (Definition/Proposition 10 (4)), so \(\phi_{X_1}(s) = 1 + ims + s\varepsilon(s)\) with \(\varepsilon(s) \to 0\). Independence and identical laws give \(\phi_{S_n/n}(t) = \prod_k\phi_{X_k}(t/n) = \phi_{X_1}(t/n)^n = \big(1 + \frac{imt + t\varepsilon(t/n)}{n}\big)^n\), and the lemma with \(z_n = imt + t\varepsilon(t/n) \to imt\) gives the limit \(e^{imt}\), the characteristic function of the Dirac mass at \(m\). By Theorem 5, \(S_n/n \Rightarrow m\); since the limit is a constant, Proposition 9 (4) gives convergence in probability. Note that the argument uses only the existence of the first moment; with a second moment, Chebyshev's inequality gives the same result in one line (Lesson 2, Proposition 7).
+
+**Step 3: the central limit theorem.** Reduce to \(m = 0\), \(\sigma = 1\) by replacing \(X_k\) with \(Y_k = (X_k - m)/\sigma\). Now \(\phi_{Y_1}\) is twice differentiable at \(0\) with \(\phi_{Y_1}'(0) = 0\) and \(\phi_{Y_1}''(0) = -\mathbb{E}[Y_1^2] = -1\), so \(\phi_{Y_1}(s) = 1 - \frac{s^2}{2} + s^2\varepsilon(s)\). Then
+\[
+\phi_{S_n/\sqrt n}(t) = \phi_{Y_1}(t/\sqrt n)^n = \Big(1 + \frac{-t^2/2 + t^2\varepsilon(t/\sqrt n)}{n}\Big)^n \longrightarrow e^{-t^2/2},
+\]
+by the lemma with \(z_n \to -t^2/2\). The limit is the characteristic function of \(\mathcal{N}(0, 1)\) (Definition/Proposition 13), and Theorem 5 gives \(S_n/\sqrt n \Rightarrow \mathcal{N}(0, 1)\). The scaling \(\sqrt n\) is forced: it is the size of \(\|S_n\|_{L^2} = \sqrt n\), and the Taylor expansion to order \(2\) is where the second moment is used. The theorem says nothing about the speed of convergence (Berry–Esseen does, outside these notes).
+
+**Step 4: the vector case (Cramér–Wold).** Convergence in law in \(\mathbb{R}^d\) is, by Theorem 5, pointwise convergence of \(\phi(\xi)\), and \(\phi_V(\xi) = \phi_{\langle \xi, V\rangle}(1)\): it suffices to prove convergence in law of every one-dimensional projection \(\langle \xi, V_n\rangle\). For \(V_n = (S_n - nm)/\sqrt n\), the projection is the normalised sum of the i.i.d. scalar variables \(\langle \xi, X_k\rangle\), with variance \(\langle \xi, \Sigma\xi\rangle\); Step 3 gives the limit \(\mathcal{N}(0, \langle \xi, \Sigma\xi\rangle)\) when this variance is positive, and the projection is identically \(0\) otherwise. Hence \(\phi_{V_n}(\xi) \to e^{-\frac12\langle \xi, \Sigma\xi\rangle}\), which is \(\phi_{\mathcal{N}(0, \Sigma)}\) by Proposition 14.
+
+**Step 5: what is admitted.** The strong law needs a different argument (Forien uses a maximal-type inequality and Kolmogorov's \(0\)–\(1\) law); with a fourth moment it follows from Borel–Cantelli (worked example of Proposition 7). In this course it is used once, in the time-inversion property of Brownian motion (Lesson 5), through \(B_n/n \to 0\) a.s.
+
+Used next: the central limit theorem is the reason Gaussian laws and Brownian motion (the scaling limit of random walks, Donsker's theorem, outside these notes) are universal; Hoffmann's Chapter 1 does not use it.
+EXAMPLE:
+Let \(X_k\) be i.i.d. Bernoulli of parameter \(p\), so \(m = p\), \(\sigma^2 = p(1 - p)\), and \(S_n\) is binomial. The central limit theorem gives \(\mathbb{P}\big(S_n \le np + x\sqrt{np(1 - p)}\big) \to \Phi(x)\), the standard Gaussian distribution function, at every \(x\) (Theorem 5 (3), \(\Phi\) being continuous): for a fair coin tossed \(10\,000\) times, the number of heads lies in \([4900, 5100]\) with probability close to \(\Phi(2) - \Phi(-2) \approx 0.954\). The characteristic-function computation is explicit here: \(\phi_{X_1}(s) = 1 - p + pe^{is}\), and \(\big(\phi_{X_1}(t/\sqrt n)\,e^{-ipt/\sqrt n}\big)^n \to e^{-p(1 - p)t^2/2}\), the characteristic function of \((S_n - np)/\sqrt n\), after expanding \(e^{is} = 1 + is - s^2/2 + o(s^2)\).
+NOTE:
+(none)

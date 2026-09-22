@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { ChatMessage, Course, Lesson, Pdf, Section } from './models';
 
+// How long the tutor's chat answer should be; 'auto' lets it read the wanted
+// length off the question itself.
+export type AnswerLength = 'auto' | 'short' | 'mid' | 'expanded';
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   constructor(private http: HttpClient) {}
@@ -55,9 +59,9 @@ export class ApiService {
     return firstValueFrom(this.http.get<ChatMessage[]>(`/api/sections/${sectionId}/messages`));
   }
 
-  sendMessage(sectionId: number, content: string): Promise<{ user: ChatMessage; assistant: ChatMessage }> {
+  sendMessage(sectionId: number, content: string, length: AnswerLength = 'auto'): Promise<{ user: ChatMessage; assistant: ChatMessage }> {
     return firstValueFrom(
-      this.http.post<{ user: ChatMessage; assistant: ChatMessage }>(`/api/sections/${sectionId}/messages`, { content })
+      this.http.post<{ user: ChatMessage; assistant: ChatMessage }>(`/api/sections/${sectionId}/messages`, { content, length })
     );
   }
 }

@@ -1,0 +1,179 @@
+===LESSON===
+TITLE: Brownian motion: a first look
+DESCRIPTION: Forien §8 condensed: definition and Gaussian characterisation of Brownian motion, invariance properties, the Wiener measure, Lévy's construction, the Brownian filtration and stopping times, Blumenthal's 0–1 law and its consequences, the strong Markov property and the reflection principle. 9 statements instead of 33.
+INTRO:
+Everything in the four previous lessons was preparation for one object. A Brownian motion is a random continuous function of time whose increments over disjoint intervals are independent and Gaussian with variance equal to the length of the interval. That is the whole definition (Definition 11), and the first thing to understand is that it is a definition of a law, not of a formula: no explicit expression \(B_t(\omega)\) is given, and the two questions "is this definition consistent?" and "does such an object exist?" are genuine. Proposition 16 answers the first: a Brownian motion is exactly a Gaussian process with continuous paths, mean \(0\) and covariance \(s \wedge t\), so by Lesson 4 its finite-dimensional laws are fixed. Theorem 12 answers the second, with Lévy's construction: an explicit random series of tent functions with independent Gaussian coefficients, which converges uniformly by the Borel–Cantelli argument of Lesson 2.
+
+Hoffmann's Chapter 1 does the same thing in a different order and with a different existence proof: he builds the Gaussian process from its covariance by an abstract isometry (his Theorem 10), then gets continuous paths from Kolmogorov's criterion (Theorem 18). When you read it, the covariance computations, the "uncorrelated implies independent" arguments and the \(L^2\) limits of Gaussians will be those of Lesson 4; the Borel–Cantelli step of Kolmogorov's criterion is the one used here in the construction. Definition 12 (the Wiener measure) is his Section 5.
+
+The second half of the lesson is what Hoffmann's Chapter 2 calls the Markov point of view, and a little beyond it. The simple Markov property (Proposition 17) says that Brownian motion restarts from any fixed time; the strong Markov property (Theorem 13) says it restarts from any stopping time, for instance the first time it hits a level, and this is what makes hitting-time computations possible. The reflection principle (Theorem 14) is the first such computation: the law of the running maximum, and the law of the hitting time of a level. Blumenthal's \(0\)–\(1\) law (Proposition 18) is the small technical result that gives the qualitative picture: a Brownian path oscillates around its starting point immediately, and is unbounded above and below.
+
+Nine statements out of thirty-three. Left out: the Gaussian tail lemma (moved to Lesson 4), the \(L^2\)-limit lemma (Corollary 2 of Lesson 4), the exercises on stopping times, and the remarks.
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 11 (Continuous-time processes, Brownian motion, Gaussian processes — Forien Def. 28–30 and Remark 1)
+IMPORTANCE: not imp
+HIGHLIGHT: 1
+STATEMENT:
+A **continuous-time stochastic process** is a family \(X = (X_t)_{t \ge 0}\) of real random variables on one probability space; for each \(\omega\), the function \(t \mapsto X_t(\omega)\) is a **sample path**. A **(standard) Brownian motion** is a process \(B = (B_t)_{t \ge 0}\) such that
+
+1. \(B_0 = 0\) almost surely;
+2. for all \(0 \le t_0 < t_1 < \dots < t_k\), the increments \(B_{t_1} - B_{t_0}, \dots, B_{t_k} - B_{t_{k-1}}\) are independent;
+3. for \(0 \le s \le t\), \(B_t - B_s \sim \mathcal{N}(0, t - s)\);
+4. for every \(\omega\), the path \(t \mapsto B_t(\omega)\) is continuous.
+
+A process \(X\) is a **Gaussian process** if for all \(k\) and \(t_1, \dots, t_k \ge 0\) the vector \((X_{t_1}, \dots, X_{t_k})\) is a Gaussian vector. Its **mean function** is \(m(t) = \mathbb{E}[X_t]\) and its **covariance function** \(K(s, t) = \mathrm{Cov}(X_s, X_t)\), which is symmetric and positive semi-definite: \(\sum_{i,j}\lambda_i\lambda_jK(t_i, t_j) \ge 0\). The laws of the vectors \((X_{t_1}, \dots, X_{t_k})\) are the **finite-dimensional marginals** of \(X\); for a Gaussian process they are determined by \(m\) and \(K\) (Proposition 14).
+
+Remarks. Condition 4 may be replaced by "almost surely, the path is continuous": redefining \(B \equiv 0\) on the exceptional null set gives a process satisfying 1–4 and equal to the original one almost surely. Conditions 1–3 alone do not imply 4, but they imply the existence of a **modification** with continuous paths, i.e. a process \(B'\) with \(\mathbb{P}(B_t = B'_t) = 1\) for every \(t\) and continuous paths (Kolmogorov's continuity criterion, Hoffmann's Theorem 18).
+PROOF:
+**Covariance function.** \(\sum_{i,j}\lambda_i\lambda_jK(t_i, t_j) = \mathrm{Var}(\sum_i\lambda_iX_{t_i}) \ge 0\) by bilinearity.
+
+**First remark.** If \(\Omega_0 \in \mathcal{F}\) has probability \(1\) and paths are continuous on \(\Omega_0\), set \(B'_t = B_t\mathbf{1}_{\Omega_0}\). Each \(B'_t\) is measurable, all paths are continuous, and \(B'_t = B_t\) a.s. for every \(t\), so the finite-dimensional laws, hence conditions 1–3, are unchanged. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+The definition says three things: the process starts at \(0\), it has independent increments, each increment is centred Gaussian with variance equal to the elapsed time, and, separately, its paths are continuous. The first three conditions describe the finite-dimensional laws and say nothing about paths; the fourth is a statement about every \(\omega\) at once and is of a different nature. A Gaussian process is a process all of whose finite-dimensional marginals are Gaussian vectors; by Lesson 4 these marginals are determined by the mean and covariance functions, which is why Brownian motion can be characterised by "mean \(0\), covariance \(s \wedge t\)" (Proposition 16). The remark on modifications is the technical point of Hoffmann's Chapter 1, Section 4.
+DEEP:
+The goal is to read the definition clause by clause and to understand what is a statement about laws and what is a statement about paths.
+
+**Clauses 1–3: the finite-dimensional laws.** Together they determine the law of every vector \((B_{t_1}, \dots, B_{t_k})\): writing it as a linear image of the vector of increments \((B_{t_1}, B_{t_2} - B_{t_1}, \dots)\), which has independent centred Gaussian components with variances \(t_1, t_2 - t_1, \dots\), one gets a Gaussian vector (Corollary 2 of Lesson 4) with an explicit covariance. So 1–3 are consistent with each other (they are all satisfied by the marginals just described) and fix the "statistics" of the process. In particular \(B_t \sim \mathcal{N}(0, t)\): the typical size of \(B_t\) is \(\sqrt t\), which is the origin of the scaling property and, eventually, of the Itô correction term.
+
+**Clause 4: the paths.** It is a requirement on the functions \(t \mapsto B_t(\omega)\), uncountably many values at once. It cannot be deduced from the finite-dimensional laws: given a Brownian motion \(B\) and an independent uniform time \(U\) on \([0, 1]\), the process \(B'_t = B_t + \mathbf{1}_{\{t = U\}}\) has the same finite-dimensional laws as \(B\) (for each fixed \(t\), \(\mathbb{P}(U = t) = 0\)) but every path of \(B'\) has a jump. The two processes are modifications of each other, and only one is a Brownian motion. This is why Hoffmann separates the construction of the Gaussian process (Theorem 10) from the construction of a continuous modification (Theorem 18); continuity is what makes integrals along paths, and hence stochastic integrals, meaningful.
+
+**Why almost sure continuity suffices.** Modifying a process on a null set changes none of the probabilities of finite-dimensional events, so the first remark is harmless; it is used in every construction, Lévy's below included, where continuity is first obtained outside a null set.
+
+**Gaussian processes.** The covariance function plays the role of the covariance matrix: it is positive semi-definite because \(\sum\lambda_i\lambda_jK(t_i, t_j)\) is the variance of \(\sum_i\lambda_iX_{t_i}\). Conversely, Hoffmann's Theorem 10 shows that every symmetric positive semi-definite \(K\) is the covariance of some Gaussian process, and Kolmogorov's extension theorem (not in these notes) shows the same for the finite-dimensional marginals of any process. The finite-dimensional marginals of a process determine every probability of the form \(\mathbb{P}(X \in A)\) with \(A\) depending on countably many coordinates, by Proposition 1 applied to the \(\pi\)-system of cylinder events \(\{X_{t_1} \in A_1, \dots, X_{t_k} \in A_k\}\); events like "the path is continuous" are not of this form, which is the technical reason behind the example above.
+
+Used next: Proposition 16 characterises Brownian motion among Gaussian processes; Definition 12 gives the law of the whole path; Theorem 12 constructs it.
+EXAMPLE:
+Let \(Z \sim \mathcal{N}(0, 1)\) and \(X_t = tZ\). Then \(X\) is a Gaussian process (every \(\sum_i\lambda_iX_{t_i} = (\sum_i\lambda_it_i)Z\) is Gaussian) with mean \(0\), covariance \(K(s, t) = st\), and continuous paths, but it is not a Brownian motion: \(\mathrm{Var}(X_t) = t^2 \neq t\), and its increments are not independent (\(X_2 - X_1 = X_1\)). Let \(B\) be a Brownian motion and \(Y_t = B_t - tB_1\) for \(t \in [0, 1]\): a Gaussian process with covariance \(K(s, t) = s \wedge t - st\), the Brownian bridge of Lesson 4, pinned at \(0\) at both ends. Finally, for \(0 < s < t\), the vector \((B_s, B_t)\) has covariance matrix \(\begin{pmatrix} s & s \\ s & t\end{pmatrix}\), and \(B_t - B_s \sim \mathcal{N}(0, t - s)\) is independent of \(B_s\), as clauses 2–3 say.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 16 (Brownian motion is the Gaussian process with covariance s ∧ t — Forien Prop. 19)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+A process \(B = (B_t)_{t \ge 0}\) is a Brownian motion if and only if it is a Gaussian process with continuous paths, mean function \(\mathbb{E}[B_t] = 0\) and covariance function
+\[
+\mathbb{E}[B_sB_t] = \min(s, t) = s \wedge t, \qquad s, t \ge 0.
+\]
+Consequently, for \(0 \le t_1 < \dots < t_k\), \((B_{t_1}, \dots, B_{t_k}) \sim \mathcal{N}(0, (t_i \wedge t_j)_{i,j})\); all Brownian motions have the same finite-dimensional marginals; and a process with continuous paths and the finite-dimensional marginals of a Brownian motion is a Brownian motion.
+PROOF:
+**Brownian motion ⇒ Gaussian process with covariance \(s \wedge t\).** For \(0 \le t_1 < \dots < t_k\), the vector of increments \((B_{t_1}, B_{t_2} - B_{t_1}, \dots, B_{t_k} - B_{t_{k-1}})\) has independent Gaussian components, hence is a Gaussian vector (Definition 5 (2) and Definition 10: its characteristic function factorises into Gaussian factors), and \((B_{t_1}, \dots, B_{t_k})\) is its image by the linear map "partial sums", hence Gaussian (Corollary 2). \(\mathbb{E}[B_t] = \mathbb{E}[B_t - B_0] = 0\). For \(s \le t\), by independence of \(B_s = B_s - B_0\) and \(B_t - B_s\), \(\mathbb{E}[B_sB_t] = \mathbb{E}[B_s^2] + \mathbb{E}[B_s]\mathbb{E}[B_t - B_s] = s\).
+
+**Converse.** \(\mathbb{E}[B_0^2] = 0\) gives \(B_0 = 0\) a.s. For \(0 \le t_0 < \dots < t_k\), the increments form a linear image of the Gaussian vector \((B_{t_0}, \dots, B_{t_k})\), hence a Gaussian vector, and for \(i < j\) their covariance is \(t_i \wedge t_j - t_i \wedge t_{j-1} - t_{i-1} \wedge t_j + t_{i-1} \wedge t_{j-1} = t_i - t_i - t_{i-1} + t_{i-1} = 0\). Uncorrelated jointly Gaussian variables are independent (Corollary 1). Each increment is Gaussian with mean \(0\) and variance \(t - 2s + s = t - s\) for \(s \le t\). Continuity is assumed.
+
+**Consequences.** The covariance matrix of \((B_{t_1}, \dots, B_{t_k})\) is \((t_i \wedge t_j)\), and Proposition 14 gives the law; the last statement follows since conditions 1–3 only involve finite-dimensional marginals. \(\square\)
+REFRESH:
+**Gaussian vector determined by \((m, \Sigma)\); uncorrelated ⇒ independent** (Proposition 14, Corollary 1): a Gaussian vector's law is fixed by its mean and covariance, and its components are independent when its covariance matrix is diagonal.
+EXPLANATION:
+This proposition replaces the three law conditions of the definition by a single Gaussian condition: mean \(0\) and covariance \(s \wedge t\). It is the form in which Hoffmann defines Brownian motion (his Definition 12, via the Gaussian process with covariance \(\langle \mathbf{1}_{[0,s]}, \mathbf{1}_{[0,t]}\rangle = s \wedge t\)), and it turns every question about the finite-dimensional laws into a covariance computation. The proof runs the Lesson 4 machine in both directions: from independent Gaussian increments to a Gaussian vector with the right covariance by a linear map; from the covariance back to independence of increments because, for Gaussian vectors, uncorrelated means independent. The consequence "all Brownian motions have the same finite-dimensional marginals" is what makes the Wiener measure well defined.
+DEEP:
+We want to show that the law conditions 1–3 of Definition 11 are equivalent to "Gaussian, mean \(0\), covariance \(s \wedge t\)". Plan: each direction is a linear change of variables between the vector of values and the vector of increments, plus one result of Lesson 4.
+
+**Step 1: from the definition to the Gaussian description.** Fix \(0 \le t_1 < \dots < t_k\). The increments \(\Delta_1 = B_{t_1}\), \(\Delta_j = B_{t_j} - B_{t_{j-1}}\) are independent Gaussian variables, so the vector \(\Delta = (\Delta_1, \dots, \Delta_k)\) is a Gaussian vector: its characteristic function factorises into a product of Gaussian characteristic functions, which is of the form of Proposition 14 with a diagonal covariance matrix. The vector of values is \(B_{t_j} = \Delta_1 + \dots + \Delta_j\), a linear image \(A\Delta\) with \(A\) lower-triangular of ones, hence a Gaussian vector (Corollary 2). So \(B\) is a Gaussian process. Its mean is \(\mathbb{E}[B_t] = \mathbb{E}[B_t - B_0] = 0\), and for \(s \le t\), writing \(B_t = B_s + (B_t - B_s)\) with the two terms independent, \(\mathbb{E}[B_sB_t] = \mathbb{E}[B_s^2] + \mathbb{E}[B_s]\mathbb{E}[B_t - B_s] = s + 0\). So \(K(s, t) = s \wedge t\).
+
+**Step 2: from the Gaussian description to the definition.** Conversely, let \(B\) be a Gaussian process with continuous paths, mean \(0\) and covariance \(s \wedge t\). Since \(\mathbb{E}[B_0^2] = 0 \wedge 0 = 0\), \(B_0 = 0\) a.s. For \(0 \le t_0 < \dots < t_k\), the increments are linear combinations of the Gaussian vector \((B_{t_0}, \dots, B_{t_k})\), hence jointly Gaussian. Their covariances are computed from \(K\): for \(i < j\), using bilinearity,
+\[
+\mathrm{Cov}(B_{t_i} - B_{t_{i-1}}, B_{t_j} - B_{t_{j-1}}) = t_i \wedge t_j - t_i \wedge t_{j-1} - t_{i-1} \wedge t_j + t_{i-1} \wedge t_{j-1} = t_i - t_i - t_{i-1} + t_{i-1} = 0,
+\]
+because all four minima are attained by the smaller index. Uncorrelated jointly Gaussian variables are independent (Corollary 1), which is condition 2. Each increment \(B_t - B_s\), \(s \le t\), is Gaussian with mean \(0\) and variance \(\mathrm{Var}(B_t) - 2\mathrm{Cov}(B_s, B_t) + \mathrm{Var}(B_s) = t - 2s + s = t - s\), which is condition 3. Condition 4 is the continuity hypothesis.
+
+**Step 3: the consequences.** By Proposition 14, the law of \((B_{t_1}, \dots, B_{t_k})\) is \(\mathcal{N}(0, (t_i \wedge t_j)_{i,j})\), the same for every Brownian motion. Conversely conditions 1–3 are statements about finite-dimensional marginals only, so a continuous process sharing them with a Brownian motion is one.
+
+**What the covariance \(s \wedge t\) encodes.** \(\mathrm{Var}(B_t) = t\): the process spreads like \(\sqrt t\). \(\mathrm{Cov}(B_s, B_t) = s\) for \(s < t\): the correlation \(\sqrt{s/t}\) tends to \(1\) as \(t \downarrow s\) and to \(0\) as \(t \to \infty\), the past is progressively forgotten. And \(s \wedge t = \int_0^\infty\mathbf{1}_{[0,s]}(u)\mathbf{1}_{[0,t]}(u)\, du\): the covariance is a scalar product in \(L^2(\mathbb{R}_+)\), which is the starting point of Hoffmann's isometric construction (his Notation 13, \(B_t = X(\mathbf{1}_{[0,t]})\)).
+
+Used next: Proposition 17 (each invariance is checked through this proposition), Definition 12, Theorem 12; Hoffmann's Definition 12 and Proposition 14.
+EXAMPLE:
+Let \(B\) be a Brownian motion and \(0 < s < t < u\). By the proposition, \((B_s, B_t, B_u)\) is \(\mathcal{N}(0, \Sigma)\) with \(\Sigma = \begin{pmatrix} s & s & s \\ s & t & t \\ s & t & u\end{pmatrix}\). Hence \(\mathbb{E}[B_s B_u] = s\), \(\mathrm{Var}(B_u - B_t) = u - t\), and \(\mathrm{Cov}(B_t - B_s, B_u - B_t) = t - t - s + s = 0\): the two consecutive increments are independent. A non-example: \(X_t = B_{2t}\) has covariance \(2(s \wedge t)\), so it is not a Brownian motion, but \(X_t/\sqrt 2\) is (this is the scaling property of Proposition 17 with \(\lambda = 2\)).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 17 (Invariance properties: symmetry, scaling, simple Markov property, time inversion — Forien Prop. 20)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(B\) be a Brownian motion. Each of the following processes is again a Brownian motion:
+
+1. **(Symmetry)** \((-B_t)_{t \ge 0}\).
+2. **(Scaling)** \(B^\lambda_t = \lambda^{-1/2}B_{\lambda t}\), for any fixed \(\lambda > 0\).
+3. **(Simple Markov property)** \(B^{(T)}_t = B_{T+t} - B_T\), for any fixed \(T \ge 0\); moreover \(B^{(T)}\) is independent of \(\mathcal{F}_T = \sigma(B_s, s \le T)\).
+4. **(Time inversion)** \(\tilde B_t = tB_{1/t}\) for \(t > 0\), \(\tilde B_0 = 0\).
+
+In 4 the only delicate point is the continuity of \(\tilde B\) at \(0\), which is equivalent to \(B_t/t \to 0\) as \(t \to \infty\), almost surely.
+PROOF:
+In each case the process is a Gaussian process (its finite-dimensional vectors are linear images of those of \(B\)), centred, with continuous paths for \(t > 0\); by Proposition 16 it suffices to compute the covariance. 1: \(\mathbb{E}[(-B_s)(-B_t)] = s \wedge t\). 2: \(\lambda^{-1}\mathbb{E}[B_{\lambda s}B_{\lambda t}] = \lambda^{-1}(\lambda s \wedge \lambda t) = s \wedge t\). 3: \(\mathbb{E}[(B_{T+s} - B_T)(B_{T+t} - B_T)] = (T + s) \wedge (T + t) - T - T + T = s \wedge t\). 4, for \(0 < s \le t\): \(st\,\mathbb{E}[B_{1/s}B_{1/t}] = st\cdot\frac1t = s\).
+
+**Independence in 3.** For \(s_1, \dots, s_m \le T\) and \(t_1, \dots, t_n \ge 0\), \(\mathrm{Cov}(B_{s_i}, B_{T + t_j} - B_T) = s_i - s_i = 0\), so the Gaussian vector \((B_{s_1}, \dots, B_{s_m}, B^{(T)}_{t_1}, \dots, B^{(T)}_{t_n})\) has block-diagonal covariance and the two blocks are independent (Corollary 1). The events \(\{B_{s_1} \in A_1, \dots, B_{s_m} \in A_m\}\) form a \(\pi\)-system generating \(\mathcal{F}_T\), and similarly for \(B^{(T)}\); Definition 5 (1) concludes.
+
+**Continuity at \(0\) in 4.** For integers \(n\), \(B_n = \sum_{k \le n}(B_k - B_{k-1})\) is a sum of i.i.d. \(\mathcal{N}(0, 1)\), so \(B_n/n \to 0\) a.s. by the strong law of large numbers. Let \(M_n = \sup_{t \in [n, n+1]}|B_t - B_n|\); by 3 and continuity the \(M_n\) are i.i.d. with the law of \(M_0 = \sup_{[0,1]}|B|\), which is integrable (Theorem 14 (4)). Then \(\sum_n\mathbb{P}(M_n > \varepsilon n) = \sum_n\mathbb{P}(M_0 > \varepsilon n) \le \mathbb{E}[M_0]/\varepsilon < \infty\), so \(M_n \le \varepsilon n\) for all large \(n\) a.s. (Borel–Cantelli), i.e. \(M_n/n \to 0\). For \(t \in [n, n+1]\), \(|B_t|/t \le (|B_n| + M_n)/n \to 0\). Hence \(\tilde B_t = tB_{1/t} \to 0\) as \(t \to 0\). \(\square\)
+REFRESH:
+**Characterisation** (Proposition 16): a centred Gaussian process with continuous paths and covariance \(s \wedge t\) is a Brownian motion.
+EXPLANATION:
+Brownian motion looks the same under four transformations: flipping the sign, zooming (time by \(\lambda\), space by \(\sqrt\lambda\)), restarting the clock at a fixed time \(T\), and inverting time. Each is proved in one line from Proposition 16: the transformed process is still a centred Gaussian process with continuous paths, and its covariance is again \(s \wedge t\). The simple Markov property carries an extra statement, independence of the restarted motion from the past \(\mathcal{F}_T\), which is a covariance computation plus "uncorrelated implies independent"; it is the Markov property of Hoffmann's Chapter 2 in its simplest form. Time inversion is the one case where paths need care: continuity at \(0\) is the statement \(B_t/t \to 0\) at infinity, a law of large numbers for Brownian motion.
+DEEP:
+The goal is to see each invariance as a covariance identity, and to prove the two non-trivial points: the independence in the Markov property and the continuity at \(0\) in the time inversion. Plan: covariances first, then the \(\pi\)-system argument, then the law of large numbers.
+
+**Step 1: covariances.** In each case the new process is obtained from \(B\) by a linear transformation applied to each finite-dimensional vector, so it is a centred Gaussian process (Corollary 2), with continuous paths (for \(t > 0\) in case 4). By Proposition 16 it remains to check \(K(s, t) = s \wedge t\). Symmetry: the covariance is invariant under \(B \mapsto -B\). Scaling: \(\lambda^{-1}(\lambda s \wedge \lambda t) = s \wedge t\), because the minimum is homogeneous; note the exponents, time \(\lambda\) against space \(\sqrt\lambda\), which is the only scaling compatible with \(\mathrm{Var}(B_t) = t\). Restart at \(T\): expand \(\mathbb{E}[(B_{T+s} - B_T)(B_{T+t} - B_T)]\) into four minima, \((T + s) \wedge (T + t) - (T + s) \wedge T - T \wedge (T + t) + T \wedge T = T + s \wedge t - T - T + T\). Time inversion, for \(0 < s \le t\): \(\mathbb{E}[sB_{1/s}\,tB_{1/t}] = st\,(\tfrac1s \wedge \tfrac1t) = st/t = s\).
+
+**Step 2: the Markov property, independence of the past.** Take past times \(s_1, \dots, s_m \le T\) and future lags \(t_1, \dots, t_n\). The vector \((B_{s_1}, \dots, B_{s_m}, B_{T + t_1} - B_T, \dots, B_{T + t_n} - B_T)\) is a linear image of a finite-dimensional vector of \(B\), hence Gaussian, and its cross-covariances are \(\mathrm{Cov}(B_{s_i}, B_{T + t_j} - B_T) = s_i \wedge (T + t_j) - s_i \wedge T = s_i - s_i = 0\). Corollary 1 (block version) gives independence of the two blocks. To pass from finite families to the \(\sigma\)-algebras: the events \(\{B_{s_1} \in A_1, \dots, B_{s_m} \in A_m\}\), \(s_i \le T\), form a \(\pi\)-system generating \(\mathcal{F}_T\), the analogous events for \(B^{(T)}\) form a \(\pi\)-system generating \(\sigma(B^{(T)})\), and the product formula holds on these by the block independence; Definition 5 (1) concludes. This is, word for word, the proof of Hoffmann's Proposition 1 in Chapter 2.
+
+**Step 3: time inversion, continuity at \(0\).** We need \(tB_{1/t} \to 0\) as \(t \downarrow 0\), i.e. \(B_u/u \to 0\) as \(u \to \infty\), almost surely. On integers, \(B_n\) is a sum of \(n\) i.i.d. \(\mathcal{N}(0, 1)\) increments, so \(B_n/n \to 0\) a.s. by the strong law of large numbers (Theorem 11). Between integers, control the oscillation \(M_n = \sup_{[n, n+1]}|B_t - B_n|\): by the Markov property at time \(n\) and continuity, the \(M_n\) are i.i.d. with the law of \(\sup_{[0,1]}|B|\), integrable by Theorem 14 (4). For a non-negative integrable \(M\), \(\sum_n\mathbb{P}(M > \varepsilon n) \le \mathbb{E}[M/\varepsilon]\) (compare the series with the integral of \(\mathbb{P}(M > \varepsilon x)\)), so Borel–Cantelli gives \(M_n \le \varepsilon n\) for all large \(n\), a.s.; as \(\varepsilon\) runs over \(1/k\), \(M_n/n \to 0\) a.s. Then for \(t \in [n, n + 1]\), \(|B_t|/t \le (|B_n| + M_n)/n \to 0\).
+
+**What each invariance is for.** Symmetry gives \(\mathbb{P}(B_t \ge a) = \mathbb{P}(B_t \le -a)\) and is used in the reflection principle. Scaling shows that Brownian motion has no characteristic time or length scale: \(\sup_{[0, t]}B \overset{d}{=} \sqrt t\sup_{[0, 1]}B\), used in Proposition 18. The Markov property is the beginning of Hoffmann's Chapter 2. Time inversion exchanges the behaviour at \(0\) and at \(\infty\): the law of the iterated logarithm at infinity is the same statement as at \(0\), and Kolmogorov's \(0\)–\(1\) law for the tail is Blumenthal's law at \(0\) (Proposition 18).
+
+Used next: Proposition 18, Theorem 13 (whose proof discretises a stopping time and applies the Markov property at each dyadic time), Theorem 14.
+EXAMPLE:
+Scaling in action: with \(\lambda = t\), \(\sup_{[0, t]}B = \sup_{u \le 1}B_{tu} = \sqrt t\,\sup_{u \le 1}B^t_u\), and \(B^t\) is a Brownian motion, so \(\sup_{[0, t]}B \overset{d}{=} \sqrt t\,\sup_{[0, 1]}B\) and \(\mathbb{P}(\sup_{[0, t]}B > a) = \mathbb{P}(\sup_{[0, 1]}B > a/\sqrt t)\). Markov property in action: for \(s < t\), \(\mathbb{E}[B_t^3 \mid \mathcal{F}_s]\): write \(B_t = B_s + \Delta\) with \(\Delta = B^{(s)}_{t-s}\) independent of \(\mathcal{F}_s\), \(\Delta \sim \mathcal{N}(0, t - s)\); expanding and using \(\mathbb{E}[\Delta] = \mathbb{E}[\Delta^3] = 0\), \(\mathbb{E}[\Delta^2] = t - s\), one gets \(\mathbb{E}[B_t^3 \mid \mathcal{F}_s] = B_s^3 + 3(t - s)B_s\); so \(B_t^3 - 3tB_t\) is a martingale, the third Hermite martingale of Brownian motion.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 12 (The Wiener measure and the canonical space — Forien Def. 31, Prop. 21 and the remark after it)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(C = C(\mathbb{R}_+, \mathbb{R})\) be the space of continuous functions, with the topology of uniform convergence on compact sets, metrised by
+\[
+d(f, g) = \sum_{n \ge 1}2^{-n}\min\Big(1, \sup_{[0, n]}|f - g|\Big),
+\]
+and let \(\mathcal{C}\) be its Borel \(\sigma\)-algebra. Then \(\mathcal{C} = \sigma(\pi_t : t \ge 0)\) is generated by the coordinate maps \(\pi_t(f) = f(t)\), and a Brownian motion \(B\) defines a measurable map \(\omega \mapsto B_\cdot(\omega)\) from \((\Omega, \mathcal{F})\) to \((C, \mathcal{C})\). The **Wiener measure** \(\mathbb{W}\) is the law of this map:
+\[
+\mathbb{W}(A) = \mathbb{P}\big((t \mapsto B_t) \in A\big), \qquad A \in \mathcal{C}.
+\]
+It does not depend on the Brownian motion chosen. On the **canonical space** \((C, \mathcal{C}, \mathbb{W})\), the coordinate process \(X_t(f) = f(t)\) is a Brownian motion: every statement about the law of Brownian paths is a statement about \(\mathbb{W}\).
+PROOF:
+**\(\mathcal{C} = \sigma(\pi_t)\).** Each \(\pi_t\) is continuous for \(d\) (\(|f(t) - g(t)| \le \sup_{[0, n]}|f - g|\) for \(n \ge t\)), so \(\sigma(\pi_t) \subset \mathcal{C}\). Conversely, for continuous \(f, g\), \(\sup_{[0, n]}|f - g| = \sup_{[0, n] \cap \mathbb{Q}}|f - g|\), a countable supremum, so \(f \mapsto d(f, g)\) is \(\sigma(\pi_t, t \in \mathbb{Q}_+)\)-measurable and every ball is in \(\sigma(\pi_t)\). The space \((C, d)\) is separable (polynomials with rational coefficients are dense), so every open set is a countable union of balls; hence \(\mathcal{C} \subset \sigma(\pi_t)\).
+
+**Measurability of \(\omega \mapsto B_\cdot(\omega)\).** By the first point it suffices that \(\omega \mapsto \pi_t(B_\cdot(\omega)) = B_t(\omega)\) be measurable for each \(t\) (Definition 2), which holds.
+
+**Uniqueness.** Two Brownian motions have the same finite-dimensional marginals (Proposition 16), so their laws on \((C, \mathcal{C})\) agree on the cylinder events \(\{f : f(t_1) \in A_1, \dots, f(t_k) \in A_k\}\), a \(\pi\)-system generating \(\sigma(\pi_t) = \mathcal{C}\); Proposition 1 gives equality.
+
+**Canonical process.** \(X_t = \pi_t\) is measurable, its finite-dimensional marginals under \(\mathbb{W}\) are those of \(B\) by definition of the image measure, and its paths are continuous by construction; Proposition 16 concludes. \(\square\)
+REFRESH:
+**Law of a random variable** (Definition 3): the image measure \(\mathbb{P}\circ X^{-1}\) on the target space; two measures agreeing on a generating \(\pi\)-system coincide (Proposition 1).
+EXPLANATION:
+A Brownian motion is a random variable with values in the space of continuous functions, and like any random variable it has a law: the Wiener measure, a probability measure on the space \(C(\mathbb{R}_+, \mathbb{R})\). To make sense of this one needs a \(\sigma\)-algebra on \(C\), and the useful fact is that the Borel \(\sigma\)-algebra of the natural topology is generated by the coordinates \(f \mapsto f(t)\), so measurability of \(B\) as a path-valued map reduces to measurability of each \(B_t\), and events about the path (its maximum, its zeros) are legitimate. Because all Brownian motions have the same finite-dimensional marginals, they have the same law: there is one Wiener measure, and the coordinate process on \((C, \mathbb{W})\) is the canonical Brownian motion. This is Hoffmann's Section 5.
+DEEP:
+The goal is to understand why the path space carries a good \(\sigma\)-algebra and why the law of Brownian motion on it is unique. Plan: the \(\sigma\)-algebra, the measurability, the uniqueness.
+
+**Step 1: why the coordinates generate the Borel sets.** The topology of uniform convergence on compacts is metrisable by \(d\): \(d(f_n, f) \to 0\) if and only if \(f_n \to f\) uniformly on every \([0, n]\). The coordinates are continuous, so they are Borel measurable, hence \(\sigma(\pi_t) \subset \mathcal{C}\). For the converse one needs to express open sets through countably many coordinates. Two facts do it: for continuous functions a supremum over \([0, n]\) is a supremum over the rationals of \([0, n]\), so the distance to a fixed \(g\) is a countable supremum of coordinate functions, hence measurable; and \((C, d)\) is separable, so each open set is a countable union of balls. Without continuity the first fact would fail, and indeed on the space of all functions \(\mathbb{R}^{\mathbb{R}_+}\), the set of continuous functions is not in the \(\sigma\)-algebra generated by the coordinates: this is the "concluding remark" of Hoffmann's Chapter 1, and the reason he moves to \(C\) only after obtaining continuous paths.
+
+**Step 2: the path map is measurable.** By Definition 2, measurability of a map into \((C, \sigma(\pi_t))\) can be tested on the generating sets \(\pi_t^{-1}(A)\), and \(\{\omega : B_t(\omega) \in A\}\) is measurable because \(B_t\) is a random variable. So \(\omega \mapsto B_\cdot(\omega)\) is a random variable with values in \(C\), and \(\mathbb{W} = \mathbb{P}\circ B^{-1}\) is a probability measure on \((C, \mathcal{C})\): events such as \(\{\sup_{[0, 1]}f > a\}\) or \(\{f \text{ has a zero in } (0, 1)\}\) are Borel in \(C\) (they are countable operations on coordinates at rational times, by continuity) and have Wiener probabilities.
+
+**Step 3: uniqueness.** Cylinder events \(\{f(t_1) \in A_1, \dots, f(t_k) \in A_k\}\) form a \(\pi\)-system (intersect two of them: still a cylinder) generating \(\sigma(\pi_t)\). The \(\mathbb{W}\)-probability of a cylinder is \(\mathbb{P}(B_{t_1} \in A_1, \dots, B_{t_k} \in A_k)\), a finite-dimensional marginal, the same for every Brownian motion by Proposition 16. Two probability measures agreeing on a generating \(\pi\)-system are equal (Proposition 1). Hence one Wiener measure, whatever the construction used.
+
+**Step 4: the canonical space.** On \((C, \mathcal{C}, \mathbb{W})\) the coordinate process has, by construction, the finite-dimensional marginals of Brownian motion and continuous paths, so it is a Brownian motion. This gives a concrete probability space on which to do stochastic calculus: \(\Omega = C\), \(\omega\) is the path itself, \(B_t(\omega) = \omega(t)\). Hoffmann writes \(\mathbb{W}_x\) for the law of \(x + B\) (Brownian motion started at \(x\)) and \(\mathbb{E}_x\) for the corresponding expectation, which is the setting of the Markov semigroup in Chapter 2.
+
+Used next: Theorem 12 constructs a Brownian motion on an abstract space; the Wiener measure transports it to \(C\). Girsanov's theorem, later in the course, is a change of measure on \((C, \mathcal{C})\).
+EXAMPLE:
+The event \(A = \{f \in C : \sup_{[0, 1]}f \ge 1\}\) is in \(\mathcal{C}\): \(A = \bigcap_k\bigcup_{t \in \mathbb{Q} \cap [0, 1]}\{\pi_t \ge 1 - 1/k\}\), countable operations on coordinates. Its Wiener measure is \(\mathbb{W}(A) = \mathbb{P}(\sup_{[0, 1]}B \ge 1) = \mathbb{P}(|B_1| \ge 1) \approx 0.317\), by the reflection principle (Theorem 14). The event \(\{f : f(1/2) = f(1)\}\) is a cylinder with \(\mathbb{W}\)-measure \(\mathbb{P}(B_1 - B_{1/2} = 0) = 0\). A non-example: on \(\mathbb{R}^{\mathbb{R}_+}\) with the product \(\sigma\)-algebra, "\(f\) is continuous" is not measurable, so the Wiener measure could not be defined there; the restriction to \(C\) is what makes path properties events.
+NOTE:
+(none)

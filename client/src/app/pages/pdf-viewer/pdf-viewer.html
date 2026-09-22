@@ -1,4 +1,4 @@
-<div class="viewer">
+<div class="viewer" [class.compact-reading]="compactReading">
   @if (pdf(); as p) {
     <header class="viewer-head">
       <nav class="crumbs">
@@ -24,10 +24,12 @@
               title="Hover definitions: measure-theory terms in explanations get a dotted underline — hover or tap one to see its definition">
               <span class="toggle-dot defs-dot"></span> Definitions
             </button>
-            <button class="layer-toggle deep-toggle" [class.on]="showDeep()" (click)="toggleDeep()"
-              title="Show or hide the deep-dive panels — intuition-first explanations assuming no measure theory">
-              <span class="toggle-dot deep-dot"></span> Deep dives
-            </button>
+            @if (!compactReading) {
+              <button class="layer-toggle deep-toggle" [class.on]="showDeep()" (click)="toggleDeep()"
+                title="Show or hide the deep-dive panels — intuition-first explanations assuming no measure theory">
+                <span class="toggle-dot deep-dot"></span> Deep dives
+              </button>
+            }
             <button class="layer-toggle ex-toggle" [class.on]="showExamples()" (click)="toggleExamples()"
               title="Show or hide the worked-example panels">
               <span class="toggle-dot ex-dot"></span> Examples
@@ -37,12 +39,51 @@
               <span class="marker-swatch"></span> Shortcut
             </button>
           </div>
+          <div class="ink-tools">
+            <app-pen-button [active]="penActive()" (toggle)="togglePen()">
+              <app-pen-palette
+                [tool]="penTool()"
+                [canUndo]="canUndo()"
+                [fingerDraws]="fingerDraws()"
+                (toolChange)="penTool.set($event)"
+                (undo)="inkLayer?.undo()"
+                (clear)="inkLayer?.clearAll()"
+                (fingerDrawsChange)="setFingerDraws($event)"
+              />
+            </app-pen-button>
+            <a class="notes-link" [routerLink]="['/pdfs', p.id, 'notes']" title="Your own notebook page for this lesson">
+              <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                <path d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm0 2v16h12V4H6zm2 3h8v2H8V7zm0 4h8v2H8v-2zm0 4h5v2H8v-2z" fill="currentColor"/>
+                <path d="M3 6h2v2H3zm0 5h2v2H3zm0 5h2v2H3z" fill="currentColor"/>
+              </svg>
+              Notes
+            </a>
+          </div>
           @if (p.teacher) {
             <span class="teacher-tag">{{ p.teacher }}</span>
           }
           <a class="pdf-link" [href]="fileHref" target="_blank" rel="noopener">Original PDF &nearr;</a>
         </div>
       </div>
+      @if (penActive()) {
+        <div class="pen-bar">
+          <app-pen-palette
+            [tool]="penTool()"
+            [canUndo]="canUndo()"
+            [fingerDraws]="fingerDraws()"
+            (toolChange)="penTool.set($event)"
+            (undo)="inkLayer?.undo()"
+            (clear)="inkLayer?.clearAll()"
+            (fingerDrawsChange)="setFingerDraws($event)"
+          />
+          <span class="pen-status">
+            <span class="pen-hint">Draw anywhere on the sheet &middot; two fingers scroll</span>
+            @if (inkStatusLabel()) {
+              <span class="pen-saved">{{ inkStatusLabel() }}</span>
+            }
+          </span>
+        </div>
+      }
       @if (p.status === 'processing') {
         <p class="processing-note">
           <span class="dot"></span>
@@ -53,6 +94,16 @@
 
     <div class="doc" [class.clean]="!showExplanations() && !showNotes()" [class.shortcut]="showShortcut()"
       [class.defs-on]="showDefs()" (mouseover)="onGlossOver($event)" (mouseout)="onGlossOut($event)" (click)="onGlossOver($event)">
+      @if (inkDoc(); as ink) {
+        <app-ink-layer
+          [strokes]="ink.strokes"
+          [active]="penActive()"
+          [tool]="penTool()"
+          [fingerDraws]="fingerDraws()"
+          (strokesChange)="onStrokes($event)"
+          (canUndoChange)="canUndo.set($event)"
+        />
+      }
       @if (blocks().length === 0) {
         <div class="empty">
           @if (p.status === 'processing') {
@@ -68,11 +119,11 @@
       @for (vm of blocks(); track vm.section.id) {
         <!-- Subsection headings flow as plain headings -->
         @if (vm.section.kind === 'heading') {
-          <h2 class="flow-heading">{{ vm.section.title }}</h2>
+          <h2 class="flow-heading" [attr.data-anchor]="vm.section.id">{{ vm.section.title }}</h2>
         } @else if (vm.section.kind === 'tutor_note') {
           <!-- The tutor's own additions: chalkboard style, clearly not the teacher's material -->
           @if (showNotes()) {
-            <aside class="chalk-note">
+            <aside class="chalk-note" [attr.data-anchor]="vm.section.id">
               <p class="chalk-label">Tutor's note — my own addition</p>
               @if (vm.section.content_text) {
                 <app-math-content [content]="vm.section.content_text" />
@@ -82,7 +133,7 @@
             </aside>
           }
         } @else {
-          <article class="block kind-{{ vm.section.kind }}" [class.plain]="vm.section.kind === 'text'" [class.marked]="vm.section.highlight === 1">
+          <article class="block kind-{{ vm.section.kind }}" [class.plain]="vm.section.kind === 'text'" [class.marked]="vm.section.highlight === 1" [attr.data-anchor]="vm.section.id">
             @if (showShortcut()) {
               <button
                 class="mark-btn"
@@ -100,9 +151,20 @@
               <app-math-content [content]="vm.section.content_text || ''" />
             </div>
 
+            <!-- Refresh: one short reminder of what the block relies on (only when needed) -->
+            @if (!compactReading && vm.section.refresh && showExplanations()) {
+              <div class="refresh">
+                <p class="panel-label refresh-label">Refresh</p>
+                <app-math-content [content]="vm.section.refresh" [gloss]="showDefs()" />
+              </div>
+            }
+
             <!-- Brief explanation directly under the statement -->
             @if (showExplanations() && (vm.section.ai_explanation || vm.explaining || isStatement(vm.section))) {
               <div class="explain">
+                @if (compactReading && vm.section.ai_explanation) {
+                  <p class="panel-label">Short explanation</p>
+                }
                 @if (vm.explaining) {
                   <p class="thinking">Claude is writing&hellip;</p>
                 } @else if (vm.section.ai_explanation) {
@@ -140,8 +202,27 @@
               </div>
             }
 
+            @if (compactReading && showExplanations()) {
+              @if (vm.section.extra_explanation) {
+                <details class="deep reading-disclosure">
+                  <summary>Expanded explanation <span class="disclosure-hint">Intuition &amp; details</span></summary>
+                  <div class="disclosure-body">
+                    <app-math-content [content]="vm.section.extra_explanation" [gloss]="showDefs()" />
+                  </div>
+                </details>
+              }
+              @if (vm.section.refresh) {
+                <details class="refresh reading-disclosure recap">
+                  <summary>Recap <span class="disclosure-hint">Prerequisites</span></summary>
+                  <div class="disclosure-body">
+                    <app-math-content [content]="vm.section.refresh" [gloss]="showDefs()" />
+                  </div>
+                </details>
+              }
+            }
+
             <!-- Deep dive: intuition assuming no measure theory -->
-            @if (vm.section.extra_explanation && showDeep()) {
+            @if (!compactReading && vm.section.extra_explanation && showDeep()) {
               <div class="deep">
                 <p class="panel-label deep-label">Deep dive</p>
                 <app-math-content [content]="vm.section.extra_explanation" />
@@ -232,12 +313,28 @@
                       <input
                         [name]="'draft-' + vm.section.id"
                         [(ngModel)]="vm.draft"
-                        placeholder="Your question…"
+                        [placeholder]="answerLength() === 'auto' ? 'Your question… (say “briefly” or “in detail” to steer the length)' : 'Your question…'"
                         [disabled]="vm.sending"
                         autocomplete="off"
                       />
                       <button class="btn" type="submit" [disabled]="vm.sending || !vm.draft.trim()">Send</button>
                     </form>
+                    <div class="len-row" role="radiogroup" aria-label="Answer length">
+                      <span class="len-label">Answer</span>
+                      @for (opt of lengthOptions; track opt.value) {
+                        <button
+                          type="button"
+                          class="len-chip"
+                          role="radio"
+                          [attr.aria-checked]="answerLength() === opt.value"
+                          [class.active]="answerLength() === opt.value"
+                          [title]="opt.hint"
+                          (click)="setAnswerLength(opt.value)"
+                        >
+                          {{ opt.label }}
+                        </button>
+                      }
+                    </div>
                   } @else {
                     <p class="ai-off-note">The AI tutor runs on the local install only — saved answers above remain readable.</p>
                   }

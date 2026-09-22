@@ -1,0 +1,198 @@
+===BLOCK===
+KIND: definition
+TITLE: Definition 7 (Filtrations, adapted processes, martingales — Forien Def. 17–21, Ex. 3)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+A **discrete-time stochastic process** is a sequence \((X_n)_{n \in \mathbb{N}}\) of real random variables on \((\Omega, \mathcal{F}, \mathbb{P})\). A **filtration** is a non-decreasing sequence \((\mathcal{F}_n)_{n \in \mathbb{N}}\) of sub-\(\sigma\)-algebras of \(\mathcal{F}\), \(\mathcal{F}_n \subset \mathcal{F}_{n+1}\); \(\mathcal{F}_n\) is the information available at time \(n\), and \((\Omega, \mathcal{F}, (\mathcal{F}_n)_n, \mathbb{P})\) is a **filtered probability space**. A process is **adapted** if \(X_n\) is \(\mathcal{F}_n\)-measurable for every \(n\); the **natural filtration** of a process, \(\mathcal{F}_n = \sigma(X_0, \dots, X_n)\), is the smallest filtration making it adapted. A process \((H_n)_{n \ge 1}\) is **predictable** if \(H_n\) is \(\mathcal{F}_{n-1}\)-measurable.
+
+An adapted process \((M_n)\) with \(M_n\) integrable for every \(n\) is a **martingale** (resp. **submartingale**, **supermartingale**) with respect to \((\mathcal{F}_n)\) if for every \(n\),
+\[
+\mathbb{E}[M_{n+1} \mid \mathcal{F}_n] = M_n \qquad (\text{resp. } \ge M_n,\ \le M_n).
+\]
+Equivalently \(\mathbb{E}[M_m \mid \mathcal{F}_n] = M_n\) (resp. \(\ge\), \(\le\)) for all \(m \ge n\); in particular \(n \mapsto \mathbb{E}[M_n]\) is constant for a martingale, non-decreasing for a submartingale.
+
+Examples. (i) **Random walk**: if \(X_1, X_2, \dots\) are i.i.d., integrable and centred, then \(S_0 = 0\), \(S_n = X_1 + \dots + X_n\) is a martingale for its natural filtration; if moreover \(\mathrm{Var}(X_1) = \sigma^2 < \infty\), then \(S_n^2 - n\sigma^2\) is a martingale. (ii) **Closed martingale**: for \(Z \in L^1\) and any filtration, \(M_n = \mathbb{E}[Z \mid \mathcal{F}_n]\) is a martingale. (iii) **Martingale transform**: if \(M\) is a martingale and \(H\) is predictable and bounded, then \((H\cdot M)_n = \sum_{k=1}^n H_k(M_k - M_{k-1})\) is a martingale; if \(M\) is a submartingale and \(H \ge 0\), it is a submartingale. (iv) If \(M\) is a martingale and \(\phi\) is convex with \(\phi(M_n)\) integrable, then \(\phi(M_n)\) is a submartingale; if \(M\) is a submartingale and \(\phi\) is convex and non-decreasing, the same holds.
+PROOF:
+**The two forms.** If \(\mathbb{E}[M_m \mid \mathcal{F}_n] = M_n\) for \(m \ge n\), the tower property gives \(\mathbb{E}[M_{m+1} \mid \mathcal{F}_n] = \mathbb{E}[\mathbb{E}[M_{m+1} \mid \mathcal{F}_m] \mid \mathcal{F}_n] = \mathbb{E}[M_m \mid \mathcal{F}_n] = M_n\), so induction on \(m\) starting from \(m = n\) proves the equivalence; the inequalities are preserved by monotonicity. Taking expectations gives the statement on \(\mathbb{E}[M_n]\).
+
+**(i)** \(S_n\) is \(\sigma(X_1, \dots, X_n)\)-measurable and integrable, and \(X_{n+1}\) is independent of \(\mathcal{F}_n\) (grouping), so \(\mathbb{E}[S_{n+1} \mid \mathcal{F}_n] = S_n + \mathbb{E}[X_{n+1}] = S_n\). Next, \(\mathbb{E}[S_{n+1}^2 \mid \mathcal{F}_n] = S_n^2 + 2S_n\mathbb{E}[X_{n+1}] + \mathbb{E}[X_{n+1}^2] = S_n^2 + \sigma^2\), by taking out what is known and independence.
+
+**(ii)** Tower property: \(\mathbb{E}[\mathbb{E}[Z \mid \mathcal{F}_{n+1}] \mid \mathcal{F}_n] = \mathbb{E}[Z \mid \mathcal{F}_n]\); integrability by the contraction property.
+
+**(iii)** \(\mathbb{E}[H_{n+1}(M_{n+1} - M_n) \mid \mathcal{F}_n] = H_{n+1}\mathbb{E}[M_{n+1} - M_n \mid \mathcal{F}_n] = 0\) (resp. \(\ge 0\) when \(H \ge 0\) and \(M\) is a submartingale), \(H_{n+1}\) being bounded and \(\mathcal{F}_n\)-measurable.
+
+**(iv)** Conditional Jensen: \(\mathbb{E}[\phi(M_{n+1}) \mid \mathcal{F}_n] \ge \phi(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n]) = \phi(M_n)\); for a submartingale and \(\phi\) non-decreasing, \(\phi(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n]) \ge \phi(M_n)\). \(\square\)
+REFRESH:
+**Tower property and taking out what is known** (Proposition 11): for \(\mathcal{H} \subset \mathcal{G}\), \(\mathbb{E}[\mathbb{E}[X \mid \mathcal{G}] \mid \mathcal{H}] = \mathbb{E}[X \mid \mathcal{H}]\); for \(Z\) \(\mathcal{G}\)-measurable, \(\mathbb{E}[XZ \mid \mathcal{G}] = Z\,\mathbb{E}[X \mid \mathcal{G}]\).
+EXPLANATION:
+A filtration is information growing with time; an adapted process is one whose value at time \(n\) is known at time \(n\); a predictable process is one whose value at time \(n\) is already known at time \(n - 1\), like a bet placed before the coin is tossed. A martingale is a fair game: given everything known at time \(n\), the expected next value is the current value, so the expected gain of any bounded betting strategy is zero, which is example (iii). Submartingales drift up in conditional mean, supermartingales drift down. The examples are the ones to remember: centred random walks, conditional expectations of a fixed variable, transforms by predictable integrands, and convex functions of martingales.
+DEEP:
+The goal is to understand the definition through its examples and to see the two mechanisms, tower property and taking out what is known, that produce every martingale identity.
+
+**Step 1: why "one step" is the same as "any number of steps".** The one-step condition \(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n] = M_n\) is what one checks in practice; the multi-step form \(\mathbb{E}[M_m \mid \mathcal{F}_n] = M_n\) is what one uses. They are equivalent by the tower property, because \(\mathcal{F}_n \subset \mathcal{F}_m\): \(\mathbb{E}[M_{m+1} \mid \mathcal{F}_n] = \mathbb{E}[\mathbb{E}[M_{m+1} \mid \mathcal{F}_m] \mid \mathcal{F}_n] = \mathbb{E}[M_m \mid \mathcal{F}_n]\), and induction from \(m = n\) does the rest. Taking expectations, \(\mathbb{E}[M_m] = \mathbb{E}[M_n]\): a martingale has constant mean, which is the weakest and most used consequence.
+
+**Step 2: random walks.** With \(\mathcal{F}_n = \sigma(X_1, \dots, X_n)\), the next step \(X_{n+1}\) is independent of \(\mathcal{F}_n\) by the grouping property of Definition 5, and \(S_n\) is \(\mathcal{F}_n\)-measurable; so \(\mathbb{E}[S_{n+1} \mid \mathcal{F}_n] = \mathbb{E}[S_n \mid \mathcal{F}_n] + \mathbb{E}[X_{n+1} \mid \mathcal{F}_n] = S_n + \mathbb{E}[X_{n+1}] = S_n\). For the square, expand \(S_{n+1}^2 = S_n^2 + 2S_nX_{n+1} + X_{n+1}^2\): the first term is known, the second has conditional mean \(2S_n\mathbb{E}[X_{n+1}] = 0\) by taking out what is known, the third has conditional mean \(\sigma^2\) by independence. So \(S_n^2 - n\sigma^2\) is a martingale: the "quadratic variation" \(n\sigma^2\) compensates the growth of \(S_n^2\). The continuous-time analogue, \(B_t^2 - t\), is the first hint of Itô's formula.
+
+**Step 3: closed martingales and transforms.** \(\mathbb{E}[Z \mid \mathcal{F}_n]\) is the best guess of \(Z\) at time \(n\); the tower property says that the best guess at time \(n\) of tomorrow's best guess is today's. These martingales are the well-behaved ones (Theorem 10). For transforms, \(H_k\) is the stake placed at time \(k - 1\) on the increment \(M_k - M_{k-1}\); since \(H_k\) is \(\mathcal{F}_{k-1}\)-measurable it comes out of the conditional expectation, and the increment has zero conditional mean: no predictable strategy with bounded stakes has a positive expected gain. This is the discrete stochastic integral, and the continuous version \(\int H_s\, dB_s\) is the object of Hoffmann's course from Chapter 3 on.
+
+**Step 4: convex images.** Conditional Jensen (Proposition 11) gives \(\mathbb{E}[\phi(M_{n+1}) \mid \mathcal{F}_n] \ge \phi(M_n)\). Typical uses: \(|M_n|\), \(M_n^2\) (for \(M\) in \(L^2\)), \((M_n - a)^+\) are submartingales; this last one is the key to the upcrossing inequality (Theorem 8).
+
+**Where the hypotheses bite.** Integrability is part of the definition: without it \(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n]\) need not exist. Adaptedness matters too: for the random walk with \(\mathcal{F}_n = \sigma(X_1, \dots, X_{n+1})\) (a filtration that peeks one step ahead), \(S_n\) is adapted but \(\mathbb{E}[S_{n+1} \mid \mathcal{F}_n] = S_{n+1} \neq S_n\): the martingale property depends on the filtration, not only on the process.
+
+Used next: stopping times (Definition 8) and the three main theorems; in Hoffmann's course, \(B_t\), \(B_t^2 - t\) and \(e^{\sigma B_t - \sigma^2t/2}\) are the three basic continuous-time martingales.
+EXAMPLE:
+Let \(X_1, X_2, \dots\) be i.i.d. with \(\mathbb{P}(X_i = 1) = \mathbb{P}(X_i = -1) = \frac12\) (simple random walk) and \(\mathcal{F}_n = \sigma(X_1, \dots, X_n)\). Then \(S_n\) and \(S_n^2 - n\) are martingales. So is \(M_n = \prod_{k \le n}e^{\lambda X_k}/\cosh(\lambda)^n = e^{\lambda S_n}/\cosh(\lambda)^n\) for any \(\lambda \in \mathbb{R}\): \(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n] = M_n\,\mathbb{E}[e^{\lambda X_{n+1}}]/\cosh(\lambda) = M_n\), because \(\mathbb{E}[e^{\lambda X}] = \frac{e^\lambda + e^{-\lambda}}{2} = \cosh\lambda\); this is the discrete exponential martingale, the analogue of \(e^{\lambda B_t - \lambda^2t/2}\). A transform: betting \(H_k = 1\) when \(S_{k-1} < 0\) and \(0\) otherwise ("play only when behind") gives \((H\cdot S)_n\), a martingale with mean \(0\): the strategy does not help.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 8 (Stopping times and the σ-field of the past — Forien Def. 22–23, Ex. 4, Exercise 4)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+A **stopping time** for the filtration \((\mathcal{F}_n)\) is a random variable \(T : \Omega \to \mathbb{N} \cup \{+\infty\}\) such that \(\{T \le n\} \in \mathcal{F}_n\) for every \(n\), or equivalently \(\{T = n\} \in \mathcal{F}_n\) for every \(n\). Examples: constants; the **hitting time** \(T_A = \inf\{n : X_n \in A\}\) of a Borel set \(A\) by an adapted process (with \(\inf\varnothing = +\infty\)); \(S \wedge T\), \(S \vee T\) and \(S + T\) for stopping times \(S, T\).
+
+The **\(\sigma\)-field of the past until \(T\)** is
+\[
+\mathcal{F}_T = \big\{A \in \mathcal{F} : A \cap \{T = n\} \in \mathcal{F}_n \text{ for every } n \in \mathbb{N}\big\} = \big\{A \in \mathcal{F} : A \cap \{T \le n\} \in \mathcal{F}_n \text{ for every } n\big\}.
+\]
+It is a \(\sigma\)-algebra; \(T\) is \(\mathcal{F}_T\)-measurable; \(\mathcal{F}_T = \mathcal{F}_n\) when \(T = n\) is constant; and \(S \le T\) implies \(\mathcal{F}_S \subset \mathcal{F}_T\). For an adapted process \(X\) and a stopping time \(T\), the **stopped variable** \(X_T = \sum_n X_n\mathbf{1}_{\{T = n\}}\) (defined on \(\{T < \infty\}\)) is \(\mathcal{F}_T\)-measurable, and the **stopped process** \(X^T_n = X_{n \wedge T}\) is adapted.
+PROOF:
+**Two forms.** \(\{T = n\} = \{T \le n\} \setminus \{T \le n - 1\}\) and \(\{T \le n\} = \bigcup_{k \le n}\{T = k\}\) with \(\mathcal{F}_k \subset \mathcal{F}_n\). Same argument for the two descriptions of \(\mathcal{F}_T\).
+
+**Examples.** \(\{T_A \le n\} = \bigcup_{k \le n}\{X_k \in A\} \in \mathcal{F}_n\). \(\{S \wedge T \le n\} = \{S \le n\} \cup \{T \le n\}\); \(\{S \vee T \le n\} = \{S \le n\} \cap \{T \le n\}\); \(\{S + T = n\} = \bigcup_{k \le n}\{S = k\} \cap \{T = n - k\}\), with \(\{S = k\} \in \mathcal{F}_k \subset \mathcal{F}_n\) and \(\{T = n - k\} \in \mathcal{F}_{n-k} \subset \mathcal{F}_n\).
+
+**\(\mathcal{F}_T\).** \(\Omega \cap \{T = n\} = \{T = n\} \in \mathcal{F}_n\); \(A^c \cap \{T = n\} = \{T = n\} \setminus (A \cap \{T = n\})\); intersections with \(\{T = n\}\) distribute over countable unions. \(T\) is \(\mathcal{F}_T\)-measurable: \(\{T \le m\} \cap \{T = n\}\) is \(\{T = n\}\) or \(\varnothing\). If \(T \equiv n\): \(A \cap \{T = n\} = A\), so \(\mathcal{F}_T = \mathcal{F}_n\). If \(S \le T\) and \(A \in \mathcal{F}_S\): \(A \cap \{T = n\} = \bigcup_{k \le n}(A \cap \{S = k\}) \cap \{T = n\} \in \mathcal{F}_n\).
+
+**Stopped variable and process.** \(\{X_T \in B\} \cap \{T = n\} = \{X_n \in B\} \cap \{T = n\} \in \mathcal{F}_n\). And \(X_{n \wedge T} = \sum_{k < n}X_k\mathbf{1}_{\{T = k\}} + X_n\mathbf{1}_{\{T \ge n\}}\), each term \(\mathcal{F}_n\)-measurable. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+A stopping time is a random time at which one can decide to stop without looking into the future: whether \(T \le n\) must be decidable from the information at time \(n\). "The first time the price hits a level" is a stopping time; "the last time" or "the time of the maximum over the next year" are not. The \(\sigma\)-algebra \(\mathcal{F}_T\) is the information available at that random time: an event is in \(\mathcal{F}_T\) if, whenever \(T = n\), it is decidable at time \(n\). Everything one expects holds: \(T\) itself and the stopped value \(X_T\) are known at time \(T\), and earlier stopping times carry less information. These are the objects on which optional stopping (Theorem 7) is stated.
+DEEP:
+The goal is to see that the definitions capture "no peeking into the future", and to verify the properties listed, all of which are bookkeeping with the sets \(\{T = n\}\).
+
+**Step 1: the two forms of the definition.** If \(\{T \le n\} \in \mathcal{F}_n\) for all \(n\), then \(\{T = n\} = \{T \le n\} \setminus \{T \le n - 1\} \in \mathcal{F}_n\), because \(\mathcal{F}_{n-1} \subset \mathcal{F}_n\). Conversely \(\{T \le n\} = \bigcup_{k \le n}\{T = k\}\) with \(\{T = k\} \in \mathcal{F}_k \subset \mathcal{F}_n\). The equivalence uses the monotonicity of the filtration; in continuous time (Lesson 5) it fails, and only the "\(\le\)" form is the right one.
+
+**Step 2: hitting times and combinations.** \(\{T_A \le n\} = \bigcup_{k \le n}\{X_k \in A\}\) is in \(\mathcal{F}_n\) because each \(X_k\) is \(\mathcal{F}_k \subset \mathcal{F}_n\)-measurable; whether the set has been hit by time \(n\) is decided by the path up to \(n\). By contrast the last visit \(L_A = \sup\{n : X_n \in A\}\) is not a stopping time in general: deciding \(\{L_A \le n\}\) requires the whole future. \(S \wedge T\), \(S \vee T\) and \(S + T\) are stopping times by the set identities in the proof.
+
+**Step 3: \(\mathcal{F}_T\) is a \(\sigma\)-algebra of "events decidable at time \(T\)".** The three axioms are checked slice by slice on \(\{T = n\}\). The two descriptions coincide by the argument of Step 1. \(T\) is \(\mathcal{F}_T\)-measurable since \(\{T \le m\} \cap \{T = n\}\) is either \(\{T = n\}\) or empty. For constant \(T = n\), the only non-empty slice is \(\{T = n\} = \Omega\), so \(\mathcal{F}_T = \mathcal{F}_n\): the definition extends the filtration to random times. For \(S \le T\) and \(A \in \mathcal{F}_S\), on \(\{T = n\}\) we have \(S \le n\), so \(A \cap \{T = n\} = \bigcup_{k \le n}(A \cap \{S = k\}) \cap \{T = n\}\), a finite union of sets in \(\mathcal{F}_n\); hence \(\mathcal{F}_S \subset \mathcal{F}_T\), more time means more information.
+
+**Step 4: stopped variable and stopped process.** On \(\{T = n\}\), \(X_T = X_n\), so \(\{X_T \in B\} \cap \{T = n\} = \{X_n \in B\} \cap \{T = n\} \in \mathcal{F}_n\): the value at the stopping time is known at the stopping time. The stopped process \(X_{n \wedge T}\) freezes the path at time \(T\); the decomposition \(X_{n \wedge T} = \sum_{k < n}X_k\mathbf{1}_{\{T = k\}} + X_n\mathbf{1}_{\{T \ge n\}}\) shows it is adapted, and its increments are \(X_{n+1 \wedge T} - X_{n \wedge T} = \mathbf{1}_{\{T \ge n + 1\}}(X_{n+1} - X_n)\), with \(\mathbf{1}_{\{T \ge n+1\}} = 1 - \mathbf{1}_{\{T \le n\}}\) known at time \(n\): stopping is a predictable transform, which is the key to Theorem 7.
+
+Used next: Theorem 7 and Theorem 10; the continuous-time versions in Lesson 5 (Definition 13) and the strong Markov property, whose whole content is that \(\mathcal{F}_T\) is the right notion of "past" at a random time.
+EXAMPLE:
+Let \(S_n\) be the simple random walk and \(T = \inf\{n : |S_n| = 2\}\), a hitting time. Then \(\{T = 2\} = \{X_1 = X_2\} \in \mathcal{F}_2\), \(\{T = 3\} = \varnothing\), \(\{T = 4\} = \{X_1 \neq X_2, X_3 = X_4\}\), and so on; \(T\) takes even values only. The event \(A = \{S_T = 2\}\) ("exit upwards") is in \(\mathcal{F}_T\): on \(\{T = n\}\) it reads \(\{S_n = 2\} \in \mathcal{F}_n\). The event \(\{S_{T+1} = 3\}\) is not in \(\mathcal{F}_T\): on \(\{T = 2\}\) it is \(\{X_1 = X_2 = 1, X_3 = 1\} \notin \mathcal{F}_2\). And \(\mathcal{F}_{T \wedge 2} = \mathcal{F}_2\) since \(T \wedge 2 = 2\) identically.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 7 (Doob's optional stopping theorem — Forien Thm 13 and Prop. 15)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \((M_n)\) be a martingale (resp. submartingale, supermartingale) for \((\mathcal{F}_n)\), and \(S \le T\) stopping times.
+
+1. The stopped process \((M_{n \wedge T})_{n \in \mathbb{N}}\) is a martingale (resp. sub-, supermartingale).
+2. If \(T\) is bounded (\(T \le N\) a.s. for a constant \(N\)), then \(M_T\) is integrable, \(\mathcal{F}_T\)-measurable, and
+\[
+\mathbb{E}[M_T \mid \mathcal{F}_S] = M_S \qquad (\text{resp. } \ge M_S,\ \le M_S);
+\]
+in particular \(\mathbb{E}[M_T] = \mathbb{E}[M_0]\) (resp. \(\ge\), \(\le\)).
+3. If \(T < \infty\) a.s. and either \(\mathbb{E}[T] < \infty\) with \(|M_{n+1} - M_n| \le K\) for all \(n\) and a constant \(K\), or the stopped process \((M_{n \wedge T})_n\) is bounded by a constant, then \(M_T\) is integrable and \(\mathbb{E}[M_T] = \mathbb{E}[M_0]\) (resp. \(\ge\), \(\le\)).
+
+Without such a condition the conclusion of 3 fails, even for \(T < \infty\) a.s. (worked example).
+PROOF:
+**1.** \(M_{n \wedge T} = M_0 + \sum_{k=1}^n H_k(M_k - M_{k-1})\) with \(H_k = \mathbf{1}_{\{T \ge k\}} = 1 - \mathbf{1}_{\{T \le k - 1\}}\), which is \(\mathcal{F}_{k-1}\)-measurable, bounded and \(\ge 0\). This is a martingale transform (Definition 7 (iii)); the sign \(H \ge 0\) preserves the sub/super cases.
+
+**2.** \(|M_T| \le \sum_{k \le N}|M_k| \in L^1\); \(\mathcal{F}_T\)-measurability is Definition 8. For \(A \in \mathcal{F}_S\), write \(M_T - M_S = \sum_{n=0}^{N-1}\mathbf{1}_{\{S \le n < T\}}(M_{n+1} - M_n)\). The set \(A_n = A \cap \{S \le n\} \cap \{T \le n\}^c\) is in \(\mathcal{F}_n\), so
+\[
+\mathbb{E}[(M_T - M_S)\mathbf{1}_A] = \sum_{n=0}^{N-1}\mathbb{E}\big[\mathbf{1}_{A_n}\,\mathbb{E}[M_{n+1} - M_n \mid \mathcal{F}_n]\big] = 0 \quad (\text{resp. } \ge 0,\ \le 0).
+\]
+Since \(M_S\) is \(\mathcal{F}_S\)-measurable and integrable, this is \(\mathbb{E}[M_T \mid \mathcal{F}_S] = M_S\). \(S = 0\) gives the expectations.
+
+**3.** By 1, \(\mathbb{E}[M_{n \wedge T}] = \mathbb{E}[M_0]\) (resp. \(\ge\), \(\le\)), and \(M_{n \wedge T} \to M_T\) a.s. since \(T < \infty\). In the first case \(|M_{n \wedge T}| \le |M_0| + \sum_{k=1}^{n \wedge T}|M_k - M_{k-1}| \le |M_0| + KT \in L^1\); in the second, \(|M_{n \wedge T}| \le C\). Dominated convergence gives \(M_T \in L^1\) and \(\mathbb{E}[M_{n \wedge T}] \to \mathbb{E}[M_T]\). \(\square\)
+REFRESH:
+**Stopped process** (Definition 8): \(M_{n \wedge T}\) freezes \(M\) at time \(T\); its increments are \(\mathbf{1}_{\{T \ge n+1\}}(M_{n+1} - M_n)\), and \(\mathbf{1}_{\{T \ge n+1\}}\) is \(\mathcal{F}_n\)-measurable.
+EXPLANATION:
+This theorem says that a fair game stays fair when stopped at a stopping time, and that the martingale identity \(\mathbb{E}[M_m \mid \mathcal{F}_n] = M_n\) survives when the deterministic times \(n \le m\) are replaced by stopping times \(S \le T\), under a condition. Part 1 costs nothing: stopping is betting \(1\) until \(T\) and \(0\) afterwards, a predictable strategy. Part 2 is the clean statement for bounded stopping times. Part 3 passes to the limit \(n \to \infty\) in \(\mathbb{E}[M_{n \wedge T}] = \mathbb{E}[M_0]\), and this needs dominated convergence, hence a bound: bounded stakes and finite expected duration, or a bounded stopped process. The worked example shows why: a gambler who stops the first time the simple random walk hits \(1\) has \(\mathbb{E}[M_T] = 1 \neq 0\).
+DEEP:
+We want to prove the three parts. Plan: part 1 as a martingale transform; part 2 by summing increments over the random interval \([S, T)\); part 3 by dominated convergence.
+
+**Step 1: the stopped process is a transform.** For \(n \ge 1\), the increment of \(M_{n \wedge T}\) between \(k - 1\) and \(k\) is \(M_k - M_{k-1}\) if \(k \le T\) and \(0\) otherwise, so
+\[
+M_{n \wedge T} = M_0 + \sum_{k=1}^n\mathbf{1}_{\{T \ge k\}}(M_k - M_{k-1}).
+\]
+The stake \(H_k = \mathbf{1}_{\{T \ge k\}} = 1 - \mathbf{1}_{\{T \le k-1\}}\) is \(\mathcal{F}_{k-1}\)-measurable by definition of a stopping time, bounded, and non-negative. By Definition 7 (iii), \((M_{n \wedge T})_n\) is a martingale, and a submartingale (resp. supermartingale) when \(M\) is, because \(H \ge 0\) keeps the sign of \(\mathbb{E}[H_k(M_k - M_{k-1}) \mid \mathcal{F}_{k-1}] = H_k\mathbb{E}[M_k - M_{k-1} \mid \mathcal{F}_{k-1}]\).
+
+**Step 2: bounded stopping times.** Let \(S \le T \le N\). Integrability: \(|M_T| \le \sum_{k \le N}|M_k|\). Measurability: Definition 8. Now fix \(A \in \mathcal{F}_S\) and telescope over the random interval:
+\[
+M_T - M_S = \sum_{n = S}^{T - 1}(M_{n+1} - M_n) = \sum_{n=0}^{N-1}\mathbf{1}_{\{S \le n\}}\mathbf{1}_{\{T > n\}}(M_{n+1} - M_n).
+\]
+For each \(n\), the event \(A_n = A \cap \{S \le n\} \cap \{T > n\}\) belongs to \(\mathcal{F}_n\): \(A \cap \{S \le n\} \in \mathcal{F}_n\) by the second description of \(\mathcal{F}_S\), and \(\{T > n\} = \{T \le n\}^c \in \mathcal{F}_n\). Multiplying by \(\mathbf{1}_A\) and taking expectations (a finite sum of integrable terms),
+\[
+\mathbb{E}[(M_T - M_S)\mathbf{1}_A] = \sum_{n=0}^{N-1}\mathbb{E}\big[\mathbf{1}_{A_n}(M_{n+1} - M_n)\big] = \sum_{n=0}^{N-1}\mathbb{E}\big[\mathbf{1}_{A_n}\,\mathbb{E}[M_{n+1} - M_n \mid \mathcal{F}_n]\big] = 0,
+\]
+by the defining property of conditional expectation applied on \(A_n \in \mathcal{F}_n\). So \(\mathbb{E}[M_T\mathbf{1}_A] = \mathbb{E}[M_S\mathbf{1}_A]\) for all \(A \in \mathcal{F}_S\); since \(M_S\) is \(\mathcal{F}_S\)-measurable and integrable, this says \(\mathbb{E}[M_T \mid \mathcal{F}_S] = M_S\). For a submartingale the conditional expectations are \(\ge 0\), giving \(\ge\).
+
+**Step 3: unbounded stopping times.** Apply Step 2 to the bounded stopping times \(0 \le n \wedge T\): \(\mathbb{E}[M_{n \wedge T}] = \mathbb{E}[M_0]\) (resp. \(\ge\), \(\le\)). Since \(T < \infty\) a.s., \(n \wedge T = T\) for \(n \ge T(\omega)\), so \(M_{n \wedge T} \to M_T\) a.s. To pass to the limit in the expectation we need a dominating integrable variable. Under bounded increments and \(\mathbb{E}[T] < \infty\): \(|M_{n \wedge T}| \le |M_0| + \sum_{k=1}^{n \wedge T}|M_k - M_{k-1}| \le |M_0| + KT\), integrable. Under a bounded stopped process, the constant dominates. Dominated convergence (Theorem 2) concludes.
+
+**Where the hypotheses bite.** The worked example gives a martingale with \(T < \infty\) a.s. and \(\mathbb{E}[M_T] \neq \mathbb{E}[M_0]\): there \(\mathbb{E}[T] = \infty\) and the stopped process is unbounded below. Theorem 10 will give the right general condition: uniform integrability of the martingale.
+
+Used next: Theorem 8 (a stopped submartingale is a submartingale, used in the upcrossing argument), Theorem 10, and in Hoffmann's course the continuous-time optional stopping theorem behind hitting-time computations and the strong Markov property.
+EXAMPLE:
+Simple random walk \(S_n\), \(T = \inf\{n : S_n = 1\}\). First, \(T < \infty\) a.s.: \(1 - S_{n \wedge T}\) is a non-negative martingale (part 1, and \(S_{n \wedge T} \le 1\)), so it converges a.s. by Theorem 8; a path with increments \(\pm 1\) can only converge by becoming constant, which happens only after \(T\). Yet \(\mathbb{E}[S_T] = 1 \neq 0 = \mathbb{E}[S_0]\): part 3 does not apply, and indeed \(\mathbb{E}[T] = \infty\). Gambler's ruin: \(T = \inf\{n : S_n \in \{-a, b\}\}\) with integers \(a, b \ge 1\). Here \(\mathbb{E}[T] < \infty\) (in each block of \(a + b\) steps the walk exits with probability at least \(2^{-(a+b)}\), so \(\mathbb{P}(T > k(a+b)) \le (1 - 2^{-(a+b)})^k\)), and \(S\) has increments bounded by \(1\), so \(\mathbb{E}[S_T] = 0\): with \(p = \mathbb{P}(S_T = b)\), \(bp - a(1 - p) = 0\), i.e. \(p = \frac{a}{a + b}\). Applying part 3 to the stopped martingale \(S_{n \wedge T}^2 - n \wedge T\), whose increments are bounded by \(2\max(a, b)\), gives \(\mathbb{E}[S_T^2] = \mathbb{E}[T]\), i.e. \(\mathbb{E}[T] = b^2p + a^2(1 - p) = ab\).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 8 (Almost sure convergence of martingales — Forien Thm 14–17)
+IMPORTANCE: half imp
+HIGHLIGHT: 0
+STATEMENT:
+1. **(Doob)** A submartingale \((M_n)\) with \(\sup_n \mathbb{E}[M_n^+] < \infty\) converges almost surely to an integrable limit \(M_\infty\). Hence: a martingale bounded in \(L^1\) (\(\sup_n \mathbb{E}|M_n| < \infty\)) converges a.s.; a supermartingale with \(\sup_n \mathbb{E}[M_n^-] < \infty\), in particular every non-negative supermartingale, converges a.s.; the limit is integrable in each case.
+2. Convergence need not hold in \(L^1\): there are non-negative martingales with \(M_n \to 0\) a.s. and \(\mathbb{E}[M_n] = 1\) for all \(n\).
+3. **(\(L^2\))** A martingale bounded in \(L^2\) converges almost surely and in \(L^2\). (More generally, a martingale bounded in \(L^p\) for some \(p > 1\) converges a.s. and in \(L^p\); admitted.)
+PROOF:
+**Upcrossing inequality.** Fix \(a < b\) and let \(U_N\) be the number of upcrossings of \([a, b]\) by \((M_n)_{n \le N}\): the number of disjoint time intervals \([s, t] \subset [0, N]\) with \(M_s \le a\), \(M_t \ge b\), counted greedily. Then
+\[
+(b - a)\,\mathbb{E}[U_N] \le \mathbb{E}[(M_N - a)^+].
+\]
+Proof: \(Y_n = (M_n - a)^+\) is a submartingale (Definition 7 (iv), convex non-decreasing image) and upcrosses \([0, b - a]\) exactly when \(M\) upcrosses \([a, b]\). Let \(H_n = 1\) if the walk is, at time \(n - 1\), in the middle of an attempted upcrossing (it has visited \(0\) since the last completed upcrossing and not yet reached \(b - a\)), \(H_n = 0\) otherwise; \(H\) is predictable with values in \(\{0, 1\}\). Each completed upcrossing contributes at least \(b - a\) to \((H\cdot Y)_N\), and an unfinished one contributes \(\ge 0\) because it starts from \(Y = 0\) and \(Y \ge 0\); so \((H\cdot Y)_N \ge (b - a)U_N\). Since \(1 - H \ge 0\) is predictable and \(Y\) is a submartingale, \(\mathbb{E}[((1 - H)\cdot Y)_N] \ge 0\), and \(Y_N - Y_0 = (H\cdot Y)_N + ((1 - H)\cdot Y)_N\) gives \(\mathbb{E}[(H\cdot Y)_N] \le \mathbb{E}[Y_N]\).
+
+**1.** \(\mathbb{E}|M_n| = 2\mathbb{E}[M_n^+] - \mathbb{E}[M_n] \le 2\sup_k\mathbb{E}[M_k^+] - \mathbb{E}[M_0]\), so \(M\) is bounded in \(L^1\). For rationals \(a < b\), \(\mathbb{E}[U_\infty] = \lim_N\mathbb{E}[U_N] \le \frac{|a| + \sup_n\mathbb{E}[M_n^+]}{b - a} < \infty\), so \(U_\infty < \infty\) a.s. Off the countable union of null sets \(\{U_\infty[a, b] = \infty\}\), \(a < b\) rational, one has \(\liminf M_n = \limsup M_n\): otherwise some rational pair \(a < b\) would lie strictly between them, forcing infinitely many upcrossings. So \(M_n \to M_\infty \in [-\infty, \infty]\) a.s., and Fatou gives \(\mathbb{E}|M_\infty| \le \liminf \mathbb{E}|M_n| < \infty\). Supermartingales: apply to \(-M\).
+
+**2.** \(M_n = U_1\cdots U_n\) with \(U_i\) i.i.d., \(\mathbb{P}(U_i = 0) = \mathbb{P}(U_i = 2) = \frac12\): a non-negative martingale (\(\mathbb{E}[U] = 1\), independence), \(\mathbb{E}[M_n] = 1\), and \(M_n = 0\) as soon as one \(U_k = 0\), which happens a.s. since \(\mathbb{P}(U_1 = \dots = U_n = 2) = 2^{-n} \to 0\).
+
+**3.** For \(m \ge n\), \(\mathbb{E}[(M_m - M_n)M_n] = \mathbb{E}[M_n\mathbb{E}[M_m - M_n \mid \mathcal{F}_n]] = 0\), so \(\mathbb{E}[M_m^2] = \mathbb{E}[M_n^2] + \mathbb{E}[(M_m - M_n)^2]\). Thus \(\mathbb{E}[M_n^2]\) is non-decreasing and bounded, hence convergent, and \(\|M_m - M_n\|_{L^2}^2 = \mathbb{E}[M_m^2] - \mathbb{E}[M_n^2] \to 0\): \((M_n)\) is Cauchy in \(L^2\) and converges in \(L^2\) (completeness). It is bounded in \(L^1\), so it converges a.s. by 1, and the two limits coincide (a subsequence of an \(L^2\)-convergent sequence converges a.s.). \(\square\)
+REFRESH:
+**Martingale transform** (Definition 7 (iii)): for \(H\) predictable, bounded, \(\ge 0\) and \(Y\) a submartingale, \((H\cdot Y)_n = \sum_{k \le n}H_k(Y_k - Y_{k-1})\) is a submartingale, so \(\mathbb{E}[(H\cdot Y)_N] \ge 0\).
+EXPLANATION:
+This is the theorem that makes martingales useful: a martingale whose absolute values stay bounded in mean cannot oscillate forever, it converges almost surely. The argument counts, for each interval \([a, b]\), the number of times the path crosses it upwards; a betting strategy that buys below \(a\) and sells above \(b\) would earn at least \(b - a\) per crossing, and since no strategy earns on average, the expected number of crossings is bounded. A path that crosses every rational interval finitely often has a limit. The limit is integrable by Fatou, but convergence of the expectations can fail (part 2), which is what uniform integrability will fix (Theorems 9–10). Part 3 is the \(L^2\) case, where the increments are orthogonal and Pythagoras does everything.
+DEEP:
+We want to prove that a submartingale with \(\sup_n \mathbb{E}[M_n^+] < \infty\) converges a.s. Plan: the upcrossing inequality, then a countable union of null sets, then Fatou.
+
+**Step 1: reduce to a non-negative submartingale.** Fix \(a < b\). The function \(x \mapsto (x - a)^+\) is convex and non-decreasing, so \(Y_n = (M_n - a)^+\) is a submartingale (Definition 7 (iv)). An upcrossing of \([a, b]\) by \(M\) is exactly an upcrossing of \([0, b - a]\) by \(Y\): a time when \(Y = 0\) followed by a time when \(Y \ge b - a\).
+
+**Step 2: the betting strategy.** Define the predictable stakes \(H_n \in \{0, 1\}\): \(H_n = 1\) if at time \(n - 1\) an upcrossing is in progress (the path has touched \(0\) since the last completed crossing and has not yet reached \(b - a\)), \(H_n = 0\) otherwise. Whether \(H_n = 1\) is decided by \(Y_0, \dots, Y_{n-1}\), so \(H\) is predictable. The gain \((H\cdot Y)_N = \sum_{k \le N}H_k(Y_k - Y_{k-1})\) collects the increments of \(Y\) during upcrossing attempts. Each completed upcrossing contributes at least \(b - a\) (from \(0\) to \(\ge b - a\)); an attempt still in progress at time \(N\) contributes \(Y_N - 0 \ge 0\). Hence \((H\cdot Y)_N \ge (b - a)U_N\), where \(U_N\) is the number of completed upcrossings by time \(N\).
+
+**Step 3: the strategy cannot earn.** Since \(1 - H\) is predictable, bounded and non-negative, and \(Y\) is a submartingale, \(((1 - H)\cdot Y)_n\) is a submartingale starting at \(0\), so \(\mathbb{E}[((1 - H)\cdot Y)_N] \ge 0\). But \(Y_N - Y_0 = (H\cdot Y)_N + ((1 - H)\cdot Y)_N\), hence \(\mathbb{E}[(H\cdot Y)_N] \le \mathbb{E}[Y_N - Y_0] \le \mathbb{E}[Y_N] = \mathbb{E}[(M_N - a)^+]\). Combining with Step 2:
+\[
+(b - a)\,\mathbb{E}[U_N] \le \mathbb{E}[(M_N - a)^+] \le |a| + \mathbb{E}[M_N^+].
+\]
+
+**Step 4: finitely many crossings, almost surely.** \(U_N \uparrow U_\infty\), the total number of upcrossings of \([a, b]\); by monotone convergence \(\mathbb{E}[U_\infty] \le \frac{|a| + \sup_n\mathbb{E}[M_n^+]}{b - a} < \infty\), so \(U_\infty < \infty\) a.s. This holds for each pair of rationals \(a < b\); the union over the countably many pairs of the null sets \(\{U_\infty[a, b] = \infty\}\) is null. Outside it, \(\liminf_n M_n = \limsup_n M_n\): if \(\liminf < \limsup\), pick rationals \(a < b\) strictly between; the path is below \(a\) infinitely often and above \(b\) infinitely often, so it upcrosses \([a, b]\) infinitely often, a contradiction. Hence \(M_n \to M_\infty\) a.s., possibly with \(M_\infty = \pm\infty\) for the moment.
+
+**Step 5: the limit is integrable.** \(\mathbb{E}|M_n| = 2\mathbb{E}[M_n^+] - \mathbb{E}[M_n] \le 2\sup_k\mathbb{E}[M_k^+] - \mathbb{E}[M_0]\) (the mean of a submartingale is non-decreasing), so \(M\) is bounded in \(L^1\), and Fatou gives \(\mathbb{E}|M_\infty| \le \liminf_n\mathbb{E}|M_n| < \infty\): \(M_\infty\) is finite a.s. and integrable. For a martingale, \(M_n^+ \le |M_n|\); for a supermartingale, apply the result to \(-M\); for a non-negative supermartingale, \((-M)^+ = 0\).
+
+**Step 6: why \(L^1\) convergence can fail, and the \(L^2\) case.** Fatou gives an inequality, not \(\mathbb{E}[M_\infty] = \lim\mathbb{E}[M_n]\); the product martingale of part 2 loses all its mass in the limit. In \(L^2\) the situation is rigid: increments over disjoint intervals are orthogonal, \(\mathbb{E}[(M_m - M_n)M_n] = 0\), so \(\mathbb{E}[M_m^2] = \mathbb{E}[M_n^2] + \mathbb{E}[(M_m - M_n)^2]\), the norms increase to a finite limit, and the sequence is Cauchy in \(L^2\). Completeness of \(L^2\) gives the limit in \(L^2\), which must be the a.s. limit.
+
+Used next: the counterexample motivates uniform integrability (Definition 9); Theorem 10 identifies exactly when \(L^1\) convergence holds. Hoffmann's Chapter 1 uses only the \(L^2\) convergence of orthogonal series, the same Pythagoras argument as in Step 6.
+EXAMPLE:
+Pólya's urn: an urn starts with one red and one blue ball; at each step a ball is drawn at random and put back with one more of the same colour. Let \(M_n\) be the proportion of red balls after \(n\) steps, with \(n + 2\) balls in the urn. Given \(\mathcal{F}_n\), the next ball is red with probability \(M_n\), so \(\mathbb{E}[M_{n+1} \mid \mathcal{F}_n] = M_n\frac{(n+2)M_n + 1}{n + 3} + (1 - M_n)\frac{(n+2)M_n}{n + 3} = M_n\): a martingale, with values in \([0, 1]\), hence bounded in every \(L^p\). By Theorem 8 it converges a.s. and in \(L^2\) to a limit \(M_\infty\), which turns out to be uniform on \([0, 1]\) (outside these notes): the proportion stabilises, but at a random level.
+NOTE:
+(none)

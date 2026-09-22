@@ -1,0 +1,301 @@
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 7 (Markov, Chebyshev, Chernoff — Forien Prop. 8)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(U : \mathbb{R} \to [0, +\infty)\) be non-decreasing and \(X\) a real random variable. For every \(a\) with \(U(a) > 0\),
+\[
+\mathbb{P}(X \ge a) \;\le\; \frac{\mathbb{E}[U(X)]}{U(a)}.
+\]
+Special cases, for \(a > 0\): **Markov** \(\mathbb{P}(|X| \ge a) \le \mathbb{E}|X|/a\), and more generally \(\mathbb{P}(|X| \ge a) \le \mathbb{E}|X|^p/a^p\); **Chebyshev** \(\mathbb{P}(|X - \mathbb{E}X| \ge a) \le \mathrm{Var}(X)/a^2\); **Chernoff** \(\mathbb{P}(X \ge a) \le e^{-\lambda a}\,\mathbb{E}[e^{\lambda X}]\) for every \(\lambda > 0\).
+PROOF:
+On \(\{X \ge a\}\), \(U(X) \ge U(a)\) since \(U\) is non-decreasing; elsewhere \(U(X) \ge 0\). Hence \(U(a)\mathbf{1}_{\{X \ge a\}} \le U(X)\) pointwise; take expectations and divide by \(U(a)\). Markov: \(|X|\) with \(U(x) = x^p\mathbf{1}_{x \ge 0}\). Chebyshev: Markov with \(p = 2\) for \(|X - \mathbb{E}X|\). Chernoff: \(U(x) = e^{\lambda x}\). \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+This is the simplest way to bound a probability by an expectation: the probability that \(X\) exceeds \(a\) is at most the mean of \(U(X)\) divided by \(U(a)\). The proof is one line, \(U(a)\mathbf{1}_{\{X \ge a\}} \le U(X)\), integrated. The art is in choosing \(U\): \(U(x) = |x|^p\) gives polynomial tails from moments, \(U(x) = e^{\lambda x}\) gives exponential tails from the Laplace transform. Combined with Borel–Cantelli, these bounds prove almost sure statements: Kolmogorov's continuity criterion in Hoffmann's Chapter 1 is exactly Markov's inequality with \(U(x) = |x|^p\) applied to the increments \(|B_t - B_s|\), followed by Borel–Cantelli.
+DEEP:
+We want to prove the general inequality and see how the special cases and the typical use follow.
+
+**Step 1: the pointwise inequality.** On the event \(\{X \ge a\}\), \(U(X) \ge U(a)\) because \(U\) is non-decreasing; off it, \(U(X) \ge 0\). Hence \(U(a)\mathbf{1}_{\{X \ge a\}} \le U(X)\) everywhere. Taking expectations (monotonicity of the integral) gives \(U(a)\,\mathbb{P}(X \ge a) \le \mathbb{E}[U(X)]\), and dividing by \(U(a) > 0\) is the claim. The inequality is trivially true, and useless, when \(\mathbb{E}[U(X)] = +\infty\).
+
+**Step 2: special cases.** Markov: apply to \(|X|\) with \(U(x) = x^p\mathbf{1}_{x \ge 0}\). Chebyshev: apply Markov with \(p = 2\) to \(|X - \mathbb{E}X|\). Chernoff: \(U(x) = e^{\lambda x}\) is increasing and positive for \(\lambda > 0\); optimising over \(\lambda\) gives the best exponential bound.
+
+**Step 3: how sharp are they?** Markov is sharp in general (take \(X = a\mathbf{1}_A\) with \(\mathbb{P}(A) = \mathbb{E}X/a\)) but poor for concentrated variables: for a Gaussian \(Z\), Chebyshev gives \(\mathbb{P}(|Z| \ge a) \le a^{-2}\), while Chernoff with \(\lambda = a\) gives \(\mathbb{P}(Z \ge a) \le e^{-a^2}\mathbb{E}[e^{aZ}] = e^{-a^2/2}\), the right order of magnitude. Choosing \(U\) to match the integrability of \(X\) is the whole game.
+
+**Step 4: the pattern "moment bound, then Borel–Cantelli".** Suppose \(\mathbb{E}|X_n|^p \le C\,2^{-n\beta}\) for some \(\beta > 0\). Markov with \(a = 2^{-n\alpha}\), \(0 < \alpha < \beta/p\), gives \(\mathbb{P}(|X_n| \ge 2^{-n\alpha}) \le C\,2^{-n(\beta - p\alpha)}\), a summable series, so by Borel–Cantelli (Proposition 8) almost surely \(|X_n| \le 2^{-n\alpha}\) for all large \(n\). This is the argument of Hoffmann's Theorem 18 (Kolmogorov's criterion), with \(X_n\) the largest dyadic increment at scale \(2^{-n}\), and of the last step of Lévy's construction of Brownian motion (Lesson 5).
+EXAMPLE:
+Let \(S_n = X_1 + \dots + X_n\) with \(X_i\) i.i.d., \(\mathbb{E}X_i = 0\), \(\mathrm{Var}X_i = 1\), so \(\mathrm{Var}(S_n) = n\). Chebyshev: \(\mathbb{P}(|S_n/n| \ge \varepsilon) \le \frac{1}{n\varepsilon^2} \to 0\), the weak law of large numbers in one line. With fourth moments, expanding \((X_1 + \dots + X_n)^4\) only the terms \(X_i^4\) and \(X_i^2X_j^2\) survive the expectation, so \(\mathbb{E}[S_n^4] = n\,\mathbb{E}X_1^4 + 3n(n-1) \le Cn^2\); Markov gives \(\mathbb{P}(|S_n/n| \ge \varepsilon) \le \frac{Cn^2}{n^4\varepsilon^4}\), summable in \(n\), and Borel–Cantelli upgrades the conclusion to \(S_n/n \to 0\) almost surely: the strong law under a fourth-moment assumption.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 5 (Independence — Forien Def. 13 and the remarks after it)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \((\Omega, \mathcal{F}, \mathbb{P})\) be a probability space.
+
+- Sub-\(\sigma\)-algebras \(\mathcal{G}_1, \dots, \mathcal{G}_n\) of \(\mathcal{F}\) are **independent** if \(\mathbb{P}(A_1 \cap \dots \cap A_n) = \mathbb{P}(A_1)\cdots\mathbb{P}(A_n)\) for all \(A_i \in \mathcal{G}_i\). A family \((\mathcal{G}_i)_{i \in I}\) is independent if every finite subfamily is.
+- Random variables \(X_i\) (with values in any measurable spaces) are independent if the \(\sigma\)-algebras \(\sigma(X_i)\) are, i.e. \(\mathbb{P}(X_{i_1} \in A_1, \dots, X_{i_n} \in A_n) = \prod_k \mathbb{P}(X_{i_k} \in A_k)\) for all finite choices of indices and measurable sets. Events \(A_i\) are independent if the \(\sigma\)-algebras \(\{\varnothing, A_i, A_i^c, \Omega\}\) are. A variable \(X\) is independent of a \(\sigma\)-algebra \(\mathcal{G}\) if \(\sigma(X)\) and \(\mathcal{G}\) are.
+
+Properties.
+
+1. **(Criterion on \(\pi\)-systems)** If \(\mathcal{C}_i\) are \(\pi\)-systems with \(\sigma(\mathcal{C}_i) = \mathcal{G}_i\), and the product formula holds for all \(A_i \in \mathcal{C}_i \cup \{\Omega\}\), then \(\mathcal{G}_1, \dots, \mathcal{G}_n\) are independent. In particular real variables \(X_1, \dots, X_n\) are independent as soon as \(\mathbb{P}(X_1 \le a_1, \dots, X_n \le a_n) = \prod_i \mathbb{P}(X_i \le a_i)\) for all \(a_i \in \mathbb{R}\).
+2. \(X_1, \dots, X_n\) are independent if and only if the law of \((X_1, \dots, X_n)\) is the product \(\mathcal{L}_{X_1} \otimes \dots \otimes \mathcal{L}_{X_n}\). Then \(\mathbb{E}\big[\prod_i f_i(X_i)\big] = \prod_i \mathbb{E}[f_i(X_i)]\) for measurable \(f_i \ge 0\), or bounded, or with each \(f_i(X_i)\) integrable; in particular independent variables in \(L^2\) are uncorrelated.
+3. **(Grouping)** If \((\mathcal{G}_i)_{i \in I}\) is independent and \(I = \bigsqcup_k I_k\), then the \(\sigma\)-algebras \(\sigma(\mathcal{G}_i, i \in I_k)\), \(k \in K\), are independent. Hence measurable functions of disjoint groups of independent variables are independent.
+
+Independence of a family is stronger than pairwise independence, and uncorrelated does not imply independent.
+PROOF:
+**1.** For two \(\sigma\)-algebras: fix \(B \in \mathcal{C}_2\); the finite measures \(A \mapsto \mathbb{P}(A \cap B)\) and \(A \mapsto \mathbb{P}(A)\mathbb{P}(B)\) on \(\mathcal{G}_1\) have total mass \(\mathbb{P}(B)\) and agree on \(\mathcal{C}_1\), hence on \(\mathcal{G}_1\) by Proposition 1. Then fix \(A \in \mathcal{G}_1\) and repeat on \(\mathcal{G}_2\). For \(n\) \(\sigma\)-algebras, freeze all but one and iterate; adding \(\Omega\) to the \(\pi\)-systems allows the freezing. Half-lines \(\{X_i \le a\}\) form a \(\pi\)-system generating \(\sigma(X_i)\).
+
+**2.** \(\mathcal{L}_{(X_1, \dots, X_n)}\) and \(\bigotimes_i \mathcal{L}_{X_i}\) are probability measures agreeing on the rectangles, a \(\pi\)-system generating the product \(\sigma\)-algebra, iff the product formula holds; Proposition 1. Then Proposition 4 and Tonelli give \(\mathbb{E}[\prod_i f_i(X_i)] = \int \prod_i f_i(x_i)\bigotimes_i \mathcal{L}_{X_i}(dx) = \prod_i \int f_i\, d\mathcal{L}_{X_i}\) for \(f_i \ge 0\); for the integrable case, apply this to \(|f_i|\) first, then Fubini.
+
+**3.** For block \(k\), the finite intersections \(A_{i_1} \cap \dots \cap A_{i_m}\) with \(i_j \in I_k\), \(A_{i_j} \in \mathcal{G}_{i_j}\), form a \(\pi\)-system generating \(\sigma(\mathcal{G}_i, i \in I_k)\); the product formula across blocks holds on these by independence of the family; apply 1. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+Independence is the formalisation of "knowing one tells nothing about the other", stated for \(\sigma\)-algebras, the carriers of information, and then for variables through the \(\sigma\)-algebras they generate. The definition asks for the product formula on all events, which is impossible to check directly; the criterion on \(\pi\)-systems reduces it to a generating family, for instance half-lines, via Proposition 1. The two consequences are what one computes with: the joint law of independent variables is the product of the laws, so expectations of products factorise by Fubini; and grouping independent variables into disjoint blocks preserves independence. Brownian motion is defined by the independence of its increments, and Hoffmann's Markov property is the independence of the \(\sigma\)-algebras \(\sigma(B_s, s \le t)\) and \(\sigma(B_{t+u} - B_t, u \ge 0)\).
+DEEP:
+We want to prove the three properties. Plan: everything comes from Proposition 1 applied to well-chosen measures.
+
+**Step 1: the criterion on \(\pi\)-systems, two \(\sigma\)-algebras.** Suppose \(\mathbb{P}(A \cap B) = \mathbb{P}(A)\mathbb{P}(B)\) for \(A \in \mathcal{C}_1 \cup \{\Omega\}\), \(B \in \mathcal{C}_2 \cup \{\Omega\}\). Fix \(B \in \mathcal{C}_2\). The measures \(A \mapsto \mathbb{P}(A \cap B)\) and \(A \mapsto \mathbb{P}(A)\mathbb{P}(B)\) on \((\Omega, \mathcal{G}_1)\) are finite with the same total mass \(\mathbb{P}(B)\) and agree on the \(\pi\)-system \(\mathcal{C}_1\), so they agree on \(\sigma(\mathcal{C}_1) = \mathcal{G}_1\) by Proposition 1. Now fix \(A \in \mathcal{G}_1\) and repeat with the measures \(B \mapsto \mathbb{P}(A \cap B)\) and \(B \mapsto \mathbb{P}(A)\mathbb{P}(B)\) on \(\mathcal{G}_2\). For \(n\) \(\sigma\)-algebras, freeze all but one and proceed in the same way \(n\) times; adding \(\Omega\) to the \(\pi\)-systems is what allows freezing. For real variables, \(\mathcal{C}_i = \{\{X_i \le a\} : a \in \mathbb{R}\}\) is a \(\pi\)-system generating \(\sigma(X_i)\).
+
+**Step 2: product law and factorisation.** The law of \(\mathbf{X} = (X_1, \dots, X_n)\) and the product measure \(\bigotimes_i \mathcal{L}_{X_i}\) are two probability measures on \(\prod_i E_i\); they agree on the rectangles \(A_1 \times \dots \times A_n\) exactly when the product formula holds, and the rectangles form a \(\pi\)-system generating the product \(\sigma\)-algebra, so by Proposition 1 independence is equivalent to \(\mathcal{L}_{\mathbf{X}} = \bigotimes_i \mathcal{L}_{X_i}\). Then, by the transfer formula and Tonelli (Theorem 3), \(\mathbb{E}[\prod_i f_i(X_i)] = \int \prod_i f_i(x_i)\, \bigotimes_i \mathcal{L}_{X_i}(dx) = \prod_i \int f_i\, d\mathcal{L}_{X_i}\) for \(f_i \ge 0\); for integrable \(f_i(X_i)\), apply this to \(|f_i|\) first, which shows the product is integrable, then Fubini. Uncorrelation: \(\mathbb{E}[XY] = \mathbb{E}X\,\mathbb{E}Y\).
+
+**Step 3: grouping.** For each block \(k\), let \(\mathcal{C}_k\) be the family of finite intersections \(A_{i_1} \cap \dots \cap A_{i_m}\) with \(i_j \in I_k\) and \(A_{i_j} \in \mathcal{G}_{i_j}\); it is a \(\pi\)-system generating \(\sigma(\mathcal{G}_i, i \in I_k)\), and the product formula holds across blocks for elements of the \(\mathcal{C}_k\) by independence of the whole family, all indices involved being distinct. Step 1 concludes. For functions, \(\sigma(g(X_i, i \in I_k)) \subset \sigma(X_i, i \in I_k)\).
+
+**Step 4: the two warnings.** Pairwise independence is weaker: with \(X, Y\) independent fair coin flips in \(\{0, 1\}\) and \(Z = X + Y \bmod 2\), any two of \(X, Y, Z\) are independent, but \(Z\) is a function of \((X, Y)\). Uncorrelated is weaker than independent: with \(Z \sim \mathcal{N}(0,1)\), \(X = Z\) and \(Y = Z^2 - 1\) satisfy \(\mathbb{E}[XY] = \mathbb{E}[Z^3] - \mathbb{E}[Z] = 0\), yet \(Y\) is a function of \(X\). For Gaussian vectors, and only there, the two notions coincide (Lesson 4).
+
+Used next: the second part of Borel–Cantelli; the freezing property of conditional expectation (Lesson 3); the definition of Brownian motion by independent increments (Lesson 5), where the criterion of Step 1 is applied to the \(\pi\)-systems \(\{B_{s_1} \in A_1, \dots, B_{s_m} \in A_m\}\), \(s_j \le t\), exactly as in Hoffmann's proof of the Markov property.
+EXAMPLE:
+Let \(X, Y\) be independent, both \(\mathcal{N}(0,1)\). Then \(\mathbb{E}[X^2Y^2] = \mathbb{E}[X^2]\mathbb{E}[Y^2] = 1\) and \(\mathbb{E}[e^{X+Y}] = \mathbb{E}[e^X]\mathbb{E}[e^Y] = e\), by factorisation. The variables \(U = X + Y\) and \(V = X - Y\) are functions of the same pair, so grouping says nothing; a direct computation gives \(\mathrm{Cov}(U, V) = \mathbb{E}[X^2] - \mathbb{E}[Y^2] = 0\), and since \((U, V)\) is a Gaussian vector (Lesson 4) they are in fact independent. For Brownian increments: with \(0 < s < t\), \(B_s\) and \(B_t - B_s\) are independent, so \(\mathbb{E}[B_sB_t] = \mathbb{E}[B_s^2] + \mathbb{E}[B_s]\,\mathbb{E}[B_t - B_s] = s\).
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 8 (Borel–Cantelli — Forien Prop. 9)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+For a sequence of events \((A_n)\), let \(\limsup_n A_n = \bigcap_n \bigcup_{k \ge n} A_k\) be the event "\(A_n\) occurs for infinitely many \(n\)".
+
+1. If \(\sum_n \mathbb{P}(A_n) < \infty\), then \(\mathbb{P}(\limsup_n A_n) = 0\): almost surely, only finitely many of the \(A_n\) occur.
+2. If the \(A_n\) are independent and \(\sum_n \mathbb{P}(A_n) = \infty\), then \(\mathbb{P}(\limsup_n A_n) = 1\).
+PROOF:
+**1.** Let \(N = \sum_n \mathbf{1}_{A_n}\). By monotone convergence, \(\mathbb{E}[N] = \sum_n \mathbb{P}(A_n) < \infty\), so \(N < \infty\) a.s. (Markov: \(\mathbb{P}(N = \infty) \le \mathbb{E}[N]/a\) for all \(a\)); and \(\{N = \infty\} = \limsup_n A_n\).
+
+**2.** \((\limsup A_n)^c = \bigcup_n \bigcap_{k \ge n} A_k^c\), an increasing union. For fixed \(n\) and every \(p\), by independence and \(1 - x \le e^{-x}\),
+\[
+\mathbb{P}\Big(\bigcap_{k \ge n} A_k^c\Big) \le \prod_{k=n}^{n+p}(1 - \mathbb{P}(A_k)) \le \exp\Big(-\sum_{k=n}^{n+p}\mathbb{P}(A_k)\Big) \xrightarrow[p \to \infty]{} 0 .
+\]
+So \(\mathbb{P}((\limsup A_n)^c) = \lim_n \mathbb{P}(\bigcap_{k \ge n} A_k^c) = 0\). \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+This is the main tool for proving that something happens almost surely "for all \(n\) large enough": if the probabilities of the bad events \(A_n\) are summable, then with probability one only finitely many of them occur. The proof integrates the counting variable \(\sum_n \mathbf{1}_{A_n}\), whose expectation is \(\sum_n \mathbb{P}(A_n)\), and a variable with finite expectation is finite a.s. The second part says that, for independent events, the summability condition is sharp. The first part is used in every almost sure regularity statement about Brownian motion, in particular in Kolmogorov's continuity criterion; the second gives recurrence-type statements.
+DEEP:
+We want to prove both parts. Plan: part 1 by integrating a series, part 2 by bounding the probability of the complement with \(1 - x \le e^{-x}\).
+
+**Step 1: the event.** \(\omega \in \limsup_n A_n\) means: for every \(n\) there is \(k \ge n\) with \(\omega \in A_k\), i.e. \(\omega\) belongs to infinitely many \(A_k\). Its complement is \(\bigcup_n \bigcap_{k \ge n} A_k^c\): from some \(n\) on, none of the \(A_k\) occurs.
+
+**Step 2: part 1.** Let \(N = \sum_n \mathbf{1}_{A_n}\) be the number of events that occur, a variable with values in \(\{0, 1, \dots, +\infty\}\). By monotone convergence for series (Theorem 2), \(\mathbb{E}[N] = \sum_n \mathbb{P}(A_n) < \infty\). An integrable variable is finite a.s., because \(\mathbb{P}(N = \infty) \le \mathbb{P}(N \ge a) \le \mathbb{E}[N]/a\) for every \(a\) (Markov). So \(N < \infty\) a.s., which is the claim since \(\{N = \infty\} = \limsup A_n\). No independence is needed.
+
+**Step 3: part 2.** By Step 1 and continuity from below, \(\mathbb{P}((\limsup A_n)^c) = \lim_n \mathbb{P}(\bigcap_{k \ge n} A_k^c)\). Fix \(n\); for every \(p\), by independence of the complements (grouping property, Definition 5),
+\[
+\mathbb{P}\Big(\bigcap_{k \ge n} A_k^c\Big) \le \mathbb{P}\Big(\bigcap_{k=n}^{n+p} A_k^c\Big) = \prod_{k=n}^{n+p}\big(1 - \mathbb{P}(A_k)\big) \le \exp\Big(-\sum_{k=n}^{n+p}\mathbb{P}(A_k)\Big),
+\]
+using \(1 - x \le e^{-x}\). As \(p \to \infty\) the exponent tends to \(-\infty\) because the series diverges (and so do its tails), so \(\mathbb{P}(\bigcap_{k \ge n} A_k^c) = 0\) for every \(n\), and \(\mathbb{P}(\limsup A_n) = 1\).
+
+**Where the hypotheses bite.** Independence cannot be dropped in part 2: take \(A_n = A\) for all \(n\) with \(0 < \mathbb{P}(A) < 1\); the series diverges but \(\limsup A_n = A\) has probability \(\mathbb{P}(A) \notin \{0, 1\}\). Part 2 does hold under pairwise independence only (full prérentrée, Exercise 2).
+
+**The standard use.** To show \(X_n \to X\) a.s., it suffices to find \(\varepsilon_n \downarrow 0\) with \(\sum_n \mathbb{P}(|X_n - X| > \varepsilon_n) < \infty\): then a.s. \(|X_n - X| \le \varepsilon_n\) for all large \(n\). This is how convergence in probability yields an a.s. convergent subsequence (Proposition 9), how Kolmogorov's continuity criterion is proved (Hoffmann, Theorem 18, Step 1), and how the uniform convergence in Lévy's construction of Brownian motion is obtained (Lesson 5).
+EXAMPLE:
+Let \(Z_1, Z_2, \dots\) be i.i.d. standard Gaussians. Since \(\mathbb{P}(|Z_n| \ge x) \le e^{-x^2/2}\) (Lesson 4, Definition/Proposition 13), \(\sum_n \mathbb{P}(|Z_n| \ge 2\sqrt{\ln n}) \le \sum_n n^{-2} < \infty\), so almost surely \(|Z_n| \le 2\sqrt{\ln n}\) for all large \(n\): \(\limsup_n |Z_n|/\sqrt{\ln n} \le 2\). Conversely, with the lower bound \(\mathbb{P}(Z \ge x) \ge c\,e^{-x^2/2}/x\) for \(x \ge 1\) (a standard estimate), \(\sum_n \mathbb{P}(Z_n \ge \sqrt{\ln n}) \ge c\sum_n \frac{1}{\sqrt{n\ln n}} = \infty\), and by independence \(Z_n \ge \sqrt{\ln n}\) infinitely often, a.s. The Gaussian sequence grows like \(\sqrt{\ln n}\), never much faster, and reaches that size infinitely often.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: definition
+TITLE: Definition 6 (The four modes of convergence — Forien Def. 14)
+IMPORTANCE: not imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(X\) and \(X_n\), \(n \in \mathbb{N}\), be real random variables on the same probability space. We say that \(X_n \to X\)
+
+- **almost surely** if \(\mathbb{P}(X_n \to X) = 1\);
+- **in probability** if \(\mathbb{P}(|X_n - X| > \varepsilon) \to 0\) for every \(\varepsilon > 0\);
+- **in \(L^p\)** (\(p \ge 1\)) if \(\|X_n - X\|_{L^p} \to 0\);
+- **in law** (or in distribution) if \(\mathbb{E}[\phi(X_n)] \to \mathbb{E}[\phi(X)]\) for every bounded continuous \(\phi : \mathbb{R} \to \mathbb{R}\); written \(X_n \Rightarrow X\), or \(X_n \Rightarrow \mu\) when only the limit law \(\mu\) matters.
+
+Convergence in law involves only the laws of the \(X_n\): the variables need not live on the same space, and the limit may be a probability measure. The other three modes compare the variables themselves. The same definitions apply to random vectors, with \(|\cdot|\) the Euclidean norm.
+PROOF:
+(none)
+REFRESH:
+(none)
+EXPLANATION:
+Four ways of saying "\(X_n\) gets close to \(X\)", which are not equivalent, so one must always say which is meant. Almost sure convergence is the pointwise convergence of the functions \(\omega \mapsto X_n(\omega)\), outside a null set. Convergence in probability asks only that the set where \(X_n\) is far from \(X\) has small probability, for each \(n\) separately. Convergence in \(L^p\) is a convergence in mean, sensitive to large values. Convergence in law does not look at the variables at all: it says that the histograms, i.e. the laws, converge, tested against bounded continuous functions to avoid the jumps of distribution functions. The relations between the four are the object of Proposition 9.
+DEEP:
+The goal is to understand the shape of each definition and to see that they are genuinely different.
+
+**Almost sure convergence.** The set \(\{X_n \to X\} = \bigcap_k\bigcup_N\bigcap_{n \ge N}\{|X_n - X| \le 1/k\}\) is an event (countable operations on events, Definition 1), so the definition makes sense; it says the sequence of numbers \(X_n(\omega)\) converges for almost every \(\omega\). It is the strongest of the three modes that compare variables, but it has no metric: there is no distance \(d(X, Y)\) such that \(d(X_n, X) \to 0\) is equivalent to a.s. convergence.
+
+**Convergence in probability.** Equivalent to \(\mathbb{E}[\min(|X_n - X|, 1)] \to 0\), which is a distance on the space of variables modulo a.s. equality; so this mode is metric, and one can speak of Cauchy sequences in probability. Its meaning is "for large \(n\), with high probability, \(X_n\) is close to \(X\)", but the exceptional set may move with \(n\). The typical example, on \(\Omega = [0,1]\) with Lebesgue measure: enumerate the dyadic intervals \(I_{m,k} = [k2^{-m}, (k+1)2^{-m}]\) as \(n = 2^m + k\) and set \(X_n = \mathbf{1}_{I_{m,k}}\); then \(\mathbb{P}(X_n \neq 0) = 2^{-m} \to 0\), but every \(\omega\) lies in one interval of each generation, so \(X_n(\omega) = 1\) infinitely often and \(X_n(\omega)\) converges for no \(\omega\).
+
+**Convergence in \(L^p\).** A convergence of the norm, hence metric and complete. It controls large values: \(X_n = n\mathbf{1}_{(0, 1/n)}\) on \([0,1]\) tends to \(0\) a.s. and in probability but \(\mathbb{E}[X_n] = 1\), so not in \(L^1\). Conversely the dyadic example converges in every \(L^p\) (\(\mathbb{E}[X_n^p] = 2^{-m}\)) without converging a.s.
+
+**Convergence in law.** The test functions are bounded and continuous for two reasons. Bounded, so that \(\mathbb{E}[\phi(X_n)]\) always exists. Continuous, so that the definition is insensitive to the exact location of atoms: with \(X_n = 1/n\) and \(X = 0\) one wants \(X_n \Rightarrow X\), but \(\mathbb{P}(X_n \le 0) = 0 \not\to 1 = \mathbb{P}(X \le 0)\); distribution functions converge only at continuity points of the limit (Theorem 5). Since \(\mathbb{E}[\phi(X_n)] = \int \phi\, d\mathcal{L}_{X_n}\), the definition reads \(\int \phi\, d\mu_n \to \int \phi\, d\mu\): it is a convergence of measures, the one used in the central limit theorem, \(\frac{S_n - nm}{\sigma\sqrt n} \Rightarrow \mathcal{N}(0,1)\), where the limit is a law and no limiting variable is needed.
+
+Used next: Proposition 9 organises the implications; Theorem 5 gives a computable criterion for convergence in law; in Hoffmann's Chapter 1, Proposition 2 runs "in \(L^2\) ⇒ in probability ⇒ in law ⇒ characteristic functions converge" to show that an \(L^2\) limit of Gaussians is Gaussian.
+EXAMPLE:
+On \(\Omega = [0,1]\) with Lebesgue measure, compare three sequences. \(X_n(\omega) = \omega^n\) converges to \(0\) for every \(\omega < 1\), hence a.s.; in \(L^p\), since \(\mathbb{E}[X_n^p] = \frac{1}{np + 1} \to 0\); in probability and in law as consequences. \(Y_n = n\mathbf{1}_{(0, 1/n)}\) converges to \(0\) a.s., in probability and in law, but \(\mathbb{E}[Y_n] = 1\): not in \(L^1\). \(Z_n = \mathbf{1}_{\{\omega \le 1/2\}}\) for even \(n\) and \(\mathbf{1}_{\{\omega > 1/2\}}\) for odd \(n\): all \(Z_n\) have the same law \(\frac12(\delta_0 + \delta_1)\), so \(Z_n\) converges in law, trivially, but \(|Z_{n+1} - Z_n| = 1\) everywhere, so \(Z_n\) converges in none of the other three modes.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 9 (Relations between the modes of convergence — Forien Prop. 10)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+1. Almost sure convergence implies convergence in probability.
+2. Convergence in \(L^p\) implies convergence in \(L^q\) for \(q \le p\), and convergence in \(L^1\) implies convergence in probability.
+3. Convergence in probability implies convergence in law.
+4. If \(X_n \to c\) in law with \(c\) a constant, then \(X_n \to c\) in probability.
+5. If \(X_n \to X\) in probability, some subsequence \(X_{\varphi(n)}\) converges to \(X\) almost surely.
+6. **(Dominated convergence)** If \(X_n \to X\) in probability and \(|X_n| \le Z\) for all \(n\) with \(Z \in L^p\), then \(X_n \to X\) in \(L^p\).
+7. Limits are unique: if \(X_n \to X\) and \(X_n \to Y\) in probability (hence also a.s. or in \(L^p\)), then \(X = Y\) a.s.; a limit in law is unique as a law.
+
+There are no other implications in general.
+PROOF:
+**1.** \(f_n = \mathbf{1}_{\{|X_n - X| > \varepsilon\}} \to 0\) a.s. and \(|f_n| \le 1\): dominated convergence gives \(\mathbb{E}f_n \to 0\).
+
+**2.** \(\|X_n - X\|_{L^q} \le \|X_n - X\|_{L^p}\) (Proposition 6); Markov: \(\mathbb{P}(|X_n - X| > \varepsilon) \le \mathbb{E}|X_n - X|/\varepsilon\).
+
+**5.** Choose \(\varphi(k) \uparrow\) with \(\mathbb{P}(|X_{\varphi(k)} - X| > 1/k) \le 2^{-k}\); Borel–Cantelli gives \(|X_{\varphi(k)} - X| \le 1/k\) for all large \(k\), a.s.
+
+**3.** For bounded continuous \(\phi\), the bounded sequence \(u_n = \mathbb{E}\phi(X_n)\) converges to \(\mathbb{E}\phi(X)\) if every convergent subsequence does. Along such a subsequence, extract by 5 a further one converging a.s.; there \(\phi(X_n) \to \phi(X)\) a.s. with \(|\phi(X_n)| \le \sup|\phi|\), so dominated convergence identifies the limit.
+
+**4.** Take \(\phi\) continuous with values in \([0,1]\), \(\phi(c) = 0\), \(\phi = 1\) off \((c - \varepsilon, c + \varepsilon)\): \(\mathbb{P}(|X_n - c| \ge \varepsilon) \le \mathbb{E}\phi(X_n) \to \phi(c) = 0\).
+
+**6.** \(|X| \le Z\) a.s. (along an a.s. convergent subsequence), so \(|X_n - X|^p \le (2Z)^p \in L^1\); apply the sub-subsequence argument of 3 to \(u_n = \mathbb{E}|X_n - X|^p\) with Theorem 2.
+
+**7.** \(\mathbb{P}(|X - Y| > 2\varepsilon) \le \mathbb{P}(|X_n - X| > \varepsilon) + \mathbb{P}(|X_n - Y| > \varepsilon) \to 0\). For laws: two laws with the same integrals of bounded continuous functions coincide (example of Theorem 1). \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+This proposition organises the four modes into a diagram to memorise: \(L^p\) ⇒ \(L^q\) (\(q \le p\)) ⇒ \(L^1\) ⇒ in probability ⇒ in law, and a.s. ⇒ in probability; the reverse arrows fail, with two partial converses: from convergence in probability one can extract an a.s. convergent subsequence, and convergence in law to a constant is convergence in probability. Dominated convergence bridges from probability back to \(L^p\). Each implication has a short proof from a tool of the previous blocks: dominated convergence for 1, Jensen and Markov for 2, Borel–Cantelli for 5, and 3 is obtained from 5 by a sub-subsequence argument that is worth learning on its own.
+DEEP:
+We want to prove the seven points. Plan: each one is an application of a named tool.
+
+**Step 1: a.s. ⇒ in probability.** Fix \(\varepsilon > 0\) and let \(f_n = \mathbf{1}_{\{|X_n - X| > \varepsilon\}}\). If \(X_n \to X\) a.s., then \(f_n \to 0\) a.s. and \(|f_n| \le 1\), integrable on a probability space; dominated convergence gives \(\mathbb{P}(|X_n - X| > \varepsilon) = \mathbb{E}[f_n] \to 0\).
+
+**Step 2: \(L^p\) ⇒ \(L^q\) ⇒ in probability.** \(\|X_n - X\|_{L^q} \le \|X_n - X\|_{L^p}\) for \(q \le p\) (Proposition 6). Markov: \(\mathbb{P}(|X_n - X| > \varepsilon) \le \mathbb{E}|X_n - X|/\varepsilon \to 0\).
+
+**Step 3: the subsequence (point 5).** If \(X_n \to X\) in probability, choose \(\varphi(1) < \varphi(2) < \dots\) with \(\mathbb{P}(|X_{\varphi(k)} - X| > 1/k) \le 2^{-k}\), possible since each probability tends to \(0\) as the index grows. The series \(\sum_k 2^{-k}\) converges, so by Borel–Cantelli almost surely \(|X_{\varphi(k)} - X| \le 1/k\) for all large \(k\), i.e. \(X_{\varphi(k)} \to X\) a.s.
+
+**Step 4: in probability ⇒ in law (point 3).** Let \(\phi\) be bounded continuous. The bounded real sequence \(u_n = \mathbb{E}[\phi(X_n)]\) converges to \(\ell = \mathbb{E}[\phi(X)]\) provided every convergent subsequence of \(u_n\) has limit \(\ell\). Take a subsequence along which \(u_n\) converges to some \(\ell'\); it still converges in probability, so by Step 3 it has a further subsequence converging a.s.; along it, \(\phi(X_n) \to \phi(X)\) a.s. by continuity, with \(|\phi(X_n)| \le \sup|\phi|\), so \(u_n \to \ell\) by dominated convergence; hence \(\ell' = \ell\). This sub-subsequence trick is the standard way to use a.s. results for convergence in probability.
+
+**Step 5: in law to a constant ⇒ in probability (point 4).** Fix \(\varepsilon > 0\) and take \(\phi\) continuous with values in \([0,1]\), \(\phi(c) = 0\) and \(\phi(x) = 1\) for \(|x - c| \ge \varepsilon\) (a tent). Then \(\mathbb{P}(|X_n - c| \ge \varepsilon) \le \mathbb{E}[\phi(X_n)] \to \phi(c) = 0\).
+
+**Step 6: dominated convergence (point 6).** Suppose \(X_n \to X\) in probability with \(|X_n| \le Z \in L^p\). Then \(|X| \le Z\) a.s. (pass to an a.s. convergent subsequence), so \(|X_n - X|^p \le (2Z)^p\), integrable. Apply the sub-subsequence trick to \(u_n = \mathbb{E}|X_n - X|^p\): along any subsequence there is a further one converging a.s., where Theorem 2 gives \(u_n \to 0\); so \(u_n \to 0\).
+
+**Step 7: uniqueness.** If \(X_n \to X\) and \(X_n \to Y\) in probability, then \(\mathbb{P}(|X - Y| > 2\varepsilon) \le \mathbb{P}(|X_n - X| > \varepsilon) + \mathbb{P}(|X_n - Y| > \varepsilon) \to 0\), so \(X = Y\) a.s.; the a.s. and \(L^p\) cases follow since they imply convergence in probability. For laws: if \(\int \phi\, d\mu = \int \phi\, d\nu\) for all bounded continuous \(\phi\), then \(\mu = \nu\) (worked example of Theorem 1).
+
+**Counterexamples** (Definition 6): the dyadic intervals converge in \(L^p\) and in probability but not a.s.; \(n\mathbf{1}_{(0, 1/n)}\) converges a.s. but not in \(L^1\); the alternating \(Z_n\) converge in law but not in probability, so 4 fails for a non-constant limit.
+
+Used next: Theorem 9 of Lesson 3 (uniform integrability) sharpens 6 into an equivalence; in Hoffmann's Chapter 1, Proposition 2 uses "\(L^2\) ⇒ in law", and Kolmogorov's criterion ends with "limits in probability are a.s. unique" to identify the continuous modification.
+EXAMPLE:
+Let \(X_n \sim \mathcal{N}(0, 1/n)\), all independent. In law: \(\mathbb{E}[\phi(X_n)] = \mathbb{E}[\phi(Z/\sqrt n)] \to \phi(0)\) by dominated convergence for any bounded continuous \(\phi\), so \(X_n \Rightarrow 0\); by point 4, \(X_n \to 0\) in probability, which Chebyshev confirms directly: \(\mathbb{P}(|X_n| > \varepsilon) \le \frac{1}{n\varepsilon^2}\). In \(L^2\): \(\mathbb{E}[X_n^2] = 1/n \to 0\). Almost surely? The Chebyshev bounds \(\frac{1}{n\varepsilon^2}\) are not summable, so Borel–Cantelli gives nothing from them; but the Gaussian tail \(\mathbb{P}(|X_n| > \varepsilon) = \mathbb{P}(|Z| > \varepsilon\sqrt n) \le e^{-n\varepsilon^2/2}\) is summable, and Borel–Cantelli gives \(X_n \to 0\) a.s. after all. Point 5 would only have guaranteed a subsequence.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Definition/Proposition 10 (Characteristic functions — Forien §3 and Prop. 11, §7 first paragraph)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+The **characteristic function** of a random vector \(X\) with values in \(\mathbb{R}^d\) is
+\[
+\phi_X : \xi \in \mathbb{R}^d \longmapsto \mathbb{E}\big[e^{i\langle \xi, X\rangle}\big] = \int_{\mathbb{R}^d} e^{i\langle \xi, x\rangle}\, \mathcal{L}_X(dx) \in \mathbb{C}.
+\]
+1. \(\phi_X\) is continuous, \(|\phi_X| \le 1\), \(\phi_X(0) = 1\), and \(\phi_{AX + b}(\xi) = e^{i\langle \xi, b\rangle}\phi_X(A^{\mathsf T}\xi)\) for a matrix \(A\) and a vector \(b\).
+2. **(Injectivity)** \(\phi_X\) determines the law of \(X\): \(\phi_X = \phi_Y\) implies \(\mathcal{L}_X = \mathcal{L}_Y\). (Admitted; it also follows from Theorem 5.)
+3. If \(X_1, \dots, X_n\) are independent real variables, \(\phi_{X_1 + \dots + X_n} = \prod_k \phi_{X_k}\). A random vector has independent components if and only if \(\phi_X(\xi) = \prod_{k=1}^d \phi_{X_k}(\xi_k)\) for all \(\xi\).
+4. **(Moments)** For \(d = 1\), if \(\mathbb{E}|X|^k < \infty\), then \(\phi_X\) is of class \(C^k\), \(\phi_X^{(j)}(t) = i^j\,\mathbb{E}[X^je^{itX}]\) and \(\phi_X^{(j)}(0) = i^j\,\mathbb{E}[X^j]\) for \(j \le k\). In particular, for \(X \in L^2\) with mean \(m\) and variance \(\sigma^2\), \(\phi_X(t) = 1 + imt - \frac{(m^2 + \sigma^2)t^2}{2} + o(t^2)\) as \(t \to 0\).
+PROOF:
+**1.** \(|e^{i\langle \xi, X\rangle}| = 1\) gives existence and the bound; continuity is Proposition 3 with dominating function \(1\); the affine rule is \(e^{i\langle \xi, AX + b\rangle} = e^{i\langle \xi, b\rangle}e^{i\langle A^{\mathsf T}\xi, X\rangle}\).
+
+**2.** Admitted (Fourier inversion). Alternatively, from Theorem 5: the constant sequence \(X_n = X\) has \(\phi_{X_n} \to \phi_Y\), so \(X \Rightarrow Y\), and limits in law are unique.
+
+**3.** Direct part: factorisation of expectations of products of independent bounded variables (Definition 5). Converse: the vector \(\tilde X\) with independent components \(\tilde X_k \overset{d}{=} X_k\) has \(\phi_{\tilde X}(\xi) = \prod_k \phi_{X_k}(\xi_k) = \phi_X(\xi)\), so \(\mathcal{L}_X = \mathcal{L}_{\tilde X} = \bigotimes_k \mathcal{L}_{X_k}\) by 2.
+
+**4.** Proposition 3 with \(f(\omega, t) = e^{itX(\omega)}\), \(\partial_t^j f = (iX)^je^{itX}\), dominated by \(|X|^j \le 1 + |X|^k\); continuity of the derivatives by Proposition 3 again. Taylor's formula at \(0\) gives the expansion. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+The characteristic function is the Fourier transform of the law. It is the most convenient encoding of a law: it always exists, it determines the law, it turns sums of independent variables into products, and its derivatives at \(0\) are the moments. Almost every identification of a law in this course goes through it: a Gaussian vector is recognised by \(\phi(\xi) = \exp(i\langle m, \xi\rangle - \frac12\langle \xi, \Sigma\xi\rangle)\) (Lesson 4); independence of Gaussian components is read off the factorisation in point 3; and Lévy's theorem below turns convergence in law into pointwise convergence of \(\phi\). Injectivity is admitted here, as in the prérentrée; the rest is dominated convergence and Fubini.
+DEEP:
+We want to prove points 1, 3 and 4, and to say precisely what is admitted in 2.
+
+**Step 1: basic properties.** \(|e^{i\langle \xi, X\rangle}| = 1\), so the expectation exists and \(|\phi_X(\xi)| \le 1\), with \(\phi_X(0) = \mathbb{E}[1] = 1\). Continuity is Proposition 3 with the constant dominating function \(1\), applied to real and imaginary parts. The affine rule: \(e^{i\langle \xi, AX + b\rangle} = e^{i\langle \xi, b\rangle}e^{i\langle A^{\mathsf T}\xi, X\rangle}\).
+
+**Step 2: injectivity, what is admitted.** The claim is that \(\mu \mapsto \hat\mu(\xi) = \int e^{i\langle \xi, x\rangle}\mu(dx)\) is injective on probability measures. The classical proof uses Fourier inversion: when \(\hat\mu\) is integrable, \(\mu\) has the continuous density \((2\pi)^{-d}\int e^{-i\langle \xi, x\rangle}\hat\mu(\xi)\, d\xi\); in general one regularises \(\mu\) by convolution with a small Gaussian, inverts, and lets the Gaussian shrink. Forien admits it, and so do we. Note that Lévy's theorem (Theorem 5) contains it: if \(\phi_X = \phi_Y\), the constant sequence \(X_n = X\) has characteristic functions converging to \(\phi_Y\), so \(X \Rightarrow Y\), which forces \(\mathcal{L}_X = \mathcal{L}_Y\) by uniqueness of limits in law.
+
+**Step 3: sums and products.** For independent \(X_1, \dots, X_n\), the variables \(e^{itX_k}\) are bounded functions of independent variables, so by factorisation (Definition 5) \(\mathbb{E}[\prod_k e^{itX_k}] = \prod_k \mathbb{E}[e^{itX_k}]\). For the converse in \(\mathbb{R}^d\): the vector \(\tilde X\) with independent components \(\tilde X_k \overset{d}{=} X_k\) has \(\phi_{\tilde X}(\xi) = \prod_k \phi_{X_k}(\xi_k)\) by the direct part; if \(\phi_X\) has the same product form, injectivity gives \(\mathcal{L}_X = \mathcal{L}_{\tilde X} = \bigotimes_k \mathcal{L}_{X_k}\), which is independence (Definition 5, point 2).
+
+**Step 4: moments.** Apply Proposition 3 to \(f(\omega, t) = e^{itX(\omega)}\): \(\partial_tf = iXe^{itX}\) is dominated by \(|X|\), integrable if \(k \ge 1\), so \(\phi_X'(t) = \mathbb{E}[iXe^{itX}]\), which is continuous by Proposition 3 again (same domination). Iterating \(j \le k\) times, \(\phi_X^{(j)}(t) = \mathbb{E}[(iX)^je^{itX}]\) with domination by \(|X|^j \le 1 + |X|^k\). At \(t = 0\), \(\phi_X^{(j)}(0) = i^j\,\mathbb{E}[X^j]\). Consequently, if \(X \in L^2\) with mean \(m\) and variance \(\sigma^2\), Taylor's formula at order \(2\) gives \(\phi_X(t) = 1 + imt - \frac{(\sigma^2 + m^2)t^2}{2} + o(t^2)\), the expansion that proves the central limit theorem (Lesson 4).
+
+**Two remarks.** The converse of point 4 is false in general: \(\phi_X\) can be differentiable at \(0\) without \(X\) being integrable (outside these notes). And a characteristic function alone does not tell whether a law has a density; it does when \(\phi_X\) is integrable (Step 2).
+
+Used next: Theorem 5, the Gaussian characteristic function \(e^{imt - \sigma^2t^2/2}\) (Lesson 4), the characterisation of Gaussian vectors, and Hoffmann's Proposition 2 ("an \(L^2\) limit of Gaussians is Gaussian"), proved by passing to the limit in characteristic functions.
+EXAMPLE:
+For \(X\) Bernoulli of parameter \(p\), \(\phi_X(t) = 1 - p + pe^{it}\); for \(S_n = X_1 + \dots + X_n\) with independent copies, \(\phi_{S_n}(t) = (1 - p + pe^{it})^n\), the characteristic function of the binomial law, with no combinatorics. For the exponential law of parameter \(1\), \(\phi(t) = \int_0^\infty e^{itx}e^{-x}\, dx = \frac{1}{1 - it}\), and \(\phi'(0) = i = i\,\mathbb{E}[X]\), \(\phi''(0) = -2 = -\mathbb{E}[X^2]\), giving \(\mathrm{Var}(X) = 1\). For the Cauchy law with density \(\frac{1}{\pi(1 + x^2)}\), \(\phi(t) = e^{-|t|}\) (admitted): not differentiable at \(0\), consistent with \(\mathbb{E}|X| = \infty\), and \(\phi_{S_n/n} = \phi\) for i.i.d. Cauchy variables: their average is again Cauchy, so no law of large numbers holds.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 5 (Lévy's continuity theorem; distribution functions — Forien Thm 6–7)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(X_n\), \(n \in \mathbb{N}\), and \(X\) be random vectors in \(\mathbb{R}^d\). The following are equivalent:
+
+1. \(X_n \Rightarrow X\) in law;
+2. \(\phi_{X_n}(\xi) \to \phi_X(\xi)\) for every \(\xi \in \mathbb{R}^d\);
+3. (for \(d = 1\)) \(F_{X_n}(x) \to F_X(x)\) at every point \(x\) where \(F_X\) is continuous.
+
+Moreover (Lévy's theorem in full): if \(\phi_{X_n}\) converges pointwise to a function \(\phi\) which is continuous at \(0\), then \(\phi\) is the characteristic function of some law \(\mu\) and \(X_n \Rightarrow \mu\).
+PROOF:
+**1 ⇒ 2.** \(x \mapsto \cos\langle \xi, x\rangle\) and \(\sin\langle \xi, x\rangle\) are bounded continuous.
+
+**1 ⇒ 3.** For \(x\) a continuity point of \(F_X\) and \(\varepsilon > 0\), take continuous \(\psi_\pm\) with values in \([0,1]\), \(\psi_- \le \mathbf{1}_{(-\infty, x]} \le \psi_+\), \(\psi_- = 1\) on \((-\infty, x - \varepsilon]\), \(\psi_+ = 0\) on \([x + \varepsilon, \infty)\). Then \(F_X(x - \varepsilon) \le \mathbb{E}\psi_-(X) \le \liminf F_{X_n}(x) \le \limsup F_{X_n}(x) \le \mathbb{E}\psi_+(X) \le F_X(x + \varepsilon)\); let \(\varepsilon \to 0\).
+
+**2 ⇒ 1 and 3 ⇒ 1** are admitted here, as in the prérentrée. Sketch of 2 ⇒ 1 (for \(d = 1\)): (a) tail bound \(\mathbb{P}(|X| \ge r) \le \frac{r}{2}\int_{-2/r}^{2/r}(1 - \phi_X(t))\, dt\), from Fubini and \(|\sin u| \le |u|/2\) for \(|u| \ge 2\); (b) hence for every \(\varepsilon > 0\), \(\mathbb{P}(|X_n| \ge r) \le \varepsilon\) for \(r\) and \(n\) large (dominated convergence in \(t\)); (c) on \([-r, r]\), continuous functions are uniform limits of trigonometric polynomials \(\sum_k a_ke^{ik\pi x/R}\), \(R > r\), for which \(\mathbb{E}[\cdot(X_n)]\) converges by 2; combine with (b). The full statement additionally uses Prokhorov's compactness theorem. \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+This theorem makes convergence in law computable: instead of testing all bounded continuous functions, it suffices to test the complex exponentials, i.e. to check that the characteristic functions converge pointwise, or, in dimension one, that the distribution functions converge at the continuity points of the limit. The direction "in law ⇒ characteristic functions converge" is immediate, because \(x \mapsto \cos\langle \xi, x\rangle\) and \(\sin\langle \xi, x\rangle\) are bounded continuous. The converse is the substance and is admitted here, as in the prérentrée; its proof controls the tails of the \(X_n\) using \(\phi\) near \(0\), then uses that trigonometric polynomials approximate continuous functions on compact sets. It is the engine of the central limit theorem and of Hoffmann's Proposition 2.
+DEEP:
+We want to see what is proved and what is admitted, and why continuity points are needed in 3. Plan: 1 ⇒ 2 in full; the structure of 2 ⇒ 1; the role of continuity points.
+
+**Step 1: 1 ⇒ 2.** For fixed \(\xi\), \(\phi_{X_n}(\xi) = \mathbb{E}[\cos\langle \xi, X_n\rangle] + i\,\mathbb{E}[\sin\langle \xi, X_n\rangle]\), and both \(\cos\langle \xi, \cdot\rangle\) and \(\sin\langle \xi, \cdot\rangle\) are bounded continuous functions on \(\mathbb{R}^d\). Convergence in law applies to each, giving \(\phi_{X_n}(\xi) \to \phi_X(\xi)\). Similarly 1 ⇒ 3: for \(x\) a continuity point of \(F_X\) and \(\varepsilon > 0\), squeeze \(\mathbf{1}_{(-\infty, x]}\) between two continuous functions \(\psi_- \le \mathbf{1}_{(-\infty, x]} \le \psi_+\) with \(\psi_- = 1\) on \((-\infty, x - \varepsilon]\), \(\psi_+ = 0\) on \([x + \varepsilon, \infty)\), both with values in \([0,1]\); then \(F_X(x - \varepsilon) \le \mathbb{E}\psi_-(X) \le \liminf F_{X_n}(x) \le \limsup F_{X_n}(x) \le \mathbb{E}\psi_+(X) \le F_X(x + \varepsilon)\), and continuity of \(F_X\) at \(x\) closes the gap as \(\varepsilon \to 0\).
+
+**Step 2: the structure of 2 ⇒ 1 (admitted).** Two ingredients. First, a tail bound from the characteristic function near \(0\): for a real variable,
+\[
+\mathbb{P}(|X| \ge r) \;\le\; \frac{r}{2}\int_{-2/r}^{2/r}\big(1 - \phi_X(t)\big)\, dt ,
+\]
+obtained by computing \(\int_{-c}^c(1 - e^{itx})\, dt = 2c - \frac{2\sin(cx)}{x}\), exchanging with the expectation by Fubini, and using \(1 - \frac{\sin u}{u} \ge \frac12\) for \(|u| \ge 2\). If \(\phi_{X_n} \to \phi\) with \(\phi\) continuous at \(0\), the right-hand side is small for \(r\) large, uniformly in \(n\) (dominated convergence in \(t\)): no mass escapes to infinity, the \(X_n\) are tight. Second, on a compact set, continuous functions are uniform limits of trigonometric polynomials \(\sum_k a_ke^{ik\pi x/R}\), for which \(\mathbb{E}[\cdot(X_n)]\) converges by hypothesis; the tightness handles the complement of the compact set. The full statement of Lévy (existence of the limit law when \(\phi\) is merely continuous at \(0\)) needs in addition Prokhorov's compactness theorem, which the prérentrée states and which we skip.
+
+**Step 3: why continuity points in 3.** With \(X_n = 1/n\) and \(X = 0\), \(X_n \Rightarrow X\) (for bounded continuous \(\phi\), \(\phi(1/n) \to \phi(0)\)), but \(F_{X_n}(0) = 0\) while \(F_X(0) = 1\): the jump of \(F_X\) at \(0\) is exactly where convergence fails. The implication 3 ⇒ 1 is proved by the same tail-plus-compact scheme.
+
+**How it is used.** To show \(X_n \Rightarrow \mathcal{N}(0,1)\), compute \(\phi_{X_n}(t)\) and show it tends to \(e^{-t^2/2}\) (central limit theorem, Lesson 4). To show that an \(L^2\) limit \(X\) of Gaussian variables \(X_n \sim \mathcal{N}(m_n, \sigma_n^2)\) is Gaussian: \(X_n \to X\) in probability, hence in law, so \(\phi_X(t) = \lim_n e^{im_nt - \sigma_n^2t^2/2} = e^{imt - \sigma^2t^2/2}\) with \(m = \lim m_n\), \(\sigma^2 = \lim \sigma_n^2\) (Definition 4, Step 4), and injectivity identifies \(\mathcal{L}_X = \mathcal{N}(m, \sigma^2)\). This is Hoffmann's Proposition 2 and Corollary 2 of Lesson 4.
+EXAMPLE:
+Let \(X_n\) be binomial \((n, \lambda/n)\). Then \(\phi_{X_n}(t) = \big(1 + \frac{\lambda}{n}(e^{it} - 1)\big)^n \to \exp\big(\lambda(e^{it} - 1)\big)\), which is the characteristic function of the Poisson law of parameter \(\lambda\), since \(\sum_k e^{-\lambda}\frac{\lambda^k}{k!}e^{itk} = e^{-\lambda}e^{\lambda e^{it}}\). By Theorem 5, \(X_n \Rightarrow \mathrm{Poisson}(\lambda)\): the law of rare events. Here the limit is a probability measure and no limiting variable is constructed. Point 3 can be checked at non-integer \(x\), the continuity points of the Poisson distribution function: \(\mathbb{P}(X_n \le x) \to e^{-\lambda}\sum_{j \le x}\frac{\lambda^j}{j!}\).
+NOTE:
+(none)

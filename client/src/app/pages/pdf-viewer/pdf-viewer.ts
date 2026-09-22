@@ -1,12 +1,15 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ApiService } from '../../core/api.service';
+import { AnswerLength, ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { GlossaryService } from '../../core/glossary.service';
 import { ChatMessage, Pdf, Section } from '../../core/models';
 import { MathContent, renderMathMarkdown } from '../../shared/math-content';
+import { InkLayer, PenTool } from '../../shared/ink-layer';
+import { PenButton, PenPalette, defaultFingerDraws, loadPenTool } from '../../shared/pen-tools';
+import { InkDoc, InkService, Stroke, emptyInk } from '../../core/ink.service';
 
 interface BlockVM {
   section: Section;
@@ -46,7 +49,7 @@ const STATEMENT_KINDS = new Set(['definition', 'proposition', 'theorem', 'lemma'
 
 @Component({
   selector: 'app-pdf-viewer',
-  imports: [FormsModule, RouterLink, MathContent],
+  imports: [FormsModule, RouterLink, MathContent, InkLayer, PenButton, PenPalette],
   templateUrl: './pdf-viewer.html',
   styleUrl: './pdf-viewer.css',
 })
@@ -56,6 +59,13 @@ export class PdfViewer implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
   pdf = signal<Pdf | null>(null);
+  // The compact layout is limited to Forien's first three chapters.
+  get compactReading(): boolean {
+    const p = this.pdf();
+    return p?.course?.title === 'Prérentrée de probabilités'
+      && p.course.teacher === 'Nicolas Forien'
+      && [1, 2, 3].includes(p.lesson?.position ?? 0);
+  }
   blocks = signal<BlockVM[]>([]);
   error = signal('');
   // Reading-mode toggles; hiding both makes the page read like the original PDF.
@@ -65,6 +75,20 @@ export class PdfViewer implements OnInit, OnDestroy {
   showDeep = signal(localStorage.getItem('masef_show_deep') !== '0');
   showExamples = signal(localStorage.getItem('masef_show_ex') !== '0');
   showDefs = signal(localStorage.getItem('masef_show_defs') !== '0');
+  // Chat answer length: 'auto' lets the tutor detect short / mid / expanded
+  // from the question; the chips under the chat force one (remembered).
+  answerLength = signal<AnswerLength>((localStorage.getItem('masef_answer_len') as AnswerLength) || 'auto');
+  readonly lengthOptions: { value: AnswerLength; label: string; hint: string }[] = [
+    { value: 'auto', label: 'Auto', hint: 'The tutor reads the wanted length off your question' },
+    { value: 'short', label: 'Short', hint: '1-3 sentences' },
+    { value: 'mid', label: 'Mid', hint: 'A focused paragraph or two' },
+    { value: 'expanded', label: 'Expanded', hint: 'Full structured answer with steps and an example' },
+  ];
+
+  setAnswerLength(value: AnswerLength) {
+    this.answerLength.set(value);
+    localStorage.setItem('masef_answer_len', value);
+  }
   private glossary = inject(GlossaryService);
   private sanitizer = inject(DomSanitizer);
   popover = signal<{ term: string; html: SafeHtml; src: string; x: number; y: number } | null>(null);
@@ -109,6 +133,63 @@ export class PdfViewer implements OnInit, OnDestroy {
   private pollTimer: ReturnType<typeof setInterval> | null = null;
   private lastSignature = '';
 
+  // ---- Handwriting over the sheet (pen layer) ----
+  @ViewChild(InkLayer) inkLayer?: InkLayer;
+  private inkSvc = inject(InkService);
+  inkDoc = signal<InkDoc | null>(null);
+  penActive = signal(false);
+  penTool = signal<PenTool>(loadPenTool());
+  canUndo = signal(false);
+  fingerDraws = signal(defaultFingerDraws());
+  inkStatus = signal<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  private saveTimer: ReturnType<typeof setTimeout> | null = null;
+  private inkDirty = false;
+  private flushOnHide = () => {
+    if (document.visibilityState === 'hidden') this.flushInk();
+  };
+
+  togglePen() {
+    this.penActive.update((v) => !v);
+  }
+
+  setFingerDraws(v: boolean) {
+    this.fingerDraws.set(v);
+    localStorage.setItem('masef_finger_draws', v ? '1' : '0');
+  }
+
+  onStrokes(strokes: Stroke[]) {
+    this.inkDoc.set({ ...(this.inkDoc() ?? emptyInk()), strokes });
+    this.inkDirty = true;
+    if (this.saveTimer) clearTimeout(this.saveTimer);
+    this.saveTimer = setTimeout(() => this.flushInk(), 1200);
+  }
+
+  async flushInk() {
+    const doc = this.inkDoc();
+    if (!doc || !this.inkDirty) return;
+    this.inkDirty = false;
+    this.inkStatus.set('saving');
+    try {
+      const remote = await this.inkSvc.save(this.pdfId, 'page', doc);
+      this.inkStatus.set(remote ? 'saved' : 'error');
+    } catch {
+      this.inkStatus.set('error');
+    }
+  }
+
+  inkStatusLabel(): string {
+    switch (this.inkStatus()) {
+      case 'saving':
+        return 'saving…';
+      case 'saved':
+        return 'saved';
+      case 'error':
+        return 'kept on this device (server unreachable)';
+      default:
+        return '';
+    }
+  }
+
   toggleExplanations() {
     this.showExplanations.update((v) => !v);
     localStorage.setItem('masef_show_expl', this.showExplanations() ? '1' : '0');
@@ -148,14 +229,21 @@ export class PdfViewer implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.glossary.load();
+    document.addEventListener('visibilitychange', this.flushOnHide);
+    window.addEventListener('pagehide', this.flushOnHide);
     await this.load();
     if (this.pdf()?.status === 'processing') {
       this.pollTimer = setInterval(() => this.load(), 8000);
     }
+    if (this.pdf()) this.inkDoc.set(await this.inkSvc.load(this.pdfId, 'page'));
   }
 
   ngOnDestroy() {
     if (this.pollTimer) clearInterval(this.pollTimer);
+    document.removeEventListener('visibilitychange', this.flushOnHide);
+    window.removeEventListener('pagehide', this.flushOnHide);
+    if (this.saveTimer) clearTimeout(this.saveTimer);
+    this.flushInk();
   }
 
   private async load() {
@@ -173,6 +261,7 @@ export class PdfViewer implements OnInit, OnDestroy {
           s.tutor_note?.length ?? 0,
           s.extra_explanation?.length ?? 0,
           s.extra_example?.length ?? 0,
+          s.refresh?.length ?? 0,
           s.importance,
           s.highlight,
         ])
@@ -278,7 +367,7 @@ export class PdfViewer implements OnInit, OnDestroy {
       if (current?.sending) this.update(vm.section.id, { slow: true });
     }, 30000);
     try {
-      const res = await this.api.sendMessage(vm.section.id, content);
+      const res = await this.api.sendMessage(vm.section.id, content, this.answerLength());
       const current = this.vmById(vm.section.id);
       this.update(vm.section.id, {
         sending: false,

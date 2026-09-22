@@ -168,7 +168,26 @@ Write a short lecture-style introduction for this lesson (2-4 paragraphs max): w
   return runClaude(prompt, { system: TUTOR_SYSTEM });
 }
 
-export async function answerQuestion({ courseTitle, pdfTitle, sectionTitle, contentText, aiExplanation, proof, extraExplanation, extraExample, history, question }) {
+// Answer lengths the student can force from the chat; 'auto' lets the tutor
+// read the wanted length off the question itself.
+export const ANSWER_LENGTHS = ['auto', 'short', 'mid', 'expanded'];
+
+const LENGTH_SPEC = `- SHORT: the student wants a quick check or a one-liner ("is it true that...", "quick:", "briefly", "in one line", "just confirm", "yes or no?", "tl;dr", "rapidement", "en bref"). Answer in 1-3 sentences with at most one formula.
+- MID (the default when nothing signals otherwise): a focused answer, one or two short paragraphs, roughly 80-180 words, one small example or formula if it helps.
+- EXPANDED: the student wants the full picture ("explain in detail", "walk me through", "step by step", "prove it", "why exactly", "everything about", "from scratch", "en détail", a long or multi-part question, or a follow-up like "expand" / "more" after a shorter answer). Give a complete, structured answer: numbered steps where there are steps, a worked mini-example, the classic pitfall. No length cap, but no padding.`;
+
+function lengthInstructions(length) {
+  const forced = ANSWER_LENGTHS.includes(length) && length !== 'auto' ? length.toUpperCase() : null;
+  return `ANSWER LENGTH — do this first. ${
+    forced
+      ? `The student explicitly selected ${forced} for this question: obey it, whatever the phrasing of the question suggests.`
+      : `Detect from the wording of the question which length the student wants:`
+  }
+${LENGTH_SPEC}
+Start your reply with the tag line "*Short answer*", "*Mid answer*" or "*Expanded answer*" — italic, alone on the first line — then the answer. After a SHORT or MID answer, when there is genuinely more worth saying, end with one short line offering it (e.g. "Say *expand* for the full derivation."). If the student's message is only a length request ("expand", "more", "shorter", "tl;dr", "in detail please"), re-answer their previous question at that length.`;
+}
+
+export async function answerQuestion({ courseTitle, pdfTitle, sectionTitle, contentText, aiExplanation, proof, extraExplanation, extraExample, refresh, history, question, length = 'auto' }) {
   const historyText = history
     .map((m) => `${m.role === 'user' ? 'STUDENT' : 'TUTOR'}: ${m.content}`)
     .join('\n\n');
@@ -181,11 +200,13 @@ The student is reading this block of the teacher's notes and asked a question ab
 
 --- BLOCK CONTENT ---
 ${contentText}
-${proof ? `\n--- PROOF SHOWN TO THE STUDENT ---\n${proof}\n` : ''}${aiExplanation ? `\n--- YOUR EXPLANATION SHOWN TO THE STUDENT ---\n${aiExplanation}\n` : ''}${extraExplanation ? `\n--- YOUR "DEEP DIVE" PANEL SHOWN TO THE STUDENT (intuition, no measure theory assumed) ---\n${extraExplanation}\n` : ''}${extraExample ? `\n--- YOUR "WORKED EXAMPLE" PANEL SHOWN TO THE STUDENT ---\n${extraExample}\n` : ''}
+${proof ? `\n--- PROOF SHOWN TO THE STUDENT ---\n${proof}\n` : ''}${refresh ? `\n--- YOUR "REFRESH" REMINDER SHOWN TO THE STUDENT ---\n${refresh}\n` : ''}${aiExplanation ? `\n--- YOUR EXPLANATION SHOWN TO THE STUDENT ---\n${aiExplanation}\n` : ''}${extraExplanation ? `\n--- YOUR "DEEP DIVE" PANEL SHOWN TO THE STUDENT (intuition, no measure theory assumed) ---\n${extraExplanation}\n` : ''}${extraExample ? `\n--- YOUR "WORKED EXAMPLE" PANEL SHOWN TO THE STUDENT ---\n${extraExample}\n` : ''}
 ${historyText ? `--- CHAT HISTORY SO FAR ---\n${historyText}\n` : ''}
 --- STUDENT'S NEW QUESTION ---
 ${question}
 
-Answer the question directly, grounded in this block. Keep it focused — this is a small chat under one statement, not a full lecture.`;
+${lengthInstructions(length)}
+
+Answer the question directly, grounded in this block. This is a chat under one statement, not a full lecture — the length rule above decides how far to go.`;
   return runClaude(prompt, { system: TUTOR_SYSTEM });
 }

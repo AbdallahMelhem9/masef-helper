@@ -123,7 +123,9 @@
   min-width: 0;
 }
 
-@media (max-width: 760px) {
+/* Tablets in portrait (a 12.7" Android tablet is ~920 CSS px wide) and
+   phones: the sidebar becomes a top bar. */
+@media (max-width: 1000px) {
   .shell {
     flex-direction: column;
   }
@@ -133,7 +135,7 @@
     position: static;
     flex-direction: row;
     align-items: center;
-    padding: 10px 14px;
+    padding: 6px 14px;
   }
   .nav {
     margin-top: 0;
@@ -149,5 +151,8 @@
   }
   .user-email {
     display: none;
+  }
+  .nav-link {
+    padding: 8px 12px;
   }
 }

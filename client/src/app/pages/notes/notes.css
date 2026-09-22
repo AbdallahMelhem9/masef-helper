@@ -1,0 +1,230 @@
+.notes {
+  min-height: 100vh;
+}
+
+.notes-head {
+  padding: 14px 28px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.crumbs {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+
+.crumbs a {
+  color: var(--cobalt);
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  text-decoration: underline;
+}
+
+.crumb-sep {
+  margin: 0 5px;
+}
+
+.head-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.head-main h1 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.head-main h1 svg {
+  color: var(--gold);
+}
+
+.lesson-name {
+  font-weight: 500;
+  color: var(--ink-3);
+  font-size: 16px;
+}
+
+.head-side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.head-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 6px 13px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.head-btn:hover {
+  border-color: #cfd6ea;
+  color: var(--ink);
+}
+
+.head-btn.on {
+  background: var(--cobalt-soft);
+  border-color: #b7c6f2;
+  color: var(--cobalt);
+}
+
+.back-link {
+  font-size: 13px;
+  color: var(--cobalt);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.pen-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.pen-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.pen-saved {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Typed notes */
+.typed {
+  max-width: 860px;
+  margin: 24px auto 0;
+  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.typed-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.typed textarea {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  resize: vertical;
+  outline: none;
+}
+
+.typed textarea:focus {
+  border-color: var(--cobalt);
+  box-shadow: 0 0 0 3px var(--cobalt-soft);
+}
+
+/* The ruled paper */
+.paper {
+  position: relative;
+  width: min(100%, 860px);
+  margin: 24px auto 80px;
+  background-color: #fffdf6;
+  background-image:
+    linear-gradient(to right, transparent 0, transparent 62px, #e4a4a4 62px, #e4a4a4 63px, transparent 63px),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, #cfd9ec 31px, #cfd9ec 32px);
+  background-position: 0 0, 0 40px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(23, 38, 62, 0.07), 0 14px 40px rgba(23, 38, 62, 0.09);
+}
+
+.paper-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.loading {
+  color: var(--ink-3);
+  padding: 24px;
+}
+
+.viewer-error {
+  margin: 24px;
+}
+
+@media (max-width: 1100px) {
+  .notes-head {
+    padding: 12px 18px 10px;
+  }
+  .pen-hint {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .paper {
+    margin: 12px auto 80px;
+    border-radius: 0;
+  }
+  .typed {
+    padding: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .head-btn {
+    padding: 9px 15px;
+    font-size: 13.5px;
+  }
+}

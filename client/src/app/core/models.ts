@@ -61,6 +61,7 @@ export interface Section {
   tutor_note: string | null;
   extra_explanation: string | null;
   extra_example: string | null;
+  refresh?: string | null;
   highlight: number;
   position: number;
   messageCount?: number;

@@ -1,0 +1,141 @@
+===BLOCK===
+KIND: definition
+TITLE: Definition 9 (Uniform integrability — Forien Def. 24, Ex. 5, Exercise 6)
+IMPORTANCE: half imp
+HIGHLIGHT: 1
+STATEMENT:
+A family \((X_i)_{i \in I}\) of real random variables is **uniformly integrable** (UI) if
+\[
+\lim_{a \to \infty}\ \sup_{i \in I}\ \mathbb{E}\big[|X_i|\,\mathbf{1}_{\{|X_i| \ge a\}}\big] = 0,
+\]
+equivalently, if it is bounded in \(L^1\) and for every \(\varepsilon > 0\) there is \(\delta > 0\) such that \(\mathbb{P}(A) \le \delta\) implies \(\sup_i \mathbb{E}[|X_i|\mathbf{1}_A] \le \varepsilon\).
+
+Examples: (i) a finite family of integrable variables; (ii) a family dominated by one integrable variable, \(|X_i| \le Z \in L^1\) for all \(i\); (iii) a family bounded in \(L^p\) for some \(p > 1\); more generally (iv) (de La Vallée Poussin) a family with \(\sup_i \mathbb{E}[\phi(|X_i|)] < \infty\) for some non-negative \(\phi\) with \(\phi(x)/x \to \infty\) as \(x \to \infty\); (v) for \(Z \in L^1\), the family of all conditional expectations \(\mathbb{E}[Z \mid \mathcal{G}]\), \(\mathcal{G}\) ranging over the sub-\(\sigma\)-algebras of \(\mathcal{F}\). A UI family is bounded in \(L^1\); the converse fails.
+PROOF:
+**Equivalence.** If the limit condition holds, choose \(a\) with \(\sup_i\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le 1\): then \(\mathbb{E}|X_i| \le a + 1\); and for any \(A\), \(\mathbb{E}[|X_i|\mathbf{1}_A] \le a\,\mathbb{P}(A) + \mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}]\), so with \(a\) such that the last term is \(\le \varepsilon/2\) for all \(i\), \(\delta = \varepsilon/(2a)\) works. Conversely, if \(\mathbb{E}|X_i| \le C\) and the \(\delta\)-condition holds, Markov gives \(\mathbb{P}(|X_i| \ge a) \le C/a \le \delta\) for \(a \ge C/\delta\), hence \(\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le \varepsilon\) for all \(i\).
+
+**(i)** For a single \(X \in L^1\), \(\mathbb{E}[|X|\mathbf{1}_{\{|X| \ge a\}}] \to 0\) by dominated convergence; take the maximum over finitely many. **(ii)** \(\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le \mathbb{E}[Z\mathbf{1}_{\{Z \ge a\}}] \to 0\). **(iii)** On \(\{|X_i| \ge a\}\), \(|X_i| \le |X_i|^p/a^{p-1}\), so \(\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le \sup_i\mathbb{E}|X_i|^p/a^{p-1}\). **(iv)** With \(\varepsilon(a) = \sup_{y \ge a}y/\phi(y) \to 0\), \(|x| \le \varepsilon(a)\phi(|x|)\) for \(|x| \ge a\). **(v)** Let \(Y = \mathbb{E}[Z \mid \mathcal{G}]\); then \(|Y| \le \mathbb{E}[|Z| \mid \mathcal{G}]\) and \(\{|Y| \ge a\} \in \mathcal{G}\), so \(\mathbb{E}[|Y|\mathbf{1}_{\{|Y| \ge a\}}] \le \mathbb{E}[|Z|\mathbf{1}_{\{|Y| \ge a\}}]\); moreover \(\mathbb{P}(|Y| \ge a) \le \mathbb{E}|Z|/a\) uniformly in \(\mathcal{G}\), and the single variable \(|Z|\) satisfies the \(\delta\)-condition by (i).
+
+**Counterexample.** \(X_n = n\mathbf{1}_{(0, 1/n)}\) on \([0, 1]\): \(\mathbb{E}[X_n] = 1\) but \(\mathbb{E}[X_n\mathbf{1}_{\{X_n \ge a\}}] = 1\) for all \(n \ge a\). \(\square\)
+REFRESH:
+(none)
+EXPLANATION:
+Uniform integrability is the condition that prevents mass from escaping to infinity: the contribution of the large values \(|X_i| \ge a\) to \(\mathbb{E}|X_i|\) tends to \(0\) as \(a \to \infty\), uniformly over the family. A single integrable variable has this property by dominated convergence; the definition asks for it uniformly. It is weaker than domination by a fixed integrable variable and than boundedness in \(L^p\) for some \(p > 1\), but stronger than boundedness in \(L^1\): the escaping bumps \(n\mathbf{1}_{(0, 1/n)}\) are bounded in \(L^1\) and not UI. Example (v) is the one martingale theory needs: all the conditional expectations of a fixed integrable variable form a UI family, so closed martingales are UI. Theorem 9 shows that UI is exactly the missing ingredient between convergence in probability and convergence in \(L^1\).
+DEEP:
+The goal is to understand the two forms of the definition and why each example is UI. Plan: prove the equivalence, then run through the examples with the inequality that drives each.
+
+**Step 1: the two forms are equivalent.** Suppose the tail condition holds. Boundedness in \(L^1\): choose \(a\) with \(\sup_i\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le 1\); then \(\mathbb{E}|X_i| \le \mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| < a\}}] + 1 \le a + 1\). Small sets: for any event \(A\), split \(|X_i|\mathbf{1}_A\) according to \(|X_i| < a\) or \(\ge a\): \(\mathbb{E}[|X_i|\mathbf{1}_A] \le a\,\mathbb{P}(A) + \mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}]\). Take \(a\) with the second term \(\le \varepsilon/2\) for all \(i\), then \(\delta = \varepsilon/(2a)\). Conversely, suppose \(\mathbb{E}|X_i| \le C\) and the \(\delta\)-condition. By Markov, \(\mathbb{P}(|X_i| \ge a) \le C/a\), which is \(\le \delta\) once \(a \ge C/\delta\), and then the \(\delta\)-condition applied to \(A = \{|X_i| \ge a\}\) gives \(\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le \varepsilon\) for every \(i\). The second form says: uniformly small on small sets, which is the form used in the proofs of Theorems 9 and 10.
+
+**Step 2: the examples.** (i) For one integrable \(X\), \(|X|\mathbf{1}_{\{|X| \ge a\}} \to 0\) as \(a \to \infty\) pointwise (since \(|X| < \infty\)) with domination by \(|X|\); dominated convergence gives the tail condition, and a maximum over finitely many variables preserves it. (ii) On \(\{|X_i| \ge a\}\) we have \(Z \ge a\), so \(|X_i|\mathbf{1}_{\{|X_i| \ge a\}} \le Z\mathbf{1}_{\{Z \ge a\}}\), and (i) applies to \(Z\). (iii) The inequality \(|x| \le |x|^p/a^{p-1}\) for \(|x| \ge a\) gives \(\mathbb{E}[|X_i|\mathbf{1}_{\{|X_i| \ge a\}}] \le a^{1-p}\sup_i\mathbb{E}|X_i|^p \to 0\): a bounded \(p\)-th moment with \(p > 1\) forces the tails to be uniformly small; this is the criterion Hoffmann quotes in Chapter 1 for the \(L^2\)-bounded families he handles. (iv) Same idea with \(\phi\) in place of \(x^p\): for \(|x| \ge a\), \(|x| \le \phi(|x|)\sup_{y \ge a}\frac{y}{\phi(y)}\), and the supremum tends to \(0\). (v) Let \(Y = \mathbb{E}[Z \mid \mathcal{G}]\). Conditional Jensen gives \(|Y| \le \mathbb{E}[|Z| \mid \mathcal{G}]\), and \(\{|Y| \ge a\} \in \mathcal{G}\), so by the defining property of conditional expectation \(\mathbb{E}[|Y|\mathbf{1}_{\{|Y| \ge a\}}] \le \mathbb{E}[\mathbb{E}[|Z| \mid \mathcal{G}]\mathbf{1}_{\{|Y| \ge a\}}] = \mathbb{E}[|Z|\mathbf{1}_{\{|Y| \ge a\}}]\). Now \(\mathbb{P}(|Y| \ge a) \le \mathbb{E}|Y|/a \le \mathbb{E}|Z|/a\), uniformly in \(\mathcal{G}\), and the single variable \(|Z|\) is uniformly small on small sets by (i): the right-hand side is \(\le \varepsilon\) for \(a\) large, for every \(\mathcal{G}\) at once.
+
+**Step 3: the counterexample.** \(X_n = n\mathbf{1}_{(0, 1/n)}\) on \([0, 1]\) has \(\mathbb{E}[X_n] = 1\) for all \(n\), and for \(n \ge a\) the whole mass sits on \(\{X_n = n \ge a\}\), so the tail expectation is \(1\), not small. This is the escaping bump of Theorem 2, and the reason dominated convergence fails for it.
+
+Used next: Theorem 9 (UI plus convergence in probability equals \(L^1\) convergence), Theorem 10 (UI martingales are the closed ones); in Hoffmann's Chapter 1, Lemma 3 is proved using the \(L^p\)-boundedness criterion (iii).
+EXAMPLE:
+Let \(Z \sim \mathcal{N}(0, 1)\) and \(X_n = Z\mathbf{1}_{\{|Z| \le n\}}\): dominated by \(|Z|\), hence UI, and \(X_n \to Z\) a.s. and in \(L^1\). Let \(Y_n = e^{nZ - n^2/2}\): each has \(\mathbb{E}[Y_n] = 1\) (the computation of Proposition 4 with \(\sigma = n\)), so the family is bounded in \(L^1\); but \(Y_n \to 0\) a.s. (since \(nZ - n^2/2 \to -\infty\) for every \(Z < \infty\)) while \(\mathbb{E}[Y_n] = 1\), so by Theorem 9 the family is not UI: the exponential martingale \(e^{\sigma B_t - \sigma^2t/2}\) behaves the same way as \(t \to \infty\). Finally \(W_n = \mathbb{E}[Z \mid \sigma(\mathbf{1}_{\{Z > 0\}}, \mathbf{1}_{\{Z > 1/n\}})]\), conditional expectations of one integrable variable: UI by example (v) whatever the \(\sigma\)-algebras.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 9 (Convergence in L^1: uniform integrability and convergence in probability — Forien Thm 18)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \((X_n)\) be a sequence of integrable random variables. The following are equivalent:
+
+1. \(X_n\) converges in \(L^1\) to some \(X \in L^1\);
+2. \((X_n)\) is uniformly integrable and converges in probability to some \(X\).
+
+In that case the two limits coincide. In particular, if \(X_n \to X\) almost surely and \((X_n)\) is uniformly integrable, then \(X \in L^1\) and \(\mathbb{E}[X_n] \to \mathbb{E}[X]\).
+PROOF:
+Let \(\varphi_c(x) = \max(-c, \min(x, c))\) be the truncation at level \(c > 0\); it is \(1\)-Lipschitz and \(|x - \varphi_c(x)| \le |x|\mathbf{1}_{\{|x| > c\}}\).
+
+**1 ⇒ 2.** Convergence in probability by Markov. For UI, fix \(\varepsilon > 0\) and \(N\) with \(\mathbb{E}|X_n - X| \le \varepsilon/2\) for \(n \ge N\). For any event \(A\) and \(n \ge N\), \(\mathbb{E}[|X_n|\mathbf{1}_A] \le \mathbb{E}|X_n - X| + \mathbb{E}[|X|\mathbf{1}_A] \le \varepsilon/2 + \mathbb{E}[|X|\mathbf{1}_A]\). The finite family \(X, X_0, \dots, X_{N-1}\) is UI (Definition 9 (i)), so there is \(\delta\) with \(\mathbb{P}(A) \le \delta \Rightarrow \mathbb{E}[|X|\mathbf{1}_A] \le \varepsilon/2\) and \(\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon\) for \(n < N\). Hence \(\sup_n\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon\) when \(\mathbb{P}(A) \le \delta\); \(L^1\)-boundedness is clear; Definition 9, second form.
+
+**2 ⇒ 1.** \(X \in L^1\): along an a.s. convergent subsequence, Fatou gives \(\mathbb{E}|X| \le \sup_n\mathbb{E}|X_n| < \infty\). For \(c > 0\),
+\[
+\mathbb{E}|X_n - X| \le \mathbb{E}\big[|X_n|\mathbf{1}_{\{|X_n| > c\}}\big] + \mathbb{E}\big|\varphi_c(X_n) - \varphi_c(X)\big| + \mathbb{E}\big[|X|\mathbf{1}_{\{|X| > c\}}\big].
+\]
+Given \(\varepsilon > 0\), choose \(c\) making the first term \(\le \varepsilon/3\) for all \(n\) (UI) and the third \(\le \varepsilon/3\) (dominated convergence). The middle term: \(\varphi_c(X_n) \to \varphi_c(X)\) in probability (\(1\)-Lipschitz) with \(|\varphi_c(X_n) - \varphi_c(X)| \le 2c\), so it tends to \(0\) by Proposition 9 (6). Hence \(\limsup_n\mathbb{E}|X_n - X| \le 2\varepsilon/3\). Uniqueness of limits (Proposition 9 (7)) identifies the limits. \(\square\)
+REFRESH:
+**Uniform integrability, second form** (Definition 9): bounded in \(L^1\), and for every \(\varepsilon\) there is \(\delta\) with \(\mathbb{P}(A) \le \delta \Rightarrow \sup_n\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon\).
+EXPLANATION:
+This theorem gives the exact condition for exchanging a limit and an expectation: convergence in probability plus uniform integrability is the same thing as convergence in \(L^1\). It improves the dominated convergence theorem, whose hypothesis "\(|X_n| \le Z\) integrable" is only a sufficient condition for UI, into an equivalence. The proof of the useful direction splits \(\mathbb{E}|X_n - X|\) into three pieces with a truncation at level \(c\): the tails of \(X_n\), controlled uniformly by UI; the tails of \(X\); and the truncated difference, which is bounded and converges in probability, hence in \(L^1\). Hoffmann uses it in Chapter 1 to pass to the limit in expectations of Gaussian variables.
+DEEP:
+We want to prove both implications. Plan: 1 ⇒ 2 is bookkeeping with a finite family; 2 ⇒ 1 is a three-term split with a truncation. Let \(\varphi_c(x) = \max(-c, \min(x, c))\) be the truncation at level \(c\): it is \(1\)-Lipschitz and satisfies \(|x - \varphi_c(x)| \le |x|\mathbf{1}_{\{|x| > c\}}\), since \(x - \varphi_c(x)\) is \(0\) for \(|x| \le c\) and has absolute value \(|x| - c\) otherwise.
+
+**Step 1: 1 ⇒ 2.** Convergence in probability follows from Markov: \(\mathbb{P}(|X_n - X| > \varepsilon) \le \mathbb{E}|X_n - X|/\varepsilon\). For UI, we check the second form of Definition 9. Fix \(\varepsilon > 0\) and \(N\) with \(\mathbb{E}|X_n - X| \le \varepsilon/2\) for \(n \ge N\). For an event \(A\) and \(n \ge N\), \(|X_n|\mathbf{1}_A \le |X_n - X| + |X|\mathbf{1}_A\), so \(\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon/2 + \mathbb{E}[|X|\mathbf{1}_A]\). The finite family \(\{X, X_0, \dots, X_{N-1}\}\) is UI (Definition 9 (i)), so there is \(\delta > 0\) such that \(\mathbb{P}(A) \le \delta\) implies \(\mathbb{E}[|X|\mathbf{1}_A] \le \varepsilon/2\) and \(\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon\) for \(n < N\). Then \(\sup_n\mathbb{E}[|X_n|\mathbf{1}_A] \le \varepsilon\) whenever \(\mathbb{P}(A) \le \delta\). Boundedness in \(L^1\): \(\mathbb{E}|X_n| \le \mathbb{E}|X| + \varepsilon/2\) for \(n \ge N\).
+
+**Step 2: 2 ⇒ 1, the limit is integrable.** By Proposition 9 (5), some subsequence \(X_{n_k} \to X\) a.s.; Fatou gives \(\mathbb{E}|X| \le \liminf_k\mathbb{E}|X_{n_k}| \le \sup_n\mathbb{E}|X_n| < \infty\), the supremum being finite because a UI family is bounded in \(L^1\).
+
+**Step 3: 2 ⇒ 1, the three-term split.** For every \(c > 0\), the triangle inequality gives
+\[
+\mathbb{E}|X_n - X| \le \mathbb{E}|X_n - \varphi_c(X_n)| + \mathbb{E}|\varphi_c(X_n) - \varphi_c(X)| + \mathbb{E}|\varphi_c(X) - X|.
+\]
+First term: \(\le \mathbb{E}[|X_n|\mathbf{1}_{\{|X_n| > c\}}]\), which UI makes \(\le \varepsilon/3\) for all \(n\) at once, for \(c\) large. Third term: \(\le \mathbb{E}[|X|\mathbf{1}_{\{|X| > c\}}] \to 0\) as \(c \to \infty\) by dominated convergence, since \(X \in L^1\); enlarge \(c\) to make it \(\le \varepsilon/3\). Middle term, with \(c\) now fixed: \(\varphi_c\) is \(1\)-Lipschitz, so \(|\varphi_c(X_n) - \varphi_c(X)| \le |X_n - X|\) and \(\varphi_c(X_n) \to \varphi_c(X)\) in probability; the differences are bounded by \(2c\), so Proposition 9 (6) (dominated convergence from convergence in probability) gives \(\mathbb{E}|\varphi_c(X_n) - \varphi_c(X)| \to 0\). Hence \(\limsup_n\mathbb{E}|X_n - X| \le 2\varepsilon/3\) for every \(\varepsilon\).
+
+**Step 4: the limits coincide, and the a.s. corollary.** In 1 ⇒ 2 the limit in probability is the \(L^1\) limit (Proposition 9 (2)); in 2 ⇒ 1 the \(L^1\) limit is \(X\) by construction. If \(X_n \to X\) a.s. with UI, then convergence in probability holds, so \(X_n \to X\) in \(L^1\), and \(|\mathbb{E}X_n - \mathbb{E}X| \le \mathbb{E}|X_n - X| \to 0\).
+
+**Where the hypotheses bite.** Without UI: \(n\mathbf{1}_{(0, 1/n)} \to 0\) in probability with expectations equal to \(1\). Without convergence in probability, nothing converges. And UI is exactly optimal: by 1 ⇒ 2, any \(L^1\)-convergent sequence is UI.
+
+Used next: Theorem 10 (UI martingales converge in \(L^1\)); Hoffmann's Chapter 1, Lemma 3, where an \(L^2\) limit of Gaussian variables is handled through this theorem.
+EXAMPLE:
+Let \(Z \sim \mathcal{N}(0, 1)\) and \(X_n = Z + \frac1n Z^2\). Then \(X_n \to Z\) a.s., and the family is UI because it is bounded in \(L^2\): \(\mathbb{E}[X_n^2] \le 2\mathbb{E}[Z^2] + 2\mathbb{E}[Z^4] = 8\). Theorem 9 gives \(X_n \to Z\) in \(L^1\) and \(\mathbb{E}[X_n] = \frac1n \to 0 = \mathbb{E}[Z]\), which is of course also visible directly. Contrast with \(Y_n = e^{nZ - n^2/2}\) of the previous example: \(Y_n \to 0\) a.s. but \(\mathbb{E}[Y_n] = 1 \not\to 0\), so the family cannot be UI, by the theorem, without any further computation.
+NOTE:
+(none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 10 (Uniformly integrable martingales; stopping theorem for unbounded stopping times — Forien Thm 19–20)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \((M_n)\) be a martingale for \((\mathcal{F}_n)\), and \(\mathcal{F}_\infty = \sigma\big(\bigcup_n\mathcal{F}_n\big)\). The following are equivalent:
+
+1. \(M_n\) converges almost surely and in \(L^1\) to some \(M_\infty \in L^1\);
+2. \((M_n)\) is uniformly integrable;
+3. the martingale is **closed**: \(M_n = \mathbb{E}[Z \mid \mathcal{F}_n]\) for all \(n\), for some \(Z \in L^1\).
+
+Then \(M_n = \mathbb{E}[M_\infty \mid \mathcal{F}_n]\) for all \(n\), and in 3 one has \(M_\infty = \mathbb{E}[Z \mid \mathcal{F}_\infty]\).
+
+**(Stopping theorem, second version)** Let \((M_n)\) be a UI martingale and \(S \le T\) stopping times with values in \(\mathbb{N} \cup \{\infty\}\). Set \(M_T = M_\infty\mathbf{1}_{\{T = \infty\}} + \sum_n M_n\mathbf{1}_{\{T = n\}}\), similarly \(M_S\), and \(\mathcal{F}_T = \{A \in \mathcal{F}_\infty : A \cap \{T = n\} \in \mathcal{F}_n\ \forall n \in \mathbb{N}\}\). Then \(M_T = \mathbb{E}[M_\infty \mid \mathcal{F}_T]\) and
+\[
+\mathbb{E}[M_T \mid \mathcal{F}_S] = M_S; \qquad \text{in particular } \mathbb{E}[M_T] = \mathbb{E}[M_0].
+\]
+PROOF:
+**1 ⇒ 3.** For \(m \ge n\), \(M_n = \mathbb{E}[M_m \mid \mathcal{F}_n]\), and by the contraction property \(\mathbb{E}|\mathbb{E}[M_m \mid \mathcal{F}_n] - \mathbb{E}[M_\infty \mid \mathcal{F}_n]| \le \mathbb{E}|M_m - M_\infty| \to 0\); so \(M_n = \mathbb{E}[M_\infty \mid \mathcal{F}_n]\): take \(Z = M_\infty\).
+
+**3 ⇒ 2.** Definition 9 (v).
+
+**2 ⇒ 1.** UI implies bounded in \(L^1\), so \(M_n \to M_\infty\) a.s. by Theorem 8, hence in probability, hence in \(L^1\) by Theorem 9.
+
+**\(M_\infty = \mathbb{E}[Z \mid \mathcal{F}_\infty]\).** Replacing \(M_\infty\) by \(\limsup_n M_n\) makes it \(\mathcal{F}_\infty\)-measurable. For \(A \in \mathcal{F}_n\) and \(m \ge n\), \(\mathbb{E}[M_m\mathbf{1}_A] = \mathbb{E}[Z\mathbf{1}_A]\); letting \(m \to \infty\) (\(L^1\) convergence), \(\mathbb{E}[M_\infty\mathbf{1}_A] = \mathbb{E}[Z\mathbf{1}_A]\) for all \(A\) in the \(\pi\)-system \(\bigcup_n\mathcal{F}_n\). The class of \(A \in \mathcal{F}_\infty\) with this property is a monotone class (linearity; dominated convergence for increasing unions), so it is \(\mathcal{F}_\infty\) by Theorem 1.
+
+**Stopping, Step 1: \(M_T = \mathbb{E}[M_\infty \mid \mathcal{F}_T]\).** Measurability: \(\{M_T \in B\} \cap \{T = n\} = \{M_n \in B\} \cap \{T = n\} \in \mathcal{F}_n\), and \(\{M_T \in B\} \cap \{T = \infty\} \in \mathcal{F}_\infty\). Integrability: \(|M_n| \le \mathbb{E}[|M_\infty| \mid \mathcal{F}_n]\) (conditional Jensen), so \(\mathbb{E}[|M_n|\mathbf{1}_{\{T = n\}}] \le \mathbb{E}[|M_\infty|\mathbf{1}_{\{T = n\}}]\) (as \(\{T = n\} \in \mathcal{F}_n\)), and summing, \(\mathbb{E}|M_T| \le \mathbb{E}|M_\infty|\). Averaging: for \(A \in \mathcal{F}_T\), \(A \cap \{T = n\} \in \mathcal{F}_n\), so \(\mathbb{E}[M_n\mathbf{1}_{A \cap \{T = n\}}] = \mathbb{E}[M_\infty\mathbf{1}_{A \cap \{T = n\}}]\); summing over \(n \in \mathbb{N} \cup \{\infty\}\) (absolutely convergent series) gives \(\mathbb{E}[M_T\mathbf{1}_A] = \mathbb{E}[M_\infty\mathbf{1}_A]\).
+
+**Step 2.** \(\mathcal{F}_S \subset \mathcal{F}_T\) (Definition 8), so by the tower property \(\mathbb{E}[M_T \mid \mathcal{F}_S] = \mathbb{E}[\mathbb{E}[M_\infty \mid \mathcal{F}_T] \mid \mathcal{F}_S] = \mathbb{E}[M_\infty \mid \mathcal{F}_S] = M_S\). \(\square\)
+REFRESH:
+**Closed martingale** (Definition 7 (ii)): \(M_n = \mathbb{E}[Z \mid \mathcal{F}_n]\) is a martingale for any \(Z \in L^1\); such families are UI (Definition 9 (v)).
+EXPLANATION:
+This theorem identifies the well-behaved martingales: those that converge in \(L^1\), those that are uniformly integrable, and those of the form \(\mathbb{E}[Z \mid \mathcal{F}_n]\) are the same martingales, and their limit \(M_\infty\) closes them: \(M_n = \mathbb{E}[M_\infty \mid \mathcal{F}_n]\), the best guess at time \(n\) of the final value. The proof is a cycle of three easy implications, each using one earlier result: the \(L^1\)-contraction of conditional expectation, example (v) of Definition 9, and Theorems 8 and 9. For such martingales the optional stopping theorem holds for arbitrary stopping times, even infinite ones, with no boundedness condition: \(M_T = \mathbb{E}[M_\infty \mid \mathcal{F}_T]\) and \(\mathbb{E}[M_T \mid \mathcal{F}_S] = M_S\).
+DEEP:
+We want to prove the cycle 1 ⇒ 3 ⇒ 2 ⇒ 1, then the identification of \(M_\infty\), then the stopping theorem. Plan: one earlier result per step.
+
+**Step 1: 1 ⇒ 3.** Fix \(n\). For every \(m \ge n\) the martingale property gives \(M_n = \mathbb{E}[M_m \mid \mathcal{F}_n]\). Conditional expectation is an \(L^1\)-contraction (Proposition 11 (7)), so \(\mathbb{E}\big|\mathbb{E}[M_m \mid \mathcal{F}_n] - \mathbb{E}[M_\infty \mid \mathcal{F}_n]\big| \le \mathbb{E}|M_m - M_\infty| \to 0\) as \(m \to \infty\). The left-hand side is \(\mathbb{E}|M_n - \mathbb{E}[M_\infty \mid \mathcal{F}_n]|\), independent of \(m\), hence \(0\): \(M_n = \mathbb{E}[M_\infty \mid \mathcal{F}_n]\) a.s. The martingale is closed by \(Z = M_\infty\).
+
+**Step 2: 3 ⇒ 2.** The family \(\{\mathbb{E}[Z \mid \mathcal{G}]\}\) over all sub-\(\sigma\)-algebras is UI (Definition 9 (v)); the \(M_n\) are members of it.
+
+**Step 3: 2 ⇒ 1.** A UI family is bounded in \(L^1\), so Theorem 8 gives \(M_n \to M_\infty\) a.s. with \(M_\infty \in L^1\); a.s. convergence implies convergence in probability, and Theorem 9 upgrades it to \(L^1\) convergence.
+
+**Step 4: identifying \(M_\infty\).** Suppose 3 holds with \(Z\). Take \(M_\infty = \limsup_n M_n\) (set to \(0\) where infinite), an \(\mathcal{F}_\infty\)-measurable version of the limit. For \(A \in \mathcal{F}_n\) and \(m \ge n\), \(A \in \mathcal{F}_m\) so \(\mathbb{E}[M_m\mathbf{1}_A] = \mathbb{E}[Z\mathbf{1}_A]\); let \(m \to \infty\) using \(L^1\) convergence: \(\mathbb{E}[M_\infty\mathbf{1}_A] = \mathbb{E}[Z\mathbf{1}_A]\). This holds on \(\bigcup_n\mathcal{F}_n\), which is a \(\pi\)-system (the \(\mathcal{F}_n\) increase) generating \(\mathcal{F}_\infty\), and the class of \(A \in \mathcal{F}_\infty\) for which it holds is a monotone class: it contains \(\Omega\), it is stable under nested differences by linearity, and under increasing unions by dominated convergence (\(|M_\infty|\) and \(|Z|\) are integrable dominants). Theorem 1 gives all of \(\mathcal{F}_\infty\), i.e. \(M_\infty = \mathbb{E}[Z \mid \mathcal{F}_\infty]\). In words: a closed martingale converges to the conditional expectation of \(Z\) given all the information ever available.
+
+**Step 5: stopping, \(M_T = \mathbb{E}[M_\infty \mid \mathcal{F}_T]\).** Three things to check. Measurability: on \(\{T = n\}\), \(M_T = M_n\), so \(\{M_T \in B\} \cap \{T = n\} \in \mathcal{F}_n\); on \(\{T = \infty\}\), \(M_T = M_\infty\), which is \(\mathcal{F}_\infty\)-measurable. Integrability: by conditional Jensen \(|M_n| \le \mathbb{E}[|M_\infty| \mid \mathcal{F}_n]\), and since \(\{T = n\} \in \mathcal{F}_n\), \(\mathbb{E}[|M_n|\mathbf{1}_{\{T = n\}}] \le \mathbb{E}[|M_\infty|\mathbf{1}_{\{T = n\}}]\); summing over \(n\), \(\mathbb{E}|M_T| \le \mathbb{E}|M_\infty|\). Averaging: for \(A \in \mathcal{F}_T\), the set \(A \cap \{T = n\}\) is in \(\mathcal{F}_n\), so \(\mathbb{E}[M_n\mathbf{1}_{A \cap \{T = n\}}] = \mathbb{E}[M_\infty\mathbf{1}_{A \cap \{T = n\}}]\) by Step 1; summing over \(n \in \mathbb{N} \cup \{\infty\}\), which is legitimate since the series converges absolutely by the integrability bound, \(\mathbb{E}[M_T\mathbf{1}_A] = \mathbb{E}[M_\infty\mathbf{1}_A]\).
+
+**Step 6: stopping, conclusion.** \(S \le T\) gives \(\mathcal{F}_S \subset \mathcal{F}_T\), and the tower property gives \(\mathbb{E}[M_T \mid \mathcal{F}_S] = \mathbb{E}[\mathbb{E}[M_\infty \mid \mathcal{F}_T] \mid \mathcal{F}_S] = \mathbb{E}[M_\infty \mid \mathcal{F}_S] = M_S\). Compare with Theorem 7: no boundedness of \(T\) is needed, because the UI martingale is closed by \(M_\infty\), which supplies the missing integrable dominant.
+
+Used next: in continuous time, the same three theorems for Brownian martingales (Hoffmann, later chapters); the identification \(M_\infty = \mathbb{E}[Z \mid \mathcal{F}_\infty]\) is also how one proves \(0\)–\(1\) laws.
+EXAMPLE:
+Let \(X_1, X_2, \dots\) be i.i.d. with \(\mathbb{P}(X_i = 1) = \mathbb{P}(X_i = -1) = \frac12\), \(S_n = X_1 + \dots + X_n\), and \(T = \inf\{n : S_n \in \{-a, b\}\}\). The stopped walk \(M_n = S_{n \wedge T}\) is a martingale bounded by \(\max(a, b)\), hence UI; so \(M_\infty = S_T\) exists a.s., \(M_n = \mathbb{E}[S_T \mid \mathcal{F}_n]\), and Theorem 10 gives \(\mathbb{E}[S_T] = \mathbb{E}[M_0] = 0\) directly, without the estimate on \(\mathbb{E}[T]\) used in the example of Theorem 7. Contrast: for \(T' = \inf\{n : S_n = 1\}\), the stopped walk \(S_{n \wedge T'}\) converges a.s. to \(1\) but \(\mathbb{E}[S_{n \wedge T'}] = 0\), so it is not UI, and the second version of the stopping theorem does not apply, consistently with \(\mathbb{E}[S_{T'}] = 1\).
+NOTE:
+(none)

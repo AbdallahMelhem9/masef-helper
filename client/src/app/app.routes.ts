@@ -6,6 +6,7 @@ import { Courses } from './pages/courses/courses';
 import { CourseDetail } from './pages/course-detail/course-detail';
 import { LessonDetail } from './pages/lesson-detail/lesson-detail';
 import { PdfViewer } from './pages/pdf-viewer/pdf-viewer';
+import { NotesPage } from './pages/notes/notes';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -19,6 +20,7 @@ export const routes: Routes = [
       { path: 'courses/:id', component: CourseDetail },
       { path: 'lessons/:id', component: LessonDetail },
       { path: 'pdfs/:id', component: PdfViewer },
+      { path: 'pdfs/:id/notes', component: NotesPage },
     ],
   },
   { path: '**', redirectTo: '' },
