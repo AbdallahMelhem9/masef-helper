@@ -48,6 +48,16 @@
           </li>
         }
       </ol>
+    } @else if (c.unavailable_reason) {
+      <section class="unavailable">
+        <h2>Not available yet</h2>
+        <p>{{ c.unavailable_reason }}</p>
+        <p class="contact">
+          Have the course material? Send it to <strong>Abdallah Melhem</strong> at
+          <a href="mailto:abdallah.melhem93@gmail.com?subject={{ 'MASEF Helper: ' + c.title }}">abdallah.melhem93&#64;gmail.com</a>
+          and it will be added here.
+        </p>
+      </section>
     } @else if (!showForm()) {
       <div class="empty">
         <h2>No lessons yet</h2>

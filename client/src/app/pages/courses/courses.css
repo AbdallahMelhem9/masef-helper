@@ -109,3 +109,8 @@
 .loading {
   color: var(--ink-3);
 }
+
+.course-meta.unavailable-tag {
+  color: var(--ink-3);
+  font-style: italic;
+}

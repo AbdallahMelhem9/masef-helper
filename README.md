@@ -1,6 +1,6 @@
 # MASEF Helper
 
-> **Deploy note (Render or similar)**: the app deploys with `AI_DISABLED=1` — course content, saved AI answers, glossary, and all reading modes work; asking new questions requires the local install (the AI runs through a local Claude subscription). The database seeds from `server/seed/masef-seed.db` (no user accounts inside — the first login on a fresh deploy creates the account, so log in right after deploying). Course PDFs are fetched from their original public sources at build time (`server/scripts/fetch-uploads.js`), not stored in this repository. With `render.yaml` present, deploy via Render → New → Blueprint → this repo.
+> **Deploy note (Render or similar)**: the app deploys with `AI_DISABLED=1` — course content, saved AI answers, glossary, and all reading modes work; asking new questions requires the local install (the AI runs through a local Claude subscription). The database seeds from `server/seed/masef-seed.db` (no user accounts inside). Accounts, sessions and handwritten notes live in an external Postgres set by `DATABASE_URL` (a free Neon database), so they survive Render restarts; without it they fall back to SQLite. Course PDFs are fetched from their original public sources at build time (`server/scripts/fetch-uploads.js`), not stored in this repository. With `render.yaml` present, deploy via Render → New → Blueprint → this repo.
 
 Personal study app for the MASEF master's (Université Paris-Dauphine, 2026–2027).
 Courses → lessons → teacher PDFs, where each PDF is decomposed into sections you can
@@ -20,7 +20,7 @@ read (transcribed with LaTeX), each with an AI lecture and its own chat box —
 ./start-app.ps1        # starts the server (if needed) and opens http://localhost:3000
 ```
 
-The server serves the built client. First visit creates your account (choose email + password).
+The server serves the built client. Use **Create account** on the login page (anyone can sign up; each account has its own notes).
 
 ## Development
 
@@ -71,7 +71,26 @@ what Hoffmann's Stochastic Calculus assumes). Edit the sentinel files and run
   fingers always scroll.
 - **Notes** (lesson header): a ruled notebook page per lesson, handwritten
   and/or typed, extendable page by page.
-- Ink is saved per user, lesson and kind in the `ink` table
-  (`GET/PUT /api/pdfs/:id/ink/:kind`) **and** in the browser's IndexedDB; the
-  newer copy wins on load. The browser copy is what survives on Render's free
-  tier, whose disk resets on every restart; the seed export never includes ink.
+- Ink is saved per account, lesson and kind (`GET/PUT /api/pdfs/:id/ink/:kind`)
+  through `server/src/store.js`: in Postgres when `DATABASE_URL` is set (the
+  hosted site), in the SQLite `ink` table otherwise. The browser keeps its own
+  per-account copy in IndexedDB; the newer copy wins on load. The seed export
+  never includes accounts or ink.
+
+## Contributing
+
+Friends and classmates are welcome to improve the app:
+
+1. Fork the repository (or ask to be added as a collaborator), create a
+   branch, make your change, and open a pull request against `master`.
+2. Local setup: Node 24+, then `npm install` in `server/` and `client/`, and
+   run as in *Development* above. The AI features (ingesting PDFs, asking
+   questions) need the `claude` CLI logged in on your machine; everything else
+   works without it.
+3. Never commit secrets: `.env` is gitignored and must stay that way.
+
+## License
+
+The code is released under the [MIT License](LICENSE). Course material (the
+teachers' notes and the statements transcribed from them) is not covered by
+it and belongs to its authors.

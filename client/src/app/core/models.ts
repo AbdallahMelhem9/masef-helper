@@ -5,6 +5,7 @@ export interface Course {
   teacher: string;
   position: number;
   created_at: string;
+  unavailable_reason?: string | null;
   lessonCount?: number;
   lessons?: Lesson[];
 }

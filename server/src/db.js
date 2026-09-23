@@ -121,3 +121,8 @@ for (const [name, ddl] of [
 ]) {
   if (!sectionCols.includes(name)) db.exec(ddl);
 }
+
+// Why a course has no material yet (shown on its page with a contact line);
+// NULL for courses with content.
+const courseCols = db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name);
+if (!courseCols.includes('unavailable_reason')) db.exec('ALTER TABLE courses ADD COLUMN unavailable_reason TEXT');

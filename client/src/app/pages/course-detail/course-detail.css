@@ -126,3 +126,34 @@
 .loading {
   color: var(--ink-3);
 }
+
+.unavailable {
+  max-width: 620px;
+  margin: 28px 0;
+  padding: 18px 22px;
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  color: var(--ink);
+}
+
+.unavailable h2 {
+  font-size: 19px;
+  margin: 0 0 8px;
+}
+
+.unavailable p {
+  margin: 0 0 10px;
+  line-height: 1.55;
+}
+
+.unavailable .contact {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 14.5px;
+}
+
+.unavailable a {
+  color: var(--ink);
+  word-break: break-all;
+}

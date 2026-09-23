@@ -51,7 +51,11 @@
             @if (course.description) {
               <p class="course-desc">{{ course.description }}</p>
             }
-            <span class="course-meta">{{ course.lessonCount }} {{ course.lessonCount === 1 ? 'lesson' : 'lessons' }}</span>
+            @if (course.unavailable_reason) {
+              <span class="course-meta unavailable-tag">Not available yet</span>
+            } @else {
+              <span class="course-meta">{{ course.lessonCount }} {{ course.lessonCount === 1 ? 'lesson' : 'lessons' }}</span>
+            }
           </a>
         }
       </div>

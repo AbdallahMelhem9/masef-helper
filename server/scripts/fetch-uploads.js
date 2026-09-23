@@ -19,6 +19,10 @@ const SOURCES = {
   'lob-survey.pdf': 'https://arxiv.org/pdf/1012.0349',
   'hoffmann-ch1.pdf': 'https://www.ceremade.dauphine.fr/~cosco/Chapter1.pdf',
   'hoffmann-ch2.pdf': 'https://www.ceremade.dauphine.fr/~cosco/Chapter2_in_progress.pdf',
+  'var-roncalli.pdf': 'http://www.thierry-roncalli.com/download/FRM-Lectures.pdf',
+  // Only surviving copy of the Henon-Turinici notes: the Wayback Machine ('id_' = raw file).
+  'courbe-turinici.pdf':
+    'http://web.archive.org/web/20221004230340id_/https://www.ceremade.dauphine.fr/~turinici/images/stories/work/cours/tauxP20/cours_taux_Turinici_P20_v2_1_diffuse.pdf',
 };
 
 for (const [name, url] of Object.entries(SOURCES)) {
