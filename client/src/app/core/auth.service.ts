@@ -21,10 +21,15 @@ export class AuthService {
     return firstValueFrom(this.http.get<{ firstRun: boolean }>('/api/auth/status'));
   }
 
-  async login(email: string, password: string, name?: string): Promise<LoginResponse> {
-    const res = await firstValueFrom(
-      this.http.post<LoginResponse>('/api/auth/login', { email, password, name })
-    );
+  async login(email: string, password: string): Promise<LoginResponse> {
+    return this.start(await firstValueFrom(this.http.post<LoginResponse>('/api/auth/login', { email, password })));
+  }
+
+  async signup(email: string, password: string, name?: string): Promise<LoginResponse> {
+    return this.start(await firstValueFrom(this.http.post<LoginResponse>('/api/auth/signup', { email, password, name })));
+  }
+
+  private start(res: LoginResponse): LoginResponse {
     localStorage.setItem(TOKEN_KEY, res.token);
     localStorage.setItem(EMAIL_KEY, res.email);
     this.token.set(res.token);

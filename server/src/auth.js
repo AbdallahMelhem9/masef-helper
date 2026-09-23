@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { db } from './db.js';
+import { store } from './store.js';
 
 const SCRYPT_KEYLEN = 64;
 
@@ -15,26 +15,44 @@ export function verifyPassword(password, stored) {
   return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), candidate);
 }
 
-export function createSession(userId) {
+export async function createSession(userId) {
   const token = crypto.randomBytes(32).toString('hex');
-  db.prepare('INSERT INTO sessions (token, user_id) VALUES (?, ?)').run(token, userId);
+  await store.createSession(token, userId);
   return token;
 }
 
-export function userCount() {
-  return db.prepare('SELECT COUNT(*) AS n FROM users').get().n;
+// Session lookups hit the (possibly remote) user store on every request, so
+// resolved tokens are cached for a few minutes.
+const SESSION_TTL_MS = 5 * 60 * 1000;
+const sessionCache = new Map();
+
+export function forgetSession(token) {
+  sessionCache.delete(token);
+}
+
+function tokenOf(req) {
+  const header = req.headers.authorization || '';
+  return header.startsWith('Bearer ') ? header.slice(7) : req.query.token;
 }
 
 // Express middleware. Accepts "Authorization: Bearer <token>" or ?token=
 // (query form is needed for the PDF <iframe> which can't set headers).
-export function requireAuth(req, res, next) {
-  const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : req.query.token;
+export async function requireAuth(req, res, next) {
+  const token = tokenOf(req);
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const row = db
-    .prepare('SELECT s.token, u.id AS user_id, u.email, u.name FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ?')
-    .get(token);
-  if (!row) return res.status(401).json({ error: 'Invalid session' });
-  req.user = { id: row.user_id, email: row.email, name: row.name };
-  next();
+  try {
+    let hit = sessionCache.get(token);
+    if (!hit || hit.expires < Date.now()) {
+      const user = await store.sessionUser(token);
+      if (!user) return res.status(401).json({ error: 'Invalid session' });
+      hit = { user: { id: user.id, email: user.email, name: user.name }, expires: Date.now() + SESSION_TTL_MS };
+      sessionCache.set(token, hit);
+    }
+    req.user = hit.user;
+    req.token = token;
+    next();
+  } catch (err) {
+    console.error('auth lookup failed:', err);
+    res.status(503).json({ error: 'Account service unavailable, try again shortly' });
+  }
 }

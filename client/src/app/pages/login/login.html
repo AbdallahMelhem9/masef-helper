@@ -11,15 +11,20 @@
       with an AI tutor at your side.
     </p>
 
-    @if (firstRun()) {
-      <p class="first-run-note">First visit &mdash; choose the email and password you'll sign in with.</p>
+    <div class="mode-switch" role="tablist" aria-label="Account">
+      <button type="button" role="tab" [attr.aria-selected]="mode() === 'signin'" [class.on]="mode() === 'signin'" (click)="setMode('signin')">Sign in</button>
+      <button type="button" role="tab" [attr.aria-selected]="mode() === 'signup'" [class.on]="mode() === 'signup'" (click)="setMode('signup')">Create account</button>
+    </div>
+
+    @if (mode() === 'signup') {
+      <p class="first-run-note">Your handwritten notes and pen marks are saved to your account &mdash; sign in on any device to find them again.</p>
     }
 
     <form class="login-form" (ngSubmit)="submit()">
-      @if (firstRun()) {
+      @if (mode() === 'signup') {
         <div class="field">
           <label for="name">Name</label>
-          <input id="name" name="name" [(ngModel)]="name" placeholder="Abdallah" autocomplete="name" />
+          <input id="name" name="name" [(ngModel)]="name" placeholder="Your name" autocomplete="name" />
         </div>
       }
       <div class="field">
@@ -29,8 +34,8 @@
       <div class="field">
         <label for="password">Password</label>
         <input id="password" name="password" type="password" [(ngModel)]="password" required
-          [placeholder]="firstRun() ? 'Choose a password' : 'Your password'"
-          [autocomplete]="firstRun() ? 'new-password' : 'current-password'" />
+          [placeholder]="mode() === 'signup' ? 'Choose a password (6+ characters)' : 'Your password'"
+          [autocomplete]="mode() === 'signup' ? 'new-password' : 'current-password'" />
       </div>
 
       @if (error()) {
@@ -38,7 +43,7 @@
       }
 
       <button class="btn" type="submit" [disabled]="loading()">
-        {{ loading() ? 'Signing in…' : firstRun() ? 'Create account' : 'Sign in' }}
+        {{ loading() ? (mode() === 'signup' ? 'Creating account…' : 'Signing in…') : mode() === 'signup' ? 'Create account' : 'Sign in' }}
       </button>
     </form>
   </div>

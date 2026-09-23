@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from './auth.service';
 
 // A handwritten stroke. Points are stored relative to an anchor element
 // (a lesson block, or the paper itself) so that the ink follows its block
@@ -92,8 +93,17 @@ async function localPut(key: string, value: Stored): Promise<void> {
 @Injectable({ providedIn: 'root' })
 export class InkService {
   private http = inject(HttpClient);
+  private auth = inject(AuthService);
 
+  // Browser copies are kept per account, so two people sharing a browser
+  // never see each other's notes.
   private key(pdfId: number, kind: InkKind) {
+    return `${this.auth.email() || 'anon'}:${pdfId}:${kind}`;
+  }
+
+  // Copies saved before accounts were separated used this key; they are
+  // adopted by the first account that opens the page on this browser.
+  private legacyKey(pdfId: number, kind: InkKind) {
     return `${pdfId}:${kind}`;
   }
 
@@ -101,7 +111,7 @@ export class InkService {
   // older side up to date.
   async load(pdfId: number, kind: InkKind): Promise<InkDoc> {
     const [local, remote] = await Promise.all([
-      localGet(this.key(pdfId, kind)),
+      localGet(this.key(pdfId, kind)).then((v) => v ?? localGet(this.legacyKey(pdfId, kind))),
       firstValueFrom(this.http.get<{ data: InkDoc | null; updated_at: string | null }>(`/api/pdfs/${pdfId}/ink/${kind}`)).catch(
         () => null
       ),

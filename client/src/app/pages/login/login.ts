@@ -14,7 +14,8 @@ export class Login implements OnInit {
   private auth = inject(AuthService);
   private router = inject(Router);
 
-  firstRun = signal(false);
+  // Which form is shown: sign in to an existing account, or create one.
+  mode = signal<'signin' | 'signup'>('signin');
   loading = signal(false);
   error = signal('');
 
@@ -29,10 +30,15 @@ export class Login implements OnInit {
     }
     try {
       const s = await this.auth.status();
-      this.firstRun.set(s.firstRun);
+      if (s.firstRun) this.mode.set('signup');
     } catch {
       this.error.set('Cannot reach the server. Is it running on port 3000?');
     }
+  }
+
+  setMode(mode: 'signin' | 'signup') {
+    this.mode.set(mode);
+    this.error.set('');
   }
 
   async submit() {
@@ -40,10 +46,11 @@ export class Login implements OnInit {
     this.loading.set(true);
     this.error.set('');
     try {
-      await this.auth.login(this.email, this.password, this.name || undefined);
+      if (this.mode() === 'signup') await this.auth.signup(this.email, this.password, this.name || undefined);
+      else await this.auth.login(this.email, this.password);
       this.router.navigate(['/courses']);
     } catch (err: any) {
-      this.error.set(err?.error?.error || 'Login failed');
+      this.error.set(err?.error?.error || (this.mode() === 'signup' ? 'Sign-up failed' : 'Login failed'));
     } finally {
       this.loading.set(false);
     }

@@ -68,3 +68,31 @@
   margin-top: 6px;
   justify-content: center;
 }
+
+.mode-switch {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin: 0 0 16px;
+  background: var(--paper);
+  border-radius: 10px;
+}
+
+.mode-switch button {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.mode-switch button.on {
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}

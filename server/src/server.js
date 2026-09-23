@@ -5,7 +5,8 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { db, UPLOADS_DIR } from './db.js';
-import { hashPassword, verifyPassword, createSession, userCount, requireAuth } from './auth.js';
+import { hashPassword, verifyPassword, createSession, forgetSession, requireAuth } from './auth.js';
+import { store } from './store.js';
 import { annotateBlock, reExplainBlock, answerQuestion, ANSWER_LENGTHS } from './ai.js';
 import { ingestPdf } from './ingest.js';
 import { GLOSSARY } from './glossary.js';
@@ -33,40 +34,63 @@ const upload = multer({
 });
 
 // ---------- Auth ----------
-// First ever login creates the (single) account with that email + password.
-app.post('/api/auth/login', (req, res) => {
-  const { email, password, name } = req.body || {};
+// Anyone can create an account; each account has its own notes and ink.
+const cleanEmail = (email) => String(email || '').toLowerCase().trim();
+
+app.post('/api/auth/signup', async (req, res) => {
+  const { password, name } = req.body || {};
+  const email = cleanEmail(req.body?.email);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: 'Enter a valid email' });
+  if (!password || password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  try {
+    if (await store.findUserByEmail(email)) {
+      return res.status(409).json({ error: 'An account with this email already exists. Sign in instead.' });
+    }
+    const user = await store.createUser(email, hashPassword(password), String(name || '').trim());
+    const token = await createSession(user.id);
+    res.json({ token, email: user.email, name: user.name, created: true });
+  } catch (err) {
+    console.error('signup failed:', err);
+    res.status(503).json({ error: 'Account service unavailable, try again shortly' });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  const { password } = req.body || {};
+  const email = cleanEmail(req.body?.email);
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
-
-  if (userCount() === 0) {
-    const info = db
-      .prepare('INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)')
-      .run(email.toLowerCase().trim(), hashPassword(password), name || '');
-    const token = createSession(info.lastInsertRowid);
-    return res.json({ token, email, name: name || '', created: true });
+  try {
+    const user = await store.findUserByEmail(email);
+    if (!user || !verifyPassword(password, user.password_hash)) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+    const token = await createSession(user.id);
+    res.json({ token, email: user.email, name: user.name, created: false });
+  } catch (err) {
+    console.error('login failed:', err);
+    res.status(503).json({ error: 'Account service unavailable, try again shortly' });
   }
-
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase().trim());
-  if (!user || !verifyPassword(password, user.password_hash)) {
-    return res.status(401).json({ error: 'Invalid email or password' });
-  }
-  const token = createSession(user.id);
-  res.json({ token, email: user.email, name: user.name, created: false });
 });
 
 app.get('/api/auth/me', requireAuth, (req, res) => {
   res.json({ ...req.user, firstRun: false });
 });
 
-// Tells the login page whether this is the first run (account creation).
-app.get('/api/auth/status', (_req, res) => {
-  res.json({ firstRun: userCount() === 0 });
+// Tells the login page whether any account exists yet (it then opens on
+// "Create account"), and whether the AI tutor runs on this server.
+app.get('/api/auth/status', async (_req, res) => {
+  let firstRun = false;
+  try {
+    firstRun = (await store.userCount()) === 0;
+  } catch {
+    /* store unreachable — the login form reports it on submit */
+  }
+  res.json({ firstRun, aiEnabled: AI_ENABLED });
 });
 
-app.post('/api/auth/logout', requireAuth, (req, res) => {
-  const header = req.headers.authorization || '';
-  const token = header.startsWith('Bearer ') ? header.slice(7) : req.query.token;
-  db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+app.post('/api/auth/logout', requireAuth, async (req, res) => {
+  forgetSession(req.token);
+  await store.deleteSession(req.token).catch(() => {});
   res.json({ ok: true });
 });
 
@@ -312,11 +336,15 @@ app.post('/api/sections/:id/messages', requireAuth, async (req, res) => {
 // ---------- Handwritten ink: pen layer over a lesson, and its notebook ----------
 const INK_KINDS = new Set(['page', 'notes']);
 
-app.get('/api/pdfs/:id/ink/:kind', requireAuth, (req, res) => {
+app.get('/api/pdfs/:id/ink/:kind', requireAuth, async (req, res) => {
   if (!INK_KINDS.has(req.params.kind)) return res.status(400).json({ error: 'Unknown ink kind' });
-  const row = db
-    .prepare('SELECT data, updated_at FROM ink WHERE user_id = ? AND pdf_id = ? AND kind = ?')
-    .get(req.user.id, req.params.id, req.params.kind);
+  let row;
+  try {
+    row = await store.getInk(req.user.id, Number(req.params.id), req.params.kind);
+  } catch (err) {
+    console.error('ink read failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
   if (!row) return res.json({ data: null, updated_at: null });
   let data = null;
   try {
@@ -327,17 +355,19 @@ app.get('/api/pdfs/:id/ink/:kind', requireAuth, (req, res) => {
   res.json({ data, updated_at: row.updated_at });
 });
 
-app.put('/api/pdfs/:id/ink/:kind', requireAuth, (req, res) => {
+app.put('/api/pdfs/:id/ink/:kind', requireAuth, async (req, res) => {
   if (!INK_KINDS.has(req.params.kind)) return res.status(400).json({ error: 'Unknown ink kind' });
   const pdf = db.prepare('SELECT id FROM pdfs WHERE id = ?').get(req.params.id);
   if (!pdf) return res.status(404).json({ error: 'PDF not found' });
   const { data, updated_at } = req.body || {};
   if (!data || typeof data !== 'object') return res.status(400).json({ error: 'data object required' });
   const stamp = typeof updated_at === 'string' && updated_at ? updated_at : new Date().toISOString();
-  db.prepare(
-    `INSERT INTO ink (user_id, pdf_id, kind, data, updated_at) VALUES (?, ?, ?, ?, ?)
-     ON CONFLICT (user_id, pdf_id, kind) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`
-  ).run(req.user.id, pdf.id, req.params.kind, JSON.stringify(data), stamp);
+  try {
+    await store.putInk(req.user.id, pdf.id, req.params.kind, JSON.stringify(data), stamp);
+  } catch (err) {
+    console.error('ink write failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
   res.json({ ok: true, updated_at: stamp });
 });
 

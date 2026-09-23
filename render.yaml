@@ -10,3 +10,8 @@ services:
         value: "1"
       - key: NODE_VERSION
         value: "24.11.1"
+      # Accounts, sessions and handwritten notes go to an external Postgres
+      # (e.g. a free Neon database) so they survive restarts; set it in the
+      # Render dashboard. Without it they live in the wiped-on-restart SQLite.
+      - key: DATABASE_URL
+        sync: false
