@@ -71,6 +71,9 @@ what Hoffmann's Stochastic Calculus assumes). Edit the sentinel files and run
   fingers always scroll.
 - **Notes** (lesson header): a ruled notebook page per lesson, handwritten
   and/or typed, extendable page by page.
+- **Note** (end of every block): a notes board for that one block, opened
+  on the side (pen, typed notes, extra pages). Saved per account and block
+  (`GET/PUT /api/sections/:id/ink`); blocks with notes show "My notes".
 - Ink is saved per account, lesson and kind (`GET/PUT /api/pdfs/:id/ink/:kind`)
   through `server/src/store.js`: in Postgres when `DATABASE_URL` is set (the
   hosted site), in the SQLite `ink` table otherwise. The browser keeps its own

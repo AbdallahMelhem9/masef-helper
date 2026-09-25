@@ -41,6 +41,18 @@ function sqliteStore() {
          ON CONFLICT (user_id, pdf_id, kind) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`
       ).run(userId, pdfId, kind, data, stamp);
     },
+    async getSectionInk(userId, sectionId) {
+      return db.prepare('SELECT data, updated_at FROM section_ink WHERE user_id = ? AND section_id = ?').get(userId, sectionId) || null;
+    },
+    async putSectionInk(userId, sectionId, pdfId, data, filled, stamp) {
+      db.prepare(
+        `INSERT INTO section_ink (user_id, section_id, pdf_id, data, filled, updated_at) VALUES (?, ?, ?, ?, ?, ?)
+         ON CONFLICT (user_id, section_id) DO UPDATE SET data = excluded.data, filled = excluded.filled, updated_at = excluded.updated_at`
+      ).run(userId, sectionId, pdfId, data, filled ? 1 : 0, stamp);
+    },
+    async filledSections(userId, pdfId) {
+      return db.prepare('SELECT section_id FROM section_ink WHERE user_id = ? AND pdf_id = ? AND filled = 1').all(userId, pdfId).map((r) => r.section_id);
+    },
   };
 }
 
@@ -70,6 +82,15 @@ async function postgresStore(url) {
       updated_at TEXT NOT NULL,
       PRIMARY KEY (user_id, pdf_id, kind)
     );
+    CREATE TABLE IF NOT EXISTS section_ink (
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      section_id INTEGER NOT NULL,
+      pdf_id INTEGER NOT NULL,
+      data TEXT NOT NULL DEFAULT '{}',
+      filled BOOLEAN NOT NULL DEFAULT false,
+      updated_at TEXT NOT NULL,
+      PRIMARY KEY (user_id, section_id)
+    );
   `);
   const one = async (sql, params) => (await pool.query(sql, params)).rows[0] || null;
   return {
@@ -96,6 +117,19 @@ async function postgresStore(url) {
          ON CONFLICT (user_id, pdf_id, kind) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
         [userId, pdfId, kind, data, stamp]
       );
+    },
+    getSectionInk: (userId, sectionId) =>
+      one('SELECT data, updated_at FROM section_ink WHERE user_id = $1 AND section_id = $2', [userId, sectionId]),
+    async putSectionInk(userId, sectionId, pdfId, data, filled, stamp) {
+      await pool.query(
+        `INSERT INTO section_ink (user_id, section_id, pdf_id, data, filled, updated_at) VALUES ($1, $2, $3, $4, $5, $6)
+         ON CONFLICT (user_id, section_id) DO UPDATE SET data = excluded.data, filled = excluded.filled, updated_at = excluded.updated_at`,
+        [userId, sectionId, pdfId, data, filled, stamp]
+      );
+    },
+    async filledSections(userId, pdfId) {
+      const r = await pool.query('SELECT section_id FROM section_ink WHERE user_id = $1 AND pdf_id = $2 AND filled', [userId, pdfId]);
+      return r.rows.map((x) => x.section_id);
     },
   };
 }

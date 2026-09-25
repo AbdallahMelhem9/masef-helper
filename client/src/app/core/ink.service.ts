@@ -90,31 +90,68 @@ async function localPut(key: string, value: Stored): Promise<void> {
   });
 }
 
+// Where one ink document lives: its server URL and its browser-copy key.
+interface InkTarget {
+  url: string;
+  key: string;
+  legacyKey?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class InkService {
   private http = inject(HttpClient);
   private auth = inject(AuthService);
 
   // Browser copies are kept per account, so two people sharing a browser
-  // never see each other's notes.
-  private key(pdfId: number, kind: InkKind) {
-    return `${this.auth.email() || 'anon'}:${pdfId}:${kind}`;
+  // never see each other's notes. Copies saved before accounts were separated
+  // used the legacy key; they are adopted by the first account that opens the
+  // page on this browser.
+  private lessonTarget(pdfId: number, kind: InkKind): InkTarget {
+    return {
+      url: `/api/pdfs/${pdfId}/ink/${kind}`,
+      key: `${this.auth.email() || 'anon'}:${pdfId}:${kind}`,
+      legacyKey: `${pdfId}:${kind}`,
+    };
   }
 
-  // Copies saved before accounts were separated used this key; they are
-  // adopted by the first account that opens the page on this browser.
-  private legacyKey(pdfId: number, kind: InkKind) {
-    return `${pdfId}:${kind}`;
+  private sectionTarget(sectionId: number): InkTarget {
+    return { url: `/api/sections/${sectionId}/ink`, key: `${this.auth.email() || 'anon'}:section:${sectionId}` };
+  }
+
+  // The lesson's pen layer ('page') or notebook ('notes').
+  load(pdfId: number, kind: InkKind): Promise<InkDoc> {
+    return this.loadTarget(this.lessonTarget(pdfId, kind));
+  }
+
+  save(pdfId: number, kind: InkKind, doc: InkDoc): Promise<boolean> {
+    return this.saveTarget(this.lessonTarget(pdfId, kind), doc);
+  }
+
+  // The notes page attached to one block.
+  loadSection(sectionId: number): Promise<InkDoc> {
+    return this.loadTarget(this.sectionTarget(sectionId));
+  }
+
+  saveSection(sectionId: number, doc: InkDoc): Promise<boolean> {
+    return this.saveTarget(this.sectionTarget(sectionId), doc);
+  }
+
+  // Ids of the lesson's blocks that have notes (server copy only).
+  async filledSections(pdfId: number): Promise<number[]> {
+    try {
+      const r = await firstValueFrom(this.http.get<{ sectionIds: number[] }>(`/api/pdfs/${pdfId}/section-ink`));
+      return r.sectionIds;
+    } catch {
+      return [];
+    }
   }
 
   // Loads the newest of the browser copy and the server copy, and brings the
   // older side up to date.
-  async load(pdfId: number, kind: InkKind): Promise<InkDoc> {
+  private async loadTarget(t: InkTarget): Promise<InkDoc> {
     const [local, remote] = await Promise.all([
-      localGet(this.key(pdfId, kind)).then((v) => v ?? localGet(this.legacyKey(pdfId, kind))),
-      firstValueFrom(this.http.get<{ data: InkDoc | null; updated_at: string | null }>(`/api/pdfs/${pdfId}/ink/${kind}`)).catch(
-        () => null
-      ),
+      localGet(t.key).then((v) => v ?? (t.legacyKey ? localGet(t.legacyKey) : null)),
+      firstValueFrom(this.http.get<{ data: InkDoc | null; updated_at: string | null }>(t.url)).catch(() => null),
     ]);
     const remoteStored: Stored | null = remote?.data ? { data: remote.data, updated_at: remote.updated_at || '' } : null;
     let best: Stored | null = null;
@@ -122,9 +159,9 @@ export class InkService {
     else best = local || remoteStored;
     if (!best) return emptyInk();
     if (best === local && (!remoteStored || remoteStored.updated_at < local!.updated_at)) {
-      this.remotePut(pdfId, kind, local!).catch(() => {});
+      this.remotePut(t, local!).catch(() => {});
     } else if (best === remoteStored && (!local || local.updated_at < remoteStored!.updated_at)) {
-      localPut(this.key(pdfId, kind), remoteStored!);
+      localPut(t.key, remoteStored!);
     }
     const data = best.data as Partial<InkDoc>;
     return { ...data, v: 1, strokes: data.strokes ?? [] };
@@ -132,18 +169,18 @@ export class InkService {
 
   // Resolves to true when the server copy was written too; the browser copy
   // is always written first.
-  async save(pdfId: number, kind: InkKind, doc: InkDoc): Promise<boolean> {
+  private async saveTarget(t: InkTarget, doc: InkDoc): Promise<boolean> {
     const stored: Stored = { data: doc, updated_at: new Date().toISOString() };
-    await localPut(this.key(pdfId, kind), stored);
+    await localPut(t.key, stored);
     try {
-      await this.remotePut(pdfId, kind, stored);
+      await this.remotePut(t, stored);
       return true;
     } catch {
       return false;
     }
   }
 
-  private remotePut(pdfId: number, kind: InkKind, stored: Stored) {
-    return firstValueFrom(this.http.put(`/api/pdfs/${pdfId}/ink/${kind}`, stored));
+  private remotePut(t: InkTarget, stored: Stored) {
+    return firstValueFrom(this.http.put(t.url, stored));
   }
 }

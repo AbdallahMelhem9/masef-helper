@@ -371,6 +371,52 @@ app.put('/api/pdfs/:id/ink/:kind', requireAuth, async (req, res) => {
   res.json({ ok: true, updated_at: stamp });
 });
 
+// ---------- Per-block notes: a notes page attached to one block ----------
+const inkFilled = (data) => (Array.isArray(data.strokes) && data.strokes.length > 0) || !!String(data.text || '').trim();
+
+// Ids of this lesson's blocks where the user has written something.
+app.get('/api/pdfs/:id/section-ink', requireAuth, async (req, res) => {
+  try {
+    res.json({ sectionIds: await store.filledSections(req.user.id, Number(req.params.id)) });
+  } catch (err) {
+    console.error('section ink list failed:', err);
+    res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+});
+
+app.get('/api/sections/:id/ink', requireAuth, async (req, res) => {
+  let row;
+  try {
+    row = await store.getSectionInk(req.user.id, Number(req.params.id));
+  } catch (err) {
+    console.error('section ink read failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+  if (!row) return res.json({ data: null, updated_at: null });
+  let data = null;
+  try {
+    data = JSON.parse(row.data);
+  } catch {
+    data = null;
+  }
+  res.json({ data, updated_at: row.updated_at });
+});
+
+app.put('/api/sections/:id/ink', requireAuth, async (req, res) => {
+  const section = db.prepare('SELECT id, pdf_id FROM sections WHERE id = ?').get(req.params.id);
+  if (!section) return res.status(404).json({ error: 'Section not found' });
+  const { data, updated_at } = req.body || {};
+  if (!data || typeof data !== 'object') return res.status(400).json({ error: 'data object required' });
+  const stamp = typeof updated_at === 'string' && updated_at ? updated_at : new Date().toISOString();
+  try {
+    await store.putSectionInk(req.user.id, section.id, section.pdf_id, JSON.stringify(data), inkFilled(data), stamp);
+  } catch (err) {
+    console.error('section ink write failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+  res.json({ ok: true, updated_at: stamp });
+});
+
 // ---------- Static Angular build (production mode) ----------
 const CLIENT_DIST = path.join(__dirname, '..', '..', 'client', 'dist', 'client', 'browser');
 if (fs.existsSync(CLIENT_DIST)) {

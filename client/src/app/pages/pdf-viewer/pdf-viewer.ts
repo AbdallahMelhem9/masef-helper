@@ -10,6 +10,7 @@ import { MathContent, renderMathMarkdown } from '../../shared/math-content';
 import { InkLayer, PenTool } from '../../shared/ink-layer';
 import { PenButton, PenPalette, defaultFingerDraws, loadPenTool } from '../../shared/pen-tools';
 import { InkDoc, InkService, Stroke, emptyInk } from '../../core/ink.service';
+import { SectionNotes } from '../../shared/section-notes';
 
 interface BlockVM {
   section: Section;
@@ -49,7 +50,7 @@ const STATEMENT_KINDS = new Set(['definition', 'proposition', 'theorem', 'lemma'
 
 @Component({
   selector: 'app-pdf-viewer',
-  imports: [FormsModule, RouterLink, MathContent, InkLayer, PenButton, PenPalette],
+  imports: [FormsModule, RouterLink, MathContent, InkLayer, PenButton, PenPalette, SectionNotes],
   templateUrl: './pdf-viewer.html',
   styleUrl: './pdf-viewer.css',
 })
@@ -137,6 +138,10 @@ export class PdfViewer implements OnInit, OnDestroy {
   @ViewChild(InkLayer) inkLayer?: InkLayer;
   private inkSvc = inject(InkService);
   inkDoc = signal<InkDoc | null>(null);
+  // The block whose notes board is open on the side, and the blocks that
+  // already have notes (their button shows it).
+  boardSection = signal<Section | null>(null);
+  boardFilled = signal<Set<number>>(new Set());
   penActive = signal(false);
   penTool = signal<PenTool>(loadPenTool());
   canUndo = signal(false);
@@ -235,7 +240,21 @@ export class PdfViewer implements OnInit, OnDestroy {
     if (this.pdf()?.status === 'processing') {
       this.pollTimer = setInterval(() => this.load(), 8000);
     }
-    if (this.pdf()) this.inkDoc.set(await this.inkSvc.load(this.pdfId, 'page'));
+    if (this.pdf()) {
+      this.inkSvc.filledSections(this.pdfId).then((ids) => this.boardFilled.set(new Set(ids)));
+      this.inkDoc.set(await this.inkSvc.load(this.pdfId, 'page'));
+    }
+  }
+
+  openBoard(section: Section) {
+    this.boardSection.set(section);
+  }
+
+  onBoardFilled(sectionId: number, filled: boolean) {
+    const next = new Set(this.boardFilled());
+    if (filled) next.add(sectionId);
+    else next.delete(sectionId);
+    this.boardFilled.set(next);
   }
 
   ngOnDestroy() {

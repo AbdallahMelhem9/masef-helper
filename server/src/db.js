@@ -103,6 +103,19 @@ db.exec(`
     updated_at TEXT NOT NULL,
     UNIQUE (user_id, pdf_id, kind)
   );
+
+  -- A notes page attached to one block ("the board for this slide"), per
+  -- user. filled = 1 when it holds any stroke or typed text, so the lesson
+  -- can mark which blocks have notes without loading them all.
+  CREATE TABLE IF NOT EXISTS section_ink (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    section_id INTEGER NOT NULL,
+    pdf_id INTEGER NOT NULL,
+    data TEXT NOT NULL DEFAULT '{}',
+    filled INTEGER NOT NULL DEFAULT 0,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (user_id, section_id)
+  );
 `);
 
 // Migrations for databases created before these columns existed.

@@ -106,6 +106,8 @@ export class InkLayer implements AfterViewInit, OnChanges, OnDestroy {
   @Input() active = false;
   @Input() tool: PenTool = { kind: 'pen', color: '#17263e', size: 3 };
   @Input() fingerDraws = true;
+  // Element that scrolls the sheet, when it is not the window (a side panel).
+  @Input() scrollContainer: HTMLElement | null = null;
   @Output() strokesChange = new EventEmitter<Stroke[]>();
   @Output() canUndoChange = new EventEmitter<boolean>();
 
@@ -131,7 +133,7 @@ export class InkLayer implements AfterViewInit, OnChanges, OnDestroy {
   private dpr = 1;
   private ro: ResizeObserver | null = null;
   private scrollRaf = 0;
-  private listeners: [string, EventListener][] = [];
+  private listeners: [EventTarget, string, EventListener][] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     // The owner binds back the array this layer emitted: nothing to reload.
@@ -152,9 +154,9 @@ export class InkLayer implements AfterViewInit, OnChanges, OnDestroy {
       this.ro.observe(this.host);
       const on = (target: EventTarget, type: string, fn: EventListener, opts?: AddEventListenerOptions) => {
         target.addEventListener(type, fn, opts);
-        this.listeners.push([type, fn]);
+        this.listeners.push([target, type, fn]);
       };
-      on(window, 'scroll', () => this.onScroll(), { passive: true });
+      on(this.scrollContainer ?? window, 'scroll', () => this.onScroll(), { passive: true });
       on(window, 'resize', () => this.layout());
       on(this.el, 'pointerdown', (e) => this.onPointerDown(e as PointerEvent));
       on(this.el, 'pointermove', (e) => this.onPointerMove(e as PointerEvent));
@@ -167,10 +169,7 @@ export class InkLayer implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.ro?.disconnect();
-    for (const [type, fn] of this.listeners) {
-      window.removeEventListener(type, fn);
-      this.el.removeEventListener(type, fn);
-    }
+    for (const [target, type, fn] of this.listeners) target.removeEventListener(type, fn);
   }
 
   // ---- public controls (called by the toolbar's owner) ----
@@ -349,7 +348,7 @@ export class InkLayer implements AfterViewInit, OnChanges, OnDestroy {
     if (!p) return;
     e.preventDefault();
     if (p.mode === 'pan') {
-      window.scrollBy(0, p.lastY - e.clientY);
+      (this.scrollContainer ?? window).scrollBy(0, p.lastY - e.clientY);
     } else if (p.mode === 'draw') {
       if (this.drawing?.pointerId === e.pointerId) {
         const rect = this.hostRect();

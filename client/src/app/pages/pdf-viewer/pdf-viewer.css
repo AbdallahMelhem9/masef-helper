@@ -866,3 +866,43 @@
     margin-bottom: 2px;
   }
 }
+
+/* Per-block notes board opener, at the end of every block */
+.board-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 8px 0 0 auto;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 3px 10px;
+  cursor: pointer;
+  opacity: 0.75;
+  touch-action: manipulation;
+}
+
+.block:hover .board-btn,
+.board-btn:focus-visible {
+  opacity: 1;
+  border-color: var(--line);
+}
+
+.board-btn.has-notes {
+  opacity: 1;
+  color: var(--cobalt);
+  background: var(--cobalt-soft);
+  border-color: #b7c6f2;
+}
+
+@media (pointer: coarse) {
+  .board-btn {
+    opacity: 1;
+    padding: 6px 12px;
+    font-size: 12.5px;
+  }
+}

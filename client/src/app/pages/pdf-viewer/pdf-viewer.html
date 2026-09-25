@@ -341,6 +341,13 @@
                 }
               </div>
             }
+
+            <!-- The block's own notes board, opened on the side -->
+            <button type="button" class="board-btn" [class.has-notes]="boardFilled().has(vm.section.id)" (click)="openBoard(vm.section)"
+              [title]="boardFilled().has(vm.section.id) ? 'Open your notes on this block' : 'Take notes on this block'">
+              <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+              {{ boardFilled().has(vm.section.id) ? 'My notes' : 'Note' }}
+            </button>
           </article>
         }
       }
@@ -349,6 +356,10 @@
     <p class="error-note viewer-error">{{ error() }}</p>
   } @else {
     <p class="loading">Loading document&hellip;</p>
+  }
+
+  @if (boardSection(); as bs) {
+    <app-section-notes [section]="bs" (closed)="boardSection.set(null)" (filledChange)="onBoardFilled(bs.id, $event)" />
   }
 
   @if (popover(); as p) {
