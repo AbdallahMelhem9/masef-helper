@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A patient player tossing a coin over and over, a pile of tails at their feet, waiting for the first head</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="16" y1="156" x2="304" y2="156" stroke="#4a5870"/>
+<path d="M120 112 Q136 104 152 112 L156 156 L116 156 Z" fill="#e6f2ea"/>
+<circle cx="136" cy="88" r="16" fill="#f7ecce"/><circle cx="130.4" cy="86.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="141.6" cy="86.4" r="1.8" fill="#17263e" stroke="none"/><path d="M132.08 95.2 L139.92 95.2" fill="none"/>
+<path d="M152 118 L172 92" fill="none"/>
+<ellipse cx="180" cy="46" rx="14" ry="6" fill="#d9a621" transform="rotate(-24 180 46)"/>
+<path d="M168 70 Q164 60 170 56 M194 70 Q198 60 192 56" fill="none" stroke="#4a5870"/>
+<text x="214" y="30" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<ellipse cx="188" cy="150" rx="10" ry="4.5" fill="#e5eafb"/><ellipse cx="206" cy="152" rx="10" ry="4.5" fill="#e5eafb"/><ellipse cx="224" cy="150" rx="10" ry="4.5" fill="#e5eafb"/><ellipse cx="198" cy="140" rx="10" ry="4.5" fill="#e5eafb"/><ellipse cx="216" cy="140" rx="10" ry="4.5" fill="#e5eafb"/><ellipse cx="207" cy="130" rx="10" ry="4.5" fill="#e5eafb"/>
+<text x="207" y="134" font-size="7" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">T</text>
+<rect x="30" y="100" width="50" height="40" rx="5" fill="#fffdf6"/>
+<path d="M40 112 L40 128 M46 112 L46 128 M52 112 L52 128 M58 112 L58 128 M36 126 L64 114" stroke="#4a5870" stroke-width="1.8"/>
+</g></svg>

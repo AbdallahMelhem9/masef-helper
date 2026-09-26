@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A gambler with a coin standing on a staircase between an empty pocket at zero and a treasure chest at the top</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="40" y="150" width="34" height="10" fill="#f9e9e8" stroke-width="1.8"/><rect x="74" y="134" width="34" height="26" fill="#fffdf6" stroke-width="1.8"/><rect x="108" y="118" width="34" height="42" fill="#fffdf6" stroke-width="1.8"/><rect x="142" y="102" width="34" height="58" fill="#fffdf6" stroke-width="1.8"/><rect x="176" y="86" width="34" height="74" fill="#fffdf6" stroke-width="1.8"/><rect x="210" y="70" width="34" height="90" fill="#fffdf6" stroke-width="1.8"/><rect x="244" y="54" width="34" height="106" fill="#e6f2ea" stroke-width="1.8"/>
+<text x="57" y="176" font-size="11" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">0</text><text x="261" y="176" font-size="11" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">N</text>
+<rect x="248" y="40" width="30" height="20" rx="3" fill="#d9a621"/><path d="M248 46 Q263 30 278 46" fill="#f7ecce"/>
+<g transform="translate(0 -16)"><path d="M116 108 Q128 102 140 108 L142 134 L114 134 Z" fill="#e5eafb"/>
+<circle cx="128" cy="90" r="12" fill="#f7ecce"/><circle cx="123.8" cy="88.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="132.2" cy="88.8" r="1.8" fill="#17263e" stroke="none"/><path d="M123.8 94.2 Q128 98.4 132.2 94.2" fill="none"/>
+<circle cx="150" cy="104" r="7" fill="#d9a621"/></g>
+<path d="M94 64 L108 72 M168 64 L154 72" stroke="#4a5870"/><text x="92" y="58" font-size="11" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">−1</text><text x="172" y="58" font-size="11" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">+1</text>
+</g></svg>

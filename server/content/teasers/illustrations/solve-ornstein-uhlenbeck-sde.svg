@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A marble jiggling inside a bowl, pushed about by random kicks but always pulled back towards the bottom</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 60 Q160 200 280 60" fill="#e5eafb"/>
+<path d="M160 136 L160 150" stroke="#4a5870" stroke-dasharray="2 3"/><text x="160" y="166" font-size="13" fill="#d9a621" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">μ</text>
+<circle cx="206" cy="104" r="12" fill="#d9a621"/><circle cx="202" cy="102" r="1.4" fill="#17263e" stroke="none"/><circle cx="210" cy="102" r="1.4" fill="#17263e" stroke="none"/>
+<path d="M222 90 L232 84 M226 100 L238 98 M218 80 L224 70" stroke="#b3403a" stroke-width="1.8"/>
+<path d="M190 118 Q176 128 166 130" fill="none" stroke="#3f8f5f" stroke-width="2"/><path d="M172 124 L164 130 L172 136" fill="none" stroke="#3f8f5f" stroke-width="2"/>
+<path d="M60 40 L70 30 M80 44 L96 34 M250 36 L262 26 M270 44 L286 38" stroke="#4a5870" stroke-width="1.8"/>
+<text x="72" y="110" font-size="14" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">θ</text><text x="250" y="150" font-size="14" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">σ</text>
+</g></svg>

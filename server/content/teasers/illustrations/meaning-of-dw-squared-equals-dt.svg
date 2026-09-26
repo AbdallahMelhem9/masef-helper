@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A magnifying glass over a Brownian path revealing tiny squares built on each little zig-zag step</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 100 L19.1 94 L22.2 95.9 L25.2 92.3 L28.3 88.1 L31.4 84 L34.5 86.8 L37.6 90.5 L40.6 96.4 L43.7 90.7 L46.8 93.2 L49.9 87.9 L53 82.8 L56 80.5 L59.1 84.1 L62.2 82.1 L65.3 87 L68.4 85.3 L71.4 86.8 L74.5 81.5 L77.6 80.4 L80.7 84.2 L83.8 85.8 L86.8 88.3 L89.9 86.7 L93 87.1 L96.1 89.3 L99.2 88.7 L102.2 94.3 L105.3 96.6 L108.4 100.2 L111.5 103 L114.6 105.9 L117.6 103 L120.7 107.1 L123.8 108.6 L126.9 109.7 L130 106.6 L133 103.8 L136.1 101.1 L139.2 102.2 L142.3 96.3 L145.4 97.4 L148.4 97.8 L151.5 92.1 L154.6 95.3 L157.7 100 L160.8 95.9 L163.8 97.9 L166.9 92.9 L170 91.1" fill="none" stroke="#2b54d4" stroke-width="1.6"/>
+<circle cx="110" cy="96" r="18" fill="none" stroke="#4a5870" stroke-dasharray="3 3"/>
+<path d="M126 86 L176 60" stroke="#4a5870" stroke-dasharray="3 3"/>
+<circle cx="236" cy="80" r="58" fill="#fffdf6"/>
+<path d="M190 100 L210 72 L230 96 L250 66 L270 88" fill="none" stroke="#2b54d4" stroke-width="2.5"/>
+<rect x="190" y="72" width="20" height="28" fill="#f7ecce" fill-opacity="0.8" stroke-width="1.4" transform="translate(0 0)"/>
+<rect x="230" y="66" width="20" height="30" fill="#f7ecce" fill-opacity="0.8" stroke-width="1.4"/>
+<circle cx="236" cy="80" r="58" fill="none" stroke-width="4"/><line x1="278" y1="122" x2="298" y2="146" stroke-width="7"/>
+<text x="80" y="160" font-size="14" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">(dW)² = dt</text>
+</g></svg>

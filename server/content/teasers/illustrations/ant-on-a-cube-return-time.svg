@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>An ant wandering along the edges of a wireframe cube, far from its little home flag on one corner</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M90 60 L190 60 L190 160 L90 160 Z" fill="#e5eafb" fill-opacity="0.5"/>
+<path d="M130 24 L230 24 L230 124 L130 124 Z" fill="none" stroke="#4a5870" stroke-dasharray="5 4"/>
+<path d="M130 24 L230 24 L230 124 M90 60 L130 24 M190 60 L230 24 M190 160 L230 124" fill="none"/>
+<path d="M90 160 L130 124 M130 124 L230 124 M130 24 L130 124" fill="none" stroke="#4a5870" stroke-dasharray="5 4"/>
+<circle cx="90" cy="60" r="3.5" fill="#17263e" stroke="none"/><circle cx="190" cy="60" r="3.5" fill="#17263e" stroke="none"/><circle cx="190" cy="160" r="3.5" fill="#17263e" stroke="none"/><circle cx="90" cy="160" r="3.5" fill="#17263e" stroke="none"/><circle cx="130" cy="24" r="3.5" fill="#17263e" stroke="none"/><circle cx="230" cy="24" r="3.5" fill="#17263e" stroke="none"/><circle cx="230" cy="124" r="3.5" fill="#17263e" stroke="none"/><circle cx="130" cy="124" r="3.5" fill="#17263e" stroke="none"/>
+<path d="M90 160 L90 136" stroke-width="2"/><path d="M90 136 L106 141 L90 146 Z" fill="#b3403a"/>
+<g transform="rotate(-42 210 42)"><g><ellipse cx="206" cy="42" rx="4" ry="3" fill="#17263e" stroke="none"/><ellipse cx="212" cy="42" rx="3" ry="2.5" fill="#17263e" stroke="none"/><circle cx="217" cy="41" r="2.6" fill="#17263e" stroke="none"/><path d="M204 44 L201 49 M208 44 L211 49 M212 44 L212 49" stroke-width="1.2"/><path d="M218 39 L221 34" stroke-width="1.2"/></g></g>
+<path d="M256 60 Q270 40 290 50" fill="none" stroke="#4a5870" stroke-dasharray="2 4"/><text x="290" y="80" font-size="18" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

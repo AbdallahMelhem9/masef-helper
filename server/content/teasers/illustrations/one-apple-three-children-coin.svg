@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Three eager children and a single apple, with a parent about to flip a coin</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="16" y1="156" x2="304" y2="156" stroke="#4a5870"/>
+<path d="M27 142 Q40 124 53 142 L54 156 L26 156 Z" fill="#e5eafb"/><circle cx="40" cy="118" r="12" fill="#f7ecce"/><circle cx="35.8" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="44.2" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="40" cy="123.4" rx="2.16" ry="2.64" fill="#fffdf6"/><path d="M73 142 Q86 124 99 142 L100 156 L72 156 Z" fill="#e6f2ea"/><circle cx="86" cy="118" r="12" fill="#f7ecce"/><circle cx="81.8" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="90.2" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="86" cy="123.4" rx="2.16" ry="2.64" fill="#fffdf6"/><path d="M119 142 Q132 124 145 142 L146 156 L118 156 Z" fill="#f9e9e8"/><circle cx="132" cy="118" r="12" fill="#f7ecce"/><circle cx="127.8" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="136.2" cy="116.8" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="132" cy="123.4" rx="2.16" ry="2.64" fill="#fffdf6"/>
+<circle cx="190" cy="120" r="14" fill="#b3403a"/><path d="M190 106 Q192 98 198 96" fill="none"/><path d="M192 104 Q202 98 206 104 Q198 108 192 104 Z" fill="#3f8f5f"/>
+<path d="M254 100 Q270 92 286 100 L290 156 L250 156 Z" fill="#f7ecce"/>
+<circle cx="270" cy="76" r="16" fill="#f7ecce"/><circle cx="264.4" cy="74.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="275.6" cy="74.4" r="1.8" fill="#17263e" stroke="none"/><path d="M264.4 81.6 Q270 87.2 275.6 81.6" fill="none"/>
+<path d="M254 108 L238 76" fill="none"/>
+<ellipse cx="236" cy="50" rx="10" ry="4" fill="#d9a621" transform="rotate(-20 236 50)"/>
+<path d="M226 66 Q222 58 228 54 M246 66 Q250 58 244 54" fill="none" stroke="#4a5870"/>
+</g></svg>

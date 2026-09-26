@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A zooming stock-price path next to a smiling wooden log, a pun on taking the log of the price</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 160 L190 160 M20 160 L20 20" stroke="#4a5870"/>
+<path d="M24 150 L28.1 143.4 L32.1 142.5 L36.2 142.5 L40.2 143.6 L44.3 144.4 L48.3 144.5 L52.4 142.8 L56.4 142.8 L60.5 142.9 L64.5 137.5 L68.6 138.8 L72.6 138.2 L76.7 138 L80.7 135 L84.8 134 L88.8 134.5 L92.9 133.7 L96.9 127.9 L101 129.1 L105 129.5 L109.1 126.3 L113.1 127.1 L117.2 125.8 L121.2 119.9 L125.3 113.4 L129.3 113.6 L133.4 108.5 L137.4 105.9 L141.5 102.6 L145.5 96.9 L149.6 97 L153.6 97.7 L157.7 94.3 L161.7 92.7 L165.8 90.6 L169.8 86.2 L173.9 81.4 L177.9 81.4 L182 81.9 L186 81.3" fill="none" stroke="#3f8f5f" stroke-width="2"/>
+<text x="40" y="36" font-size="14" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">S</text>
+<path d="M196 100 L214 100" stroke="#4a5870"/><path d="M208 94 L216 100 L208 106" fill="none" stroke="#4a5870"/>
+<rect x="222" y="104" width="80" height="36" rx="4" fill="#f7ecce"/>
+<ellipse cx="222" cy="122" rx="12" ry="18" fill="#f7ecce"/><ellipse cx="222" cy="122" rx="6" ry="10" fill="none" stroke="#d9a621" stroke-width="1.6"/>
+<path d="M240 112 L290 112 M250 130 L296 130" stroke="#d9a621" stroke-width="1.6"/>
+<circle cx="258" cy="120" r="2" fill="#17263e" stroke="none"/><circle cx="274" cy="120" r="2" fill="#17263e" stroke="none"/><path d="M260 127 Q266 132 272 127" fill="none"/>
+<path d="M270 104 Q274 90 284 88" fill="none" stroke="#3f8f5f"/><path d="M284 88 Q292 84 290 94 Q284 94 284 88 Z" fill="#e6f2ea" stroke-width="1.6"/>
+<text x="262" y="72" font-size="14" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">log</text>
+</g></svg>

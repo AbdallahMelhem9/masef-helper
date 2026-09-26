@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A roulette wheel split into five equal slices, one of them gold, with a player holding a coin</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="130" cy="92" r="66" fill="#fffdf6"/>
+<path d="M130 92 L130 26 A66 66 0 0 1 192.8 71.6 Z" fill="#d9a621"/><path d="M130 92 L192.8 71.6 A66 66 0 0 1 168.8 145.4 Z" fill="#e5eafb"/><path d="M130 92 L168.8 145.4 A66 66 0 0 1 91.2 145.4 Z" fill="#f9e9e8"/><path d="M130 92 L91.2 145.4 A66 66 0 0 1 67.2 71.6 Z" fill="#e5eafb"/><path d="M130 92 L67.2 71.6 A66 66 0 0 1 130 26 Z" fill="#f9e9e8"/>
+<text x="162" y="58" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$5</text>
+<text x="170" y="116" font-size="11" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$1</text><text x="128" y="140" font-size="11" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$1</text><text x="90" y="108" font-size="11" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$1</text><text x="100" y="60" font-size="11" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$1</text>
+<circle cx="130" cy="92" r="8" fill="#17263e"/>
+<path d="M130 18 L124 6 L136 6 Z" fill="#b3403a"/>
+<path d="M240 110 Q256 104 272 110 L276 160 L236 160 Z" fill="#e6f2ea"/>
+<circle cx="256" cy="88" r="16" fill="#f7ecce"/><circle cx="250.4" cy="86.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="261.6" cy="86.4" r="1.8" fill="#17263e" stroke="none"/><path d="M250.4 93.6 Q256 99.2 261.6 93.6" fill="none"/>
+<path d="M240 118 L220 100" fill="none"/><circle cx="214" cy="94" r="9" fill="#d9a621"/>
+</g></svg>

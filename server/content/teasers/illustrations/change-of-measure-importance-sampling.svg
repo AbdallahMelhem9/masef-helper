@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A balance scale re-weighting two bell curves, one moved over to a rare tail region where the action is</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M160 30 L160 150 M130 150 L190 150" stroke-width="3"/>
+<path d="M60 58 L260 42" stroke-width="3"/><circle cx="160" cy="50" r="4" fill="#17263e" stroke="none"/>
+<path d="M60 58 L40 96 M60 58 L80 96 M260 42 L240 80 M260 42 L280 80" stroke="#4a5870" stroke-width="1.6"/>
+<path d="M30 96 L90 96 Q86 108 60 108 Q34 108 30 96 Z" fill="#e5eafb"/>
+<path d="M230 80 L290 80 Q286 92 260 92 Q234 92 230 80 Z" fill="#e6f2ea"/>
+<path d="M36 94 C48 94 50 76 60 76 C70 76 72 94 84 94" fill="#fffdf6" stroke-width="1.8"/>
+<path d="M236 78 C248 78 250 60 260 60 C270 60 272 78 284 78" fill="#fffdf6" stroke-width="1.8"/>
+<text x="60" y="130" font-size="16" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">P</text><text x="260" y="114" font-size="16" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">Q</text>
+<path d="M28 170 L300 170" stroke="#4a5870"/>
+<rect x="250" y="130" width="40" height="30" rx="4" fill="#f9e9e8"/><text x="270" y="151" font-size="14" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$</text>
+<circle cx="118" cy="128" r="11" fill="#f7ecce"/><circle cx="114.2" cy="126.9" r="1.8" fill="#17263e" stroke="none"/><circle cx="121.9" cy="126.9" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="118" cy="132.95" rx="1.98" ry="2.42" fill="#fffdf6"/>
+</g></svg>

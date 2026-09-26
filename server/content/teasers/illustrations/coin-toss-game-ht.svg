@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Players A and B taking turns tossing one coin, both hoping to be the one who completes a head followed by a tail</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 156 L304 156" stroke="#4a5870"/>
+<path d="M50 116 Q66 110 82 116 L86 156 L46 156 Z" fill="#e5eafb"/><circle cx="66" cy="94" r="16" fill="#f7ecce"/><circle cx="60.4" cy="92.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="71.6" cy="92.4" r="1.8" fill="#17263e" stroke="none"/><path d="M60.4 99.6 Q66 105.2 71.6 99.6" fill="none"/><text x="66" y="144" font-size="13" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">A</text>
+<path d="M238 116 Q254 110 270 116 L274 156 L234 156 Z" fill="#e6f2ea"/><circle cx="254" cy="94" r="16" fill="#f7ecce"/><circle cx="248.4" cy="92.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="259.6" cy="92.4" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="254" cy="101.2" rx="2.88" ry="3.52" fill="#fffdf6"/><text x="254" y="144" font-size="13" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">B</text>
+<path d="M84 120 L104 100 M236 120 L218 104" fill="none"/>
+<ellipse cx="160" cy="70" rx="14" ry="6" fill="#d9a621" transform="rotate(-18 160 70)"/>
+<path d="M104 96 Q130 40 150 60 M216 100 Q196 40 172 62" fill="none" stroke="#4a5870" stroke-dasharray="3 5"/>
+<rect x="128" y="112" width="64" height="30" rx="8" fill="#fffdf6"/><text x="160" y="133" font-size="15" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">H T</text>
+</g></svg>

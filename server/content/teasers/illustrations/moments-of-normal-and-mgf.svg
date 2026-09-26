@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A bell curve wearing a party hat, juggling little powers of x</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 150 L300 150" stroke="#4a5870"/>
+<path d="M30 150 C90 150 110 70 160 70 C210 70 230 150 290 150" fill="#e5eafb"/>
+<path d="M146 72 L160 30 L174 72" fill="#f7ecce"/><circle cx="160" cy="28" r="5" fill="#b3403a"/>
+<path d="M150 50 L170 44 M153 60 L167 56" stroke="#d9a621"/>
+<circle cx="150" cy="100" r="2.2" fill="#17263e" stroke="none"/><circle cx="170" cy="100" r="2.2" fill="#17263e" stroke="none"/><path d="M152 112 Q160 120 168 112" fill="none"/>
+<circle cx="84" cy="54" r="15" fill="#fffdf6"/><text x="84" y="59" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">x</text>
+<circle cx="236" cy="54" r="15" fill="#fffdf6"/><text x="236" y="59" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">x²</text>
+<circle cx="110" cy="26" r="14" fill="#fffdf6"/><text x="110" y="31" font-size="12" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">x³</text>
+<circle cx="210" cy="24" r="15" fill="#f7ecce"/><text x="210" y="29" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">eˣ</text>
+<path d="M100 62 Q120 44 108 40 M226 44 Q214 40 212 40" fill="none" stroke="#4a5870" stroke-dasharray="2 4"/>
+</g></svg>

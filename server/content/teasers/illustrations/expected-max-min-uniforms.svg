@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Random dots sprinkled on a line from 0 to 1, with a tiny flag on the leftmost and a crown on the rightmost</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M30 120 L290 120" stroke="#4a5870"/>
+<line x1="30" y1="112" x2="30" y2="128"/><line x1="290" y1="112" x2="290" y2="128"/>
+<text x="30" y="146" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">0</text><text x="290" y="146" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">1</text>
+<circle cx="74" cy="120" r="7" fill="#e6f2ea"/><circle cx="118" cy="120" r="7" fill="#e5eafb"/><circle cx="150" cy="120" r="7" fill="#e5eafb"/><circle cx="172" cy="120" r="7" fill="#e5eafb"/><circle cx="206" cy="120" r="7" fill="#e5eafb"/><circle cx="236" cy="120" r="7" fill="#f7ecce"/>
+<path d="M226 104 L230 92 L236 100 L242 92 L246 104 Z" fill="#d9a621"/>
+<path d="M74 110 L74 84" /><path d="M74 84 L92 90 L74 96 Z" fill="#3f8f5f"/>
+<text x="236" y="76" font-size="12" fill="#d9a621" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">max</text><text x="74" y="72" font-size="12" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">min</text>
+<path d="M84 60 L226 60" stroke="#4a5870" stroke-dasharray="4 5"/>
+<path d="M92 54 L84 60 L92 66 M218 54 L226 60 L218 66" fill="none" stroke="#4a5870"/><text x="155" y="52" font-size="15" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

@@ -97,6 +97,7 @@ export interface TeaserSummary {
   position: number;
   completed: boolean;
   hasBoard: boolean;
+  hasIllustration: boolean;
 }
 
 export interface Teaser extends Omit<TeaserSummary, 'hasBoard'> {

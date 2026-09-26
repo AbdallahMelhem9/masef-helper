@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A bell-shaped density going into a machine labelled g and coming out the other side as a mystery shape</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14 120 L96 120" stroke="#4a5870"/>
+<path d="M18 120 C40 120 44 76 55 76 C66 76 70 120 92 120" fill="#e5eafb"/>
+<text x="55" y="142" font-size="14" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">X</text>
+<path d="M98 100 L114 100" stroke="#4a5870"/><path d="M108 94 L116 100 L108 106" fill="none" stroke="#4a5870"/>
+<rect x="118" y="56" width="84" height="84" rx="10" fill="#f7ecce"/>
+<circle cx="140" cy="76" r="8" fill="#fffdf6"/><circle cx="180" cy="76" r="8" fill="#fffdf6"/><path d="M140 76 L146 72 M180 76 L174 80" stroke-width="1.6"/>
+<text x="160" y="122" font-size="26" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">g</text>
+<path d="M140 56 L140 44 M180 56 L180 44" stroke="#4a5870"/><path d="M134 40 Q140 34 146 40 M174 40 Q180 34 186 40" fill="none" stroke="#4a5870" stroke-width="1.6"/>
+<path d="M204 100 L220 100" stroke="#4a5870"/><path d="M214 94 L222 100 L214 106" fill="none" stroke="#4a5870"/>
+<path d="M226 120 L308 120" stroke="#4a5870"/>
+<path d="M230 120 Q260 64 300 120" fill="#fffdf6" stroke-dasharray="5 5"/>
+<text x="266" y="108" font-size="18" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text><text x="266" y="142" font-size="14" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">Y</text>
+</g></svg>

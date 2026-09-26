@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A bidder raising a paddle at a mystery factory whose ghostly twin looms twice as large behind it</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="16" y1="150" x2="304" y2="150" stroke="#4a5870"/>
+<path d="M150 150 L150 40 L190 20 L190 40 L230 20 L230 40 L270 20 L270 40 L300 40 L300 150" fill="none" stroke="#4a5870" stroke-dasharray="4 5"/>
+<path d="M170 150 L170 96 L190 86 L190 96 L210 86 L210 96 L230 86 L230 96 L250 96 L250 150 Z" fill="#e5eafb"/>
+<rect x="238" y="66" width="8" height="30" fill="#e5eafb"/>
+<rect x="200" y="120" width="18" height="30" fill="#fffdf6"/>
+<text x="210" y="80" font-size="18" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<path d="M56 116 Q72 108 88 116 L90 150 L54 150 Z" fill="#f7ecce"/>
+<circle cx="72" cy="96" r="15" fill="#f7ecce"/><circle cx="66.8" cy="94.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="77.3" cy="94.5" r="1.8" fill="#17263e" stroke="none"/><path d="M66.75 101.25 Q72 106.5 77.25 101.25" fill="none"/>
+<path d="M88 122 L110 82" fill="none"/><line x1="110" y1="82" x2="116" y2="60"/>
+<ellipse cx="118" cy="50" rx="14" ry="12" fill="#d9a621"/><text x="118" y="55" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">B</text>
+</g></svg>

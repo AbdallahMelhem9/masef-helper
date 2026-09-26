@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Two random spinners labelled X and Y feeding a multiplying machine that asks whether the product beats one half</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="56" cy="54" r="30" fill="#e5eafb"/><path d="M56 54 L74 36" stroke-width="3"/><circle cx="56" cy="54" r="3" fill="#17263e" stroke="none"/><text x="104" y="34" font-size="14" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">X</text>
+<circle cx="56" cy="136" r="30" fill="#e6f2ea" transform="translate(0 -4)"/><path d="M56 132 L36 146" stroke-width="3"/><circle cx="56" cy="132" r="3" fill="#17263e" stroke="none"/>
+<text x="104" y="160" font-size="14" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">Y</text>
+<path d="M90 54 L130 80 M90 132 L130 104" fill="none" stroke="#4a5870" stroke-dasharray="4 4"/>
+<rect x="130" y="60" width="70" height="64" rx="10" fill="#f7ecce"/><text x="165" y="102" font-size="26" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">×</text>
+<path d="M200 92 L232 92" stroke="#4a5870"/><path d="M226 86 L234 92 L226 98" fill="none" stroke="#4a5870"/>
+<circle cx="268" cy="92" r="30" fill="#fffdf6"/><text x="268" y="88" font-size="15" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">> ½</text><text x="268" y="106" font-size="14" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A perfectly flat table-top density sitting between two markers a and b, with a curious character</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M20 146 L300 146" stroke="#4a5870"/><path d="M40 160 L40 20" stroke="#4a5870"/>
+<rect x="100" y="80" width="130" height="66" fill="#e5eafb"/>
+<path d="M100 80 L230 80" stroke="#2b54d4" stroke-width="3"/>
+<line x1="100" y1="146" x2="100" y2="154"/><line x1="230" y1="146" x2="230" y2="154"/>
+<text x="100" y="170" font-size="14" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">a</text><text x="230" y="170" font-size="14" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">b</text>
+<circle cx="165" cy="112" r="13" fill="#fffdf6"/><circle cx="160.5" cy="110.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="169.6" cy="110.7" r="1.8" fill="#17263e" stroke="none"/><path d="M160.45 116.55 Q165 121.1 169.55 116.55" fill="none"/>
+<circle cx="270" cy="58" r="13" fill="#f7ecce"/><circle cx="265.5" cy="56.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="274.6" cy="56.7" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="270" cy="63.85" rx="2.34" ry="2.86" fill="#fffdf6"/><text x="270" y="34" font-size="13" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">F ?</text>
+</g></svg>

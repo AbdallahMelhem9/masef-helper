@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A person at a bus stop checking their watch while a bus is just a speck in the distance</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="10" y1="150" x2="310" y2="150" stroke="#4a5870"/>
+<line x1="60" y1="150" x2="60" y2="46"/><rect x="44" y="30" width="32" height="22" rx="4" fill="#f7ecce"/>
+<path d="M50 44 L70 44 M50 38 L62 38" stroke="#d9a621"/>
+<path d="M100 118 Q114 112 128 118 L132 150 L96 150 Z" fill="#e5eafb"/>
+<circle cx="114" cy="96" r="14" fill="#f7ecce"/><circle cx="109.1" cy="94.6" r="1.8" fill="#17263e" stroke="none"/><circle cx="118.9" cy="94.6" r="1.8" fill="#17263e" stroke="none"/><path d="M110.57000000000001 102.3 L117.42999999999999 102.3" fill="none"/>
+<path d="M128 124 L140 116" fill="none"/><circle cx="142" cy="114" r="4" fill="#fffdf6"/>
+<text x="114" y="70" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<path d="M250 136 L292 136 L292 116 Q292 110 286 110 L250 110 Z" fill="#b3403a" stroke-width="1.8"/>
+<rect x="256" y="115" width="10" height="8" fill="#fffdf6" stroke-width="1.2"/><rect x="270" y="115" width="10" height="8" fill="#fffdf6" stroke-width="1.2"/>
+<circle cx="260" cy="138" r="3.5" fill="#17263e"/><circle cx="284" cy="138" r="3.5" fill="#17263e"/>
+<path d="M170 144 L230 144" stroke="#4a5870" stroke-dasharray="3 6"/>
+</g></svg>

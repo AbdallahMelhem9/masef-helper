@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A Brownian path that sits above zero at time 1, with the region below zero at time 2 shaded and marked with a question</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="160" y="96" width="140" height="64" fill="#f9e9e8" stroke="none"/>
+<path d="M20 96 L300 96 M20 160 L20 20" stroke="#4a5870"/>
+<text x="14" y="100" font-size="11" fill="#4a5870" stroke="none" text-anchor="end" font-family="IBM Plex Sans, sans-serif">0</text>
+<path d="M20 96 L24.3 89.9 L28.7 84 L33 78.9 L37.3 82.5 L41.7 81.4 L46 78.9 L50.3 81.5 L54.7 79.5 L59 77.8 L63.3 71.8 L67.7 69.7 L72 70.4 L76.3 71.2 L80.7 66.2 L85 62.7 L89.3 59.7 L93.7 63 L98 61.6 L102.3 59.4 L106.7 54.1 L111 52.6 L115.3 55.5 L119.7 58.6 L124 60.1 L128.3 60.2 L132.7 55.5 L137 55.5 L141.3 58.3 L145.7 55.9 L150 57.6" fill="none" stroke="#2b54d4" stroke-width="2"/>
+<line x1="150" y1="24" x2="150" y2="160" stroke="#4a5870" stroke-dasharray="4 4"/><line x1="280" y1="24" x2="280" y2="160" stroke="#4a5870" stroke-dasharray="4 4"/>
+<text x="150" y="176" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">1</text><text x="280" y="176" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">2</text>
+<circle cx="150" cy="62" r="6" fill="#3f8f5f"/>
+<path d="M154 60 Q200 40 230 70 Q250 90 272 120" fill="none" stroke="#2b54d4" stroke-dasharray="3 5"/>
+<text x="248" y="140" font-size="20" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

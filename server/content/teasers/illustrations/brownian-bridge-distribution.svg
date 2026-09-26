@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A Brownian path pinned down at both ends like a rope bridge between two cliffs, with a question mark over its middle</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10 70 L40 70 L40 170 L10 170" fill="#f7ecce"/><path d="M310 110 L280 110 L280 170 L310 170" fill="#f7ecce"/>
+<path d="M40 70 L46 64 L52 62.8 L58 65.8 L64 67.7 L70 73.3 L76 74.9 L82 73.7 L88 70.5 L94 67.7 L100 66.8 L106 64 L112 70.3 L118 78.3 L124 78.6 L130 83.8 L136 86.3 L142 89.4 L148 91.1 L154 88.2 L160 92.6 L166 95.6 L172 100.3 L178 105.7 L184 100.6 L190 95.7 L196 95.4 L202 96.8 L208 96.8 L214 98.3 L220 103.3 L226 106.2 L232 101.8 L238 104.7 L244 103.9 L250 101.5 L256 99.8 L262 106.6 L268 110.5 L274 109.6 L280 116.7" fill="none" stroke="#2b54d4" stroke-width="2"/>
+<circle cx="40" cy="70" r="6" fill="#b3403a"/><circle cx="280" cy="110" r="6" fill="#b3403a"/>
+<text x="40" y="56" font-size="12" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">0</text><text x="280" y="96" font-size="13" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">x</text>
+<line x1="150" y1="30" x2="150" y2="150" stroke="#d9a621" stroke-dasharray="4 4"/><text x="150" y="166" font-size="13" fill="#d9a621" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">s</text>
+<text x="166" y="40" font-size="18" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<circle cx="210" cy="36" r="11" fill="#f7ecce"/><circle cx="206.2" cy="34.9" r="1.8" fill="#17263e" stroke="none"/><circle cx="213.9" cy="34.9" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="210" cy="40.95" rx="1.98" ry="2.42" fill="#fffdf6"/>
+</g></svg>

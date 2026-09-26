@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Random-length arrows stacked end to end along a ruler from 0 to 1, heading towards the finish line</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M30 140 L290 140" stroke="#4a5870"/>
+<line x1="30" y1="134" x2="30" y2="146" stroke="#4a5870"/><line x1="82" y1="134" x2="82" y2="146" stroke="#4a5870"/><line x1="134" y1="134" x2="134" y2="146" stroke="#4a5870"/><line x1="186" y1="134" x2="186" y2="146" stroke="#4a5870"/><line x1="238" y1="134" x2="238" y2="146" stroke="#4a5870"/><line x1="290" y1="134" x2="290" y2="146" stroke="#4a5870"/>
+<text x="30" y="162" font-size="12" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">0</text><text x="238" y="162" font-size="12" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">1</text>
+<line x1="238" y1="30" x2="238" y2="140" stroke="#b3403a" stroke-dasharray="5 5"/>
+<path d="M238 30 L262 36 L238 42 Z" fill="#f9e9e8" stroke="#b3403a"/>
+<path d="M30 112 L96 112" stroke="#2b54d4" stroke-width="4"/><path d="M90 106 L98 112 L90 118" fill="none" stroke="#2b54d4"/>
+<path d="M98 94 L140 94" stroke="#3f8f5f" stroke-width="4"/><path d="M134 88 L142 94 L134 100" fill="none" stroke="#3f8f5f"/>
+<path d="M142 76 L196 76" stroke="#d9a621" stroke-width="4"/><path d="M190 70 L198 76 L190 82" fill="none" stroke="#d9a621"/>
+<text x="214" y="64" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">…</text>
+<circle cx="60" cy="50" r="13" fill="#f7ecce"/><circle cx="55.5" cy="48.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="64.6" cy="48.7" r="1.8" fill="#17263e" stroke="none"/><path d="M55.45 54.55 Q60 59.1 64.55 54.55" fill="none"/>
+</g></svg>

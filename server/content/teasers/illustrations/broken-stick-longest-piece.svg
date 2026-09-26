@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A stick snapped into three uneven pieces lying on the ground next to a ruler, with a question about which is longest</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 150 L304 150" stroke="#4a5870"/>
+<g transform="rotate(-8 70 120)"><rect x="30" y="112" width="80" height="14" rx="5" fill="#f7ecce"/></g>
+<g transform="rotate(12 150 124)"><rect x="126" y="116" width="46" height="14" rx="5" fill="#f7ecce"/></g>
+<g transform="rotate(-4 240 128)"><rect x="196" y="120" width="96" height="14" rx="5" fill="#f7ecce"/></g>
+<path d="M110 108 L114 100 M112 112 L120 106" stroke="#b3403a" stroke-width="1.6"/><path d="M178 112 L186 106 M178 118 L188 116" stroke="#b3403a" stroke-width="1.6"/>
+<rect x="30" y="40" width="190" height="24" rx="3" fill="#e5eafb"/>
+<line x1="40" y1="40" x2="40" y2="54" stroke-width="1.5"/><line x1="60" y1="40" x2="60" y2="48" stroke-width="1.5"/><line x1="80" y1="40" x2="80" y2="54" stroke-width="1.5"/><line x1="100" y1="40" x2="100" y2="48" stroke-width="1.5"/><line x1="120" y1="40" x2="120" y2="54" stroke-width="1.5"/><line x1="140" y1="40" x2="140" y2="48" stroke-width="1.5"/><line x1="160" y1="40" x2="160" y2="54" stroke-width="1.5"/><line x1="180" y1="40" x2="180" y2="48" stroke-width="1.5"/><line x1="200" y1="40" x2="200" y2="54" stroke-width="1.5"/>
+<circle cx="268" cy="60" r="15" fill="#f7ecce"/><circle cx="262.8" cy="58.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="273.3" cy="58.5" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="268" cy="66.75" rx="2.6999999999999997" ry="3.3" fill="#fffdf6"/><text x="268" y="34" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

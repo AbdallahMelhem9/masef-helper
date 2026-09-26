@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A betting slip covering four matches, each with an empty tick box, and a bookie offering odds</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="24" y="24" width="140" height="136" rx="6" fill="#fffdf6"/>
+<circle cx="46" cy="50" r="9" fill="#f7ecce"/><path d="M40 46 L52 54 M52 46 L40 54" stroke-width="1.2"/><path d="M64 50 L118 50" stroke="#4a5870" stroke-dasharray="3 4"/><rect x="130" y="42" width="16" height="16" rx="3" fill="#e5eafb"/><circle cx="46" cy="78" r="9" fill="#f7ecce"/><path d="M40 74 L52 82 M52 74 L40 82" stroke-width="1.2"/><path d="M64 78 L118 78" stroke="#4a5870" stroke-dasharray="3 4"/><rect x="130" y="70" width="16" height="16" rx="3" fill="#e5eafb"/><circle cx="46" cy="106" r="9" fill="#f7ecce"/><path d="M40 102 L52 110 M52 102 L40 110" stroke-width="1.2"/><path d="M64 106 L118 106" stroke="#4a5870" stroke-dasharray="3 4"/><rect x="130" y="98" width="16" height="16" rx="3" fill="#e5eafb"/><circle cx="46" cy="134" r="9" fill="#f7ecce"/><path d="M40 130 L52 138 M52 130 L40 138" stroke-width="1.2"/><path d="M64 134 L118 134" stroke="#4a5870" stroke-dasharray="3 4"/><rect x="130" y="126" width="16" height="16" rx="3" fill="#e5eafb"/>
+<path d="M226 104 Q246 96 266 104 L270 160 L222 160 Z" fill="#17263e"/>
+<path d="M238 102 L246 118 L254 102" fill="#fffdf6" stroke="#fffdf6"/>
+<circle cx="246" cy="78" r="17" fill="#f7ecce"/><circle cx="240.1" cy="76.3" r="1.8" fill="#17263e" stroke="none"/><circle cx="252" cy="76.3" r="1.8" fill="#17263e" stroke="none"/><path d="M240.05 83.95 Q246 89.9 251.95 83.95" fill="none"/>
+<path d="M226 62 L266 62 L262 52 L230 52 Z" fill="#b3403a"/>
+<path d="M190 30 Q214 22 238 30 Q242 44 230 48 L216 50 L206 58 L206 48 Q188 44 190 30 Z" fill="#f7ecce"/>
+<text x="214" y="42" font-size="12" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">10:1</text>
+</g></svg>

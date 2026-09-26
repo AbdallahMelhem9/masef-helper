@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A measuring tape stretched out towards a far horizon, with a surprised statistician unable to reach the end</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 150 L304 150" stroke="#4a5870"/>
+<path d="M40 136 Q34 118 52 116 L66 116 Q76 120 70 136 Z" fill="#f7ecce"/>
+<path d="M66 124 L300 104" stroke="#d9a621" stroke-width="10" stroke-opacity="0.5"/>
+<path d="M66 124 L300 104" stroke="#17263e" stroke-width="1.2"/>
+<line x1="90" y1="119.96" x2="90" y2="113.96" stroke-width="1.4"/><line x1="120" y1="117.41" x2="120" y2="111.41" stroke-width="1.4"/><line x1="150" y1="114.86" x2="150" y2="108.86" stroke-width="1.4"/><line x1="180" y1="112.31" x2="180" y2="106.31" stroke-width="1.4"/><line x1="210" y1="109.76" x2="210" y2="103.76" stroke-width="1.4"/><line x1="240" y1="107.21" x2="240" y2="101.21" stroke-width="1.4"/><line x1="270" y1="104.66" x2="270" y2="98.66" stroke-width="1.4"/>
+<text x="300" y="92" font-size="22" fill="#4a5870" stroke="none" text-anchor="end" font-family="IBM Plex Sans, sans-serif">∞</text>
+<circle cx="104" cy="60" r="16" fill="#f7ecce"/><circle cx="98.4" cy="58.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="109.6" cy="58.4" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="104" cy="67.2" rx="2.88" ry="3.52" fill="#fffdf6"/><path d="M92 80 Q104 74 116 80 L118 110 L90 110 Z" fill="#e5eafb"/>
+<path d="M116 88 L130 76" fill="none"/><text x="134" y="70" font-size="14" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">!</text>
+</g></svg>

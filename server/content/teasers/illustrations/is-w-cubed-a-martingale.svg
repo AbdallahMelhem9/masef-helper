@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A jittery Brownian path trapped inside a wireframe cube, with a fair-game scale asking a question</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 60 L150 60 L150 160 L40 160 Z" fill="#e5eafb" fill-opacity="0.6"/>
+<path d="M40 60 L80 24 L190 24 L150 60 M190 24 L190 124 L150 160" fill="none"/>
+<path d="M80 24 L80 124 L40 160 M80 124 L190 124" fill="none" stroke="#4a5870" stroke-dasharray="4 4"/>
+<path d="M48 112 L51.2 105 L54.4 103.5 L57.6 100.3 L60.8 98.5 L64 99.9 L67.2 102.1 L70.4 97.1 L73.6 90.6 L76.8 84.1 L80 88.4 L83.2 83.5 L86.4 84.3 L89.6 84.2 L92.8 78.6 L96 73.9 L99.2 75.1 L102.4 68.3 L105.6 61.7 L108.8 56.8 L112 52.6 L115.2 49.1 L118.4 42.9 L121.6 46.7 L124.8 50.8 L128 51.3 L131.2 52.4 L134.4 49.3 L137.6 55.8 L140.8 52.2 L144 46.7" fill="none" stroke="#2b54d4" stroke-width="2"/>
+<text x="204" y="22" font-size="18" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">3</text>
+<path d="M250 70 L250 140 M226 140 L274 140 M214 76 L286 76" stroke-width="2.4"/>
+<path d="M214 76 L204 104 L224 104 Z M286 76 L276 104 L296 104 Z" fill="#f7ecce" stroke-width="1.8"/>
+<circle cx="250" cy="56" r="11" fill="#f7ecce"/><circle cx="246.2" cy="54.9" r="1.8" fill="#17263e" stroke="none"/><circle cx="253.9" cy="54.9" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="250" cy="60.95" rx="1.98" ry="2.42" fill="#fffdf6"/><text x="250" y="36" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

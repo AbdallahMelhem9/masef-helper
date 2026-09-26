@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A chalkboard with a hockey-stick payoff drawn in terms of the asset squared, and a puzzled quant</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="20" y="20" width="200" height="130" rx="6" fill="#17263e"/>
+<rect x="20" y="20" width="200" height="130" rx="6" fill="none" stroke="#d9a621" stroke-width="4"/>
+<path d="M40 130 L200 130 M40 130 L40 40" stroke="#fffdf6" stroke-width="1.6"/>
+<path d="M44 124 L120 124 L190 54" fill="none" stroke="#d9a621" stroke-width="3"/>
+<text x="196" y="144" font-size="12" fill="#fffdf6" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">S²</text><text x="120" y="142" font-size="11" fill="#fffdf6" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">K</text>
+<text x="80" y="70" font-size="13" fill="#e5eafb" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">∂C/∂t = ?</text>
+<path d="M246 110 Q262 104 278 110 L282 160 L242 160 Z" fill="#e5eafb"/><circle cx="262" cy="88" r="15" fill="#f7ecce"/><circle cx="256.8" cy="86.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="267.3" cy="86.5" r="1.8" fill="#17263e" stroke="none"/><path d="M258.325 94.75 L265.675 94.75" fill="none"/>
+<path d="M246 118 L226 100" fill="none"/><rect x="220" y="92" width="10" height="5" rx="1" fill="#fffdf6" transform="rotate(-40 225 94)"/>
+<path d="M16 160 L304 160" stroke="#4a5870"/>
+</g></svg>

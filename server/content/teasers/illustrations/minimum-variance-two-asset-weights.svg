@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Two jugs, X and Y, pouring into one mixing bowl, with a dial choosing the proportions</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 30 L90 30 L96 80 Q98 92 86 92 L44 92 Q32 92 34 80 Z" fill="#e5eafb" transform="rotate(28 64 60)"/>
+<text x="62" y="70" font-size="14" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">X</text>
+<path d="M230 30 L280 30 L286 80 Q288 92 276 92 L234 92 Q222 92 224 80 Z" fill="#e6f2ea" transform="rotate(-28 256 60)"/>
+<text x="258" y="70" font-size="14" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">Y</text>
+<path d="M104 88 Q118 100 128 120" fill="none" stroke="#2b54d4" stroke-width="3"/>
+<path d="M216 88 Q202 100 192 120" fill="none" stroke="#3f8f5f" stroke-width="3"/>
+<path d="M104 116 L216 116 Q212 164 160 164 Q108 164 104 116 Z" fill="#fffdf6"/>
+<path d="M112 130 Q136 124 160 132 T208 128" fill="none" stroke="#4a5870" stroke-width="1.6"/>
+<circle cx="160" cy="50" r="22" fill="#f7ecce"/><path d="M160 50 L174 38" stroke-width="3"/><circle cx="160" cy="50" r="3" fill="#17263e" stroke="none"/>
+<text x="134" y="30" font-size="12" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">a</text><text x="186" y="30" font-size="12" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">b</text>
+</g></svg>

@@ -31,8 +31,11 @@
       </div>
     </header>
 
-    <section class="tz-question">
-      <app-math-content [content]="t.question" />
+    <section class="tz-question" [class.has-ill]="t.hasIllustration">
+      @if (t.hasIllustration) {
+        <img class="tz-ill" [src]="'/api/teasers/' + t.slug + '/illustration.svg'" alt="" />
+      }
+      <app-math-content class="tz-q-text" [content]="t.question" />
     </section>
 
     <div class="workspace">

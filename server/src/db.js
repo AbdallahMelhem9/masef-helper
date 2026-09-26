@@ -179,3 +179,5 @@ db.exec(`
 `);
 const teaserCols = db.prepare('PRAGMA table_info(teasers)').all().map((c) => c.name);
 if (!teaserCols.includes('followups')) db.exec("ALTER TABLE teasers ADD COLUMN followups TEXT NOT NULL DEFAULT '[]'");
+// Small SVG drawing shown with the puzzle (content/teasers/illustrations).
+if (!teaserCols.includes('illustration')) db.exec('ALTER TABLE teasers ADD COLUMN illustration TEXT');

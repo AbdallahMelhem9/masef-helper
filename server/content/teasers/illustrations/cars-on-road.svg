@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A highway with a few cars zooming by and a stopwatch counting out an interval</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="10" y="100" width="300" height="50" fill="#e5eafb" stroke="none"/>
+<line x1="10" y1="100" x2="310" y2="100"/><line x1="10" y1="150" x2="310" y2="150"/>
+<path d="M20 125 L50 125 M80 125 L110 125 M140 125 L170 125 M200 125 L230 125 M260 125 L290 125" stroke="#fffdf6" stroke-width="3"/>
+<path d="M40 118 L48 106 L78 106 L88 118 L94 118 L94 128 L34 128 L34 118 Z" fill="#b3403a"/><circle cx="48" cy="130" r="5" fill="#17263e"/><circle cx="82" cy="130" r="5" fill="#17263e"/>
+<path d="M20 112 L30 112 M16 120 L28 120" stroke="#4a5870"/>
+<path d="M210 138 L218 126 L244 126 L254 138 L260 138 L260 146 L204 146 L204 138 Z" fill="#d9a621"/><circle cx="216" cy="148" r="4" fill="#17263e"/><circle cx="248" cy="148" r="4" fill="#17263e"/>
+<circle cx="160" cy="54" r="30" fill="#fffdf6"/><rect x="154" y="16" width="12" height="8" rx="2" fill="#17263e"/>
+<path d="M160 54 L160 30 A24 24 0 0 1 184 54 Z" fill="#f7ecce"/><line x1="160" y1="54" x2="176" y2="40" stroke-width="2.5"/><circle cx="160" cy="54" r="2.5" fill="#17263e" stroke="none"/>
+<circle cx="276" cy="60" r="13" fill="#f7ecce"/><circle cx="271.5" cy="58.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="280.6" cy="58.7" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="276" cy="65.85" rx="2.34" ry="2.86" fill="#fffdf6"/>
+</g></svg>

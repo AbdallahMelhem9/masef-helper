@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A round dartboard with a dashed inner circle at half the radius and a few darts stuck at random spots</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="130" cy="92" r="70" fill="#e6f2ea"/>
+<circle cx="130" cy="92" r="35" fill="#fffdf6" stroke-dasharray="5 5"/>
+<circle cx="130" cy="92" r="3" fill="#17263e" stroke="none"/>
+<line x1="130" y1="92" x2="200" y2="92" stroke="#4a5870"/><text x="172" y="86" font-size="12" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">R</text>
+<line x1="110" y1="60" x2="128" y2="46" stroke-width="2.5"/><path d="M124 49 L126 38 M124 49 L135 51" stroke="#b3403a" stroke-width="3.5"/><circle cx="110" cy="60" r="2.4" fill="#17263e" stroke="none"/><line x1="168" y1="124" x2="186" y2="110" stroke-width="2.5"/><path d="M182 113 L184 102 M182 113 L193 115" stroke="#d9a621" stroke-width="3.5"/><circle cx="168" cy="124" r="2.4" fill="#17263e" stroke="none"/><line x1="84" y1="116" x2="102" y2="102" stroke-width="2.5"/><path d="M98 105 L100 94 M98 105 L109 107" stroke="#2b54d4" stroke-width="3.5"/><circle cx="84" cy="116" r="2.4" fill="#17263e" stroke="none"/><line x1="148" y1="80" x2="166" y2="66" stroke-width="2.5"/><path d="M162 69 L164 58 M162 69 L173 71" stroke="#b3403a" stroke-width="3.5"/><circle cx="148" cy="80" r="2.4" fill="#17263e" stroke="none"/>
+<path d="M246 116 Q262 110 278 116 L282 166 L242 166 Z" fill="#f9e9e8"/>
+<circle cx="262" cy="94" r="15" fill="#f7ecce"/><circle cx="256.8" cy="92.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="267.3" cy="92.5" r="1.8" fill="#17263e" stroke="none"/><path d="M256.75 99.25 Q262 104.5 267.25 99.25" fill="none"/>
+<path d="M246 124 L228 104" fill="none"/>
+<line x1="226" y1="100" x2="210" y2="90" stroke-width="2.5"/>
+</g></svg>

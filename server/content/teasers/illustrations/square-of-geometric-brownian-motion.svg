@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A little stock-price path passing through a squaring machine and coming out as a bigger, wilder path</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="16" y="60" width="96" height="70" rx="4" fill="#fffdf6"/>
+<path d="M22 110 L26.2 103.8 L30.4 99.4 L34.6 101.2 L38.8 96.3 L43 98.1 L47.2 101.6 L51.4 99.6 L55.6 94.5 L59.8 89.4 L64 87.4 L68.2 85.7 L72.4 86.2 L76.6 84.8 L80.8 81.7 L85 80.3 L89.2 81.8 L93.4 76 L97.6 70.5 L101.8 68.8 L106 68.6" fill="none" stroke="#3f8f5f" stroke-width="2"/>
+<text x="64" y="150" font-size="13" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">S</text>
+<path d="M114 94 L128 94" stroke="#4a5870"/>
+<rect x="130" y="70" width="52" height="48" rx="10" fill="#f7ecce"/><text x="156" y="102" font-size="18" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">x²</text>
+<path d="M184 94 L198 94" stroke="#4a5870"/><path d="M192 88 L200 94 L192 100" fill="none" stroke="#4a5870"/>
+<rect x="202" y="30" width="104" height="120" rx="4" fill="#fffdf6"/>
+<path d="M208 132 L212.6 119.2 L217.2 110.1 L221.8 113.3 L226.4 103 L231 106.1 L235.6 112.8 L240.2 108.4 L244.8 97.8 L249.4 87.3 L254 82.7 L258.6 79 L263.2 79.7 L267.8 76.4 L272.4 69.9 L277 66.7 L281.6 69.2 L286.2 57.2 L290.8 45.8 L295.4 42 L300 41.3" fill="none" stroke="#b3403a" stroke-width="2"/>
+<text x="254" y="168" font-size="13" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">S²</text><text x="290" y="138" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

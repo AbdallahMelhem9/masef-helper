@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A player shooting free throws at a hoop, with a scoreboard tallying one make and one miss</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 160 L304 160" stroke="#4a5870"/>
+<rect x="240" y="22" width="56" height="42" rx="3" fill="#fffdf6"/><rect x="254" y="34" width="28" height="18" fill="none" stroke-width="1.6"/>
+<line x1="268" y1="64" x2="268" y2="160" stroke-width="3"/>
+<path d="M232 70 L262 70" stroke="#b3403a" stroke-width="3"/>
+<path d="M234 70 L240 92 L254 92 L260 70 M240 78 L256 86 M256 78 L240 86" fill="none" stroke-width="1.4"/>
+<path d="M104 100 Q150 10 214 56" fill="none" stroke="#4a5870" stroke-dasharray="4 5"/>
+<circle cx="170" cy="40" r="11" fill="#d9a621"/><path d="M159 40 L181 40 M170 29 Q164 40 170 51" fill="none" stroke-width="1.4"/>
+<path d="M76 118 Q90 112 104 118 L108 160 L72 160 Z" fill="#f9e9e8"/><circle cx="90" cy="96" r="15" fill="#f7ecce"/><circle cx="84.8" cy="94.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="95.3" cy="94.5" r="1.8" fill="#17263e" stroke="none"/><path d="M84.75 101.25 Q90 106.5 95.25 101.25" fill="none"/>
+<path d="M100 120 L108 98" fill="none"/>
+<rect x="20" y="24" width="72" height="34" rx="4" fill="#17263e"/>
+<path d="M32 34 L38 44 L48 30" fill="none" stroke="#3f8f5f" stroke-width="2.5"/><path d="M62 32 L74 46 M74 32 L62 46" stroke="#b3403a" stroke-width="2.5"/>
+</g></svg>

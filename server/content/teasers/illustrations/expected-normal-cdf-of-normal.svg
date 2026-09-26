@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A bell curve feeding a random point into a smooth S-shaped curve, with a question about the average height</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 150 L150 150" stroke="#4a5870"/>
+<path d="M20 150 C60 150 64 90 83 90 C102 90 106 150 146 150" fill="#e5eafb"/>
+<text x="83" y="172" font-size="13" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">X</text>
+<circle cx="96" cy="150" r="5" fill="#b3403a"/>
+<path d="M170 150 L304 150 M176 160 L176 40" stroke="#4a5870"/>
+<path d="M180 146 C230 146 240 110 244 96 C248 82 258 50 300 50" fill="none" stroke="#2b54d4" stroke-width="3"/>
+<line x1="176" y1="50" x2="300" y2="50" stroke="#4a5870" stroke-dasharray="3 5"/>
+<text x="252" y="168" font-size="12" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">M(x)</text>
+<path d="M100 146 Q170 110 238 104" fill="none" stroke="#b3403a" stroke-dasharray="4 4"/>
+<path d="M230 98 L240 104 L230 110" fill="none" stroke="#b3403a"/>
+<text x="270" y="120" font-size="20" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<circle cx="40" cy="50" r="13" fill="#f7ecce"/><circle cx="35.5" cy="48.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="44.6" cy="48.7" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="40" cy="55.85" rx="2.34" ry="2.86" fill="#fffdf6"/>
+</g></svg>

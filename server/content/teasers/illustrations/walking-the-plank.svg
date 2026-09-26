@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A blindfolded captive on a pirate plank, sharks circling at one end and a sunny island at the other</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10 140 Q40 132 70 140 T130 140 T190 140 T250 140 T310 140" fill="#e5eafb"/>
+<path d="M28 136 L40 112 L52 136" fill="#4a5870"/><path d="M70 138 L80 120 L90 138" fill="#4a5870"/>
+<rect x="60" y="100" width="190" height="10" rx="3" fill="#f7ecce"/>
+<line x1="98" y1="100" x2="98" y2="110" stroke-width="1.4"/><line x1="136" y1="100" x2="136" y2="110" stroke-width="1.4"/><line x1="174" y1="100" x2="174" y2="110" stroke-width="1.4"/><line x1="212" y1="100" x2="212" y2="110" stroke-width="1.4"/>
+<path d="M260 120 Q286 100 312 120 L312 132 L260 132 Z" fill="#e6f2ea"/>
+<path d="M288 112 L292 70" fill="none"/><path d="M292 70 Q276 66 270 78 M292 70 Q306 62 312 74 M292 70 Q296 56 286 52" fill="none" stroke="#3f8f5f" stroke-width="2.5"/>
+<path d="M142 74 Q156 68 170 74 L172 100 L140 100 Z" fill="#f9e9e8"/>
+<circle cx="156" cy="56" r="14" fill="#f7ecce"/><path d="M142 52 L170 52" stroke="#17263e" stroke-width="6"/>
+<path d="M150 64 Q156 60 162 64" fill="none"/>
+<path d="M140 80 L126 70 M172 80 L186 70" fill="none"/>
+<text x="156" y="30" font-size="16" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

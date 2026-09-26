@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A carnival booth with a big die on the counter and a blank ticket with a question-mark price</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M40 60 L280 60 L268 40 L52 40 Z" fill="#f9e9e8"/>
+<path d="M52 40 L76 60 M100 40 L112 60 M148 40 L148 60 M196 40 L184 60 M244 40 L220 60" stroke="#b3403a"/>
+<line x1="48" y1="60" x2="48" y2="150"/><line x1="272" y1="60" x2="272" y2="150"/>
+<rect x="40" y="118" width="240" height="32" rx="3" fill="#f7ecce"/>
+<g transform="rotate(-8 157 97)"><rect x="136" y="76" width="42" height="42" rx="8" fill="#fffdf6"/><circle cx="146.5" cy="86.5" r="3.5" fill="#17263e" stroke="none"/><circle cx="167.5" cy="86.5" r="3.5" fill="#17263e" stroke="none"/><circle cx="146.5" cy="107.5" r="3.5" fill="#17263e" stroke="none"/><circle cx="167.5" cy="107.5" r="3.5" fill="#17263e" stroke="none"/></g>
+<circle cx="236" cy="92" r="13" fill="#e6f2ea"/><circle cx="231.5" cy="90.7" r="1.8" fill="#17263e" stroke="none"/><circle cx="240.6" cy="90.7" r="1.8" fill="#17263e" stroke="none"/><path d="M231.45 96.55 Q236 101.1 240.55 96.55" fill="none"/>
+<g transform="rotate(-10 92 94)"><rect x="66" y="80" width="54" height="28" rx="3" fill="#fffdf6"/><circle cx="66" cy="94" r="5" fill="#f7ecce"/><circle cx="120" cy="94" r="5" fill="#f7ecce"/><text x="93" y="100" font-size="13" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$ ?</text></g>
+</g></svg>

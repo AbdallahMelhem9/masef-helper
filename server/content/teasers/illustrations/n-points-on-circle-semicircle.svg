@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Several random dots scattered on a circle, with a dashed line cutting it into two halves</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="160" cy="90" r="64" fill="#e5eafb"/>
+<line x1="72" y1="120" x2="248" y2="60" stroke="#4a5870" stroke-dasharray="5 5"/>
+<circle cx="209" cy="131" r="6" fill="#b3403a"/><circle cx="154" cy="154" r="6" fill="#d9a621"/><circle cx="105" cy="122" r="6" fill="#b3403a"/><circle cx="100" cy="68" r="6" fill="#d9a621"/><circle cx="138" cy="30" r="6" fill="#b3403a"/><circle cx="209" cy="49" r="6" fill="#d9a621"/>
+<text x="160" y="98" font-size="22" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<circle cx="274" cy="146" r="12" fill="#f7ecce"/><circle cx="269.8" cy="144.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="278.2" cy="144.8" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="274" cy="151.4" rx="2.16" ry="2.64" fill="#fffdf6"/><circle cx="46" cy="36" r="12" fill="#f7ecce"/><circle cx="41.8" cy="34.8" r="1.8" fill="#17263e" stroke="none"/><circle cx="50.2" cy="34.8" r="1.8" fill="#17263e" stroke="none"/><path d="M41.8 40.2 Q46 44.4 50.2 40.2" fill="none"/>
+</g></svg>

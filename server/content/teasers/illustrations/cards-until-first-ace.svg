@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A row of cards being turned over one at a time while a curious face waits for the first ace</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<rect x="20" y="70" width="36" height="52" rx="5" fill="#fffdf6"/><text x="38" y="102" font-size="16" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">7</text>
+<rect x="62" y="70" width="36" height="52" rx="5" fill="#fffdf6"/><text x="80" y="102" font-size="16" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">K</text>
+<rect x="104" y="70" width="36" height="52" rx="5" fill="#fffdf6"/><text x="122" y="102" font-size="16" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">3</text>
+<path d="M150 74 L170 64 L170 116 L150 126 Z" fill="#e5eafb"/>
+<path d="M160 56 Q172 44 184 54" fill="none" stroke="#4a5870" stroke-dasharray="3 4"/>
+<rect x="186" y="70" width="36" height="52" rx="5" fill="#2b54d4"/><rect x="228" y="70" width="36" height="52" rx="5" fill="#2b54d4"/><rect x="270" y="70" width="36" height="52" rx="5" fill="#2b54d4"/>
+<path d="M194 78 L214 114 M214 78 L194 114 M236 78 L256 114 M256 78 L236 114 M278 78 L298 114 M298 78 L278 114" stroke="#e5eafb" stroke-width="1.5"/>
+<circle cx="246" cy="38" r="14" fill="#f7ecce"/><circle cx="241.1" cy="36.6" r="1.8" fill="#17263e" stroke="none"/><circle cx="250.9" cy="36.6" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="246" cy="44.3" rx="2.52" ry="3.08" fill="#fffdf6"/>
+<line x1="20" y1="138" x2="306" y2="138" stroke="#4a5870" stroke-dasharray="2 6"/>
+</g></svg>

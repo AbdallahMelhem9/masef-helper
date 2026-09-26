@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A die that keeps landing on one while a player waits, arms crossed, for anything else</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="16" y1="150" x2="304" y2="150" stroke="#4a5870"/>
+<g><rect x="24" y="116" width="34" height="34" rx="7" fill="#fffdf6"/><circle cx="41" cy="133" r="2.8333333333333335" fill="#b3403a" stroke="none"/></g><g transform="rotate(10 87 129)"><rect x="70" y="112" width="34" height="34" rx="7" fill="#fffdf6"/><circle cx="87" cy="129" r="2.8333333333333335" fill="#b3403a" stroke="none"/></g><g transform="rotate(-6 133 133)"><rect x="116" y="116" width="34" height="34" rx="7" fill="#fffdf6"/><circle cx="133" cy="133" r="2.8333333333333335" fill="#b3403a" stroke="none"/></g>
+<g transform="rotate(20 192 72)"><rect x="174" y="54" width="36" height="36" rx="7" fill="#f7ecce"/></g><text x="192" y="79" font-size="18" fill="#17263e" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+<path d="M140 118 Q160 70 176 78" fill="none" stroke="#4a5870" stroke-dasharray="4 5"/>
+<path d="M254 104 Q268 98 282 104 L286 150 L250 150 Z" fill="#e6f2ea"/>
+<path d="M256 116 L280 124 M282 116 L258 124" fill="none"/>
+<circle cx="268" cy="82" r="16" fill="#f7ecce"/><circle cx="262.4" cy="80.4" r="1.8" fill="#17263e" stroke="none"/><circle cx="273.6" cy="80.4" r="1.8" fill="#17263e" stroke="none"/><path d="M264.08 89.2 L271.92 89.2" fill="none"/>
+<rect x="226" y="40" width="34" height="18" rx="3" fill="#e6f2ea"/><text x="243" y="53" font-size="12" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">$</text>
+</g></svg>

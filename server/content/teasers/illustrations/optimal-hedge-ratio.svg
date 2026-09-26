@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>A cheerful stock chart A sheltered under an umbrella made of a short position in stock B</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<line x1="30" y1="160" x2="290" y2="160" stroke="#4a5870"/>
+<rect x="60" y="94" width="120" height="66" rx="4" fill="#fffdf6"/>
+<path d="M68 140 L74.5 131 L81 131.2 L87.5 133.1 L94 128.2 L100.5 128.5 L107 120.8 L113.5 115.1 L120 111.6 L126.5 108.2 L133 108.6 L139.5 112.5 L146 111.8 L152.5 105 L159 98.4 L165.5 93.2 L172 93.2" fill="none" stroke="#3f8f5f"/>
+<text x="76" y="112" font-size="13" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">A</text>
+<path d="M40 70 Q120 10 200 70 Q180 60 160 70 Q140 60 120 70 Q100 60 80 70 Q60 60 40 70 Z" fill="#e5eafb"/>
+<path d="M120 70 L120 90 Q120 98 128 96" fill="none"/>
+<path d="M64 52 L72 49.2 L80 50 L88 49.7 L96 47.2 L104 51.3 L112 51.8 L120 53.1 L128 54.1 L136 55 L144 54.5 L152 53.4 L160 56.4 L168 54.7 L176 54.9" fill="none" stroke="#b3403a" stroke-width="1.8"/>
+<text x="186" y="34" font-size="13" fill="#b3403a" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">B</text>
+<path d="M238 116 Q252 110 266 116 L270 160 L234 160 Z" fill="#f7ecce"/>
+<circle cx="252" cy="94" r="15" fill="#f7ecce"/><circle cx="246.8" cy="92.5" r="1.8" fill="#17263e" stroke="none"/><circle cx="257.3" cy="92.5" r="1.8" fill="#17263e" stroke="none"/><ellipse cx="252" cy="100.75" rx="2.6999999999999997" ry="3.3" fill="#fffdf6"/>
+<path d="M238 124 L222 110" fill="none"/>
+<text x="252" y="64" font-size="18" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>

@@ -116,12 +116,29 @@ const refsPath = path.join(dir, 'refs.json');
 const rawRefs = new Map(fs.existsSync(refsPath) ? Object.entries(JSON.parse(fs.readFileSync(refsPath, 'utf8'))) : []);
 const BOOK_NAME = { green: 'Green book (Zhou)', red: 'Red book (Joshi et al.)', heard: 'Heard on the Street (Crack)' };
 
+// Illustrations: one SVG per slug. Checked against a whitelist of plain
+// drawing elements (they are served as images, but keep them inert anyway).
+const illDir = path.join(dir, 'illustrations');
+const SVG_BAD = /<(script|foreignObject|image|style|iframe|a)\b|\son\w+\s*=|(xlink:)?href\s*=\s*["'](?!#)|url\((?!#)/i;
+const illustrations = new Map();
+const skipped = [];
+if (fs.existsSync(illDir)) {
+  for (const f of fs.readdirSync(illDir).filter((f) => f.endsWith('.svg'))) {
+    const svg = fs.readFileSync(path.join(illDir, f), 'utf8').trim();
+    const slug = f.slice(0, -4);
+    if (!/^<svg[\s>]/.test(svg) || SVG_BAD.test(svg)) skipped.push(`illustration ${f}: rejected (not a plain SVG)`);
+    else if (!slugs.has(slug)) skipped.push(`illustration ${f}: no teaser with this slug`);
+    else illustrations.set(slug, svg);
+  }
+}
+if (skipped.length) console.error(skipped.join('\n'));
+
 const catRank = (t) => CATEGORIES[t.section]?.indexOf(t.category) ?? 99;
 all.sort((a, b) => a.section.localeCompare(b.section) || catRank(a) - catRank(b));
 
 const insert = db.prepare(`INSERT INTO teasers
-  (slug, section, category, title, difficulty, question, hint1, hint2, answer, refresh, explanation, solutions, followups, books, refs, position)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+  (slug, section, category, title, difficulty, question, hint1, hint2, answer, refresh, explanation, solutions, followups, books, refs, illustration, position)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 db.exec('BEGIN');
 db.exec('DELETE FROM teasers');
 all.forEach((t, i) => {
@@ -136,9 +153,9 @@ all.forEach((t, i) => {
   });
   insert.run(
     t.slug, t.section, t.category, t.title, t.difficulty || null, t.question, t.hint1 || null, t.hint2 || null,
-    t.answer || null, t.refresh || null, t.explanation || null, JSON.stringify(t.solutions), JSON.stringify(t.followups), JSON.stringify(books), JSON.stringify(refs), i
+    t.answer || null, t.refresh || null, t.explanation || null, JSON.stringify(t.solutions), JSON.stringify(t.followups), JSON.stringify(books), JSON.stringify(refs), illustrations.get(t.slug) || null, i
   );
 });
 db.exec('COMMIT');
 const by = db.prepare('SELECT section, COUNT(*) n FROM teasers GROUP BY section').all();
-console.log(`teasers: ${all.length} from ${files.length} files`, JSON.stringify(by));
+console.log(`teasers: ${all.length} from ${files.length} files, ${illustrations.size} illustrations`, JSON.stringify(by));

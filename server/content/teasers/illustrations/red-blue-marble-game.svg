@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><title>Players A and B facing each other, each secretly holding one red and one blue marble behind a screen</title><g stroke="#17263e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M16 160 L304 160" stroke="#4a5870"/>
+<path d="M40 118 Q58 110 76 118 L80 160 L36 160 Z" fill="#e5eafb"/><circle cx="58" cy="94" r="17" fill="#f7ecce"/><circle cx="52.1" cy="92.3" r="1.8" fill="#17263e" stroke="none"/><circle cx="64" cy="92.3" r="1.8" fill="#17263e" stroke="none"/><path d="M52.05 99.95 Q58 105.9 63.95 99.95" fill="none"/><text x="58" y="146" font-size="13" fill="#2b54d4" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">A</text>
+<path d="M244 118 Q262 110 280 118 L284 160 L240 160 Z" fill="#e6f2ea"/><circle cx="262" cy="94" r="17" fill="#f7ecce"/><circle cx="256.1" cy="92.3" r="1.8" fill="#17263e" stroke="none"/><circle cx="268" cy="92.3" r="1.8" fill="#17263e" stroke="none"/><path d="M257.835 101.65 L266.165 101.65" fill="none"/><text x="262" y="146" font-size="13" fill="#3f8f5f" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">B</text>
+<path d="M76 124 L100 116 M76 132 L100 136 M244 124 L220 116 M244 132 L220 136" fill="none"/>
+<circle cx="108" cy="114" r="8" fill="#b3403a"/><circle cx="105" cy="111" r="2" fill="#fffdf6" stroke="none"/><circle cx="108" cy="138" r="8" fill="#2b54d4"/><circle cx="105" cy="135" r="2" fill="#fffdf6" stroke="none"/><circle cx="212" cy="114" r="8" fill="#b3403a"/><circle cx="209" cy="111" r="2" fill="#fffdf6" stroke="none"/><circle cx="212" cy="138" r="8" fill="#2b54d4"/><circle cx="209" cy="135" r="2" fill="#fffdf6" stroke="none"/>
+<rect x="152" y="70" width="16" height="90" rx="3" fill="#f7ecce"/>
+<text x="160" y="46" font-size="20" fill="#4a5870" stroke="none" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">?</text>
+</g></svg>
