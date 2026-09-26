@@ -386,7 +386,8 @@ A prime $p>3$ is coprime to $24$, so $p\bmod 24\in\{1,5,7,11,13,17,19,23\}$. Sin
 
 ===TEASER===
 SLUG: bidding-for-a-firm-value-doubles
-IDS: H1B-20
+IDS: H1B-20, Q-012
+FIRMS: SIG
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: medium
@@ -418,6 +419,12 @@ SOLUTION: Conditioning on acceptance
 For $0<B\le1$: $P(\text{accept})=P(S\le B)=B$ and, given acceptance, $S\sim U[0,B]$, so $E[2S\mid\text{accept}]=B$. Hence
 $$E[P]=P(\text{accept})\cdot\big(E[2S\mid\text{accept}]-B\big)=B\cdot(B-B)=0.$$
 For $B>1$, acceptance is certain and $E[P]=E[2S]-B=1-B<0$.
+FOLLOWUP: SIG variant: a painting resold at 1.5 times its value
+A painting's value $V$ is uniform on $[0, 100{,}000]$ dollars and unknown to you. If your bid $b$ exceeds $V$, you buy it for $b$ and resell it to a museum for $1.5V$; otherwise nothing happens. What should you bid to maximise your expected profit (bid $0$ if no profit is possible)?
+FOLLOWUP_ANSWER:
+Bid \$0. Write $M = 100{,}000$. For $0 < b\le M$ the bid wins when $V < b$, and then, given winning, $V$ is uniform on $[0,b]$ with mean $b/2$:
+$$\mathbb{E}[\text{profit}] = P(V<b)\left(1.5\cdot\frac b2 - b\right) = \frac bM\cdot\left(-\frac b4\right) = -\frac{b^2}{4M} < 0.$$
+For $b > M$ you always win and lose $b - 0.75M > 0$ on average. Every positive bid loses money (winning tells you the painting is worth only about half your bid, and $1.5\times\frac12 < 1$), so bid $0$. The multiplier would have to exceed $2$ for bidding to be profitable.
 ===END===
 
 ===TEASER===
@@ -562,7 +569,8 @@ The man only ever touches $A_{in}$, and each woman touches a different surface (
 
 ===TEASER===
 SLUG: lattice-paths-to-5-5
-IDS: H1B-31
+IDS: H1B-31, Q-273, Q-369
+FIRMS: DRW, Citi
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: easy
@@ -593,6 +601,14 @@ Let $N(i,j)$ be the number of paths to $(i,j)$. The last step comes from $(i-1,j
 - row $j=5$: $1,6,21,56,126,252$
 
 So $N(5,5)=252$ (these are Pascal's triangle entries $\binom{i+j}{i}$).
+FOLLOWUP: DRW variant: a 5×5 grid with a blocked square
+A robot starts in the top-left square of a $5\times5$ grid of squares and must reach the bottom-right square, moving one square right or one square down at each step. The centre square is blacked out and cannot be entered. How many paths are there?
+FOLLOWUP_ANSWER:
+$34$. Without the obstacle, a path is $4$ right moves and $4$ down moves in some order: $\binom84 = 70$ paths. The centre square is $2$ right and $2$ down from the start, and $2$ right and $2$ down from the end, so the number of paths through it is $\binom42\cdot\binom42 = 6\cdot 6 = 36$. Hence $70 - 36 = 34$ paths avoid it. (The source does not say which square is blocked; $34$ corresponds to the centre square. In general, subtract $\binom{i+j}{i}\binom{8-i-j}{4-i}$ for a blocked square $i$ right and $j$ down from the start.)
+FOLLOWUP: Citi variant: 4 moves right and 3 moves down
+You travel from the top-left corner to the bottom-right corner of a grid, each step moving one unit right or one unit down, and the trip consists of exactly $4$ moves right and $3$ moves down. How many distinct paths are there?
+FOLLOWUP_ANSWER:
+$35$. A path is a word of length $7$ with $4$ letters R and $3$ letters D, determined by the positions of the D's: $\binom73 = \frac{7\cdot6\cdot5}{6} = 35$. (If instead you move between the *squares* of a $3$-row, $4$-column board, you need only $3$ rights and $2$ downs, giving $\binom52 = 10$; the $35$ counts paths along the grid lines of a $4\times3$ block of squares.)
 ===END===
 
 ===TEASER===
@@ -779,7 +795,8 @@ $\sqrt{x^2+x}=x\sqrt{1+\frac1x}=x\left(1+\frac1{2x}+O\!\left(\frac1{x^2}\right)\
 
 ===TEASER===
 SLUG: derivative-of-x-to-the-x
-IDS: H1B-38
+IDS: H1B-38, Q-322, W-116
+FIRMS: Citadel, Five Rings, Goldman Sachs
 SECTION: brainteaser
 CATEGORY: Calculus & algebra
 DIFFICULTY: easy
@@ -803,6 +820,12 @@ $$\frac{y'}{y}=\ln x+x\cdot\frac1x=\ln x+1.$$
 So $y'=x^x(1+\ln x)$.
 SOLUTION: Exponential form
 $x^x=e^{x\ln x}$, so by the chain rule $\dfrac{d}{dx}x^x=e^{x\ln x}\cdot\dfrac{d}{dx}(x\ln x)=x^x(\ln x+1)$.
+FOLLOWUP: Derivative of (ln x)^x at e
+Find $f'(e)$ for $f(x) = (\ln x)^x$, $x>1$.
+FOLLOWUP_ANSWER:
+$f'(e) = 1$. Take logarithms: $\ln f(x) = x\ln(\ln x)$. Differentiating,
+$$\frac{f'(x)}{f(x)} = \ln(\ln x) + x\cdot\frac{1}{\ln x}\cdot\frac1x = \ln(\ln x) + \frac{1}{\ln x}.$$
+At $x = e$: $\ln e = 1$, so $f(e) = 1^e = 1$, $\ln(\ln e) = 0$ and $\frac1{\ln e} = 1$. Hence $f'(e) = 1\cdot(0+1) = 1$.
 ===END===
 
 ===TEASER===
@@ -830,7 +853,7 @@ Let $p<q$ be consecutive primes and $m=\frac{p+q}{2}$. Then $m-p=\frac{q-p}{2}>0
 
 ===TEASER===
 SLUG: product-of-two-uniforms-exceeds-half
-IDS: H4A-01
+IDS: H4A-01, W-090
 SECTION: probability
 CATEGORY: Continuous & geometric probability
 DIFFICULTY: easy
@@ -855,11 +878,21 @@ $$P\left(XY>\tfrac12\right)=\int_{1/2}^{1}\left(1-\frac1{2x}\right)dx=\frac12-\f
 SOLUTION: Logarithms and exponentials
 Let $A=-\ln X$, $B=-\ln Y$; they are independent $\text{Exp}(1)$, and $XY>\frac12\iff A+B<\ln2$. The sum $A+B$ has density $se^{-s}$ on $s>0$, so
 $$P(A+B<\ln2)=\int_0^{\ln2}se^{-s}ds=\Big[-(1+s)e^{-s}\Big]_0^{\ln2}=1-(1+\ln2)\cdot\frac12=\frac{1-\ln2}{2}.$$
+FOLLOWUP: Sum above 1 and product below 3/16
+$X$ and $Y$ are independent and uniform on $[0,1]$. What is $P\left(X+Y>1 \text{ and } XY<\frac{3}{16}\right)$?
+FOLLOWUP_ANSWER:
+$\frac38\ln\frac43 - \frac1{16}\approx 0.0454$. The hyperbola $xy = \frac3{16}$ meets the line $x+y=1$ where $x(1-x) = \frac3{16}$, i.e. $x = \frac14$ or $x=\frac34$. Between them the hyperbola lies below the line, so there is no admissible $y$. For fixed $x$ the admissible $y$ lie in $\left(1-x,\ \min\left(1, \frac{3}{16x}\right)\right)$:
+- $0 < x < \frac3{16}$: $\frac{3}{16x} > 1$, length $x$; integral $\frac12\left(\frac3{16}\right)^2 = \frac{9}{512}$.
+- $\frac3{16}\le x\le\frac14$: length $\frac3{16x} - 1 + x$; integral $\frac3{16}\ln\frac43 - \frac1{16} + \frac{7}{512} = \frac3{16}\ln\frac43 - \frac{25}{512}$.
+- $\frac34\le x\le 1$: length $\frac{3}{16x} - 1 + x$; integral $\frac3{16}\ln\frac43 - \frac14 + \frac{7}{32} = \frac3{16}\ln\frac43 - \frac{16}{512}$.
+
+Adding: $P = \frac38\ln\frac43 + \frac{9 - 25 - 16}{512} = \frac38\ln\frac43 - \frac{1}{16}\approx 0.1079 - 0.0625 = 0.0454$ (a Monte Carlo simulation agrees).
 ===END===
 
 ===TEASER===
 SLUG: ticket-price-die-game
-IDS: H4A-02, R3A-01, R3A-02, R3A-03, R3A-04
+IDS: H4A-02, R3A-01, R3A-02, R3A-03, R3A-04, Q-418
+FIRMS: Optiver
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: easy

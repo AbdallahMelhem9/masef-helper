@@ -1,6 +1,7 @@
 ===TEASER===
 SLUG: broken-stick-triangle
-IDS: G4B-02, H4B-16, R3B-26, R3B-27, R3B-28, R3B-29
+IDS: G4B-02, H4B-16, R3B-26, R3B-27, R3B-28, R3B-29, Q-057, Q-487, Q-489, W-087
+FIRMS: Goldman Sachs, Citadel, WorldQuant
 SECTION: probability
 CATEGORY: Continuous & geometric probability
 DIFFICULTY: medium
@@ -169,7 +170,8 @@ which matches the direct computation.
 ===END===
 ===TEASER===
 SLUG: connecting-noodles
-IDS: G4B-05
+IDS: G4B-05, Q-397
+FIRMS: IMC
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: medium
@@ -239,7 +241,8 @@ minimised at $h=\beta=\dfrac{\rho\sigma_A\sigma_B}{\sigma_B^2}=\rho\dfrac{\sigma
 ===END===
 ===TEASER===
 SLUG: dice-game-roll-again-on-high
-IDS: G4B-07, H4B-14
+IDS: G4B-07, H4B-14, Q-159
+FIRMS: DRW
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: easy
@@ -279,7 +282,8 @@ $$E[\text{payoff}]=\tfrac23\,E[N]=\tfrac23.$$
 ===END===
 ===TEASER===
 SLUG: cards-until-first-ace
-IDS: G4B-08
+IDS: G4B-08, Q-055
+FIRMS: Akuna Capital, Hudson River Trading, IMC, Optiver
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: medium
@@ -310,7 +314,8 @@ Write the deck as $G_1\,A\,G_2\,A\,G_3\,A\,G_4\,A\,G_5$ where $G_j$ is the (poss
 ===END===
 ===TEASER===
 SLUG: sum-of-uniforms-at-most-one
-IDS: G4B-09
+IDS: G4B-09, Q-469, Q-470, Q-472
+FIRMS: Goldman Sachs, Akuna Capital
 SECTION: probability
 CATEGORY: Continuous & geometric probability
 DIFFICULTY: medium
@@ -340,10 +345,25 @@ Change variables to partial sums $s_k=x_1+\cdots+x_k$. The map $(x_1,\dots,x_n)\
 
 Now take $n$ i.i.d. uniforms $U_1,\dots,U_n$: the probability that they come out in the order $U_1\le U_2\le\cdots\le U_n$ is $\tfrac1{n!}$, since all $n!$ orderings are equally likely and ties have probability 0. That probability is exactly the volume of the ordered region, so
 $$P(S_n\le1)=\operatorname{vol}\{0\le s_1\le\cdots\le s_n\le1\}=\frac1{n!}.$$
+FOLLOWUP: Akuna variant: first passage above ln 2
+Let $X_1, X_2, \dots$ be i.i.d. uniform on $(0,1)$ and $N = \min\{n : X_1+\dots+X_n > \ln 2\}$. Find $\mathbb{E}[N]$.
+FOLLOWUP_ANSWER:
+$\mathbb{E}[N] = 2$. For $0\le x\le1$, $N_x = \min\{n: S_n > x\}$ satisfies $N_x > n \iff S_n \le x$, and by the main result (scaled) $P(S_n\le x) = \frac{x^n}{n!}$. Hence
+$$\mathbb{E}[N_x] = \sum_{n\ge0}P(N_x>n) = \sum_{n\ge0}\frac{x^n}{n!} = e^x.$$
+With $x = \ln 2$: $\mathbb{E}[N] = e^{\ln 2} = 2$. (With $x=1$ this is the classic $\mathbb{E}[N_1] = e$.)
+FOLLOWUP: Akuna variant: first passage above 2
+Let $X_1, X_2, \dots$ be i.i.d. uniform on $(0,1)$ and $N_2 = \min\{n : X_1+\dots+X_n > 2\}$. Then $\mathbb{E}[N_2] = ae^2 + be$ for integers $a, b$. Find $a+b$.
+FOLLOWUP_ANSWER:
+$a + b = 0$, since $\mathbb{E}[N_2] = e^2 - e\approx 4.67$. Let $m(x) = \mathbb{E}[N_x]$. Conditioning on $X_1 = u$: if $u > x$ we stop after one draw; otherwise we need $N_{x-u}$ more draws. So
+$$m(x) = 1 + \int_0^{\min(x,1)} m(x-u)\,du.$$
+For $0\le x\le 1$ this gives $m(x) = 1 + \int_0^x m(t)\,dt$, so $m' = m$, $m(0)=1$, and $m(x) = e^x$. For $1\le x\le 2$: $m(x) = 1 + \int_{x-1}^{x} m(t)\,dt$, so
+$$m'(x) = m(x) - m(x-1) = m(x) - e^{x-1},\qquad m(1) = e.$$
+The solution is $m(x) = e^x - (x-1)e^{x-1}$ (check: $m' = e^x - e^{x-1} - (x-1)e^{x-1} = m - e^{x-1}$, and $m(1) = e$). At $x=2$: $m(2) = e^2 - e$, so $a = 1$, $b = -1$.
 ===END===
 ===TEASER===
 SLUG: coupon-collector
-IDS: G4B-10, G4B-11
+IDS: G4B-10, G4B-11, Q-155, W-114
+FIRMS: Akuna Capital, Citadel, DRW, Goldman Sachs, Hudson River Trading, IMC, Old Mission, Optiver, SIG, Squarepoint Capital, Transmarket Group, Two Sigma, WorldQuant
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: medium
@@ -555,7 +575,8 @@ FOLLOWUP_ANSWER:
 ===END===
 ===TEASER===
 SLUG: clock-hands-at-3-15
-IDS: R8-01, R8-02, R8-03, R8-04, H1A-12
+IDS: R8-01, R8-02, R8-03, R8-04, H1A-12, Q-067, Q-394, W-031
+FIRMS: Akuna Capital, Belvedere Trading, DRW, Jane Street, Old Mission, Optiver
 SECTION: brainteaser
 CATEGORY: Clocks, rates & motion
 DIFFICULTY: easy
@@ -596,6 +617,10 @@ FOLLOWUP_ANSWER:
 At $3{:}16\tfrac4{11}$, i.e. about 3:16:22.
 
 At 3:15 the hour hand is $7.5^\circ$ ahead of the minute hand, and the minute hand gains $5.5^\circ$/min, so it catches up after $\frac{7.5}{5.5}=\frac{15}{11}=1\tfrac4{11}$ min. Check: $\frac{36}{11}$ h $=3$ h $16\tfrac4{11}$ min, the third overlap after noon in the list above.
+FOLLOWUP: Angle at 9:45
+What is the angle, in degrees, between the hour hand and the minute hand of a clock at $9{:}45$?
+FOLLOWUP_ANSWER:
+$22.5^\circ$. Measure clockwise from 12. The minute hand at $45$ minutes is at $45\times6^\circ = 270^\circ$. The hour hand moves $30^\circ$ per hour, i.e. $0.5^\circ$ per minute, so at $9{:}45$ it is at $9\times30^\circ + 45\times0.5^\circ = 270^\circ + 22.5^\circ = 292.5^\circ$. The angle between them is $292.5^\circ - 270^\circ = 22.5^\circ$: the hour hand has moved three quarters of the way from 9 to 10, i.e. $\frac34\times30^\circ$.
 ===END===
 ===TEASER===
 SLUG: fifteen-cubed
@@ -637,7 +662,8 @@ $17^3=17\times289=4913$, just below 5000, and $18^3=5832$. Linearise around 17: 
 ===END===
 ===TEASER===
 SLUG: painted-cube-4x4x4
-IDS: R8-08, R8-09, R8-10, R8-11, R8-12, H1A-10
+IDS: R8-08, R8-09, R8-10, R8-11, R8-12, H1A-10, Q-363, Q-406, Q-461
+FIRMS: Citadel, Five Rings, Hudson River Trading, SIG
 SECTION: brainteaser
 CATEGORY: Geometry & space
 DIFFICULTY: easy
@@ -680,10 +706,17 @@ FOLLOWUP: Outer layer of a 10×10×10 cube
 A $10\times10\times10$ cube of glued unit cubes loses its entire outermost layer, which falls to the ground. How many unit cubes are on the ground?
 FOLLOWUP_ANSWER:
 $488$. What remains is an $8\times8\times8$ cube (one layer lost on each side), so $10^3-8^3=1000-512=488$ cubes fell. Mentally, $8^3=2^9=\frac{1024}{2}=512$. The common mistake is $10^3-9^3=271$.
+FOLLOWUP: A painted 10×20×30 box
+A $10\times20\times30$ rectangular box is painted red on its outside and then cut into $6000$ unit cubes. One unit cube is chosen at random. What is the expected number of red faces on it?
+FOLLOWUP_ANSWER:
+$\frac{11}{30}$. Every painted unit face lies on exactly one unit cube, so the total number of red faces over all cubes equals the surface area of the box:
+$$2(10\cdot20 + 10\cdot30 + 20\cdot30) = 2(200+300+600) = 2200.$$
+By linearity, the expected number of red faces on a random cube is the average, $\frac{2200}{6000} = \frac{11}{30}$. (No need to classify corner, edge and face cubes.)
 ===END===
 ===TEASER===
 SLUG: ant-on-a-cube-shortest-path
-IDS: R8-13, R8-14, R8-15, R8-16, H1A-08
+IDS: R8-13, R8-14, R8-15, R8-16, H1A-08, Q-110
+FIRMS: Transmarket Group
 SECTION: brainteaser
 CATEGORY: Geometry & space
 DIFFICULTY: easy
@@ -722,7 +755,8 @@ The space diagonal: $\sqrt{1^2+1^2+1^2}=\sqrt3\approx1.732$ m.
 ===END===
 ===TEASER===
 SLUG: racetrack-average-speed
-IDS: R8-20, R8-21, R8-22
+IDS: R8-20, R8-21, R8-22, Q-446, Q-448
+FIRMS: Belvedere Trading, Transmarket Group
 SECTION: brainteaser
 CATEGORY: Clocks, rates & motion
 DIFFICULTY: easy
@@ -754,4 +788,8 @@ FOLLOWUP: Why averaging speeds fails
 Why doesn't averaging the two speeds give the average speed?
 FOLLOWUP_ANSWER:
 Average speed is total distance over total time, i.e. the average of the instantaneous speed **weighted by time**. The arithmetic mean $\frac{v_1+v_2}2$ weights the two laps equally, which is right only if equal **times** are spent at each speed. Here the laps have equal **distances**, so the slow lap takes longer and gets more weight: the correct average is the harmonic mean $\frac{2}{1/v_1+1/v_2}$, which is always at most the arithmetic mean (with equality only if $v_1=v_2$). For example, 30 and 90 mph over equal distances give $\frac{2}{1/30+1/90}=45$ mph, not 60.
+FOLLOWUP: Belvedere variant: 100 mph then 200 mph
+A car drives one lap of a track at $100$ mph and a second lap of the same track at $200$ mph. What is its average speed over the two laps?
+FOLLOWUP_ANSWER:
+$\frac{400}{3}\approx 133.3$ mph, not $150$. Let the lap length be $d$. Time: $\frac{d}{100} + \frac{d}{200} = \frac{3d}{200}$. Average speed = total distance / total time $= \frac{2d}{3d/200} = \frac{400}{3}$ mph. Over equal distances the average speed is the harmonic mean $\frac{2\cdot100\cdot200}{100+200}$: the car spends twice as long on the slow lap, so the slow speed gets more weight.
 ===END===

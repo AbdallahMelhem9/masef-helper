@@ -142,7 +142,7 @@ They coincide at the multiples of $\mathrm{lcm}(12,15)$. Since $12=2^2\cdot3$ an
 
 ===TEASER===
 SLUG: sum-of-integers-1-to-100
-IDS: H1A-03, H1A-04
+IDS: H1A-03, H1A-04, W-016
 SECTION: brainteaser
 CATEGORY: Numbers & digits
 DIFFICULTY: easy
@@ -291,7 +291,8 @@ Hence no strategy delivers more than $833\tfrac13$ apples; with whole apples the
 
 ===TEASER===
 SLUG: clock-hands-coincide-after-3pm
-IDS: H1A-13
+IDS: H1A-13, Q-066, Q-068
+FIRMS: Squarepoint Capital, IMC, Jane Street
 SECTION: brainteaser
 CATEGORY: Clocks, rates & motion
 DIFFICULTY: easy
@@ -315,11 +316,16 @@ $\frac4{11}$ of a minute is $\frac{240}{11}\approx21.82$ seconds, so the hands c
 SOLUTION: Eleven equally spaced meetings
 The hands coincide at 12:00 and next at 12:00 twelve hours later. In 12 hours the minute hand makes 12 turns and the hour hand 1, so the minute hand laps the hour hand $12-1=11$ times; by constant speeds these meetings are equally spaced, every $\frac{12}{11}$ hours $=65\tfrac5{11}$ minutes. The meetings are at $k\cdot\frac{12}{11}$ hours after noon; the first one after 3PM is $k=3$:
 $$3\cdot\frac{12}{11}\ \text{h}=\frac{36}{11}\ \text{h}=3\ \text{h}\ 16\tfrac4{11}\ \text{min}\approx3{:}16{:}21.82 .$$
+FOLLOWUP: Squarepoint variant: next overlap after midnight
+At midnight the hour and minute hands coincide. When do they next coincide?
+FOLLOWUP_ANSWER:
+After $\frac{12}{11}$ hours $= 65\tfrac{5}{11}\approx 65.45$ minutes, i.e. at about $1{:}05{:}27$. The minute hand moves at $6^\circ$ per minute and the hour hand at $0.5^\circ$ per minute, so the minute hand gains $5.5^\circ$ per minute. It must gain a full $360^\circ$ to catch the hour hand again: $t = \frac{360}{5.5} = \frac{720}{11} = 65\tfrac5{11}$ minutes.
 ===END===
 
 ===TEASER===
 SLUG: light-bulb-64-and-perfect-squares
-IDS: H1A-14, H1A-15
+IDS: H1A-14, H1A-15, Q-274, Q-297
+FIRMS: Two Sigma
 SECTION: brainteaser
 CATEGORY: Numbers & digits
 DIFFICULTY: easy
@@ -517,7 +523,8 @@ Hence $f'(z_0)=0$ for every $z_0$, and since the plane is connected $f$ is const
 
 ===TEASER===
 SLUG: lily-pads-eight-instead-of-one
-IDS: H1A-24, H1A-25, R8-17, R8-18, R8-19
+IDS: H1A-24, H1A-25, R8-17, R8-18, R8-19, Q-379, Q-319
+FIRMS: SIG, Citadel
 SECTION: brainteaser
 CATEGORY: Calculus & algebra
 DIFFICULTY: easy
@@ -558,6 +565,10 @@ FOLLOWUP_ANSWER:
 For first term $a$ and ratio $r\ne1$:
 $$S_N=a+ar+\dots+ar^{N-1}=a\,\frac{1-r^N}{1-r}.$$
 Proof: $S_N-rS_N=a-ar^N$ (all other terms cancel), so $(1-r)S_N=a(1-r^N)$. If $r=1$, $S_N=Na$. If $|r|<1$, letting $N\to\infty$ gives $\frac{a}{1-r}$. Lily-pad example: $1+2+\dots+2^{N-1}=2^N-1$.
+FOLLOWUP: Citadel variant: uncovered two minutes early
+A pond starts with one lily pad at $t=0$; the number of pads doubles every minute, and the pond is fully covered at $t=60$. What fraction of the pond is still uncovered at $t=58$?
+FOLLOWUP_ANSWER:
+$\frac34$. Coverage doubles each minute, so going back in time it halves: at $t=59$ the pond is $\frac12$ covered, at $t=58$ it is $\frac14$ covered ($2^{58}/2^{60}$). The uncovered fraction is $1-\frac14 = \frac34$.
 ===END===
 
 ===TEASER===
@@ -666,7 +677,8 @@ SOLUTION: Eliminate what each speaker would have known
 
 ===TEASER===
 SLUG: remainders-one-through-nine
-IDS: H1A-31
+IDS: H1A-31, Q-410
+FIRMS: Two Sigma
 SECTION: brainteaser
 CATEGORY: Numbers & digits
 DIFFICULTY: medium
@@ -693,7 +705,8 @@ Check: $2519=2\cdot1259+1=3\cdot839+2=4\cdot629+3=5\cdot503+4=6\cdot419+5=7\cdot
 
 ===TEASER===
 SLUG: fly-between-motorcyclists
-IDS: H1A-32
+IDS: H1A-32, Q-262
+FIRMS: Squarepoint Capital
 SECTION: brainteaser
 CATEGORY: Clocks, rates & motion
 DIFFICULTY: easy

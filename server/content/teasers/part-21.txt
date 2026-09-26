@@ -1,0 +1,1007 @@
+===TEASER===
+SLUG: twenty-cards-remove-matching-pairs
+IDS: Q-501
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Removing matching pairs from 20 cards
+QUESTION:
+A deck has $20$ cards: the numbers $1$ to $10$, each appearing on exactly two cards. On each turn you draw $2$ cards at random from the cards still in the deck. If the two cards show the same number, you throw them away; otherwise you put both back and reshuffle. The game ends when the deck is empty.
+
+What is the expected number of turns until the game ends?
+HINT1:
+The deck always consists of complete pairs. Describe the state of the game by a single number and ask how long you spend in each state.
+HINT2:
+When $n$ pairs are left ($2n$ cards), compute the probability $p_n$ that a random 2-card draw is a matching pair. The number of turns spent with $n$ pairs left is geometric with parameter $p_n$.
+ANSWER:
+$100$ turns.
+REFRESH:
+**Geometric distribution**: if each trial succeeds independently with probability $p$, the number of trials up to and including the first success $T$ has $\mathbb{E}[T]=1/p$.
+
+**Linearity of expectation**: $\mathbb{E}[T_1+\dots+T_k]=\mathbb{E}[T_1]+\dots+\mathbb{E}[T_k]$, with no independence needed.
+EXPLANATION:
+Nothing changes when you draw a non-matching pair: the deck goes back to exactly the same composition. So the game is a staircase: you sit on the step "$n$ pairs left" until you hit a match, then drop to "$n-1$ pairs left". The time on each step is geometric, and the total is the sum of the step times.
+
+With $n$ pairs, whatever the first card is, exactly $1$ of the other $2n-1$ cards matches it, so a match happens with probability $1/(2n-1)$ and the expected time on that step is $2n-1$. Adding the odd numbers $1+3+\dots+19$ gives $10^2=100$.
+SOLUTION: Sum of geometric waiting times
+Let $T_n$ be the number of turns spent while exactly $n$ pairs remain ($n=10,9,\dots,1$). The total number of turns is $T=T_{10}+T_9+\dots+T_1$.
+
+With $n$ pairs left there are $2n$ cards and $\binom{2n}{2}=n(2n-1)$ possible draws, of which exactly $n$ are matching pairs. So
+$$p_n=\frac{n}{n(2n-1)}=\frac{1}{2n-1}.$$
+(Equivalently: the first card drawn has exactly one partner among the other $2n-1$ cards.)
+
+A failed draw leaves the deck unchanged, so each turn in this state is an independent trial with success probability $p_n$, and $T_n$ is geometric: $\mathbb{E}[T_n]=2n-1$.
+
+By linearity,
+$$\mathbb{E}[T]=\sum_{n=1}^{10}(2n-1)=1+3+5+\dots+19=10^2=100.$$
+FOLLOWUP: General deck
+Same game with $N$ pairs ($2N$ cards). What is the expected number of turns?
+FOLLOWUP_ANSWER:
+Exactly the same argument gives $\mathbb{E}[T]=\sum_{n=1}^{N}(2n-1)=N^2$, since the sum of the first $N$ odd numbers is $N^2$.
+===END===
+===TEASER===
+SLUG: first-two-cards-same-rank
+IDS: Q-502
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: First two cards form a pair
+QUESTION:
+A standard 52-card deck is well shuffled. What is the probability that the first two cards have the same rank (a pair)?
+HINT1:
+The first card can be anything. What does the second card need to be?
+HINT2:
+After the first card is dealt, count how many of the remaining $51$ cards share its rank.
+ANSWER:
+$\dfrac{1}{17}$
+REFRESH:
+NONE
+EXPLANATION:
+The rank of the first card does not matter at all, so condition on it. Once it is dealt, $51$ cards remain and exactly $3$ of them have the same rank, so the second card matches with probability $3/51=1/17$.
+SOLUTION: Condition on the first card
+Whatever the first card is, $51$ cards remain, of which $3$ have its rank. All $51$ are equally likely to be the second card, so
+$$\mathbb{P}(\text{pair})=\frac{3}{51}=\frac{1}{17}\approx 5.9\%.$$
+SOLUTION: Count unordered hands
+There are $\binom{52}{2}=1326$ equally likely sets of two cards. A pair is a choice of rank ($13$ ways) and of two of its four suits ($\binom42=6$ ways), so $78$ pairs:
+$$\frac{78}{1326}=\frac{1}{17}.$$
+===END===
+===TEASER===
+SLUG: correlation-of-sum-and-difference
+IDS: Q-503
+FIRMS: Transmarket Group
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Correlation of $X+Y$ and $X-Y$
+QUESTION:
+$X$ and $Y$ are random variables with finite means, both with variance $16$ (they may be dependent, but assume $X-Y$ is not constant). What is $\operatorname{Corr}(X+Y,\;X-Y)$?
+HINT1:
+Correlation is zero exactly when the covariance is zero. Try to compute the covariance.
+HINT2:
+Expand $\operatorname{Cov}(X+Y,X-Y)$ using bilinearity; the cross terms $\operatorname{Cov}(X,Y)$ and $\operatorname{Cov}(Y,X)$ appear with opposite signs.
+ANSWER:
+$0$
+REFRESH:
+**Bilinearity of covariance**: $\operatorname{Cov}(aX+bY,cU+dV)=ac\operatorname{Cov}(X,U)+ad\operatorname{Cov}(X,V)+bc\operatorname{Cov}(Y,U)+bd\operatorname{Cov}(Y,V)$, and $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$.
+
+**Correlation**: $\operatorname{Corr}(U,V)=\dfrac{\operatorname{Cov}(U,V)}{\sqrt{\operatorname{Var}U\operatorname{Var}V}}$, defined when both variances are positive.
+EXPLANATION:
+Covariance behaves like a product: $(X+Y)(X-Y)=X^2-Y^2$. In the same way $\operatorname{Cov}(X+Y,X-Y)=\operatorname{Var}X-\operatorname{Var}Y$, and the covariance between $X$ and $Y$ cancels out. Equal variances therefore give zero covariance, hence zero correlation, whatever the dependence between $X$ and $Y$. The value $16$ is irrelevant; only the equality matters.
+SOLUTION: Bilinearity
+$$\begin{aligned}\operatorname{Cov}(X+Y,X-Y)&=\operatorname{Cov}(X,X)-\operatorname{Cov}(X,Y)+\operatorname{Cov}(Y,X)-\operatorname{Cov}(Y,Y)\\&=\operatorname{Var}X-\operatorname{Var}Y=16-16=0.\end{aligned}$$
+We need the variances of $X+Y$ and $X-Y$ to be positive for the correlation to exist. $\operatorname{Var}(X-Y)>0$ by assumption, and $\operatorname{Var}(X+Y)=32+2\operatorname{Cov}(X,Y)$, which is $0$ only if $Y=-X+c$; in every other case
+$$\operatorname{Corr}(X+Y,X-Y)=\frac{0}{\sqrt{\operatorname{Var}(X+Y)\operatorname{Var}(X-Y)}}=0.$$
+FOLLOWUP: Unequal variances
+Now $\operatorname{Var}X=9$, $\operatorname{Var}Y=4$ and $X,Y$ are independent. Find $\operatorname{Corr}(X+Y,X-Y)$.
+FOLLOWUP_ANSWER:
+$\operatorname{Cov}=9-4=5$; $\operatorname{Var}(X+Y)=\operatorname{Var}(X-Y)=13$ by independence. So $\operatorname{Corr}=5/13\approx0.385$.
+===END===
+===TEASER===
+SLUG: lattice-paths-even-number-of-turns
+IDS: Q-504
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Grid paths with an even number of turns
+QUESTION:
+You walk on the integer grid from $(0,0)$ to $(8,8)$, each step going one unit East (E) or one unit North (N). A **turn** is a place where the path switches direction (E followed by N, or N followed by E). How many such paths have an even number of turns?
+HINT1:
+A path is a word of 8 E's and 8 N's. Think of it as a sequence of blocks (runs) of equal letters. How is the number of turns related to the number of runs?
+HINT2:
+Runs alternate between E and N. So the number of runs is odd exactly when the first and the last letter are the same. Count words that start and end with the same letter.
+ANSWER:
+$6006$
+REFRESH:
+**Lattice paths**: the number of words with $a$ letters E and $b$ letters N is $\binom{a+b}{a}$.
+EXPLANATION:
+Cut the path into maximal straight segments (runs). Consecutive runs have different directions, and each boundary between two runs is one turn, so turns $=$ runs $-\,1$. Because runs alternate E, N, E, N, …, an odd number of runs means the path ends in the same direction it started. So "even number of turns" is simply "first step and last step go the same way", and those are easy to count: fix both ends and arrange the remaining $14$ steps freely.
+SOLUTION: Parity of turns via the endpoints
+Let $r$ be the number of runs; the number of turns is $r-1$. Runs alternate in direction, so the last run has the same direction as the first iff $r$ is odd, i.e. iff the number of turns is even.
+
+**First and last step both E.** The remaining $14$ steps contain $6$ E and $8$ N: $\binom{14}{6}=3003$ paths.
+
+**First and last step both N.** By symmetry, also $\binom{14}{6}=3003$.
+
+Total: $3003+3003=6006$.
+
+Check: all paths number $\binom{16}{8}=12870$, so $6864$ paths have an odd number of turns (those starting and ending differently: $2\binom{14}{7}=2\cdot3432=6864$), and $6006+6864=12870$.
+FOLLOWUP: Exactly 4 turns
+How many paths from $(0,0)$ to $(8,8)$ have exactly $4$ turns?
+FOLLOWUP_ANSWER:
+$4$ turns means $5$ runs, so the pattern is E N E N E (3 E-runs, 2 N-runs) or N E N E N. Splitting 8 E's into 3 nonempty runs: $\binom{7}{2}=21$ ways; 8 N's into 2 runs: $\binom71=7$ ways. So $21\cdot7=147$ per pattern and $2\cdot147=294$ paths.
+===END===
+===TEASER===
+SLUG: uniform-difference-given-sum-below-one
+IDS: Q-505
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: $X-Y>1/2$ given $X+Y<1$
+QUESTION:
+$X$ and $Y$ are independent and uniform on $(0,1)$. Compute
+$$\mathbb{P}\left(X-Y>\tfrac12 \;\middle|\; X+Y<1\right).$$
+HINT1:
+$(X,Y)$ is uniform on the unit square, so probabilities are areas. Draw both conditions.
+HINT2:
+The conditioning event is the triangle below the anti-diagonal (area $1/2$). Inside it, find the region where $x>y+\tfrac12$: it is a small triangle; find its three vertices.
+ANSWER:
+$\dfrac18$
+REFRESH:
+**Uniform on a region**: if $(X,Y)$ is uniform on the unit square, $\mathbb{P}((X,Y)\in A)=\text{area}(A)$ and $\mathbb{P}(A\mid B)=\text{area}(A\cap B)/\text{area}(B)$.
+EXPLANATION:
+Conditioning a uniform point on a region leaves it uniform on that region, so the answer is a ratio of areas. The region $X+Y<1$ is the lower-left half of the square. The line $x-y=\tfrac12$ cuts off a small triangle near the corner $(1,0)$, with vertices $(\tfrac12,0)$, $(1,0)$ and the point where the two lines meet, $(\tfrac34,\tfrac14)$. Its area is $\tfrac12\cdot\tfrac12\cdot\tfrac14=\tfrac1{16}$, one eighth of $\tfrac12$.
+SOLUTION: Areas in the unit square
+$\mathbb{P}(X+Y<1)=\tfrac12$ (triangle with vertices $(0,0),(1,0),(0,1)$).
+
+The event $\{X-Y>\tfrac12,\;X+Y<1\}$ is $\{y\ge0,\; x>y+\tfrac12,\; x<1-y\}$. The lines $x=y+\tfrac12$ and $x=1-y$ meet where $y+\tfrac12=1-y$, i.e. $y=\tfrac14$, $x=\tfrac34$. So the region is the triangle with vertices $(\tfrac12,0),(1,0),(\tfrac34,\tfrac14)$: base $\tfrac12$ on the $x$-axis, height $\tfrac14$, area $\tfrac1{16}$.
+
+$$\mathbb{P}\left(X-Y>\tfrac12\mid X+Y<1\right)=\frac{1/16}{1/2}=\frac18.$$
+SOLUTION: Integration
+For $y\in(0,\tfrac14)$, $x$ ranges over $(y+\tfrac12,\,1-y)$, of length $\tfrac12-2y$:
+$$\int_0^{1/4}\left(\tfrac12-2y\right)dy=\tfrac18-\tfrac1{16}=\tfrac1{16},$$
+and dividing by $\tfrac12$ gives $\tfrac18$.
+===END===
+===TEASER===
+SLUG: good-bad-days-markov-return-time
+IDS: Q-506
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Waiting for the next bad day
+QUESTION:
+Each day is either good ($G$) or bad ($B$). If today is $G$, tomorrow is $G$ with probability $\tfrac35$. If today is $B$, tomorrow is $B$ with probability $\tfrac7{10}$. Today is a bad day. What is the expected number of days until the next bad day (tomorrow counts as $1$ day)?
+HINT1:
+Look only at tomorrow: either it is bad already, or you are in a good day and must wait from there.
+HINT2:
+Starting from a good day, each following day is bad with probability $\tfrac25$ independently of how long you have waited, so the wait from $G$ to the next $B$ is geometric.
+ANSWER:
+$\dfrac74$ days.
+REFRESH:
+**First-step analysis**: for a Markov chain, the expected hitting time from state $i$ satisfies $m_i=1+\sum_j P_{ij}m_j$ (with $m=0$ at the target).
+
+**Kac's formula**: for an irreducible positive-recurrent chain with stationary distribution $\pi$, the expected return time to state $i$ is $1/\pi_i$.
+EXPLANATION:
+Tomorrow is bad with probability $0.7$ and then the wait is $1$ day. With probability $0.3$ tomorrow is good, and from a good day you escape to bad with probability $0.4$ per day, taking on average $1/0.4=2.5$ more days. So the mean wait is $1+0.3\cdot2.5=1.75$.
+
+Equivalently, this is the mean return time to $B$, which equals $1/\pi_B$: in the long run bad days make up $4/7$ of all days, so they recur every $7/4$ days on average.
+SOLUTION: First-step analysis
+Let $m_B$ = expected days to the next $B$ from a $B$ day, $m_G$ = expected days to reach $B$ from a $G$ day.
+
+From $G$: $m_G=1+\tfrac35 m_G$, so $\tfrac25m_G=1$ and $m_G=\tfrac52$.
+
+From $B$: $m_B=1+\tfrac{3}{10}m_G+\tfrac{7}{10}\cdot0=1+\tfrac3{10}\cdot\tfrac52=1+\tfrac34=\tfrac74$.
+SOLUTION: Stationary distribution and Kac's formula
+Transition probabilities: $G\to B$ is $\tfrac25$, $B\to G$ is $\tfrac3{10}$. Balance of flows: $\pi_G\cdot\tfrac25=\pi_B\cdot\tfrac3{10}$, so $\pi_G/\pi_B=\tfrac34$ and $\pi_B=\tfrac{4}{7}$.
+
+The expected return time to $B$ is $1/\pi_B=\tfrac74$.
+===END===
+===TEASER===
+SLUG: variance-of-standard-uniform
+IDS: Q-508
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Variance of a uniform(0,1)
+QUESTION:
+Let $X\sim\text{Unif}(0,1)$. Compute $\operatorname{Var}(X)$.
+HINT1:
+Use $\operatorname{Var}X=\mathbb{E}[X^2]-(\mathbb{E}X)^2$.
+HINT2:
+$\mathbb{E}[X^k]=\int_0^1x^k\,dx$.
+ANSWER:
+$\dfrac1{12}$
+REFRESH:
+**Variance**: $\operatorname{Var}X=\mathbb{E}[(X-\mathbb{E}X)^2]=\mathbb{E}[X^2]-(\mathbb{E}X)^2$.
+
+**Density of Unif(0,1)**: $f(x)=1$ on $(0,1)$, so $\mathbb{E}[g(X)]=\int_0^1g(x)\,dx$.
+EXPLANATION:
+The mean is $\tfrac12$ and the second moment is $\tfrac13$, so the variance is $\tfrac13-\tfrac14=\tfrac1{12}$. Worth memorising, with its scaled form: $\text{Unif}(a,b)$ has variance $(b-a)^2/12$, so the standard deviation of a uniform is its width divided by $\sqrt{12}\approx3.46$.
+SOLUTION: Moments
+$$\mathbb{E}X=\int_0^1x\,dx=\tfrac12,\qquad \mathbb{E}X^2=\int_0^1x^2\,dx=\tfrac13,$$
+$$\operatorname{Var}X=\tfrac13-\tfrac14=\tfrac1{12}.$$
+SOLUTION: Centred integral
+$$\operatorname{Var}X=\int_0^1\left(x-\tfrac12\right)^2dx=\int_{-1/2}^{1/2}u^2\,du=\frac{2}{3}\left(\tfrac12\right)^3=\frac1{12}.$$
+FOLLOWUP: Uniform on (a, b)
+What is the variance of $\text{Unif}(a,b)$?
+FOLLOWUP_ANSWER:
+$Y=a+(b-a)X$ with $X\sim\text{Unif}(0,1)$, so $\operatorname{Var}Y=(b-a)^2\operatorname{Var}X=\dfrac{(b-a)^2}{12}$.
+===END===
+===TEASER===
+SLUG: two-urns-stay-or-switch-chip
+IDS: Q-509
+FIRMS: DRW
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Two urns: stay or switch?
+QUESTION:
+Two identical-looking urns sit in front of you. Urn 1 holds $4$ chips worth $1$ and $6$ chips worth $10$. Urn 2 holds $3$ chips worth $1$ and $7$ chips worth $10$. You pick an urn at random and draw one chip: it is a $1$ (the chip is not put back). You now draw a second chip at random, and you may choose to draw it either from the same urn or from the other urn. You are paid the value of the second chip. What is your expected payout under the best choice?
+HINT1:
+Drawing a $1$ tells you something about which urn you picked. Update your belief first.
+HINT2:
+Use Bayes to get $\mathbb{P}(\text{urn }1\mid\text{drew a }1)$. Then compute the expected value of the next chip for "same urn" (remember one $1$ has been removed) and for "other urn" (a full urn).
+ANSWER:
+Stay with the same urn; expected payout $\dfrac{52}{7}\approx7.43$.
+REFRESH:
+**Bayes' rule**: $\mathbb{P}(A\mid E)=\dfrac{\mathbb{P}(E\mid A)\mathbb{P}(A)}{\sum_i\mathbb{P}(E\mid A_i)\mathbb{P}(A_i)}$.
+EXPLANATION:
+Two effects compete. The $1$ you drew makes urn 1 (more $1$s) more likely, which argues for switching to what is probably the richer urn 2. But removing a $1$ from your urn also makes that urn richer: urn 1 goes from $6/10$ tens to $6/9$, and urn 2 from $7/10$ to $7/9$. The second effect wins: staying gives $52/7\approx7.43$, switching only $\approx6.91$.
+SOLUTION: Bayes, then compare the two options
+**Posterior.** $\mathbb{P}(1\mid U_1)=\tfrac4{10}$, $\mathbb{P}(1\mid U_2)=\tfrac3{10}$, prior $\tfrac12$ each:
+$$\mathbb{P}(U_1\mid 1)=\frac{0.4}{0.4+0.3}=\frac47,\qquad \mathbb{P}(U_2\mid1)=\frac37.$$
+
+**Stay.** If in urn 1: $9$ chips left, $3$ ones and $6$ tens, mean $\frac{3+60}{9}=7$. If in urn 2: $2$ ones and $7$ tens, mean $\frac{2+70}{9}=8$.
+$$\mathbb{E}[\text{stay}]=\tfrac47\cdot7+\tfrac37\cdot8=\tfrac{28+24}{7}=\tfrac{52}{7}\approx7.43.$$
+
+**Switch.** If you were in urn 1, the other is the full urn 2 with mean $0.3+7=7.3$; if you were in urn 2, the other is urn 1 with mean $0.4+6=6.4$.
+$$\mathbb{E}[\text{switch}]=\tfrac47\cdot7.3+\tfrac37\cdot6.4=\tfrac{29.2+19.2}{7}=\tfrac{48.4}{7}\approx6.91.$$
+
+Staying is better: the optimal expected payout is $\tfrac{52}{7}$.
+FOLLOWUP: With replacement
+Same game, but the first chip is put back before the second draw. Stay or switch?
+FOLLOWUP_ANSWER:
+Stay: $\tfrac47\cdot6.4+\tfrac37\cdot7.3=\tfrac{25.6+21.9}{7}=\tfrac{47.5}{7}\approx6.79$. Switch: $\tfrac47\cdot7.3+\tfrac37\cdot6.4=\tfrac{48.4}{7}\approx6.91$. Now switching is better: without the depletion effect, only the Bayesian update matters and it points to the other urn.
+===END===
+===TEASER===
+SLUG: ping-pong-king-of-the-table-player-49
+IDS: Q-510
+FIRMS: Five Rings, Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Player 49 at the ping-pong table
+QUESTION:
+Fifty players, numbered $1$ to $50$, share one table-tennis table. Whenever two players meet, the higher number always wins. Two players are chosen at random to play the first match; the loser is eliminated. After that, each round the current winner stays on and plays a new opponent chosen at random among those who have not played yet, and the loser is eliminated. After $49$ rounds one player is left.
+
+What is the probability that player $49$ has not been eliminated after the first $10$ rounds?
+HINT1:
+Only one player can ever beat player 49. When exactly does that player meet 49?
+HINT2:
+After $10$ rounds exactly $11$ players have entered the game, and the order of entry is a uniformly random permutation. Show that 49 is out after 10 rounds if and only if both 49 and 50 are among these $11$.
+ANSWER:
+$\dfrac{234}{245}\approx0.955$
+REFRESH:
+**Hypergeometric counting**: the probability that two specific items both land in a uniformly random subset of size $k$ out of $n$ is $\binom{n-2}{k-2}/\binom nk=\dfrac{k(k-1)}{n(n-1)}$.
+EXPLANATION:
+The player on the table after any round is the best player seen so far. So once 49 and 50 have both entered, they must have met: whoever came first rose to the top (only the other one can beat either of them) and stayed until the other arrived. If 50 is not among the first 11 entrants, 49 cannot have lost; if 49 is not among them, it has not played and is still in. So 49 is eliminated within 10 rounds exactly when both 49 and 50 are among the first 11 entrants, which has probability $\frac{11\cdot10}{50\cdot49}=\frac{11}{245}$.
+SOLUTION: Reduce to "both among the first 11 entrants"
+The matches follow a random order of entry $\sigma_1,\sigma_2,\dots,\sigma_{50}$ (round 1 is $\sigma_1$ vs $\sigma_2$, round $k$ is the current winner vs $\sigma_{k+1}$), which is a uniformly random permutation. After round $k$ the survivor is $\max(\sigma_1,\dots,\sigma_{k+1})$.
+
+- If player $50$ is not among $\sigma_1,\dots,\sigma_{11}$, nobody who played could beat 49, so 49 is not out.
+- If player $49$ is not among $\sigma_1,\dots,\sigma_{11}$, it has not played yet, so it is still in.
+- If both are among them, say 49 enters first: from then on 49 is the maximum so far and stays on the table until 50 enters and beats it. If 50 enters first, it holds the table and beats 49 when 49 enters. Either way 49 is out.
+
+So
+$$\mathbb{P}(49\text{ out})=\mathbb{P}(49,50\in\{\sigma_1,\dots,\sigma_{11}\})=\frac{\binom{48}{9}}{\binom{50}{11}}=\frac{11\cdot10}{50\cdot49}=\frac{110}{2450}=\frac{11}{245},$$
+and
+$$\mathbb{P}(49\text{ still in after 10 rounds})=1-\frac{11}{245}=\frac{234}{245}\approx0.955.$$
+FOLLOWUP: Player 48
+What is the probability that player $48$ is still in after the first $10$ rounds?
+FOLLOWUP_ANSWER:
+By the same argument, 48 is out iff 48 and at least one of $\{49,50\}$ are among the first 11 entrants. $\mathbb{P}(48\text{ among them})=\tfrac{11}{50}$; given that, the other 10 entrants are a random 10-subset of the other 49 players, and the chance neither 49 nor 50 is among them is $\frac{39\cdot38}{49\cdot48}=\frac{247}{392}$. So $\mathbb{P}(\text{out})=\tfrac{11}{50}\left(1-\tfrac{247}{392}\right)=\tfrac{11}{50}\cdot\tfrac{145}{392}=\tfrac{319}{3920}\approx0.081$, and 48 survives with probability $\tfrac{3601}{3920}\approx0.919$.
+===END===
+===TEASER===
+SLUG: visible-heads-in-a-queue-of-20
+IDS: Q-511
+FIRMS: Hudson River Trading
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Visible heads in a queue
+QUESTION:
+Twenty people with heights drawn i.i.d. from some continuous distribution stand in a single line. Looking from the front of the line, a person's head is visible if they are taller than everyone standing in front of them. Let $X$ be the number of visible heads. Find $\mathbb{E}[X]$, to the nearest tenth.
+HINT1:
+Write $X$ as a sum of indicators, one per position in the line.
+HINT2:
+The $k$-th person is visible iff they are the tallest among the first $k$ people. By symmetry, how likely is that?
+ANSWER:
+$\mathbb{E}[X]=H_{20}=1+\tfrac12+\dots+\tfrac1{20}\approx3.6$
+REFRESH:
+**Indicator trick**: if $X=\sum_k\mathbf 1_{A_k}$ then $\mathbb{E}X=\sum_k\mathbb{P}(A_k)$, even when the events are dependent.
+
+**Exchangeability**: for i.i.d. continuous variables, all orderings are equally likely (no ties), so each of $k$ of them is the largest with probability $1/k$.
+EXPLANATION:
+The visible people are the "records" of the sequence. The $k$-th person is a record exactly when they are the tallest of the first $k$, and since all $k!$ orderings of these heights are equally likely, that happens with probability $1/k$. Adding up gives the harmonic number $H_{20}\approx3.598$. Records are rare: the harmonic series grows like $\ln n+0.577$, so even with a million people you would see only about 14 heads.
+SOLUTION: Sum of indicators
+Let $I_k=1$ if person $k$ (counted from the front) is visible. Person $k$ is visible iff their height is the maximum of the first $k$ heights. The heights are i.i.d. and continuous, so ties have probability $0$ and each of the $k$ people is equally likely to be the tallest: $\mathbb{P}(I_k=1)=\tfrac1k$.
+$$\mathbb{E}[X]=\sum_{k=1}^{20}\frac1k=H_{20}\approx3.5977\approx3.6.$$
+(Quick check: $H_{20}\approx\ln20+0.5772+\frac1{40}\approx2.996+0.577+0.025=3.598$.)
+FOLLOWUP: Variance
+What is $\operatorname{Var}(X)$?
+FOLLOWUP_ANSWER:
+The record indicators are independent (whether person $k$ is the tallest so far does not depend on the relative order of the first $k-1$). So $\operatorname{Var}X=\sum_{k=1}^{20}\frac1k\left(1-\frac1k\right)=H_{20}-\sum_{k=1}^{20}\frac1{k^2}\approx3.598-1.596\approx2.00$.
+===END===
+===TEASER===
+SLUG: weighted-twelve-sided-die-closest-number
+IDS: Q-515
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Pick a number on a loaded 12-sided die
+QUESTION:
+A 12-sided die shows the numbers $1,2,\dots,12$. It is loaded: it lands on $12$ with probability $40\%$, and the other $11$ faces share the remaining $60\%$ equally. Player A picks a number, then player B (having seen it) picks a different number. The die is rolled and whoever's number is closer to the result wins; if the result is exactly halfway between the two numbers, the die is rerolled. Which number should A pick, and how should B respond?
+HINT1:
+Whatever A picks, B will sit right next to A on the side holding the most probability. So A wants a spot where both sides are as balanced as possible.
+HINT2:
+Each face other than 12 has probability $\frac{6}{110}$ and face 12 has $\frac{44}{110}$. If A picks $a$, compare B's best on each side: $b=a-1$ wins faces $1,\dots,a-1$; $b=a+1$ wins faces $a+1,\dots,12$. Check that non-adjacent numbers are never better for B.
+ANSWER:
+A picks $10$; B's best reply is $9$, and A then wins with probability $\tfrac{28}{55}\approx50.9\%$.
+REFRESH:
+**Sequential game**: solve the second mover's best response for every first move, then let the first mover choose the move whose best response hurts them least (max–min).
+EXPLANATION:
+Once A has chosen, B's best move is to stand immediately next to A, grabbing the whole side beyond it. So A must choose a point where neither side is worth more than half. Measure probabilities in units of $\tfrac1{110}$: faces $1$–$11$ are worth $6$ each and face $12$ is worth $44$. At $a=10$, the lower side $\{1,\dots,9\}$ is worth $54$ and A keeps $\{10,11,12\}$, worth $6+6+44=56$. The upper option for B, $\{11,12\}$, is worth only $50$. So B takes $9$ and loses, narrowly. Any other $a$ leaves B a side worth more than $55$.
+SOLUTION: Best response for each choice of A
+Weights (in units of $\tfrac1{110}$): $w_k=6$ for $k\le11$, $w_{12}=44$; total $110$.
+
+**B's best response.** If B picks $b<a$, B wins exactly the faces strictly below the midpoint $(a+b)/2$; moving $b$ up to $a-1$ only adds faces (and removes ties), so $b=a-1$ is best among $b<a$ and wins faces $1,\dots,a-1$. Similarly $b=a+1$ is best among $b>a$ and wins faces $a+1,\dots,12$. With adjacent numbers there are no ties, so the win probability is just the weight won. (With ties, the win probability is the won weight divided by the non-tie weight; a quick check shows this never beats the adjacent choice here.)
+
+**A's options.** Let $L(a)=6(a-1)$ be the weight below $a$ and $U(a)$ the weight above $a$ ($=6(11-a)+44$ for $a\le11$). B takes the larger:
+- $a=9$: $L=48$, $U=56$, B takes $10$ and wins $56/110>\tfrac12$.
+- $a=10$: $L=54$, $U=50$, B takes $9$ and wins $54/110$; A wins $56/110=\tfrac{28}{55}$.
+- $a=11$: $L=60$, B wins $60/110$.
+- $a=12$: $L=66$, B wins $66/110$.
+- $a\le8$: $U\ge62$, even worse for A.
+
+So A picks $10$, B picks $9$, and A wins with probability $\tfrac{28}{55}\approx0.509$.
+
+Note: the source's answer "10" gives A's number only; B's best reply is 9.
+===END===
+===TEASER===
+SLUG: look-and-say-sequence-next-term
+IDS: Q-517
+FIRMS: Akuna Capital
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: 12, 1112, 3112, 132112, ?
+QUESTION:
+What is the next term of the sequence
+$$12,\quad 1112,\quad 3112,\quad 132112,\quad \dots\;?$$
+HINT1:
+Don't do arithmetic. Read each term out loud.
+HINT2:
+"$12$" is "one 1, one 2". Each term describes the digits of the previous one.
+ANSWER:
+$1113122112$
+REFRESH:
+NONE
+EXPLANATION:
+This is the look-and-say sequence: each term is obtained by reading the previous term aloud, run by run of identical consecutive digits, as "count, digit". $12$ reads "one 1, one 2" $=1112$; $1112$ reads "three 1s, one 2" $=3112$; $3112$ reads "one 3, two 1s, one 2" $=132112$. Apply the same rule once more.
+SOLUTION: Read the last term aloud
+Split $132112$ into runs of equal digits: $1\,|\,3\,|\,2\,|\,11\,|\,2$.
+- one $1$ → $11$
+- one $3$ → $13$
+- one $2$ → $12$
+- two $1$s → $21$
+- one $2$ → $12$
+
+Concatenating: $11\,13\,12\,21\,12=1113122112$.
+===END===
+===TEASER===
+SLUG: cyclist-with-and-against-the-wind
+IDS: Q-519
+FIRMS: Jane Street, SIG
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Cycling with and against the wind
+QUESTION:
+A cyclist rides $1$ mile in $3$ minutes with the wind behind him, and $1$ mile in $4$ minutes into the wind. Assuming the wind adds to or subtracts from his speed by the same fixed amount, how long does he take to ride $1$ mile with no wind?
+HINT1:
+The tempting answer $3.5$ minutes averages the times. What should you average instead?
+HINT2:
+Convert to speeds: with the wind his speed is $v+w$, against it $v-w$. Find $v$.
+ANSWER:
+$\dfrac{24}{7}\approx3.43$ minutes (speed $17.5$ mph).
+REFRESH:
+**Harmonic mean**: when the distance is fixed, averaging speeds arithmetically corresponds to averaging times harmonically: here the no-wind time is $\frac{2}{1/3+1/4}$.
+EXPLANATION:
+The wind acts on speed, not on time. Downwind he does $20$ mph, upwind $15$ mph; the wind shifts his speed by $\pm2.5$ mph around his own $17.5$ mph. One mile at $17.5$ mph takes $60/17.5=24/7$ minutes, a bit less than the naive $3.5$.
+SOLUTION: Speeds
+With wind: $1$ mile in $3$ min $=20$ mph $=v+w$. Against: $1$ mile in $4$ min $=15$ mph $=v-w$. Adding: $2v=35$, $v=17.5$ mph.
+
+Time for $1$ mile: $\dfrac{60}{17.5}=\dfrac{120}{35}=\dfrac{24}{7}\approx3.43$ minutes.
+SOLUTION: Harmonic mean of the times
+In miles per minute, $v=\tfrac12\left(\tfrac13+\tfrac14\right)=\tfrac{7}{24}$, so the time per mile is $\tfrac{24}{7}$ minutes.
+===END===
+===TEASER===
+SLUG: estimate-hairs-on-a-cat
+IDS: W-004
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: How many hairs on a cat?
+QUESTION:
+Estimate the number of hairs on an average-sized house cat.
+HINT1:
+Split it into two numbers you can estimate separately: how much skin, and how many hairs per unit of skin.
+HINT2:
+Model the cat's body as a cylinder (plus a bit for head, legs and tail) to get the area in cm². For density, compare with human hair: a human scalp has roughly $200$ hairs per cm², and fur is far denser.
+ANSWER:
+On the order of $10^7$: roughly $20$–$40$ million hairs (any well-argued answer of order $10^7$ is good).
+REFRESH:
+**Fermi estimation**: break the quantity into factors you can bound, estimate each within a factor of about 2, multiply, and quote an order of magnitude. Sanity-check each factor against something you know.
+EXPLANATION:
+Hairs $=$ skin area $\times$ hair density. A cat's body is about a cylinder $45$ cm long and $35$ cm around, so about $1600$ cm²; add head, legs and tail to reach $\sim2000$–$2500$ cm². For density: human scalp hair is about $200$ per cm² and looks sparse next to fur, which has a dense undercoat with many hairs per follicle group. A reasonable guess is $10{,}000$–$20{,}000$ hairs per cm², i.e. $1$–$2$ hairs in every $0.1\,\text{mm}\times0.1\,\text{mm}$ patch. The product is around $2\times10^7$ to $4\times10^7$.
+
+What the interviewer is judging is the decomposition and the sanity checks, not the exact number.
+SOLUTION: Area times density
+**Area.** Body: cylinder of length $\approx45$ cm and circumference $\approx35$ cm, lateral area $45\times35\approx1600$ cm². Head $\approx200$ cm², four legs $\approx4\times100=400$ cm², tail $\approx25\times6=150$ cm². Total $\approx2300$ cm², call it $2000$–$2500$ cm².
+
+**Density.** Human scalp: $\sim100{,}000$ hairs over $\sim600$ cm², i.e. $\sim170$ per cm². Cat fur is much denser (it has to insulate, and each follicle group sprouts a guard hair plus many fine undercoat hairs). Figures quoted for cats are of the order of $10^4$ hairs per cm² (more on the belly, fewer on the back). Take $\approx12{,}000$ per cm².
+
+**Product.** $2300\times12{,}000\approx2.8\times10^7$.
+
+So roughly $30$ million hairs, with a plausible range of $10$–$50$ million: order of magnitude $10^7$.
+===END===
+===TEASER===
+SLUG: tennis-match-two-sets-or-three
+IDS: W-010
+FIRMS:
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Tennis: two sets or three?
+QUESTION:
+A tennis match is played best of three sets. Would you rather bet that the match ends in $2$ sets or that it goes to $3$ sets? (Assume one player wins each set with the same probability $p$, independently of the other sets.)
+HINT1:
+The match goes to three sets exactly when the first two sets are split.
+HINT2:
+Compare the two probabilities in terms of $p$ and $q=1-p$, and look at their difference.
+ANSWER:
+Bet on two sets: $\mathbb{P}(2\text{ sets})=p^2+q^2\ge\tfrac12$, with equality only when $p=\tfrac12$.
+REFRESH:
+**Square of a difference**: $(p-q)^2\ge0$ gives $p^2+q^2\ge2pq$.
+EXPLANATION:
+The third set is played only if the first two are split, which has probability $2pq$. A two-set match has probability $p^2+q^2$. The difference is $p^2+q^2-2pq=(p-q)^2\ge0$, so "two sets" is always at least as likely, and strictly more likely as soon as one player is better. With evenly matched players it is a coin flip; with a $70/30$ favourite, two sets happens $58\%$ of the time.
+SOLUTION: Compare the two probabilities
+The match ends in 2 sets iff the same player wins sets 1 and 2: $\mathbb{P}=p^2+q^2$. It goes to 3 sets iff the first two are split: $\mathbb{P}=2pq$. Then
+$$(p^2+q^2)-2pq=(p-q)^2\ge0,$$
+and since the two add to $(p+q)^2=1$, $\mathbb{P}(2\text{ sets})=\tfrac12+\tfrac12(p-q)^2\ge\tfrac12$. Bet on two sets.
+
+In reality the independence assumption understates this: a player who is in better form on the day tends to win both sets.
+FOLLOWUP: Best of five
+In a best-of-five match with $p=\tfrac12$, what is the most likely number of sets?
+FOLLOWUP_ANSWER:
+$\mathbb{P}(3)=2\cdot\tfrac18=\tfrac14$; $\mathbb{P}(4)=2\binom32\tfrac1{16}=\tfrac38$ (the winner takes 2 of the first 3, then the 4th); $\mathbb{P}(5)=\binom42\tfrac1{16}=\tfrac38$ (2–2 after four). Four and five sets tie at $\tfrac38$; three sets is the least likely.
+===END===
+===TEASER===
+SLUG: three-dots-on-square-edges
+IDS: W-011
+FIRMS:
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Three dots on different sides of a square
+QUESTION:
+Three points are placed independently and uniformly at random on the perimeter of a square. What is the probability that they lie on three different sides?
+HINT1:
+Only the side each point lands on matters, and each side is equally likely.
+HINT2:
+Each point picks one of $4$ sides uniformly and independently. Count the ways to pick three distinct sides in order.
+ANSWER:
+$\dfrac38$
+REFRESH:
+NONE
+EXPLANATION:
+The four sides have equal length, so each dot lands on each side with probability $\tfrac14$, independently. The first dot is anywhere; the second must avoid its side ($\tfrac34$); the third must avoid both ($\tfrac24$). Product: $\tfrac34\cdot\tfrac12=\tfrac38$.
+SOLUTION: Sequential
+$$\mathbb{P}=1\cdot\frac34\cdot\frac24=\frac38.$$
+SOLUTION: Counting
+There are $4^3=64$ equally likely side assignments, and $4\cdot3\cdot2=24$ of them use three different sides: $\frac{24}{64}=\frac38$.
+===END===
+===TEASER===
+SLUG: world-series-goes-to-game-seven
+IDS: W-018
+FIRMS:
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: World Series going to seven games
+QUESTION:
+Two evenly matched teams play a best-of-seven series (first to $4$ wins). Each game is won by either team with probability $\tfrac12$, independently. What is the probability that the series goes the full $7$ games?
+HINT1:
+What must the score be just before a seventh game is played?
+HINT2:
+Game 7 is played iff the first $6$ games end $3$–$3$. Imagine all six games are played regardless and count the outcomes.
+ANSWER:
+$\dfrac{5}{16}=31.25\%$
+REFRESH:
+**Binomial probability**: in $n$ independent fair trials, $\mathbb{P}(k\text{ successes})=\binom nk2^{-n}$.
+EXPLANATION:
+The series reaches game 7 exactly when neither team has 4 wins after 6 games, i.e. the score is $3$–$3$. Nobody can have clinched before game 6 in that case, so we can pretend all six games are played: the number of wins of team A is Binomial$(6,\tfrac12)$, and we need it to equal $3$: $\binom63/64=20/64$.
+SOLUTION: Score after six games
+$$\mathbb{P}(7\text{ games})=\mathbb{P}(3\text{–}3\text{ after 6})=\binom63\left(\tfrac12\right)^6=\frac{20}{64}=\frac5{16}.$$
+SOLUTION: Full length distribution
+A series ends in exactly $n$ games ($n=4,\dots,7$) if one team wins game $n$ and exactly $3$ of the previous $n-1$: $\mathbb{P}(n)=2\binom{n-1}{3}2^{-n}$.
+- $n=4$: $2\cdot1/16=\tfrac18$
+- $n=5$: $2\cdot4/32=\tfrac14$
+- $n=6$: $2\cdot10/64=\tfrac5{16}$
+- $n=7$: $2\cdot20/128=\tfrac5{16}$
+
+They add to $\tfrac{2+4+5+5}{16}=1$, and 6 and 7 games are equally likely.
+===END===
+===TEASER===
+SLUG: two-black-balls-not-adjacent
+IDS: W-020
+FIRMS:
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two black balls not side by side
+QUESTION:
+Three red balls and two black balls are placed in a row in a uniformly random order. What is the probability that the two black balls are not next to each other?
+HINT1:
+Only the positions of the two black balls matter. How many position pairs are there?
+HINT2:
+Out of the $\binom52$ equally likely pairs of positions for the black balls, count the adjacent pairs.
+ANSWER:
+$\dfrac35$
+REFRESH:
+NONE
+EXPLANATION:
+The two black balls occupy a uniformly random pair of the $5$ positions: $10$ possible pairs. Adjacent pairs are $(1,2),(2,3),(3,4),(4,5)$, so $4$ of them. Not adjacent: $6/10=3/5$.
+SOLUTION: Positions of the black balls
+$$\mathbb{P}(\text{adjacent})=\frac{4}{\binom52}=\frac4{10},\qquad \mathbb{P}(\text{not adjacent})=1-\frac25=\frac35.$$
+SOLUTION: Gaps between the red balls
+Line up the $3$ red balls: they create $4$ gaps (two ends and two middle gaps). The black balls are separated iff they go into two different gaps: $\binom42=6$ ways, out of $\binom52=10$ arrangements. $6/10=3/5$.
+===END===
+===TEASER===
+SLUG: units-digit-of-two-to-the-230
+IDS: W-024
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Last digit of $2^{230}$
+QUESTION:
+What is the units digit of $2^{230}$?
+HINT1:
+Write down the last digit of $2^1,2^2,2^3,\dots$ until you see a pattern.
+HINT2:
+The last digits repeat with period $4$. Reduce the exponent modulo $4$.
+ANSWER:
+$4$
+REFRESH:
+**Last digit** $=$ remainder mod $10$, and $(a\cdot b)\bmod 10$ depends only on $a\bmod10$ and $b\bmod10$.
+EXPLANATION:
+The last digit of $2^n$ depends only on the last digit of $2^{n-1}$, so it cycles: $2,4,8,6,2,4,8,6,\dots$ with period $4$. Since $230=4\cdot57+2$, $2^{230}$ ends like $2^2=4$.
+SOLUTION: Cycle of last digits
+$2^1=2$, $2^2=4$, $2^3=8$, $2^4=16$, $2^5=32$: the last digits cycle $2,4,8,6$ with period $4$ (for $n\ge1$).
+
+$230=4\cdot57+2$, so $2^{230}$ has the same last digit as $2^2$: **4**.
+SOLUTION: Powers of 16
+$2^{230}=2^2\cdot(2^4)^{57}=4\cdot16^{57}$. Every power of $16$ ends in $6$, and $4\cdot6=24$ ends in $4$.
+===END===
+===TEASER===
+SLUG: two-cards-same-colour
+IDS: W-028
+FIRMS:
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two cards of the same colour
+QUESTION:
+Two cards are drawn without replacement from a standard 52-card deck. What is the probability that they have the same colour?
+HINT1:
+The first card's colour does not matter.
+HINT2:
+After the first card, how many of the $51$ remaining cards share its colour?
+ANSWER:
+$\dfrac{25}{51}\approx49\%$
+REFRESH:
+NONE
+EXPLANATION:
+Whatever colour the first card is, $25$ of the remaining $51$ cards share it (one of its colour is gone), so the probability is $25/51$, slightly below one half. Removing the first card makes its colour a bit rarer; with replacement it would be exactly $\tfrac12$.
+SOLUTION: Condition on the first card
+$$\mathbb{P}(\text{same colour})=\frac{25}{51}\approx0.490.$$
+SOLUTION: Counting
+Same-colour pairs: $2\binom{26}{2}=2\cdot325=650$. All pairs: $\binom{52}2=1326$. $\frac{650}{1326}=\frac{25}{51}$.
+===END===
+===TEASER===
+SLUG: is-1027-prime
+IDS: W-029
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Is 1027 prime?
+QUESTION:
+Is $1027$ a prime number? Answer without a calculator.
+HINT1:
+$1027$ is very close to a perfect cube, and $27$ is a cube too.
+HINT2:
+$1027=10^3+3^3$. Which factorisation applies to a sum of two cubes?
+ANSWER:
+No: $1027=13\times79$.
+REFRESH:
+**Sum of cubes**: $a^3+b^3=(a+b)(a^2-ab+b^2)$.
+EXPLANATION:
+Instead of trial dividing by every prime up to $\sqrt{1027}\approx32$, spot the structure: $1027=1000+27=10^3+3^3$, and a sum of cubes is always divisible by the sum of the bases. So $10+3=13$ divides it, and the cofactor is $100-30+9=79$.
+SOLUTION: Sum of two cubes
+$$1027=10^3+3^3=(10+3)(10^2-10\cdot3+3^2)=13\times79.$$
+Check: $13\times79=13\times80-13=1040-13=1027$. So $1027$ is not prime.
+SOLUTION: Trial division
+It is odd, digit sum $10$ (not divisible by $3$), does not end in $0/5$. $7$: $7\times146=1022$, remainder $5$. $11$: alternating sum $7-2+0-1=4$, no. $13$: $13\times79=1027$. Composite.
+===END===
+===TEASER===
+SLUG: law-of-cosines-statement
+IDS: W-032
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: State the law of cosines
+QUESTION:
+State the law of cosines, and explain why it is true.
+HINT1:
+It generalises Pythagoras to triangles without a right angle.
+HINT2:
+Put vertex $C$ at the origin and $A$ on the $x$-axis, write coordinates of $B$ using the angle $\gamma$ at $C$, and compute $|AB|^2$.
+ANSWER:
+In a triangle with sides $a,b,c$ and angle $\gamma$ opposite $c$: $c^2=a^2+b^2-2ab\cos\gamma$.
+REFRESH:
+**Dot product**: $\|u-v\|^2=\|u\|^2+\|v\|^2-2\,u\cdot v$ and $u\cdot v=\|u\|\|v\|\cos\theta$.
+
+**Pythagoras**: in a right triangle, $c^2=a^2+b^2$.
+EXPLANATION:
+Pythagoras says $c^2=a^2+b^2$ when the angle between $a$ and $b$ is $90^\circ$. When the angle is smaller, the opposite side is shorter, and the correction is exactly $-2ab\cos\gamma$: an acute angle ($\cos\gamma>0$) shrinks $c$, an obtuse angle ($\cos\gamma<0$) stretches it. In vector form it is just the expansion of $\|u-v\|^2$. The same identity is behind the variance of a difference: $\operatorname{Var}(X-Y)=\sigma_X^2+\sigma_Y^2-2\rho\sigma_X\sigma_Y$, with the correlation $\rho$ playing the role of $\cos\gamma$.
+SOLUTION: Coordinates
+Let $C=(0,0)$, $A=(b,0)$ and $B=(a\cos\gamma,a\sin\gamma)$, so $|CA|=b$, $|CB|=a$ and the angle at $C$ is $\gamma$. Then
+$$\begin{aligned}c^2=|AB|^2&=(a\cos\gamma-b)^2+(a\sin\gamma)^2\\&=a^2\cos^2\gamma-2ab\cos\gamma+b^2+a^2\sin^2\gamma\\&=a^2+b^2-2ab\cos\gamma.\end{aligned}$$
+The same holds cyclically: $a^2=b^2+c^2-2bc\cos\alpha$ and $b^2=a^2+c^2-2ac\cos\beta$.
+SOLUTION: Vectors
+With $u=\vec{CB}$, $v=\vec{CA}$: $\vec{AB}=u-v$ and
+$$c^2=\|u-v\|^2=\|u\|^2+\|v\|^2-2u\cdot v=a^2+b^2-2ab\cos\gamma.$$
+===END===
+===TEASER===
+SLUG: stack-of-quarters-floor-to-ceiling
+IDS: W-034
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: A stack of quarters to the ceiling
+QUESTION:
+A room is $10$ feet high. A quarter (25-cent coin) is $0.25$ inches thick. How much money is a stack of quarters that reaches from the floor to the ceiling?
+HINT1:
+Convert the height to inches first.
+HINT2:
+Four quarters make one inch of stack, and four quarters also make one dollar.
+ANSWER:
+$480$ quarters, i.e. $120$ dollars.
+REFRESH:
+**Units**: $1$ foot $=12$ inches.
+EXPLANATION:
+The neat coincidence: $4$ quarters stack to $1$ inch and are worth $1$ dollar, so the stack is worth exactly one dollar per inch of height. $10$ feet is $120$ inches, so $120$ dollars.
+SOLUTION: Unit conversion
+Height: $10\times12=120$ inches. Number of quarters: $120/0.25=480$. Value: $480\times0.25=120$ dollars.
+===END===
+===TEASER===
+SLUG: informed-counterparty-number-market
+IDS: W-039
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Quoting against someone who knows the number
+QUESTION:
+I am thinking of a whole number from $1$ to $100$ (you may assume I chose it uniformly at random, and I know it). You quote me a bid $b$ and an ask $a$. I may then either sell to you at your bid (you receive the number minus $b$), buy from you at your ask (you receive $a$ minus the number), or not trade at all. What prices do you quote?
+HINT1:
+Think about when I would choose to trade with you, and what the number is in those cases.
+HINT2:
+For a given bid $b$, I sell to you only when the number is below $b$. Write your expected P&L as a function of $b$ and $a$.
+ANSWER:
+Against a counterparty who knows the number and chooses freely, every trade loses you money: quote $1$ bid, $100$ offered (or wider), expected P&L $0$. Any tighter quote has negative expected value.
+REFRESH:
+**Adverse selection / winner's curse**: when your counterparty has better information and chooses whether to trade, the trades you get are exactly the ones that are bad for you, so the price conditional on trading is worse than the unconditional fair value.
+EXPLANATION:
+The unconditional fair value is $50.5$, and a naive quote would be something like $48$ at $53$. But I am not a random counterparty: I sell to you at $b$ only when the number is below $b$, and I buy at $a$ only when it is above $a$. Conditional on a trade, you always lose. So the market you can safely make is $1$ at $100$: no possible number lets me profit, and I never trade.
+
+The interview point is recognising adverse selection. In practice the answer shifts with how informed the other side is: against a fully informed trader you quote as wide as possible, against random flow you quote tight around $50.5$, and against a mix you quote wide enough that the spread you earn on uninformed trades pays for the losses on informed ones.
+SOLUTION: Expected P&L of a quote
+Let $N$ be uniform on $\{1,\dots,100\}$. Since I know $N$, I sell at $b$ iff $N<b$ and buy at $a$ iff $N>a$ (I never do both, since $b\le a$). Your expected P&L is
+$$\mathbb{E}[\text{P\&L}]=-\frac1{100}\left(\sum_{n<b}(b-n)+\sum_{n>a}(n-a)\right)\le0,$$
+with equality iff $b\le1$ and $a\ge100$.
+
+Example: quoting $30$ at $70$ gives $\sum_{n=1}^{29}(30-n)=435$ and $\sum_{n=71}^{100}(n-70)=465$, so an expected loss of $900/100=9$ dollars. Quoting $48$ at $53$ loses $\frac{1128+1128}{100}\approx22.6$.
+
+So the only non-losing quote is $1$ bid, $100$ ask (or wider).
+
+Note: the source suggests bidding around $30$–$35$ and offering correspondingly high. Against a counterparty who knows the number and may decline to trade, any bid above $1$ or ask below $100$ loses money on average; a quote like $30$ at $70$ only makes sense if a large share of the flow is uninformed.
+FOLLOWUP: Uninformed counterparty
+Same number game, but now I do not know the number either, and I trade on your bid or your ask with probability $\tfrac12$ each regardless of the price (as long as $b<a$). What do you quote, and what do you earn?
+FOLLOWUP_ANSWER:
+Buying at $b$ earns $\mathbb{E}[N]-b=50.5-b$; selling at $a$ earns $a-50.5$. Expected P&L $=\tfrac12(50.5-b)+\tfrac12(a-50.5)=\tfrac{a-b}{2}$, half the spread, whatever the centre. So you centre on $50.5$ and quote as wide as the counterparty will accept; the width is limited only by competition, not by risk of being picked off.
+===END===
+===TEASER===
+SLUG: vega-of-atm-one-year-call
+IDS: W-041
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Vega of a one-year ATM call
+QUESTION:
+You are long a 1-year at-the-money call on a stock trading at $100$ dollars. Implied volatility drops by $1$ vol point (say from $20\%$ to $19\%$). Roughly how much do you make or lose per share?
+HINT1:
+The Greek that measures sensitivity to implied volatility is vega. Is it positive or negative for a long call?
+HINT2:
+For an at-the-money option, vega per unit of $\sigma$ is $S\sqrt T\,\varphi(d_1)$ and $\varphi(d_1)\approx\varphi(0)=\frac1{\sqrt{2\pi}}\approx0.4$. Remember that one vol point is $0.01$ in $\sigma$.
+ANSWER:
+A loss of about $0.40$ dollars per share ($\approx0.4\,S\sqrt T\times0.01$).
+REFRESH:
+**Black–Scholes vega**: $\mathcal V=\dfrac{\partial C}{\partial\sigma}=S\sqrt T\,\varphi(d_1)$, where $\varphi$ is the standard normal density and $d_1=\dfrac{\ln(S/K)+(r+\sigma^2/2)T}{\sigma\sqrt T}$. It is the same for calls and puts, always positive, and largest near the money.
+EXPLANATION:
+A long option is long volatility: lower implied vol means a lower option price. At the money, $d_1$ is close to $0$ (here $d_1=\sigma\sqrt T/2=0.1$), so $\varphi(d_1)\approx0.4$ and vega $\approx0.4\,S\sqrt T=0.4\times100\times1=40$ dollars per unit of $\sigma$, i.e. $0.40$ dollars per vol point. Losing one vol point costs about $40$ cents per share, which is about $5\%$ of the option's value (an ATM 1y 20%-vol call is worth about $8$ dollars, using $C\approx0.4\,S\sigma\sqrt T$).
+
+Useful rule of thumb: ATM vega per vol point $\approx0.4\,S\sqrt T/100$, and ATM call price $\approx0.4\,S\sigma\sqrt T$, so price $\approx$ vega per point $\times$ vol in points.
+SOLUTION: Black–Scholes vega at the money
+With $S=K=100$, $T=1$, $\sigma=0.2$ and $r\approx0$: $d_1=\frac{\sigma\sqrt T}{2}=0.1$, $\varphi(0.1)=\frac{e^{-0.005}}{\sqrt{2\pi}}\approx0.397$.
+
+$$\mathcal V=S\sqrt T\,\varphi(d_1)\approx100\times1\times0.397=39.7\ \text{per unit of }\sigma.$$
+
+A drop of $1$ vol point is $\Delta\sigma=-0.01$:
+$$\Delta C\approx\mathcal V\,\Delta\sigma=39.7\times(-0.01)\approx-0.40\ \text{dollars per share}.$$
+(Repricing exactly: $C(\sigma=20\%)-C(\sigma=19\%)\approx0.397$.)
+
+Note: the source quotes vega as $\approx S\sqrt T/25$; that is $4$ dollars, which corresponds to a $10$-point move. Per single vol point the figure is $S\sqrt T/250\approx0.40$.
+FOLLOWUP: Three-month option
+Same stock and vol, but the call expires in $3$ months. What is the P&L for a 1-point drop in vol?
+FOLLOWUP_ANSWER:
+Vega scales with $\sqrt T$: $\sqrt{0.25}=0.5$, so vega $\approx0.4\times100\times0.5=20$ per unit of $\sigma$, and a 1-point drop loses about $0.20$ dollars per share.
+===END===
+===TEASER===
+SLUG: atm-call-pnl-stock-up-one-dollar
+IDS: W-043
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: ATM call when the stock rises one dollar
+QUESTION:
+You own an at-the-money call option. The stock rises by $1$ dollar. Roughly what is your P&L per share, and how does it behave if the stock keeps moving (up a further dollar, or down instead)?
+HINT1:
+Which Greek gives the first-order price change for a small stock move, and what is its value at the money?
+HINT2:
+Use a second-order Taylor expansion: $\Delta C\approx\Delta\cdot\delta S+\tfrac12\Gamma(\delta S)^2$. Gamma is positive for a long option.
+ANSWER:
+About $+0.50$ dollars (delta $\approx0.5$), slightly more because of gamma; the P&L is convex: gains accelerate on further rises and losses decelerate on falls.
+REFRESH:
+**Delta and gamma**: $\Delta=\partial C/\partial S$ ($=N(d_1)$ for a Black–Scholes call, about $0.5$ at the money), $\Gamma=\partial^2C/\partial S^2=\dfrac{\varphi(d_1)}{S\sigma\sqrt T}>0$.
+
+**Taylor expansion**: $C(S+h)\approx C(S)+\Delta h+\tfrac12\Gamma h^2$.
+EXPLANATION:
+At the money the call behaves like half a share: delta is about $0.5$ (a bit above, since $d_1=\sigma\sqrt T/2>0$). So a $1$-dollar rise earns about $50$ cents. As the stock rises the call moves into the money and delta climbs toward $1$, so each additional dollar earns more than the last; if the stock falls, delta shrinks toward $0$, so each dollar lost costs less than the last. That curvature is gamma: long options have positive gamma, i.e. a convex P&L in the stock price.
+SOLUTION: Delta–gamma approximation
+Take $S=K=100$, $\sigma=20\%$, $T=1$, $r=0$. Then $d_1=0.1$, $\Delta=N(0.1)\approx0.54$, $\Gamma=\frac{\varphi(0.1)}{100\times0.2\times1}\approx\frac{0.397}{20}\approx0.020$.
+
+- Stock $+1$: $\Delta C\approx0.54\times1+\tfrac12\times0.020\times1^2\approx0.55$.
+- Stock $+2$: $\approx0.54\times2+\tfrac12\times0.020\times4\approx1.12$ (more than twice the first dollar).
+- Stock $-1$: $\approx-0.54+0.01=-0.53$ (a smaller loss than the gain on $+1$).
+
+Exact Black–Scholes repricing gives $+0.550$, $+1.119$ and $-0.530$. The rough interview answer is "about $+0.50$, and convex because I am long gamma".
+===END===
+===TEASER===
+SLUG: long-gamma-scalping-pnl
+IDS: W-044
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: How a long-gamma hedger makes money
+QUESTION:
+A market maker is long options (long gamma) and keeps the position delta-hedged with the stock. How does she make money as the stock moves around, and what does she need to happen to be profitable overall?
+HINT1:
+After the stock rises, is her delta now positive or negative? What trade restores delta neutrality?
+HINT2:
+Write the one-step P&L of a delta-hedged option as $\tfrac12\Gamma(\delta S)^2+\Theta\,\delta t$. Which term is the gain and which is the cost?
+ANSWER:
+Re-hedging makes her sell stock after rises and buy after falls (sell high, buy low), earning $\tfrac12\Gamma(\delta S)^2$ per move; she pays theta for it, and nets a profit iff realised volatility exceeds the implied volatility she paid.
+REFRESH:
+**Delta hedge**: holding $-\Delta$ shares against the option removes the first-order exposure to the stock.
+
+**Theta–gamma relation** (Black–Scholes, $r=0$): $\Theta+\tfrac12\sigma_{\text{imp}}^2S^2\Gamma=0$, i.e. the time decay paid exactly offsets gamma gains when the stock moves with the implied volatility.
+EXPLANATION:
+Long gamma means delta rises when the stock rises and falls when it falls. So after an up-move she is net long and sells stock to get flat; after a down-move she is net short and buys stock. She is systematically selling high and buying low, and each round trip locks in a small profit, about $\tfrac12\Gamma(\delta S)^2$ per move, whatever the direction.
+
+This is not free: a long option loses value every day (negative theta). In Black–Scholes the daily theta is exactly the gamma gain you would earn if the stock moved with the implied volatility. So the hedged position's P&L is roughly
+$$\text{P\&L per step}\approx\tfrac12\Gamma S^2\left(\left(\tfrac{\delta S}{S}\right)^2-\sigma_{\text{imp}}^2\,\delta t\right),$$
+positive when the realised squared moves beat what implied vol priced in. Long gamma $=$ betting that realised volatility will exceed implied.
+SOLUTION: One step of the hedged book
+Hold one call and $-\Delta$ shares. Over a short step $\delta t$ with stock move $\delta S$:
+$$\delta(\text{option})\approx\Delta\,\delta S+\tfrac12\Gamma(\delta S)^2+\Theta\,\delta t,\qquad \delta(\text{hedge})=-\Delta\,\delta S.$$
+The linear terms cancel:
+$$\delta\Pi\approx\tfrac12\Gamma(\delta S)^2+\Theta\,\delta t.$$
+With $\Theta=-\tfrac12\sigma_{\text{imp}}^2S^2\Gamma$ (Black–Scholes, $r=0$):
+$$\delta\Pi\approx\tfrac12\Gamma S^2\left[\left(\frac{\delta S}{S}\right)^2-\sigma_{\text{imp}}^2\delta t\right].$$
+Summed over the life of the hedge, the bracket compares realised variance with implied variance. Mechanically, gamma gains come from re-hedging: after $\delta S>0$ the new delta is $\Delta+\Gamma\delta S$, so she sells $\Gamma\delta S$ shares at the higher price; after $\delta S<0$ she buys at the lower price.
+
+Example: $\Gamma=0.02$, $S=100$, the stock moves $2$ dollars in a day: gamma gain $\tfrac12\times0.02\times4=0.04$ dollars per option. If implied vol is $20\%$, the daily theta is $\tfrac12\times0.04\times100^2\times0.02\times\tfrac1{252}\approx0.016$. A $2$-dollar daily move is about $32\%$ annualised vol, so she wins that day.
+===END===
+===TEASER===
+SLUG: calendar-spread-net-theta-sign
+IDS: W-046
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Theta of a calendar spread
+QUESTION:
+You sell a 30-day at-the-money call and buy a 60-day at-the-money call on the same stock (same strike). Is your net theta positive or negative?
+HINT1:
+Which option loses time value faster per day: the short-dated one or the long-dated one?
+HINT2:
+ATM time value is roughly $0.4\,S\sigma\sqrt T$. Differentiate with respect to $T$ and compare the two maturities.
+ANSWER:
+Positive: the 30-day option you are short decays faster than the 60-day option you own (about $\sqrt2$ times faster).
+REFRESH:
+**ATM approximation**: $C_{\text{ATM}}\approx0.4\,S\sigma\sqrt T$, so $\Theta=-\partial C/\partial T\approx-\dfrac{0.2\,S\sigma}{\sqrt T}$, growing in size as expiry approaches.
+EXPLANATION:
+ATM time value grows like $\sqrt T$, which is steepest near $T=0$. So the daily decay is proportional to $1/\sqrt T$: the 30-day option bleeds $\sqrt{60/30}=\sqrt2\approx1.41$ times as much per day as the 60-day one. You collect the bigger decay (short) and pay the smaller one (long), so net theta is positive. The flip side: the calendar is short gamma (the short-dated option has more gamma) and long vega (the long-dated option has more vega).
+SOLUTION: Compare the two thetas
+With $C\approx0.4\,S\sigma\sqrt T$, $\Theta(T)\approx-\frac{0.2\,S\sigma}{\sqrt T}$ per year.
+
+For $S=100$, $\sigma=20\%$:
+- 30-day call: $\Theta\approx-\frac{0.2\times100\times0.2}{\sqrt{30/365}}\cdot\frac1{365}\approx-\frac{4}{0.287}\cdot\frac1{365}\approx-0.038$ dollars per day.
+- 60-day call: $\approx-\frac{4}{0.405}\cdot\frac1{365}\approx-0.027$ dollars per day.
+
+Position: short the 30-day ($+0.038$) and long the 60-day ($-0.027$): net theta $\approx+0.011$ dollars per day, positive. (Black–Scholes repricing gives the same $-0.038$ and $-0.027$.)
+===END===
+===TEASER===
+SLUG: bid-ask-spread-three-components
+IDS: W-047
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: What the bid-ask spread pays for
+QUESTION:
+Why do market makers quote a bid-ask spread instead of a single price, and what are the three classic components of the spread?
+HINT1:
+Think about what it costs a market maker to stand ready to trade with anyone, at any time.
+HINT2:
+One cost is operational, one comes from holding a position you did not choose, and one comes from trading with people who may know more than you.
+ANSWER:
+The spread compensates the market maker for (1) order-processing costs, (2) inventory risk and (3) adverse selection (trading against better-informed counterparties).
+REFRESH:
+**Round trip**: a market maker who buys at the bid and later sells at the ask earns the full spread; per trade, the expected edge versus fair value is about half the spread.
+EXPLANATION:
+A market maker provides immediacy: anyone can trade instantly against her quotes. The spread is the price of that service and must cover:
+1. **Order-processing costs**: exchange and clearing fees, technology, staff, capital charges. Fixed per trade, so they matter most in small, low-price trades.
+2. **Inventory risk**: after a customer trades, the market maker holds a position she did not choose and bears price risk until she can unwind it. More volatile or less liquid assets mean wider spreads.
+3. **Adverse selection**: some counterparties trade because they know the price is about to move. Losses to them must be recovered from uninformed flow through a wider spread. This component explains why spreads widen around news and in stocks with more private information.
+
+Without a spread she would lose money on every one of these fronts, so nobody would provide liquidity.
+SOLUTION: The three components with an example
+Suppose fair value is $100.00$ and the quote is $99.95$ / $100.05$ (spread $10$ cents, half-spread $5$ cents).
+- Processing: fees and costs of about $1$ cent per share.
+- Inventory: holding $10{,}000$ shares for a few minutes in a $2\%$-daily-vol stock is real risk; the market maker charges for it and skews her quotes to lean against her position (lower both quotes when long, raise them when short).
+- Adverse selection: if $20\%$ of the flow is informed and moves the price $15$ cents against her, the expected loss is $0.2\times15=3$ cents per trade, which must come out of the half-spread.
+
+Here $1+1+3=5$ cents per share, roughly the half-spread. (The inventory number is illustrative.)
+
+Glosten–Milgrom and Kyle models formalise the adverse-selection part: the ask is the expected value **conditional on** someone buying, the bid is the expected value conditional on someone selling.
+===END===
+===TEASER===
+SLUG: limit-orders-cluster-at-round-numbers
+IDS: W-048
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: easy
+TITLE: Why orders pile up at round numbers
+QUESTION:
+Why do limit orders tend to cluster at round-number prices (such as $50.00$ or $100$)?
+HINT1:
+Who decides where a limit order goes: a model, or a person?
+HINT2:
+Think about how people pick targets and stops, how prices are discussed, and what happens when everyone else does the same.
+ANSWER:
+Mostly behavioural anchoring: people choose round prices as targets, stops and limits; this is reinforced by convenience of negotiation and by self-fulfilling "support/resistance" beliefs.
+REFRESH:
+**Price clustering**: the empirical fact that transaction and quote prices land on integers, halves and multiples of 5 or 10 far more often than a uniform distribution of the last digits would predict.
+EXPLANATION:
+Humans think in round numbers. When a trader decides "I'll buy if it drops to 50" or "take profit at 100", the price is anchored on a salient number, not on a precisely computed value. Several reasons stack up:
+- **Anchoring and cognitive ease**: round numbers are easier to remember and communicate, and precision is costly to justify when your value estimate is fuzzy anyway.
+- **Negotiation convention**: coarser price grids reduce the back-and-forth needed to agree.
+- **Stops and targets**: stop-losses and profit targets are commonly set at round levels, so large amounts of conditional orders gather there.
+- **Self-fulfilling belief**: because traders expect round levels to act as support or resistance, they place orders there, which makes them act as support or resistance.
+- **Options strikes** are at round prices, and hedging flows around big strikes concentrate activity there.
+
+Trading implication: liquidity is deeper at round levels, and a strategy can step just in front of them (buy at $50.01$ rather than $50.00$) to get priority over the cluster, while stops just beyond a round level can trigger sharp moves when broken.
+SOLUTION: Answer in an interview
+State the behavioural reason (anchoring on salient prices by people with imprecise valuations), then add the reinforcing mechanisms: stops and targets at round levels, convention and ease of negotiation, self-fulfilling support/resistance, round option strikes. Finish with the consequence: queues are longer at round prices, so fills there are slower and it can pay to quote one tick inside; a break through a round level can release a cascade of stop orders.
+===END===
+===TEASER===
+SLUG: everyone-lifts-your-offer
+IDS: W-049
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: Everyone is lifting your offer
+QUESTION:
+You are making a two-sided market and suddenly everyone is buying from you at your offer. What do you do?
+HINT1:
+What does it tell you about your price if all the flow is on one side?
+HINT2:
+Think about both your fair-value estimate and your growing inventory.
+ANSWER:
+Treat it as information: your price is probably too low. Raise your fair value, move both bid and offer up (skew up), widen while uncertain, reduce size, and try to hedge the short position you have built.
+REFRESH:
+**Quote skewing**: shifting both bid and ask in the same direction to attract trades that reduce inventory, e.g. raising both after getting short.
+EXPLANATION:
+One-sided flow is the classic sign of adverse selection: if many independent people all want to buy at your offer, the likely explanation is that they know or believe the asset is worth more. Keeping the same quote means continuing to sell something cheap to informed traders. At the same time you are accumulating a short position, which adds inventory risk. Both effects point the same way:
+- **Update fair value upward**, and move both quotes up. The offer goes up so you stop selling cheap; the bid goes up so that you attract sellers and cover your short.
+- **Widen** while you are unsure what is going on, and **cut size** so each trade costs you less.
+- **Hedge** the short (buy the underlying or a correlated instrument), and look for news explaining the move.
+
+What you must not do is keep the quote unchanged or lower it.
+SOLUTION: Step by step, in a market-making game
+Say you quoted $48$ at $52$ on a quantity whose fair value you estimated at $50$, and the interviewer buys $52$ three times in a row.
+1. After the first lift, move to about $50$ at $54$: fair value nudged up, inventory short 1.
+2. After the second, $52$ at $56$ and maybe widen to $51$ at $57$ with smaller size.
+3. Keep moving until the buying stops: the level where the flow becomes two-sided tells you where the market thinks fair value is.
+
+The size of each step depends on how informed you think the counterparty is: against a counterparty who knows the answer, move a lot; against noise traders, move a little and mainly skew for inventory.
+===END===
+===TEASER===
+SLUG: why-quote-update-speed-matters
+IDS: W-050
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: Why market makers care about speed
+QUESTION:
+Why do market makers care so much about how fast they can update (or cancel) their quotes?
+HINT1:
+What happens to your resting quote in the milliseconds after the true price moves?
+HINT2:
+Think of two effects: the risk of trading at a price that is no longer right, and the benefit of being first in the queue.
+ANSWER:
+Speed protects against stale quotes being picked off (adverse selection when prices move) and wins queue priority at the best price; together these let a fast market maker quote tighter and larger.
+REFRESH:
+**Price-time priority**: on most exchanges, orders at the same price are filled in the order they arrived.
+EXPLANATION:
+A resting quote is a free option given to the market: anyone can trade on it. When news arrives or a related market moves (the future ticks, an ETF moves), your quote is suddenly mispriced, and faster traders will hit it before you can cancel. That loss is pure adverse selection, and the slower you are, the more of it you suffer, so the wider you must quote to compensate.
+
+Speed also matters on the profit side: with price-time priority, the first order at a new price level gets filled first, so being fast to rejoin the best price means capturing more of the uninformed flow that pays the spread.
+
+A fast market maker therefore loses less to picking-off and trades more of the good flow, which lets her quote tighter and bigger, which attracts even more flow. That is why firms invest heavily in latency.
+SOLUTION: Interview answer with an example
+Suppose you quote $99.99$ / $100.01$ on a stock that also trades as a future. The future jumps by the equivalent of $5$ cents. If your update takes $1$ ms and an arbitrageur's order reaches the exchange in $0.3$ ms, your offer at $100.01$ is lifted while the new fair value is about $100.05$: a $4$-cent loss per share. Repeated across many events, these losses exceed the spread you earn unless you widen, so being slow means quoting wider and losing flow to faster competitors.
+
+Second point: price-time priority. When the price moves to a new level, the first quotes posted there are filled first; a fast market maker sits at the front of the queue, gets the uninformed fills, and can cancel before being run over.
+
+Summary: speed reduces adverse selection (stale quotes picked off), improves queue position, and allows tighter, larger quotes.
+===END===

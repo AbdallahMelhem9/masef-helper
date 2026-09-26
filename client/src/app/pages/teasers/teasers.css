@@ -82,6 +82,10 @@
 .chip-green.on { color: #25643f; background: #e6f2ea; border-color: #b6d8c2; }
 .chip-red.on { color: #9c322d; background: #f9e9e8; border-color: #e8bcb9; }
 .chip-heard.on { color: #1f3fa3; background: #e5eafb; border-color: #b7c6f2; }
+.chip-quantqa.on,
+.chip-wso.on,
+.chip-everythingquant.on,
+.chip-quantt.on { color: #6b4f0e; background: #f7ecce; border-color: #e6d09a; }
 
 /* ---- progress ---- */
 .progress-line {
@@ -132,6 +136,10 @@
 
 .section-card.sec-probability {
   background: var(--board-2);
+}
+
+.section-card.sec-trading {
+  background: #1d3a3a;
 }
 
 .section-card:hover {
@@ -206,6 +214,25 @@
 }
 
 /* ---- list of puzzles ---- */
+.firm-card {
+  border-left-color: var(--board);
+}
+
+.list-heading {
+  font-family: var(--font-display);
+  font-size: 17px;
+  margin: 22px 0 8px;
+}
+
+.list-heading span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
 .list-tools {
   display: flex;
   align-items: center;

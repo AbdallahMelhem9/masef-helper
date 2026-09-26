@@ -1,6 +1,7 @@
 ===TEASER===
 SLUG: red-and-white-wine-mixing
-IDS: R8-23, R8-24, R8-25, R8-26, H1A-01
+IDS: R8-23, R8-24, R8-25, R8-26, H1A-01, Q-321
+FIRMS: Optiver
 SECTION: brainteaser
 CATEGORY: Invariants, parity & pigeonhole
 DIFFICULTY: easy
@@ -383,7 +384,8 @@ Now **three cards: A, C and $7$.** A card violates "vowel on one side $\Rightarr
 ===END===
 ===TEASER===
 SLUG: nine-marbles-three-weighings
-IDS: R8-59, R8-60, R8-61, R8-62, H1B-12
+IDS: R8-59, R8-60, R8-61, R8-62, H1B-12, Q-016, Q-289
+FIRMS: Belvedere Trading, Citadel, IMC, Optiver, SIG, WorldQuant
 SECTION: brainteaser
 CATEGORY: Weighing & searching
 DIFFICULTY: easy
@@ -437,10 +439,19 @@ FOLLOWUP_ANSWER:
 **$27$.** With one weighing you can handle $3$ marbles ($1$ vs $1$, $1$ aside). With $k$ weighings, if you can handle $N_{k-1}$ marbles with $k-1$ weighings, then with $k$ weighings split $3N_{k-1}$ marbles into three groups of $N_{k-1}$, weigh two of them, and recurse into the group that must contain the heavy marble: $N_k = 3N_{k-1}$, so $N_2 = 9$ and $N_3 = 27$.
 
 No more is possible: $k$ weighings have $3^k$ possible outcome sequences, and each outcome sequence must point to a single marble, so at most $3^3 = 27$ marbles can be distinguished.
+FOLLOWUP: Eight beans
+There are $8$ beans; one is slightly heavier than the others, which all weigh the same. What is the minimum number of weighings on a balance scale that guarantees finding the heavy bean?
+FOLLOWUP_ANSWER:
+$2$. One weighing cannot suffice: it has $3$ outcomes but there are $8$ candidates. Two weighings work: put $3$ beans on each pan and leave $2$ aside. If the pans balance, the heavy bean is one of the $2$ set aside; weigh them against each other. If one pan is heavier, the heavy bean is among its $3$; weigh two of them against each other: the heavier one is it, and if they balance it is the third.
+FOLLOWUP: Belvedere variant: eighteen beans
+There are $18$ beans; $17$ are identical and one is heavier. What is the minimum number of weighings on a balance scale that guarantees finding the heavy bean?
+FOLLOWUP_ANSWER:
+$3$. Two weighings give only $3^2 = 9 < 18$ outcome sequences, so they cannot always single out the heavy bean. Three weighings suffice since $18\le 27$: weigh $6$ against $6$ with $6$ aside. The heavy bean is then known to be in a group of $6$ (the heavier pan, or the set-aside group if they balance). Weigh $2$ against $2$ of those with $2$ aside, leaving $2$ candidates; a third weighing of one against the other finds it.
 ===END===
 ===TEASER===
 SLUG: balls-in-two-sacks
-IDS: R8-69, R8-70, R8-71, R8-72, H4A-16, H4A-17
+IDS: R8-69, R8-70, R8-71, R8-72, H4A-16, H4A-17, Q-334, Q-336, W-089
+FIRMS: Akuna Capital, Belvedere Trading
 SECTION: probability
 CATEGORY: Conditional probability & Bayes
 DIFFICULTY: medium
@@ -661,7 +672,7 @@ FOLLOWUP_ANSWER:
 ===END===
 ===TEASER===
 SLUG: nim-last-stick-loses
-IDS: R8-83, R8-84, R8-85
+IDS: R8-83, R8-84, R8-85, Q-463
 SECTION: brainteaser
 CATEGORY: Strategy & games
 DIFFICULTY: medium
@@ -706,10 +717,19 @@ Reduce each pile size $n_i$ to its residue $r_i = n_i \bmod 4\in\{0,1,2,3\}$ and
 - some residue is $2$ or $3$ and $X = 0$.
 
 Strategy: play as in normal play (make $X=0$), except for the move after which all residues would be $0$ or $1$: then leave an odd number of piles with residue $1$ instead. Proof sketch: every move changes exactly one residue. From a position in the losing set every move leaves it: flipping a residue $0\leftrightarrow1$ turns $X=1$ into $X=0$; creating a residue $\ge2$ makes $X\ge2$; and from "some residue $\ge2$, $X=0$" there are at least two piles with residue $\ge2$ (one alone cannot cancel the others), so after one move some residue $\ge2$ remains and $X\ne0$. From every other nonempty position there is a move into the set: if all residues are $\le1$ with $X=0$, change one residue $1\to0$ (take $1$) or, if all are $0$, $0\to1$ (take $3$ from a nonempty pile); if exactly one residue $r\ge2$, reduce it to $s\oplus1$ where $s$ is the XOR of the others; if two or more residues are $\ge2$, make $X=0$ as in normal play. Finally, the empty position (the opponent just took the last match) is a win for the player to move, and it is not in the set. (An exhaustive computer check over all positions with up to three piles of up to $12$ matches agrees.) With a single pile this reduces to the main answer: lose iff $n\equiv1\pmod4$.
+FOLLOWUP: Taking 1 to 6 stones
+A single pile of stones; players alternate, and on each turn a player removes between $1$ and $6$ stones. You move first. How do you guarantee a win?
+FOLLOWUP_ANSWER:
+The key number is $7 = 6+1$: whatever your opponent takes ($k\in\{1,\dots,6\}$), you can reply with $7-k$, so each pair of moves removes exactly $7$ stones.
+
+**If taking the last stone wins:** the losing positions to face are the multiples of $7$. On your first move, take $n \bmod 7$ stones, leaving a multiple of $7$; then always answer $k$ with $7-k$. You eventually take the last stone. This works iff $n$ is not a multiple of $7$ (otherwise your opponent can use the same strategy against you).
+
+**If taking the last stone loses** (as in the main problem): the losing positions are $n\equiv1\pmod7$. Take $(n-1)\bmod 7$ stones to leave $7j+1$, then answer $k$ with $7-k$, until your opponent faces a single stone. This works iff $n\not\equiv1\pmod7$.
 ===END===
 ===TEASER===
 SLUG: coins-on-a-round-table
-IDS: R8-86, R8-87, R8-88
+IDS: R8-86, R8-87, R8-88, Q-084
+FIRMS: WorldQuant
 SECTION: brainteaser
 CATEGORY: Strategy & games
 DIFFICULTY: medium
@@ -810,7 +830,8 @@ So the answer is somewhere between tens of billions (raw land) and several hundr
 ===END===
 ===TEASER===
 SLUG: piano-tuners-in-oxford
-IDS: R8-92, R8-93, R8-94
+IDS: R8-92, R8-93, R8-94, W-001, W-095
+FIRMS: Jane Street
 SECTION: brainteaser
 CATEGORY: Estimation & lateral thinking
 DIFFICULTY: easy

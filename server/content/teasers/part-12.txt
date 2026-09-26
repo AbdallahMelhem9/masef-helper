@@ -1,0 +1,1188 @@
+===TEASER===
+SLUG: sliding-ladder-related-rates
+IDS: Q-310, Q-440
+FIRMS: Transmarket Group
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: The sliding ladder
+QUESTION:
+A ladder $50$ ft long leans against a vertical wall. The ground is slippery, so the foot of the ladder slides away from the wall at a constant speed of $4$ ft per minute, and the top slides down the wall.
+
+How fast (in ft per minute) is the top of the ladder moving down the wall at the moment the foot is $30$ ft from the wall?
+HINT1:
+The length of the ladder never changes. Write down the relation between the distance of the foot from the wall and the height of the top.
+HINT2:
+With $x(t)$ the foot's distance and $y(t)$ the height, $x^2+y^2=50^2$ for all $t$. Differentiate this identity with respect to time and plug in the values at the given instant.
+ANSWER:
+The top slides down at $3$ ft per minute.
+REFRESH:
+**Related rates**: if two quantities $x(t),y(t)$ are linked by an identity $F(x,y)=0$ holding at all times, differentiating with the chain rule gives $F_x\,\dot x+F_y\,\dot y=0$, a linear relation between the two speeds.
+EXPLANATION:
+The ladder, the wall and the ground form a right triangle whose hypotenuse is fixed at $50$. When the foot is $30$ ft out, Pythagoras gives the height: $\sqrt{50^2-30^2}=40$ ft (the 3-4-5 triangle scaled by 10).
+
+Differentiating $x^2+y^2=2500$ gives $x\dot x+y\dot y=0$, so $\dot y=-\dfrac{x}{y}\dot x$. The ratio $x/y$ is the key: when the ladder is still steep ($x$ small, $y$ large) the top barely moves; as the ladder flattens, $x/y$ blows up and the top falls faster and faster. At our instant $x/y=30/40=3/4$, so the top moves at $3/4$ of the foot's speed.
+SOLUTION: Differentiate Pythagoras
+Let $x(t)$ be the distance from the wall to the foot and $y(t)$ the height of the top. For all $t$,
+$$x(t)^2+y(t)^2=50^2 .$$
+Differentiate with respect to $t$:
+$$2x\dot x+2y\dot y=0\quad\Longrightarrow\quad \dot y=-\frac{x\,\dot x}{y}.$$
+At the instant of interest $x=30$, so $y=\sqrt{2500-900}=\sqrt{1600}=40$, and $\dot x=4$. Hence
+$$\dot y=-\frac{30\cdot 4}{40}=-3\ \text{ft/min}.$$
+The minus sign says $y$ decreases: the top moves **down** at $3$ ft per minute.
+SOLUTION: Explicit formula for the height
+The foot is at $x(t)=x_0+4t$, so $y(t)=\sqrt{2500-x(t)^2}$. Then
+$$\dot y=\frac{-2x\,\dot x}{2\sqrt{2500-x^2}}=\frac{-x\cdot 4}{\sqrt{2500-x^2}}.$$
+At $x=30$: $\dot y=\dfrac{-120}{40}=-3$. The top descends at $3$ ft/min.
+FOLLOWUP: How fast does the angle close?
+Same ladder, same setup: the foot slides away at $4$ ft/min. How fast (in radians per minute) is the angle $\theta$ between the ladder and the ground decreasing when the foot is $30$ ft from the wall?
+FOLLOWUP_ANSWER:
+$\theta$ decreases at $\dfrac{1}{10}$ rad/min. Indeed $\cos\theta=x/50$. Differentiating, $-\sin\theta\,\dot\theta=\dot x/50$, so $\dot\theta=-\dfrac{\dot x}{50\sin\theta}$. At $x=30$ the height is $40$, so $\sin\theta=40/50=0.8$ and $\dot\theta=-\dfrac{4}{50\cdot 0.8}=-\dfrac{4}{40}=-0.1$ rad/min.
+===END===
+
+===TEASER===
+SLUG: double-or-half-stock-hedged-bet
+IDS: Q-219, Q-337
+FIRMS: SIG
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: easy
+TITLE: Stock doubles or halves, plus an even-money bet
+QUESTION:
+A stock will, by tomorrow, either **double** in value or **lose half** of its value. Besides buying the stock, you can bet with a friend on its direction at even odds ($1:1$: if you win you gain your stake, if you lose you lose your stake).
+
+You invest $A$ dollars in the stock and bet $B$ dollars with your friend that the stock goes **down**, choosing $A$ and $B$ so that your total profit is the same whichever way the stock moves. Take $A$ and $B$ to be the smallest positive whole-dollar amounts that achieve this. What is your (guaranteed) profit? If no positive profit can be locked in, answer $0$.
+HINT1:
+Write your total profit in the "up" world and in the "down" world as functions of $A$ and $B$.
+HINT2:
+Up: the stock earns $+A$, the bet loses $-B$. Down: the stock loses $-A/2$, the bet wins $+B$. Set the two totals equal and look for the smallest integers solving it.
+ANSWER:
+$A=4$, $B=3$, and the profit is \$1 in both scenarios.
+REFRESH:
+**Risk-neutral probability** (one period, zero rates): if an asset worth $S$ today is worth $uS$ or $dS$ tomorrow, the unique probability $q$ making it fair is $q=\dfrac{1-d}{u-d}$. Any bet whose odds disagree with $q$ can be combined with the asset to lock in a riskless profit.
+EXPLANATION:
+The stock market "prices" the up move as a $1/3$ event: with $u=2$, $d=1/2$, $q=\frac{1-1/2}{2-1/2}=\frac13$ is the probability that makes $2q+\frac12(1-q)=1$. Your friend, by offering even odds, treats up and down as $50/50$. Two prices for the same event that disagree means an arbitrage: you "buy" the up move cheaply through the stock and "sell" it at a better price to your friend by betting on down.
+
+Algebraically, the hedge ratio is $B=\frac34A$ and the locked-in profit is $A/4$; the smallest integers are $A=4,B=3$, giving \$1.
+SOLUTION: Equalise the two scenarios
+Profit if the stock doubles: the stock position gains $A$, the bet on "down" loses $B$:
+$$\Pi_{\text{up}}=A-B.$$
+Profit if the stock halves: the stock position loses $A/2$, the bet wins $B$:
+$$\Pi_{\text{down}}=-\frac A2+B.$$
+Setting $\Pi_{\text{up}}=\Pi_{\text{down}}$:
+$$A-B=B-\frac A2\ \Longrightarrow\ \frac{3A}{2}=2B\ \Longrightarrow\ B=\frac{3A}{4}.$$
+For $B$ to be a whole number, $A$ must be a multiple of $4$. The smallest choice is $A=4$, $B=3$. Check: up, $4-3=1$; down, $-2+3=1$. The profit is \$1 either way (in general $A/4$).
+
+Note: one version of this question describes both positions as bets with the friend; two opposite even-money bets on the same event always net to $A-B$ and $B-A$, which can only be equal at $0$. The intended reading (stock plus one bet) gives the stated answer \$1.
+SOLUTION: Price the bet with the stock
+With zero interest, the stock is fair under the probability $q$ solving $2q+\frac12(1-q)=1$, i.e. $\frac32q=\frac12$, $q=\frac13$. Under $q$ a \$1 even-money bet on "down" has value $\frac23\cdot1+\frac13\cdot(-1)=\frac13$, while it costs nothing to enter. So each dollar bet on down is worth $1/3$ of a dollar for free. Hedge its risk with the stock: per dollar bet you need $A=\frac43$ dollars of stock (from $B=\frac34A$), and the locked-in profit is $B/3=A/4$. With $A=4$, $B=3$, the profit is $3\cdot\frac13=1$ dollar.
+===END===
+
+===TEASER===
+SLUG: marbles-in-a-box-equilibrium
+IDS: Q-335, Q-481
+FIRMS: Citadel, Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: How many marbles to put in the box?
+QUESTION:
+Two players, $A$ and $B$, each have $100$ marbles. Simultaneously and secretly, $A$ puts $a$ of his marbles into a box and $B$ puts $b$ of hers, with $a,b$ integers between $1$ and $100$.
+
+Then two marbles are drawn from the box **with replacement**. For each drawn marble: if it belongs to $A$, a neutral bank pays $A$ the amount $100-a$; if it belongs to $B$, the bank pays $B$ the amount $100-b$.
+
+Both players play optimally (each maximises their own expected earnings; look for the equilibrium). What are $A$'s expected earnings?
+HINT1:
+There is a trade-off: more marbles in the box means more chances of being drawn, but a smaller prize each time. Write $A$'s expected earnings as a function of $a$ and $b$.
+HINT2:
+$A$'s expected earnings are $2\cdot\frac{a}{a+b}(100-a)$. Find $A$'s best response to a given $b$ by setting a derivative to zero, then look for a symmetric equilibrium $a=b$ (and check integers near it).
+ANSWER:
+Both players put in $33$ marbles, and $A$ expects to earn $67$.
+REFRESH:
+**Nash equilibrium**: a pair of strategies $(a^*,b^*)$ such that $a^*$ is a best response to $b^*$ and $b^*$ is a best response to $a^*$; no player gains by deviating alone.
+
+**Linearity of expectation**: the expected total from two draws is the sum of the expected payoffs of each draw, even though the draws are with replacement from the same box.
+EXPLANATION:
+Each draw picks one of $A$'s marbles with probability $\frac{a}{a+b}$ and then pays $100-a$, so by linearity $A$ earns on average $2(100-a)\frac{a}{a+b}$. The game is not zero-sum (the bank pays), so each player simply maximises their own function.
+
+For fixed $b$, maximising $\frac{a(100-a)}{a+b}$ gives the first-order condition $a^2+2ab-100b=0$. At a symmetric equilibrium $a=b$ this reads $3a^2=100a$, so $a=100/3$. The nearest integers are $33$ and $34$; direct checking shows $a=b=33$ is an equilibrium. Each player is drawn half the time, and A earns $2\cdot\frac12\cdot(100-33)=67$.
+SOLUTION: Best response and symmetric equilibrium
+**Payoff.** Each of the two draws is $A$'s marble with probability $\frac{a}{a+b}$, paying $100-a$. By linearity,
+$$E_A(a,b)=2\,(100-a)\,\frac{a}{a+b}.$$
+**Best response.** For fixed $b$, maximise $g(a)=\dfrac{a(100-a)}{a+b}$ over $a$ (treat $a$ as continuous first):
+$$g'(a)=\frac{(100-2a)(a+b)-a(100-a)}{(a+b)^2}=\frac{-a^2-2ab+100b}{(a+b)^2}.$$
+The numerator is decreasing in $a>0$, so $g$ is maximised at the positive root of $a^2+2ab-100b=0$:
+$$a^*(b)=-b+\sqrt{b^2+100b}.$$
+**Symmetric equilibrium.** Setting $a=b$ in $a^2+2ab-100b=0$: $3a^2=100a$, so $a=\frac{100}{3}\approx 33.3$.
+
+**Integers.** Take $b=33$ and compare $g$ at nearby integers:
+$$g(32)=\tfrac{32\cdot 68}{65}\approx 33.477,\quad g(33)=\tfrac{33\cdot 67}{66}=33.5,\quad g(34)=\tfrac{34\cdot 66}{67}\approx 33.493.$$
+Since $g$ is unimodal, $a=33$ is $A$'s best response to $b=33$, and by symmetry $b=33$ is $B$'s best response to $a=33$. So $(33,33)$ is an equilibrium. (With $b=34$ the best response is again $33$, so $(34,34)$ is not.)
+
+**Earnings.**
+$$E_A(33,33)=2\cdot 67\cdot\frac{33}{66}=67.$$
+FOLLOWUP: Zero-sum version: one token, loser pays
+Two players $X$ and $Y$ each have $100$ tokens and secretly put $x$ and $y$ tokens ($1$ to $100$) into a pool. **One** token is drawn. If it is $X$'s, $Y$ pays $X$ the amount $100-x$; if it is $Y$'s, $X$ pays $Y$ the amount $100-y$. Both play optimally. How many tokens should $X$ contribute in equilibrium?
+FOLLOWUP_ANSWER:
+$x=50$. $X$'s expected gain is $U(x,y)=\dfrac{x(100-x)-y(100-y)}{x+y}$, and the game is zero-sum and symmetric. Against $y=50$:
+$$U(x,50)=\frac{x(100-x)-2500}{x+50}=\frac{-(x-50)^2}{x+50}\le 0,$$
+with equality only at $x=50$. So $x=50$ is the best response to $y=50$, and by symmetry $(50,50)$ is a saddle point: each player contributes $50$ and the value of the game is $0$.
+===END===
+
+===TEASER===
+SLUG: one-percent-daily-compounding
+IDS: Q-346, Q-403
+FIRMS: Five Rings
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: 1% a day
+QUESTION:
+You put $100$ dollars in an investment that pays $1\%$ interest per day, compounded daily. Without a calculator, estimate (to the nearest dollar) how much you have:
+
+(a) after $15$ days;
+
+(b) after $100$ days.
+HINT1:
+You need $1.01^{15}$ and $1.01^{100}$. For a small exponent, the first few terms of the binomial expansion are enough; for a large one, think logarithms.
+HINT2:
+$1.01^{n}=e^{n\ln 1.01}$ with $\ln 1.01\approx 0.01-0.00005$. For $n=100$ the exponent is almost exactly $1$.
+ANSWER:
+(a) about \$116 (exactly $100\cdot1.01^{15}\approx 116.10$); (b) about \$270 (exactly $100\cdot 1.01^{100}\approx 270.48$).
+REFRESH:
+**Binomial expansion**: $(1+x)^n=1+nx+\binom n2x^2+\binom n3x^3+\dots$; for small $x$ the terms shrink fast.
+
+**Logarithm series**: $\ln(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}-\dots$ for $|x|<1$.
+EXPLANATION:
+Compounding means the growth factor is multiplied, not added: after $n$ days you have $100\cdot1.01^n$. Simple interest would give $100(1+0.01n)$, i.e. \$115 and \$200; the difference is "interest on interest".
+
+For $15$ days that difference is small, so expanding $(1+0.01)^{15}$ and keeping three or four terms is enough. For $100$ days it is huge, and the clean trick is $1.01^{100}=e^{100\ln 1.01}\approx e^{0.995}$, which is just below $e\approx 2.718$. This is the same limit $(1+1/n)^n\to e$ that defines continuous compounding.
+SOLUTION: Binomial expansion for 15 days, logarithm for 100 days
+**(a)**
+$$1.01^{15}=1+15(0.01)+\binom{15}{2}(0.01)^2+\binom{15}{3}(0.01)^3+\dots=1+0.15+105\cdot 10^{-4}+455\cdot10^{-6}+\dots$$
+$$=1+0.15+0.0105+0.000455+0.0000137+\dots\approx 1.16097.$$
+So $100\cdot 1.01^{15}\approx 116.10$, i.e. **\$116**.
+
+**(b)** $\ln 1.01=0.01-\frac{0.0001}{2}+\frac{0.000001}{3}-\dots\approx 0.0099503$, so
+$$1.01^{100}=e^{100\ln1.01}=e^{0.99503}=e\cdot e^{-0.00497}\approx 2.71828\times(1-0.00497)\approx 2.7048.$$
+So $100\cdot1.01^{100}\approx 270.48$, i.e. **\$270**.
+SOLUTION: Logarithm for both
+$15\ln 1.01\approx 15\times 0.00995=0.14925$, and $e^{0.14925}\approx 1+0.14925+\frac{0.14925^2}{2}+\frac{0.14925^3}{6}\approx 1+0.14925+0.01114+0.00055=1.16094$. Hence \$116. Part (b) is as above: $e^{0.995}\approx 2.705$, hence \$270.
+===END===
+
+===TEASER===
+SLUG: pennies-into-stacks-max-product
+IDS: Q-371, Q-342
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Stacking 100 pennies for the biggest product
+QUESTION:
+You have $100$ pennies. You split them into stacks, as many as you like and of any sizes (the sizes add up to $100$). Your payout is the **product** of the stack sizes; for example stacks of $10$, $20$ and $70$ pay $10\cdot 20\cdot 70=14000$.
+
+The best possible payout can be written as $a\cdot b^c$ with $a$ and $b$ coprime integers ($a$ as small as possible, $b>1$). Find $abc$.
+HINT1:
+Ask what a single large stack is worth compared with splitting it in two. And what is a stack of $1$ worth?
+HINT2:
+Any stack of size $n\ge 5$ can be split into $2$ and $n-2$ with $2(n-2)>n$. So only stacks of $2$ and $3$ (and possibly $4=2+2$) survive. Then compare three $2$s with two $3$s.
+ANSWER:
+The best payout is $2^2\cdot3^{32}=4\cdot 3^{32}$, so $abc=4\cdot3\cdot32=384$.
+REFRESH:
+NONE
+EXPLANATION:
+A stack of $1$ multiplies the payout by $1$, so it wastes a penny: merging it into another stack multiplies that stack by $\frac{n+1}{n}>1$. A big stack is also wasteful: splitting $n\ge5$ into $2+(n-2)$ multiplies the payout by $\frac{2(n-2)}{n}>1$. So the optimum only uses $2$s and $3$s ($4$ equals $2\cdot2$, so it can be written as two $2$s).
+
+Between $2$ and $3$, the $3$s are better: six pennies give $2^3=8$ as three $2$s but $3^2=9$ as two $3$s. So use as many $3$s as possible, with at most two $2$s. Since $100=3\cdot 32+4$, the optimum is thirty-two $3$s and two $2$s.
+
+(Continuous intuition: splitting $N$ into $k$ equal parts gives $(N/k)^k$, maximised when each part is $e\approx2.718$; the integer closest in value is $3$.)
+SOLUTION: Exchange argument
+Take an optimal splitting.
+
+1. **No stack of 1**: merge it with any other stack $n$; the product goes from $n$ to $n+1$.
+2. **No stack of 5 or more**: replace $n\ge5$ by $2$ and $n-2$; since $2(n-2)-n=n-4>0$, the product increases.
+3. **Stacks of 4** can be replaced by $2+2$ without changing the product, so assume only $2$s and $3$s.
+4. **At most two 2s**: three $2$s ($6$ pennies, product $8$) can be replaced by two $3$s (product $9$).
+
+So the optimum has $k$ threes and $j\le 2$ twos with $3k+2j=100$. Since $100\equiv 1\pmod 3$, we need $2j\equiv1\pmod3$, so $j=2$ and $k=32$. The payout is
+$$2^2\cdot3^{32}=4\cdot 3^{32}.$$
+Here $a=4$, $b=3$, $c=32$ (coprime), and $abc=4\cdot3\cdot32=384$.
+FOLLOWUP: 20 stones
+You have $20$ stones and split them into groups; your score is the product of the group sizes. What is the largest possible score?
+FOLLOWUP_ANSWER:
+$1458$. By the same argument only $2$s and $3$s are used, with at most two $2$s. $20=3\cdot6+2$, so six $3$s and one $2$: $3^6\cdot 2=729\cdot2=1458$.
+===END===
+
+===TEASER===
+SLUG: remainders-of-huge-powers
+IDS: Q-381, Q-382
+FIRMS: Belvedere Trading
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Remainder of 11 to the 2360
+QUESTION:
+Find the remainder when $11^{2360}$ is divided by $50$.
+HINT1:
+Compute the first few powers of $11$ modulo $50$ and look for a pattern. Alternatively, write $11=1+10$.
+HINT2:
+$(1+10)^n=1+10n+\binom n2 100+\dots$, and every term from the third on is a multiple of $100$, hence of $50$.
+ANSWER:
+$1$
+REFRESH:
+**Congruences**: $a\equiv b \pmod m$ means $m$ divides $a-b$; congruences can be added and multiplied, so powers can be reduced step by step.
+
+**Euler's theorem**: if $\gcd(a,m)=1$ then $a^{\varphi(m)}\equiv1\pmod m$, where $\varphi(m)$ counts the integers in $\{1,\dots,m\}$ coprime to $m$. For a prime $p$ this is Fermat: $a^{p-1}\equiv1\pmod p$.
+EXPLANATION:
+A power of a number close to $1$ (here $11=1+10$) is easy to expand: everything beyond the linear term is divisible by $100$. So modulo $50$ only $1+10n$ matters, and $10\cdot 2360$ is a multiple of $50$.
+
+Another view: powers of $11$ cycle modulo $50$, and $11^5\equiv1$, so only the exponent modulo $5$ matters; $2360$ is a multiple of $5$.
+SOLUTION: Binomial expansion
+$$11^{2360}=(1+10)^{2360}=1+2360\cdot10+\sum_{k\ge2}\binom{2360}{k}10^k.$$
+Every term with $k\ge2$ contains $10^2=100$, which is divisible by $50$. And $2360\cdot10=23600=50\cdot472$. Hence
+$$11^{2360}\equiv1\pmod{50}.$$
+SOLUTION: Find the cycle
+Modulo $50$: $11^2=121\equiv21$, $11^4\equiv21^2=441\equiv41$, $11^5\equiv41\cdot11=451\equiv1$. Since $2360=5\cdot472$, $11^{2360}=(11^5)^{472}\equiv1^{472}=1$.
+SOLUTION: Euler's theorem
+$\varphi(50)=50\cdot(1-\frac12)(1-\frac15)=20$ and $\gcd(11,50)=1$, so $11^{20}\equiv1\pmod{50}$. As $2360=20\cdot118$, $11^{2360}\equiv1$.
+FOLLOWUP: 15 to the 2021 mod 17
+Compute $15^{2021} \bmod 17$.
+FOLLOWUP_ANSWER:
+$2$. Since $15\equiv-2\pmod{17}$, $15^{2021}\equiv(-2)^{2021}=-2^{2021}$. Now $2^4=16\equiv-1$, so $2^8\equiv1\pmod{17}$. As $2021=8\cdot252+5$, $2^{2021}\equiv2^5=32\equiv15$. Hence $15^{2021}\equiv-15\equiv2\pmod{17}$.
+===END===
+
+===TEASER===
+SLUG: two-primes-even-sum
+IDS: Q-385, Q-388
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two primes with an even sum
+QUESTION:
+Two **different** prime numbers are chosen uniformly at random among the primes between $1$ and $20$. What is the probability that their sum is even?
+HINT1:
+List the primes up to $20$. Which one is special when it comes to parity?
+HINT2:
+The sum of two primes is even exactly when both are odd, i.e. when $2$ is not chosen.
+ANSWER:
+$\dfrac34$
+REFRESH:
+NONE
+EXPLANATION:
+All primes are odd except $2$. Odd plus odd is even, while $2$ plus an odd prime is odd. So the only way to get an odd sum is to pick $2$, and the question becomes "what is the chance that $2$ is not among the chosen pair".
+SOLUTION: Count pairs
+The primes up to $20$ are $2,3,5,7,11,13,17,19$: eight of them, seven odd. There are $\binom82=28$ equally likely pairs. The sum is even iff both are odd: $\binom72=21$ pairs. Probability $\frac{21}{28}=\frac34$.
+SOLUTION: Probability of avoiding 2
+The pair contains $2$ with probability $\frac{2}{8}$ (each prime is in the pair with probability $2/8$ by symmetry). So $P(\text{even})=1-\frac28=\frac34$.
+FOLLOWUP: Four of the first sixteen primes
+Four distinct numbers are chosen at random from the first $16$ primes. What is the probability that their sum is even?
+FOLLOWUP_ANSWER:
+$\frac34$. Four odd primes sum to an even number; if $2$ is included, $2$ plus three odd numbers is odd. So we need $2$ not to be chosen: $P=\frac{\binom{15}{4}}{\binom{16}{4}}=\frac{16-4}{16}=\frac{12}{16}=\frac34$.
+===END===
+
+===TEASER===
+SLUG: least-squares-five-points
+IDS: Q-236, Q-441
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: Regression line through five points
+QUESTION:
+Bob fits the simple linear regression model
+$$Y=\beta_0+\beta_1x+\varepsilon,\qquad \mathbb E\varepsilon=0,\ \operatorname{Var}\varepsilon=\sigma^2,$$
+by ordinary least squares to the five data points
+$$(x,y):\ (-2,0),\ (-1,0),\ (0,1),\ (1,1),\ (2,3).$$
+(a) Find the fitted line and the sum of its slope and intercept.
+
+(b) Give the usual unbiased estimate of $\sigma^2$.
+HINT1:
+The $x$ values are symmetric around $0$, which makes the formulas very simple.
+HINT2:
+$\hat\beta_1=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}$ and $\hat\beta_0=\bar y-\hat\beta_1\bar x$. For $\sigma^2$, sum the squared residuals and divide by $n-2$.
+ANSWER:
+$\hat y=1+0.7x$, so slope $+$ intercept $=\frac{17}{10}$; $\hat\sigma^2=\frac{1.1}{3}=\frac{11}{30}$.
+REFRESH:
+**OLS in simple regression**: $\hat\beta_1=S_{xy}/S_{xx}$ with $S_{xy}=\sum(x_i-\bar x)(y_i-\bar y)$, $S_{xx}=\sum (x_i-\bar x)^2$, and $\hat\beta_0=\bar y-\hat\beta_1\bar x$.
+
+**Unbiased residual variance**: with $p$ estimated coefficients, $\hat\sigma^2=\frac{1}{n-p}\sum_i \hat e_i^2$ is unbiased; here $p=2$.
+EXPLANATION:
+Because $\bar x=0$, the intercept is just the mean of the $y$'s ($\bar y=1$) and the slope is $\sum x_iy_i/\sum x_i^2=7/10$.
+
+For the noise variance, we only observe residuals, which are "too small" on average because the line was fitted to the same points: fitting two parameters uses up two degrees of freedom. Dividing the residual sum of squares by $n-2=3$ instead of $n=5$ corrects this bias. (The question's "$\sigma^2$" can only be estimated; the maximum-likelihood estimate would divide by $5$ and give $0.22$.)
+SOLUTION: Direct computation
+$\bar x=0$, $\bar y=\frac{0+0+1+1+3}{5}=1$.
+
+$S_{xx}=4+1+0+1+4=10$, $S_{xy}=\sum x_iy_i-n\bar x\bar y=(-2)(0)+(-1)(0)+0\cdot1+1\cdot1+2\cdot3=7$.
+
+$\hat\beta_1=\frac{7}{10}$, $\hat\beta_0=1-0.7\cdot0=1$. Fitted line $\hat y=1+0.7x$; slope plus intercept $=1.7=\frac{17}{10}$.
+
+Fitted values at $x=-2,-1,0,1,2$: $-0.4,\ 0.3,\ 1,\ 1.7,\ 2.4$. Residuals $y-\hat y$: $0.4,\ -0.3,\ 0,\ -0.7,\ 0.6$ (they sum to $0$, as they must).
+
+$$\text{RSS}=0.16+0.09+0+0.49+0.36=1.1,\qquad \hat\sigma^2=\frac{\text{RSS}}{n-2}=\frac{1.1}{3}=\frac{11}{30}\approx0.367.$$
+SOLUTION: RSS from the variance decomposition
+$S_{yy}=\sum(y_i-\bar y)^2=1+1+0+0+4=6$. The explained part is $\hat\beta_1^2S_{xx}=0.49\cdot10=4.9$, so $\text{RSS}=S_{yy}-\hat\beta_1S_{xy}=6-4.9=1.1$ and $\hat\sigma^2=1.1/3=11/30$.
+===END===
+
+===TEASER===
+SLUG: game-show-wheel-reveals-door
+IDS: Q-452, Q-344
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: The wheel that may reveal the prize
+QUESTION:
+On a game show there are $3$ doors; one hides $1$ million, the other two hide nothing. Before choosing, you spin a wheel. With probability $3/5$ the wheel shows you which door hides the million; otherwise it tells you nothing and you pick a door uniformly at random.
+
+What is the probability that you find the million?
+HINT1:
+Split according to what the wheel does.
+HINT2:
+Law of total probability: $P(\text{win})=P(\text{reveal})\cdot1+P(\text{no reveal})\cdot P(\text{win}\mid\text{random guess})$.
+ANSWER:
+$\dfrac{11}{15}$
+REFRESH:
+**Law of total probability**: if $B_1,\dots,B_k$ partition the outcomes, $P(A)=\sum_i P(A\mid B_i)P(B_i)$.
+EXPLANATION:
+Two disjoint ways to win: the wheel reveals the door (then you surely win), or it doesn't and your blind guess is lucky ($1/3$). Weight each by its probability and add.
+SOLUTION: Condition on the wheel
+$$P(\text{win})=\frac35\cdot1+\frac25\cdot\frac13=\frac{9}{15}+\frac{2}{15}=\frac{11}{15}.$$
+SOLUTION: Complement
+You lose only if the wheel fails ($\frac25$) and the guess is wrong ($\frac23$): $P(\text{lose})=\frac25\cdot\frac23=\frac{4}{15}$, so $P(\text{win})=1-\frac4{15}=\frac{11}{15}$.
+FOLLOWUP: Two spins
+Same show, but you may spin the wheel twice; each spin independently reveals the door with probability $3/5$. If neither spin reveals it, you guess at random. What is the probability you find the million?
+FOLLOWUP_ANSWER:
+$\frac{67}{75}$. You lose only if both spins fail and the guess is wrong: $P(\text{lose})=\left(\frac25\right)^2\cdot\frac23=\frac{4}{25}\cdot\frac23=\frac{8}{75}$, so $P(\text{win})=1-\frac{8}{75}=\frac{67}{75}$.
+===END===
+
+===TEASER===
+SLUG: biased-coins-first-head-wins
+IDS: Q-478, Q-231, Q-260
+FIRMS: Optiver, Squarepoint Capital, IMC
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Two biased coins, first head wins
+QUESTION:
+Annie and Bob take turns flipping their own coins, Annie first. Annie's coin shows heads with probability $\frac13$, Bob's with probability $\frac25$. The first player to flip heads wins. What is the probability that Annie wins?
+HINT1:
+Think about what happens in one full round (Annie flips, then Bob flips). If nobody has won, where are you?
+HINT2:
+If both miss in the first round (probability $\frac23\cdot\frac35$), the game restarts exactly as at the beginning. Write an equation for $P=P(\text{Annie wins})$.
+ANSWER:
+$\dfrac59$
+REFRESH:
+**First-step analysis**: condition on the first step(s) of a process; if the process returns to its starting state, the unknown probability appears on both sides of the equation.
+
+**Geometric series**: $\sum_{k\ge0}r^k=\frac1{1-r}$ for $|r|<1$.
+EXPLANATION:
+The game is memoryless: after a round with two tails, nothing has changed. So Annie's winning chance is "win right now" plus "both miss, then start over". If $p,q$ are the head probabilities, $P=p+(1-p)(1-q)P$, giving $P=\dfrac{p}{1-(1-p)(1-q)}$. In words: condition on the round being decisive; Annie wins the decisive round with probability $p$ out of $1-(1-p)(1-q)$.
+SOLUTION: Restart equation
+Let $P$ be Annie's winning probability. Either Annie flips heads now ($\frac13$), or Annie and Bob both flip tails ($\frac23\cdot\frac35=\frac25$) and the game restarts:
+$$P=\frac13+\frac25P\ \Longrightarrow\ \frac35P=\frac13\ \Longrightarrow\ P=\frac59.$$
+SOLUTION: Geometric series
+Annie wins on her $(k+1)$-th flip if the first $k$ rounds are both tails and then she flips heads:
+$$P=\sum_{k\ge0}\left(\frac25\right)^k\frac13=\frac{1/3}{1-2/5}=\frac{1/3}{3/5}=\frac59.$$
+FOLLOWUP: Make the game fair
+Player A flips a coin with head probability $p$; player B flips a fair coin. A flips first, they alternate, and the first head wins. For which $p$ do both have the same chance of winning?
+FOLLOWUP_ANSWER:
+$p=\frac13$. A wins with probability $\dfrac{p}{1-(1-p)\cdot\frac12}=\dfrac{2p}{1+p}$. Setting this to $\frac12$: $4p=1+p$, so $p=\frac13$.
+FOLLOWUP: Given that B won
+A and B alternate flipping fair coins, A first; the first head wins. Given that B won, what is the probability that B won on B's very first flip?
+FOLLOWUP_ANSWER:
+$\frac34$. With $p=q=\frac12$, A wins with probability $\frac{1/2}{1-1/4}=\frac23$, so B wins with probability $\frac13$. B wins on his first flip with probability $P(\text{T then H})=\frac14$. Hence $P(\text{first flip}\mid\text{B wins})=\frac{1/4}{1/3}=\frac34$.
+===END===
+
+===TEASER===
+SLUG: exactly-three-heads-in-a-row
+IDS: Q-498, Q-492
+FIRMS: Jane Street, Old Mission, SIG, Transmarket Group, Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Exactly three heads in a row
+QUESTION:
+A fair coin is tossed $5$ times. What is the probability that the sequence contains a run of **exactly** $3$ consecutive heads, i.e. a block of three heads that is not part of a longer run of heads?
+HINT1:
+There are only $32$ sequences. Organise the count by where the block of three heads starts.
+HINT2:
+"Exactly three" means the block must be bordered by tails (or by the ends of the sequence). For each possible position of the block, the neighbouring tosses are forced to be tails and the remaining tosses are free.
+ANSWER:
+$\dfrac{5}{32}$
+REFRESH:
+NONE
+EXPLANATION:
+Place the block HHH and fence it with a T on each side that is not at the end of the sequence. What's left over is free. Three positions are possible for the block in $5$ tosses, and they can't occur twice in the same sequence (two separate blocks need $3+1+3=7$ tosses), so you just add the counts.
+
+Careful with the wording: "at least three heads in a row" is a different question, with answer $\frac{8}{32}=\frac14$.
+SOLUTION: Count by position of the block
+Positions 1–3: HHHT? : $2$ sequences.
+
+Positions 2–4: THHHT : $1$ sequence.
+
+Positions 3–5: ?THHH : $2$ sequences.
+
+No sequence of length $5$ has two such blocks, so the total is $2+1+2=5$ out of $2^5=32$: probability $\frac{5}{32}$.
+SOLUTION: Complement via "at least three"
+Let $a_n$ be the number of sequences of length $n$ with no run of $3$ heads: $a_n=a_{n-1}+a_{n-2}+a_{n-3}$ (the sequence ends in T, HT or HHT), with $a_0=1,a_1=2,a_2=4$. So $a_3=7,a_4=13,a_5=24$, and $32-24=8$ sequences have a run of at least $3$. Of those, the runs of length $4$ or $5$ are HHHHT, THHHH, HHHHH: $3$ sequences. So $8-3=5$ have a run of exactly $3$: probability $\frac5{32}$.
+FOLLOWUP: Six tosses
+Now the coin is tossed $6$ times. What is the probability of a run of exactly $3$ heads?
+FOLLOWUP_ANSWER:
+$\frac{3}{16}$. Block at 1–3: HHHT?? ($4$). At 2–4: THHHT? ($2$). At 3–5: ?THHHT ($2$). At 4–6: ??THHH ($4$). Two blocks would need $7$ tosses, so no overlaps: $4+2+2+4=12$ out of $64$, i.e. $\frac{12}{64}=\frac3{16}$.
+===END===
+
+===TEASER===
+SLUG: dice-weighted-by-pips-sum-seven
+IDS: Q-514, Q-147
+FIRMS: Citadel, Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: A die weighted by its pips
+QUESTION:
+A six-sided die is loaded so that face $n$ ($1\le n\le 6$) comes up with probability proportional to $n$. The die is rolled twice. What is the probability that the two results add up to $7$?
+HINT1:
+First find the probability of each face: what constant makes the probabilities sum to $1$?
+HINT2:
+$P(n)=n/21$. List the pairs summing to $7$ and add up $P(n)P(7-n)$.
+ANSWER:
+$\dfrac{8}{63}$
+REFRESH:
+NONE
+EXPLANATION:
+Normalise: $1+2+\dots+6=21$, so $P(n)=\frac{n}{21}$. A sum of $7$ comes from the six pairs $(n,7-n)$, each with probability $\frac{n(7-n)}{441}$. The products $n(7-n)$ are $6,10,12,12,10,6$, which sum to $56$.
+SOLUTION: Sum over pairs
+$$P(\text{sum}=7)=\sum_{n=1}^6\frac{n}{21}\cdot\frac{7-n}{21}=\frac{6+10+12+12+10+6}{441}=\frac{56}{441}=\frac{8}{63}\approx0.127.$$
+(Slightly less than the fair die's $\frac16$: the loading favours high faces, and pairs like $(6,1)$ need a low face.)
+FOLLOWUP: One fair die, one loaded die
+Emma rolls one fair die and one die loaded as above (face $n$ with probability proportional to $n$). What is the probability that the total is odd?
+FOLLOWUP_ANSWER:
+$\frac12$. Whatever the loaded die shows, the total is odd exactly when the fair die has the opposite parity, which happens with probability $\frac36=\frac12$. So $P(\text{odd})=\frac12$ regardless of the loading.
+===END===
+
+===TEASER===
+SLUG: tennis-from-thirty-all
+IDS: Q-004, Q-518
+FIRMS: Goldman Sachs, Optiver, Five Rings
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Tennis game from 30–30
+QUESTION:
+In a tennis game, scores go $0$, $15$, $30$, $40$. A player on $40$ wins the game with the next point if the opponent has fewer than $40$. At $40$–$40$ ("deuce"), the winner of the next point gets the "advantage"; if the player with advantage wins the next point, they win the game, otherwise the score returns to deuce.
+
+Novak and Carlos are at $30$–$30$. Novak wins each point independently with probability $0.6$. What is the probability that Novak wins the game?
+HINT1:
+From $30$–$30$, what does Novak need to win the game directly? What happens if the next two points are split?
+HINT2:
+From $30$–$30$, winning two points in a row wins; splitting them leads to $40$–$40$. From deuce it is exactly the same situation. So $30$–$30$ is equivalent to deuce.
+ANSWER:
+$\dfrac{9}{13}\approx0.692$
+REFRESH:
+**First-step analysis** on a Markov chain: the probability $h(s)$ of reaching a target from state $s$ satisfies $h(s)=\sum_{s'}P(s\to s')h(s')$.
+EXPLANATION:
+From $30$–$30$ and from deuce the rule is the same: take two consecutive points and you win; lose two and you lose; split them and you are back at deuce. So look at pairs of points. A pair is decisive for Novak with probability $p^2=0.36$, for Carlos with probability $q^2=0.16$, and a split ($0.48$) just resets. Conditioning on the decisive pair, Novak wins with probability $\frac{p^2}{p^2+q^2}$.
+SOLUTION: Pairs of points
+Let $D$ be Novak's winning probability at deuce. After two more points: Novak wins both ($0.36$), Carlos wins both ($0.16$), or they split ($2\cdot0.6\cdot0.4=0.48$) and we are back at deuce:
+$$D=0.36+0.48D\ \Longrightarrow\ D=\frac{0.36}{0.52}=\frac{9}{13}.$$
+From $30$–$30$: two Novak points win, two Carlos points lose, and a split gives $40$–$40$. So the probability is also $0.36+0.48D=D=\frac9{13}$.
+SOLUTION: Markov chain on the score difference
+From $30$–$30$ the game is a random walk on the lead $L$ (Novak minus Carlos) starting at $0$, stepping $+1$ with probability $p=0.6$ and $-1$ with $q=0.4$, stopped at $\pm2$. With $h(L)$ the probability of reaching $+2$: $h(2)=1$, $h(-2)=0$, $h(1)=p+q\,h(0)$, $h(-1)=p\,h(0)$, $h(0)=p\,h(1)+q\,h(-1)$. Substituting: $h(0)=p^2+2pq\,h(0)$, so $h(0)=\frac{p^2}{1-2pq}=\frac{0.36}{0.52}=\frac9{13}$.
+FOLLOWUP: Table tennis at 10–10
+A table tennis game is at $10$–$10$ and must continue until someone leads by $2$ points. You win each point independently with probability $40\%$. What is the probability that you win the game?
+FOLLOWUP_ANSWER:
+$\frac4{13}$. It is the same "deuce" structure with $p=0.4$: $P=\frac{p^2}{p^2+q^2}=\frac{0.16}{0.16+0.36}=\frac{0.16}{0.52}=\frac4{13}\approx0.308$.
+===END===
+
+===TEASER===
+SLUG: water-jugs-3-and-5-measure-4
+IDS: W-027, Q-308
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Measure 4 gallons with a 3 and a 5
+QUESTION:
+You have a $3$-gallon jug and a $5$-gallon jug, both unmarked, and an unlimited water supply. You may fill a jug completely, empty a jug completely, or pour one jug into the other until the first is empty or the second is full. Can you measure exactly $4$ gallons? If so, how?
+HINT1:
+You can create "odd" amounts by pouring a full jug into a partially filled one. What is left in the big jug after you pour it into the small one?
+HINT2:
+Fill the $5$ and pour it into the $3$: $2$ gallons are left. Keep those $2$ gallons in the small jug and try again.
+ANSWER:
+Yes, in $6$ steps: fill 5, pour into 3 (5-jug has 2), empty 3, pour the 2 into 3, fill 5, top up the 3 (needs 1), leaving $4$ in the 5-gallon jug.
+REFRESH:
+**Bézout**: for integers $a,b$ there are integers $u,v$ with $ua+vb=\gcd(a,b)$. With jugs of sizes $a,b$ one can measure exactly the multiples of $\gcd(a,b)$ up to $\max(a,b)$.
+EXPLANATION:
+Every amount you can create is a combination $u\cdot3+v\cdot5$ of full jugs added or thrown away. Since $\gcd(3,5)=1$, any integer amount is reachable in principle; $4=3\cdot3-5$ ("fill the 3 three times, throw away one 5") or $4=2\cdot5-2\cdot3$ ("fill the 5 twice, throw away two 3s"). The second decomposition gives the quickest sequence.
+SOLUTION: Fill the big jug twice
+Write the state as (3-jug, 5-jug).
+1. Fill the 5: $(0,5)$.
+2. Pour 5 into 3: $(3,2)$.
+3. Empty the 3: $(0,2)$.
+4. Pour 5 into 3: $(2,0)$.
+5. Fill the 5: $(2,5)$.
+6. Pour 5 into 3 until it is full (1 gallon moves): $(3,4)$.
+
+The 5-gallon jug holds exactly $4$ gallons. (This is $2\cdot5-2\cdot3=4$.)
+SOLUTION: Fill the small jug three times
+1. Fill 3: $(3,0)$. 2. Pour into 5: $(0,3)$. 3. Fill 3: $(3,3)$. 4. Pour into 5 until full: $(1,5)$. 5. Empty 5: $(1,0)$. 6. Pour 3 into 5: $(0,1)$. 7. Fill 3: $(3,1)$. 8. Pour into 5: $(0,4)$.
+
+Eight steps, using $3\cdot3-5=4$.
+FOLLOWUP: One quart in each jug
+A barrel holds $120$ quarts of beer. With a $7$-quart jug and a $5$-quart jug (both empty) you may: fill a jug from the barrel, pour a jug back into the barrel, or pour one jug into the other; every pour stops when the source is empty or the destination is full. What is the minimum number of pours needed to have exactly $1$ quart in the 7-quart jug **and** exactly $1$ quart in the 5-quart jug? Answer $-1$ if impossible.
+FOLLOWUP_ANSWER:
+It is impossible under these rules: $-1$. Claim: after every pour, at least one jug is empty or full. Filling from the barrel leaves that jug full (the barrel never holds less than $120-12=108$ quarts, so it never runs dry); pouring a jug into the barrel leaves that jug empty; pouring jug to jug leaves the source empty or the destination full. The target $(1,1)$ has neither jug empty nor full, so it can never be reached. Note: the source states $20$; the correct value is $-1$ because of this invariant. The classic puzzle becomes solvable only if beer may also be thrown away, so that the barrel itself can be drained to a small known amount and used as a third measure (a breadth-first search then finds $17$ pours when both jugs and the barrel may be emptied onto the ground).
+===END===
+
+===TEASER===
+SLUG: guess-the-colour-two-red-two-blue
+IDS: Q-358, W-023
+FIRMS: Five Rings, Jane Street
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Guess the colour of the next ball
+QUESTION:
+A bag holds $4$ balls: $2$ blue and $2$ red. They are drawn one at a time without replacement, and you see each ball after it is drawn. Before each draw you predict its colour, and you earn \$1 for each correct prediction. Playing optimally, what are your expected winnings, i.e. what is the fair price to play?
+HINT1:
+Your guess affects only the current draw's payout; you see every ball anyway. So what is the best guess at each step?
+HINT2:
+Always guess the colour that has more balls left (either one on a tie). Then compute the probability of being right on each of the four draws and add them up (linearity of expectation).
+ANSWER:
+$\dfrac{17}{6}\approx$ \$2.83
+REFRESH:
+**Linearity of expectation**: $\mathbb E[X_1+\dots+X_n]=\mathbb E X_1+\dots+\mathbb E X_n$, where $X_k$ is the indicator that the $k$-th guess is right.
+EXPLANATION:
+Because you observe every ball whatever you guess, a guess never changes what you learn later; so the greedy strategy "bet on the majority colour" is optimal. Then add the chances of being right draw by draw: the first draw is a coin flip ($\frac12$), the second is $\frac23$ (the majority colour has $2$ of the $3$ balls left), the third depends on whether the first two balls matched, and the last ball is known for sure.
+SOLUTION: Linearity, draw by draw
+Strategy: guess the colour with more balls remaining.
+
+Draw 1: $2$ vs $2$, right with probability $\frac12$.
+
+Draw 2: after one ball, the remaining are $2$ of one colour and $1$ of the other; guessing the majority is right with probability $\frac23$.
+
+Draw 3: if the first two balls had the same colour (probability $\frac13$: the second ball matches the first with probability $\frac13$), the remaining two balls both have the other colour and you are right for sure. Otherwise (probability $\frac23$) one of each remains and you are right with probability $\frac12$. So $\frac13\cdot1+\frac23\cdot\frac12=\frac23$.
+
+Draw 4: the last ball is known, right with probability $1$.
+$$\mathbb E[\text{winnings}]=\frac12+\frac23+\frac23+1=\frac{3+4+4+6}{6}=\frac{17}{6}\approx 2.83.$$
+Note: one source quotes \$17/6 but its written reasoning ($\frac12+\frac23+1$) leaves out the third draw and adds up to \$13/6; the correct value is \$17/6, because all four draws pay.
+SOLUTION: Recursion on the remaining balls
+Let $V(b,r)$ be the expected winnings with $b$ blue and $r$ red left. $V(b,0)=b$, $V(0,r)=r$, and with $b\ge r$,
+$$V(b,r)=\frac{b}{b+r}\big(1+V(b-1,r)\big)+\frac{r}{b+r}V(b,r-1).$$
+$V(1,1)=\frac12(1+1)+\frac12\cdot1=\frac32$. $V(2,1)=\frac23(1+V(1,1))+\frac13V(2,0)=\frac23\cdot\frac52+\frac23=\frac73$. By symmetry $V(1,2)=V(2,1)$, so $V(2,2)=\frac12(1+V(1,2))+\frac12V(2,1)=\frac12\cdot\frac{10}{3}+\frac12\cdot\frac73=\frac{17}{6}$.
+===END===
+
+===TEASER===
+SLUG: smallest-multiple-of-15-zeros-ones
+IDS: Q-025, W-021
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Multiple of 15 made of 0s and 1s
+QUESTION:
+What is the smallest positive multiple of $15$ whose decimal digits are all $0$ or $1$?
+HINT1:
+$15=3\times5$. Use the divisibility rules for $3$ and for $5$ separately.
+HINT2:
+Divisible by $5$ forces the last digit. Divisible by $3$ means the digit sum is a multiple of $3$, so how many $1$s do you need at least?
+ANSWER:
+$1110$
+REFRESH:
+**Divisibility rules**: $n$ is divisible by $5$ iff its last digit is $0$ or $5$; $n$ is divisible by $3$ iff the sum of its digits is divisible by $3$ (because $10\equiv1\pmod3$).
+EXPLANATION:
+A number made of $0$s and $1$s can only end in $0$ (it can't end in $5$) to be a multiple of $5$. Its digit sum equals its number of $1$s, which must be a multiple of $3$, so at least three $1$s. The smallest such number has three $1$s followed by a single $0$.
+SOLUTION: Divisibility rules
+Divisible by $5$ and digits in $\{0,1\}$: the last digit is $0$. Divisible by $3$: the number of $1$s is a multiple of $3$, hence at least $3$. So the number has at least $4$ digits, and among $4$-digit candidates with three $1$s and last digit $0$ there is only $1110$. Check: $1110=15\times74$.
+===END===
+
+===TEASER===
+SLUG: limit-one-plus-one-over-n-to-the-n
+IDS: Q-010, W-033
+FIRMS: Squarepoint Capital
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: The limit that defines e
+QUESTION:
+What is $\displaystyle\lim_{n\to\infty}\left(1+\frac1n\right)^n$? Why does this limit matter for interest compounding?
+HINT1:
+Take the logarithm: the expression becomes $n\ln\left(1+\frac1n\right)$.
+HINT2:
+Use $\ln(1+x)=x-\frac{x^2}{2}+\dots$ with $x=\frac1n$. For the finance part, think of a rate of $100\%$ a year compounded $n$ times a year.
+ANSWER:
+$e\approx2.71828$; it is the growth factor of \$1 after one year at a $100\%$ annual rate compounded continuously, and more generally $(1+r/n)^{nT}\to e^{rT}$.
+REFRESH:
+**Taylor series of the logarithm**: $\ln(1+x)=x-\frac{x^2}{2}+\frac{x^3}{3}-\dots$ for $|x|<1$.
+
+**Continuity of exp**: if $a_n\to a$ then $e^{a_n}\to e^a$.
+EXPLANATION:
+The logarithm of $(1+\frac1n)^n$ is $n\ln(1+\frac1n)=1-\frac{1}{2n}+\dots\to1$, so the expression tends to $e^1$.
+
+Finance meaning: a rate $r$ paid $n$ times a year gives $(1+r/n)^n$ per year. Compounding more often helps, but with diminishing returns: annual $1+r$, monthly a bit more, and in the limit of continuous compounding $e^{r}$. That's why continuous-time finance writes growth as $e^{rT}$ and discounts with $e^{-rT}$: \$1 at $5\%$ continuously compounded becomes $e^{0.05}\approx1.0513$ after a year, i.e. an effective annual rate of $5.13\%$.
+SOLUTION: Logarithm and Taylor expansion
+Let $a_n=(1+\frac1n)^n$. Then
+$$\ln a_n=n\ln\left(1+\frac1n\right)=n\left(\frac1n-\frac{1}{2n^2}+O\!\left(\frac1{n^3}\right)\right)=1-\frac1{2n}+O\!\left(\frac1{n^2}\right)\longrightarrow1.$$
+By continuity of the exponential, $a_n\to e\approx2.718281828$.
+SOLUTION: Binomial expansion
+$$\left(1+\frac1n\right)^n=\sum_{k=0}^n\binom nk\frac1{n^k}=\sum_{k=0}^n\frac1{k!}\cdot\frac{n(n-1)\cdots(n-k+1)}{n^k}.$$
+For each fixed $k$, $\frac{n(n-1)\cdots(n-k+1)}{n^k}\to1$, and each term is at most $\frac1{k!}$, so (dominated convergence for series) the sum tends to $\sum_{k\ge0}\frac1{k!}=e$.
+===END===
+
+===TEASER===
+SLUG: volatility-up-call-price
+IDS: W-022, W-099
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: What happens to option prices when volatility rises?
+QUESTION:
+All else equal (spot, strike, maturity, interest rate), what happens to the price of a European call when the volatility of the underlying goes up? And to the price of a European put?
+HINT1:
+Look at the shape of the payoff $\max(S_T-K,0)$. What does extra spread in $S_T$ do to a payoff that is flat on one side?
+HINT2:
+The payoff is convex: you keep the extra upside from a wider distribution but your downside is capped at $0$. For the put, use put-call parity: $C-P$ does not depend on volatility.
+ANSWER:
+Both go up: calls and puts have positive vega, because their payoffs are convex (the option holder gains from larger moves but loses at most the premium).
+REFRESH:
+**Jensen's inequality**: for a convex $f$, $\mathbb E f(X)\ge f(\mathbb E X)$, and a mean-preserving spread of $X$ increases $\mathbb E f(X)$.
+
+**Black–Scholes vega**: $\dfrac{\partial C}{\partial\sigma}=S\,\varphi(d_1)\sqrt T>0$, where $\varphi$ is the standard normal density; the same formula holds for the put.
+
+**Put-call parity**: $C-P=S-Ke^{-rT}$.
+EXPLANATION:
+An option is a bet on the size of the move with limited downside. If the stock becomes more volatile, the chance of finishing far in the money rises, and the chance of finishing far out of the money rises too, but out of the money the payoff is $0$ however far away you are. So only the good tail counts: more volatility, more expected payoff, higher price. Mathematically, the call payoff is convex and a mean-preserving spread raises the expectation of a convex function (Jensen).
+
+For the put the same argument works, and parity confirms it: $C-P=S-Ke^{-rT}$ has no $\sigma$ in it, so if $C$ goes up with volatility, $P$ goes up by exactly the same amount. Vega is largest at the money and for long maturities (it is $S\varphi(d_1)\sqrt T$).
+
+Caveats worth mentioning in an interview: this is for plain vanilla options with everything else held fixed. Some exotics can lose value when vol rises (a knock-out call is more likely to be knocked out; a deep in-the-money digital loses probability of staying in the money).
+SOLUTION: Convexity argument
+The call payoff $f(s)=\max(s-K,0)$ is convex. Under the pricing measure the forward $\mathbb E S_T=Se^{rT}$ is fixed; raising $\sigma$ spreads the distribution of $S_T$ around that mean (for lognormal $S_T$ the higher-$\sigma$ law is a mean-preserving spread of the lower-$\sigma$ one). For a convex $f$, a mean-preserving spread increases $\mathbb E f(S_T)$, so $C=e^{-rT}\mathbb E f(S_T)$ increases. The put payoff $\max(K-s,0)$ is also convex, so the same holds.
+SOLUTION: Black–Scholes vega
+$C=SN(d_1)-Ke^{-rT}N(d_2)$ with $d_{1,2}=\dfrac{\ln(S/K)+(r\pm\frac12\sigma^2)T}{\sigma\sqrt T}$. Differentiating and using the identity $S\varphi(d_1)=Ke^{-rT}\varphi(d_2)$ gives
+$$\frac{\partial C}{\partial\sigma}=S\varphi(d_1)\sqrt T>0.$$
+By parity $P=C-S+Ke^{-rT}$, so $\partial P/\partial\sigma=\partial C/\partial\sigma>0$ as well.
+===END===
+
+===TEASER===
+SLUG: put-call-parity-price-the-put
+IDS: W-042, W-081, W-096
+FIRMS: SIG
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: Price the put from the call
+QUESTION:
+A stock trades at $100$. A 1-year European call with strike $100$ costs \$10, and the continuously compounded interest rate is $5\%$. The stock pays no dividends. What should the 1-year European put with strike $100$ cost?
+HINT1:
+A long call and a short put with the same strike and maturity together pay something very simple at expiry. What?
+HINT2:
+Call minus put pays $S_T-K$ at expiry in every scenario, which is exactly a forward. So today $C-P=S-Ke^{-rT}$.
+ANSWER:
+$P=C-S+Ke^{-rT}=10-100+100e^{-0.05}\approx$ \$5.12
+REFRESH:
+**Put-call parity** (European options, no dividends): $C-P=S_0-Ke^{-rT}$.
+
+**No-arbitrage / law of one price**: two portfolios with the same payoff in every state must have the same price today.
+EXPLANATION:
+At expiry, $\max(S_T-K,0)-\max(K-S_T,0)=S_T-K$ whatever $S_T$ is: when $S_T>K$ the call pays and the put is worthless, and vice versa. So "long call, short put" is a synthetic forward, and it must cost what the forward costs: the stock today minus the present value of the strike. Hence $P=C-S+Ke^{-rT}$.
+
+Here the call is \$10 and the forward is worth $100-100e^{-0.05}\approx4.88$, so the put is worth $10-4.88=5.12$. The call is more expensive than the put because the strike is paid a year later: at-the-money spot, the forward is in the money for the call.
+SOLUTION: Apply put-call parity
+$$P=C-S_0+Ke^{-rT}=10-100+100e^{-0.05}.$$
+$e^{-0.05}=1-0.05+0.00125-0.0000208+\dots\approx0.951229$, so $100e^{-0.05}\approx95.12$ and
+$$P\approx10-100+95.12=5.12.$$
+SOLUTION: Arbitrage if the put is mispriced
+Suppose the put traded at some price $P$. Today: sell the put ($+P$), buy the call ($-10$), short the stock ($+100$), and deposit the net cash $90+P$ at $5\%$.
+
+At expiry: the long call and short put together pay $S_T-100$; buying back the stock costs $S_T$; the deposit is worth $(90+P)e^{0.05}$. Net:
+$$(S_T-100)-S_T+(90+P)e^{0.05}=(90+P)e^{0.05}-100,$$
+a riskless amount, positive exactly when $P>100e^{-0.05}-90\approx5.12$. If $P<5.12$, doing every trade in reverse locks in a riskless profit. Only $P\approx5.12$ leaves no free money.
+FOLLOWUP: A 90-day example
+A 90-day European call with $S=K=100$ trades at about \$5, and the continuously compounded rate is $4\%$. Use put-call parity to price the put.
+FOLLOWUP_ANSWER:
+$P=C-S+Ke^{-rT}$. With $T=90/365\approx0.2466$: $rT\approx0.00986$, $100e^{-0.00986}\approx99.02$, so $P\approx5-100+99.02=4.02$. With the $90/360=0.25$ convention: $100e^{-0.01}\approx99.005$ and $P\approx4.005$. Either way the put is about \$4.01, roughly \$1 below the call, i.e. about the interest on the strike: $K(1-e^{-rT})\approx100\cdot0.01$.
+FOLLOWUP: Explain put-call parity
+Explain put-call parity: what it says, why it holds, and when it can fail.
+FOLLOWUP_ANSWER:
+For European options on the same non-dividend stock with the same strike $K$ and maturity $T$: $C-P=S_0-Ke^{-rT}$. **Why**: the portfolio "long call, short put" pays $S_T-K$ in every state, the same as "long stock, borrow $Ke^{-rT}$"; by no-arbitrage they cost the same today. **Uses**: price a put from a call, build synthetic stock or forwards, back out the implied forward/interest rate or dividend, and check that call and put implied vols agree. **With dividends**: $C-P=S_0-\text{PV(div)}-Ke^{-rT}$ (or $S_0e^{-qT}$ for a continuous yield $q$). **Limits**: it is model-free but needs European exercise (for American options only inequalities hold), frictionless borrowing/shorting (hard-to-borrow stocks or funding costs break it in practice), and same underlying, strike and maturity.
+===END===
+
+===TEASER===
+SLUG: atm-straddle-price-approximation
+IDS: Q-464, W-045
+FIRMS: Goldman Sachs
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Price an at-the-money straddle
+QUESTION:
+Estimate the price of an at-the-money straddle (one call plus one put, both with strike equal to spot) with underlying price $S=20$, time to expiry $T=0.36$ years and volatility $\sigma=0.4$. Assume zero interest rates. Give the result to $2$ decimal places.
+HINT1:
+At the money with zero rates, the call and the put are worth the same. Is there a quick approximation for an ATM option in terms of $S$, $\sigma$ and $\sqrt T$?
+HINT2:
+With $K=S$ and $r=0$, $d_1=\frac12\sigma\sqrt T$ and $d_2=-d_1$, so $C=S\,(2N(d_1)-1)$. For small $x$, $N(x)\approx\frac12+\frac{x}{\sqrt{2\pi}}$.
+ANSWER:
+About \$3.82 (exact Black–Scholes with $r=0$); the rule of thumb $0.8\,S\sigma\sqrt T$ gives $3.83$–$3.84$.
+REFRESH:
+**Black–Scholes** ($r=0$): $C=SN(d_1)-KN(d_2)$, $d_{1,2}=\dfrac{\ln(S/K)\pm\frac12\sigma^2T}{\sigma\sqrt T}$; put-call parity with $r=0$ and $K=S$ gives $P=C$.
+
+**Mean absolute value of a normal**: if $X\sim N(0,s^2)$, $\mathbb E|X|=s\sqrt{2/\pi}\approx0.8\,s$.
+EXPLANATION:
+A straddle pays $|S_T-K|$: it is a bet on the size of the move, not its direction. At the money, the move over the life of the option has standard deviation about $S\sigma\sqrt T$ (here $20\times0.4\times0.6=4.8$ dollars), and the expected absolute value of a centred normal is $\sqrt{2/\pi}\approx0.8$ times its standard deviation. So a straddle is worth about $0.8\,S\sigma\sqrt T$ and each leg about $0.4\,S\sigma\sqrt T$. This is the standard trader's shortcut.
+
+The exact Black–Scholes value is very slightly lower ($3.82$) because the lognormal distribution is not exactly normal; the approximation error is of order $(\sigma\sqrt T)^3$.
+SOLUTION: Exact Black–Scholes with zero rates
+$\sigma\sqrt T=0.4\times0.6=0.24$. With $K=S$ and $r=0$: $d_1=\frac12(0.24)=0.12$, $d_2=-0.12$, so
+$$C=S\big(N(0.12)-N(-0.12)\big)=S\,(2N(0.12)-1).$$
+$N(0.12)\approx0.5+0.12\,\varphi(0)-\dots\approx0.54776$ (with $\varphi(0)=0.39894$ and a tiny cubic correction). Hence $C\approx20\times0.09552=1.910$. By put-call parity with $r=0$ and $K=S$, $P=C$. The straddle is
+$$2C\approx3.82.$$
+Note: the source states $3.83$, which is the value of the $\sqrt{2/\pi}\,S\sigma\sqrt T$ approximation; the exact Black–Scholes value with zero rates is $3.82$.
+SOLUTION: Trader's approximation
+$N(x)\approx\frac12+\frac{x}{\sqrt{2\pi}}$ for small $x$, so $C\approx S\cdot\frac{2d_1}{\sqrt{2\pi}}=\frac{S\sigma\sqrt T}{\sqrt{2\pi}}\approx0.4\,S\sigma\sqrt T$ and the straddle is
+$$2C\approx\sqrt{\tfrac2\pi}\,S\sigma\sqrt T\approx0.798\times20\times0.24=3.83.$$
+(With the rounder constant $0.8$: $0.8\times4.8=3.84$.)
+FOLLOWUP: 1-year straddle on a \$100 stock
+What does a 1-year at-the-money straddle on a \$100 stock cost if implied volatility is $30\%$ (zero rates)?
+FOLLOWUP_ANSWER:
+About \$24. Rule of thumb: $0.8\,S\sigma\sqrt T=0.8\times100\times0.3\times1=24$. Exact Black–Scholes: $d_1=0.15$, $C=100(2N(0.15)-1)\approx100\times0.1192=11.92$, straddle $\approx23.85$.
+===END===
+
+===TEASER===
+SLUG: kelly-bet-75-percent-even-money
+IDS: Q-019, W-053
+FIRMS: IMC, Old Mission, SIG
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: How much of your bankroll to bet
+QUESTION:
+You can repeatedly play a game that you win with probability $75\%$, at even odds ($1:1$: win and you gain your stake, lose and you lose it). What fraction of your bankroll should you bet each time to maximise long-run growth?
+HINT1:
+Betting everything each time is ruin with probability one in the long run; betting nothing earns nothing. Look at the growth rate of the logarithm of wealth.
+HINT2:
+If you bet a fraction $f$, wealth is multiplied by $1+f$ or $1-f$. Maximise $g(f)=0.75\ln(1+f)+0.25\ln(1-f)$.
+ANSWER:
+$f^*=\frac12$ of the bankroll (Kelly: $f^*=p-q=0.75-0.25$).
+REFRESH:
+**Kelly criterion**: for a bet paying $b$ to $1$ won with probability $p$ ($q=1-p$), the fraction maximising $\mathbb E\ln(\text{wealth})$ is $f^*=p-\dfrac{q}{b}$.
+
+**Law of large numbers**: after $n$ independent bets, $\frac1n\ln W_n\to\mathbb E\ln(1+fR)$ almost surely, so maximising the expected log maximises the long-run growth rate.
+EXPLANATION:
+Wealth compounds multiplicatively, so what matters in the long run is the average of the **log** return, not the average return. Betting a large fraction has a high expected return but a bad log return (a loss of fraction $f$ costs $-\ln(1-f)$, which explodes as $f\to1$). The Kelly fraction balances the two.
+
+For an even-money bet, the optimum is simply the edge: $f^*=p-q=0.5$. At that fraction wealth grows by about $e^{0.131}\approx1.14$ per bet in the long run. Traders usually bet a fraction of Kelly (half Kelly keeps about $3/4$ of the growth rate with half the volatility), because $p$ is estimated with error and overbetting is much worse than underbetting.
+SOLUTION: Maximise expected log wealth
+Bet a fraction $f$ each round. Wealth is multiplied by $1+f$ (probability $0.75$) or $1-f$ (probability $0.25$). The long-run growth rate per bet is
+$$g(f)=0.75\ln(1+f)+0.25\ln(1-f).$$
+$$g'(f)=\frac{0.75}{1+f}-\frac{0.25}{1-f}=0\ \Longrightarrow\ 0.75(1-f)=0.25(1+f)\ \Longrightarrow\ 0.5=f.$$
+$g''<0$, so this is the maximum: bet **half** your bankroll. Growth rate $g(0.5)=0.75\ln1.5+0.25\ln0.5\approx0.3041-0.1733=0.1308$ per bet.
+SOLUTION: Kelly formula
+$f^*=p-\frac qb$ with $p=0.75$, $q=0.25$, $b=1$: $f^*=0.75-0.25=0.5$. Equivalently, "edge over odds": the expected profit per \$1 is $0.75-0.25=0.5$, divided by the odds $b=1$.
+FOLLOWUP: Kelly for a continuous strategy
+A strategy has expected (excess) return $5\%$ a year and volatility $15\%$. What fraction of your capital should you allocate to it?
+FOLLOWUP_ANSWER:
+For small returns, the log-growth rate when allocating a fraction $f$ is $g(f)\approx f\mu-\frac12f^2\sigma^2$, maximised at $f^*=\frac{\mu}{\sigma^2}=\frac{0.05}{0.0225}\approx2.22$: full Kelly means $2.2\times$ leverage, with growth rate $\frac{\mu^2}{2\sigma^2}\approx5.6\%$ a year. In practice one uses a fraction of Kelly (about $\frac14$ to $\frac12$, i.e. $0.55$ to $1.1\times$ capital), because $\mu$ is very uncertain, returns have fat tails, and overshooting Kelly quickly destroys growth (at $2f^*$ the growth rate is zero).
+===END===
+
+===TEASER===
+SLUG: value-at-risk-and-limits
+IDS: W-100, W-055
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: Value at Risk and its limitations
+QUESTION:
+Explain what Value at Risk (VaR) is, how it is typically computed, and what its main limitations are.
+HINT1:
+VaR answers one question about the loss distribution over a horizon. Which quantile of it?
+HINT2:
+Think about what VaR does **not** tell you: how bad the losses beyond the threshold are, and whether the risk of two books combined is at most the sum of their risks.
+ANSWER:
+VaR at level $\alpha$ over horizon $h$ is the loss threshold that is exceeded with probability only $1-\alpha$ (e.g. 1-day 99% VaR); it ignores the size of tail losses, is not subadditive, and depends heavily on model assumptions and data.
+REFRESH:
+**Quantile**: $q_\alpha(L)=\inf\{x: P(L\le x)\ge\alpha\}$.
+
+**Expected shortfall**: $\text{ES}_\alpha=\mathbb E[L\mid L\ge\text{VaR}_\alpha]$ (for continuous $L$), the average loss in the worst $1-\alpha$ of cases.
+EXPLANATION:
+If $L$ is the loss of a portfolio over a horizon (1 day, 10 days), $\text{VaR}_{99\%}=\$1\text{M}$ means: on 99% of days you lose less than \$1M, and on 1% of days (about 2–3 days a year) you lose more. It condenses risk into one number in dollars, which makes it easy to set limits and compare desks.
+
+Computation: (1) **parametric**: assume normal P&L with volatility $\sigma_P$, then $\text{VaR}_\alpha=z_\alpha\sigma_P$ ($z_{95\%}=1.645$, $z_{99\%}=2.326$); (2) **historical simulation**: revalue today's portfolio under the last $N$ days of market moves and take the empirical quantile; (3) **Monte Carlo** from a fitted model.
+
+Limitations: it says nothing about how big the loss is when the threshold is breached (two books with the same VaR can have wildly different tails); it is not subadditive, so splitting or merging portfolios can make VaR go down while risk goes up; normal assumptions understate fat tails and correlations that jump in a crisis; historical windows miss events not in the sample and are procyclical; liquidity (you can't exit at the marked price) and horizon scaling ($\sqrt h$ assumes i.i.d. returns) are ignored; and it can be gamed, e.g. by selling far out-of-the-money options, which earn premium almost always and lose hugely beyond the quantile. Expected shortfall and stress tests address some of these.
+SOLUTION: Definition and a worked number
+Let $L$ be the loss over horizon $h$. $\text{VaR}_\alpha=q_\alpha(L)$, the $\alpha$-quantile. Example: a \$10M equity position with daily volatility $1.5\%$, normal P&L. Then $\sigma_P=\$150{,}000$ and
+$$\text{VaR}_{99\%,1d}=2.326\times150{,}000\approx\$349{,}000,\qquad \text{VaR}_{99\%,10d}\approx349{,}000\sqrt{10}\approx\$1.10\text{M}.$$
+Non-subadditivity example: two independent bonds, each defaulting with probability $4\%$ and losing \$100 then. Each alone has $\text{VaR}_{95\%}=0$ (default is less likely than $5\%$). Together, $P(\text{at least one default})=1-0.96^2=7.84\%>5\%$, so the combined $\text{VaR}_{95\%}=\$100>0+0$: diversification appears to increase risk.
+FOLLOWUP: Living with a VaR limit
+Your daily VaR limit is \$100K and you may take any position. What does this constrain, in practice?
+FOLLOWUP_ANSWER:
+It caps size relative to volatility: with a parametric VaR, notional $\le\frac{100{,}000}{z_\alpha\,\sigma_{\text{daily}}}$. For a stock with $2\%$ daily vol: at $99\%$ ($z=2.326$) about $\frac{100{,}000}{0.0465}\approx\$2.15$M; at $95\%$ ($z=1.645$) about \$3.04M. Consequences: when volatility rises you must cut positions even if your view is unchanged; hedged or diversified books allow more gross notional (VaR uses net correlated risk); the confidence level and the model matter a lot. And what it does **not** constrain: tail risk beyond the quantile (short options, illiquid or gap-risk positions can look small in VaR), so desks also get stress-loss, Greek and concentration limits.
+===END===
+
+===TEASER===
+SLUG: backtest-overfitting-sharpe-gap
+IDS: W-102, W-056
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: Overfitting in backtests
+QUESTION:
+Explain what overfitting means when backtesting a trading strategy, why it happens, and how you would guard against it.
+HINT1:
+A backtest is an estimate made on a finite, noisy sample. What happens if you try many variants and keep the best one?
+HINT2:
+Think "data snooping": the maximum of many noisy Sharpe ratios is biased upward even if every strategy has zero true edge. Then think of the defences: out-of-sample data, fewer parameters, economic rationale, adjusting for the number of trials.
+ANSWER:
+Overfitting is fitting the noise of the historical sample (via too many parameters or too many tried variants) so the backtest looks great but has no predictive power; guard with out-of-sample/walk-forward testing, few parameters with an economic rationale, realistic costs, and deflating the Sharpe for the number of trials.
+REFRESH:
+**Standard error of a Sharpe ratio**: with $T$ years of i.i.d. returns, the estimated annual Sharpe $\widehat{SR}$ has standard error about $\sqrt{(1+\frac12SR^2)/T}$.
+
+**Maximum of many noise estimates**: the maximum of $N$ independent $N(0,s^2)$ variables is about $s\sqrt{2\ln N}$ for large $N$.
+EXPLANATION:
+A backtest Sharpe ratio is a noisy statistic. If you try $N$ strategies (or parameter settings) with zero true edge and keep the best, you'll still find something that looks good: its expected backtest Sharpe is roughly $\text{SE}\cdot\sqrt{2\ln N}$. With 5 years of data (SE $\approx0.45$) and 200 trials, that's about $0.45\times3.3\approx1.5$ from pure luck. Many parameters do the same thing implicitly: each free knob is a trial.
+
+Symptoms: performance very sensitive to parameters, great in-sample and poor out-of-sample, a story invented after the fact. Defences: hold out data you never look at until the end; walk-forward (re-fit on a rolling window, test on the next one); keep models simple and grounded in an economic reason; count every trial and deflate the Sharpe accordingly; check stability across sub-periods, assets and parameter neighbourhoods; include realistic costs and fills; beware look-ahead and survivorship bias.
+SOLUTION: A quick quantitative check
+Suppose you test $N=100$ variants of a rule on $4$ years of daily data, and in truth none has any edge. Each backtest Sharpe is approximately $N(0,\frac14)$, i.e. standard error $\frac1{\sqrt4}=0.5$. The best of $100$ is around $0.5\sqrt{2\ln100}=0.5\sqrt{9.2}\approx1.5$. So a reported in-sample Sharpe of $1.5$ from such a search is fully consistent with no edge at all; out of sample it would regress to about $0$. The fix is to compare the best Sharpe with this "luck benchmark" (deflated Sharpe ratio) and to confirm on data not used in the search.
+FOLLOWUP: Sharpe 3 in backtest, 0.5 live
+A market-making strategy had a backtested Sharpe ratio of $3$, but live it delivers $0.5$. What could explain the gap?
+FOLLOWUP_ANSWER:
+(1) **Fill assumptions / adverse selection**: backtests often assume your quote fills whenever the price touches it; live, you get filled mostly when the market moves through you (informed flow), and you are behind others in the queue when it doesn't. This alone can erase most of a market maker's edge. (2) **Latency and competition**: faster players take the good trades; quotes are stale. (3) **Costs**: exchange fees and rebate tiers, spread paid when hedging, market impact of your own trades. (4) **Overfitting / data snooping** of the parameters, plus look-ahead or survivorship bias. (5) **Regime change**: lower volatility or tighter spreads than in the sample. (6) **Statistical noise**: with one year live, the standard error of the Sharpe is about $\sqrt{1+\frac12(0.5)^2}\approx1.06$, so $0.5$ vs a "true" value near $1.5$ is not even significant; but a gap to $3$ usually points to (1)–(4). Diagnose by comparing live and simulated fills trade by trade (markouts after fills).
+===END===
+
+===TEASER===
+SLUG: dice-sum-market-making
+IDS: W-035, W-036, W-037, W-038, W-040, W-080
+FIRMS: SIG
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: Make a market on the sum of two dice
+QUESTION:
+I will roll two fair dice and pay you their sum in dollars. Make me a market: quote a bid (the price at which you buy this payout from me) and an ask (the price at which you sell it to me). How would you adjust if I keep trading on one side?
+HINT1:
+Start with the fair value: the expected payout. Then think about how uncertain the payout is and how much edge you want per trade.
+HINT2:
+$\mathbb E[\text{sum}]=7$; the standard deviation is $\sqrt{2\cdot\frac{35}{12}}\approx2.4$. Quote around $7$, symmetric, with a width that leaves you some edge but is still tight enough to trade.
+ANSWER:
+Fair value \$7; a reasonable market is something like $6.5$ bid / $7.5$ offer (or $6$ at $8$ to start), moved up if I keep buying and down if I keep selling.
+REFRESH:
+**Mean and variance of one die**: $\mathbb E X=3.5$, $\operatorname{Var}X=\frac{35}{12}$; for independent dice the means and variances add.
+
+**Bid/ask**: the bid is the price at which the market maker buys, the ask (offer) the price at which it sells; the edge is the distance from fair value.
+EXPLANATION:
+A market maker quotes both sides around fair value and earns the half-spread on each trade, as long as the counterparty has no extra information. Fair value here is $\mathbb E[X_1+X_2]=7$. The width reflects risk and uncertainty: the payout ranges from $2$ to $12$ with standard deviation about $2.4$, but since the game is fully known there is no model uncertainty, so a tight market like $6.5$–$7.5$ is fine.
+
+How to react to one-sided flow: if the interviewer keeps lifting your offer (buying from you), either they know something (loaded dice?) or you are simply too cheap; each trade also leaves you short more of the payout. So shift both quotes up (e.g. to $7$–$8$) and possibly widen, and ask yourself what they know. The same logic works in reverse if they keep hitting your bid. Being able to explain this updating is as important as the fair value.
+SOLUTION: Fair value, risk, quote
+Fair value: $\mathbb E[X_1+X_2]=3.5+3.5=7$.
+
+Risk: $\operatorname{Var}=2\cdot\frac{35}{12}=\frac{35}{6}\approx5.83$, standard deviation $\approx2.42$; the payout is between $2$ and $12$.
+
+Quote: $6.5$ bid, $7.5$ ask (width $1$, i.e. $0.5$ edge each side). If you are unsure of the interviewer's intentions, start wider ($6$ at $8$) and tighten as you see how they trade.
+
+Updating: after they buy at $7.5$ several times, move to $7$–$8$ or $7.25$–$8.25$; your position (short the payout) also argues for raising your bid so you can buy some back.
+FOLLOWUP: Median of five dice
+I roll five fair dice and pay you the median value in dollars. Make me a market.
+FOLLOWUP_ANSWER:
+By symmetry (replacing every die value $X$ by $7-X$ turns the median $M$ into $7-M$, so $M$ and $7-M$ have the same law), fair value is $3.5$. The median is concentrated: $P(3)=P(4)\approx0.290$, $P(2)=P(5)\approx0.174$, $P(1)=P(6)\approx0.036$ (e.g. $P(\text{median}\le1)=P(\text{at least 3 ones})=\sum_{k\ge3}\binom5k(\frac16)^k(\frac56)^{5-k}\approx0.0355$), so the standard deviation is only about $1.17$. A tight market such as $3.25$ at $3.75$ (or $3$ at $4$) is appropriate.
+FOLLOWUP: Flips until the first head
+I flip a fair coin until the first head and pay you the number of flips in dollars. Make me a market.
+FOLLOWUP_ANSWER:
+The number of flips is geometric with $p=\frac12$: mean $\frac1p=2$, variance $\frac{1-p}{p^2}=2$ (sd $\approx1.41$), and it is right-skewed (it can be large, never below $1$). Quote around $2$, e.g. $1.75$ at $2.25$ or $1.5$ at $2.5$; be a bit more careful selling, because the tail is unbounded.
+FOLLOWUP: Random integer from 1 to 100
+I pick a uniformly random integer from $1$ to $100$ and pay you that many dollars. Make me a market.
+FOLLOWUP_ANSWER:
+Mean $\frac{1+100}{2}=50.5$; sd $=\sqrt{\frac{100^2-1}{12}}\approx28.9$. The risk per trade is large relative to the price, so quote wider in absolute terms, e.g. $48$ at $53$ (or $47$ at $54$), and size small.
+FOLLOWUP: Hearts in five cards
+I draw $5$ cards from a standard deck **with replacement** and pay you the number of hearts. Make me a market.
+FOLLOWUP_ANSWER:
+The count is $\text{Bin}(5,\frac14)$: mean $5\cdot\frac14=1.25$, variance $5\cdot\frac14\cdot\frac34=0.9375$ (sd $\approx0.97$). Quote around $1.25$, e.g. $1.1$ at $1.4$, or $1$ at $1.5$ to start.
+FOLLOWUP: Sum of three dice: buy or sell?
+I will pay you the sum of three rolls of a fair die. How much would you pay to play, and at what price would you rather sell?
+FOLLOWUP_ANSWER:
+Fair value $3\times3.5=10.5$, sd $\sqrt{3\cdot\frac{35}{12}}\approx2.96$. You'd pay anything below $10.5$ and sell anything above; as a market maker, quote e.g. $10$ bid, $11$ offer, keeping $0.5$ of edge on each side, and shift the quotes if the flow is one-sided.
+===END===
+
+===TEASER===
+SLUG: near-squares-mental-multiplication
+IDS: W-025, W-059, W-065, W-073
+FIRMS: IMC, Jane Street, Optiver
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: 39 times 41 in your head
+QUESTION:
+Compute $39\times41$ mentally, in a few seconds.
+HINT1:
+The two numbers sit symmetrically around a round number.
+HINT2:
+$39\times41=(40-1)(40+1)$. Use $(a-b)(a+b)=a^2-b^2$.
+ANSWER:
+$1599$
+REFRESH:
+**Difference of squares**: $(a-b)(a+b)=a^2-b^2$.
+EXPLANATION:
+Whenever two factors are equally spaced around an easy number $a$ (their average), the product is $a^2$ minus the square of the half-gap. You only need to know squares of round numbers and small squares. Here the average is $40$ and the half-gap is $1$.
+SOLUTION: Difference of squares
+$$39\times41=(40-1)(40+1)=40^2-1^2=1600-1=1599.$$
+SOLUTION: Distribute
+$39\times41=39\times40+39=1560+39=1599$.
+FOLLOWUP: 17 times 23
+Compute $17\times23$ mentally (target: under five seconds).
+FOLLOWUP_ANSWER:
+$391$. The average is $20$, the half-gap $3$: $17\times23=20^2-3^2=400-9=391$.
+FOLLOWUP: 37 times 43
+Compute $37\times43$ in your head.
+FOLLOWUP_ANSWER:
+$1591$. $(40-3)(40+3)=1600-9=1591$.
+FOLLOWUP: 47 times 53
+Compute $47\times53$ mentally.
+FOLLOWUP_ANSWER:
+$2491$. $(50-3)(50+3)=2500-9=2491$.
+===END===
+
+===TEASER===
+SLUG: timed-arithmetic-test-drills
+IDS: W-071, W-072
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Timed arithmetic test drill
+QUESTION:
+Numerical-test style questions, from easy to hard. Answer each as fast as you can without paper:
+
+(a) $7+13$, $45-18$, $8\times6$;
+
+(b) $23\times17$, $456+789$, $1200/48$;
+
+(c) $67\times43$, $8.5\times14.4$, $3456-1789$.
+HINT1:
+Look for a structure in each one before computing: a round number nearby, a difference of squares, a convenient factorisation.
+HINT2:
+$23\times17$ and $67\times43$ are symmetric around $20$ and $55$. For $1200/48$, simplify the fraction first. For $8.5\times14.4$, split $8.5=8+\frac12$. For subtraction, subtract a round number and correct.
+ANSWER:
+(a) $20$, $27$, $48$; (b) $391$, $1245$, $25$; (c) $2881$, $122.4$, $1667$.
+REFRESH:
+**Difference of squares**: $(a-b)(a+b)=a^2-b^2$.
+
+**Compensation**: $x-y=(x-y')-(y-y')$ for a round $y'$ close to $y$; similarly for addition.
+EXPLANATION:
+Speed tests reward recognising a shortcut in a second, not fast column arithmetic. The main tools: round and correct ($45-18=45-20+2$), difference of squares for factors symmetric around a round number, simplifying divisions ($1200/48=100/4$), and splitting decimals into easy parts.
+SOLUTION: One shortcut per item
+(a) $7+13=20$. $45-18=45-20+2=27$. $8\times6=48$.
+
+(b) $23\times17=20^2-3^2=400-9=391$. $456+789=456+800-11=1256-11=1245$. $\frac{1200}{48}=\frac{100}{4}=25$ (divide both by $12$).
+
+(c) $67\times43$: average $55$, half-gap $12$: $55^2-12^2=3025-144=2881$. $8.5\times14.4=8\times14.4+\frac{14.4}{2}=115.2+7.2=122.4$. $3456-1789=3456-1800+11=1656+11=1667$.
+FOLLOWUP: Six seconds each
+About $6$ seconds each: $37\times13$, $84\times26$, $1728/12$, $456+378$, $63\times47$, $2.5\times3.6$, $5600/35$, $88\times12$.
+FOLLOWUP_ANSWER:
+$37\times13=370+111=481$. $84\times26=84\times25+84=2100+84=2184$. $1728/12=144$ ($12^3=1728$). $456+378=456+400-22=834$. $63\times47=55^2-8^2=3025-64=2961$. $2.5\times3.6=\frac{10}{4}\times3.6=9$. $5600/35=\frac{1120}{7}=160$. $88\times12=880+176=1056$.
+===END===
+
+===TEASER===
+SLUG: approximate-e-to-the-0-1
+IDS: W-111, W-113
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Approximate e to the 0.1
+QUESTION:
+Without a calculator, approximate $e^{0.1}$ to three decimal places.
+HINT1:
+$0.1$ is small. Which expansion of $e^x$ converges very fast for small $x$?
+HINT2:
+$e^x=1+x+\frac{x^2}{2}+\frac{x^3}{6}+\dots$; with $x=0.1$ each term is roughly $10$ to $30$ times smaller than the previous one.
+ANSWER:
+$e^{0.1}\approx1.105$ (more precisely $1.10517$).
+REFRESH:
+**Taylor series of the exponential**: $e^x=\sum_{k\ge0}\frac{x^k}{k!}$, valid for all $x$; for small $x$, truncating after the $x^n$ term leaves an error about $\frac{x^{n+1}}{(n+1)!}$.
+EXPLANATION:
+For small $x$, $e^x\approx1+x$ is the familiar first-order approximation (a $10\%$ continuously compounded return is about a $10.5\%$ simple return). The quadratic term $\frac{x^2}{2}=0.005$ gives the "compounding bonus", and the cubic term $0.000167$ is already below the third decimal.
+SOLUTION: Taylor series
+$$e^{0.1}=1+0.1+\frac{0.01}{2}+\frac{0.001}{6}+\frac{0.0001}{24}+\dots=1+0.1+0.005+0.000167+0.000004\approx1.10517.$$
+To three decimals: $1.105$.
+FOLLOWUP: Approximate ln 2
+Approximate $\ln2$ to three decimal places without a calculator.
+FOLLOWUP_ANSWER:
+$\ln2\approx0.693$. Fast series: $2=\frac{1+1/3}{1-1/3}$ and $\ln\frac{1+y}{1-y}=2\left(y+\frac{y^3}{3}+\frac{y^5}{5}+\dots\right)$, so $\ln2=2\left(\frac13+\frac1{81}+\frac1{1215}+\dots\right)\approx2(0.33333+0.01235+0.00082+0.00007)=0.6931$. Alternative: $2^{10}=1024\approx1000$, so $10\ln2=3\ln10+\ln1.024\approx3(2.3026)+0.0237=6.9315$, giving $0.69315$. (That's why the "rule of 70/72" works: doubling time $\approx\frac{\ln2}{r}\approx\frac{69.3}{100r}$.)
+===END===
+
+===TEASER===
+SLUG: estimate-square-root-of-110
+IDS: Q-421, W-030, W-092
+FIRMS: Belvedere Trading
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Square root of 110 in your head
+QUESTION:
+Approximate $\sqrt{110}$ to three decimal places without a calculator. Which quick techniques can you use?
+HINT1:
+Start from the nearest perfect square, $100$.
+HINT2:
+Linearise: $\sqrt{a^2+h}\approx a+\frac{h}{2a}$. Then correct your guess once more with the same idea (Newton's method).
+ANSWER:
+$\sqrt{110}\approx10.488$
+REFRESH:
+**First-order expansion**: $\sqrt{a^2+h}=a\sqrt{1+h/a^2}\approx a+\frac{h}{2a}-\frac{h^2}{8a^3}$ for $|h|\ll a^2$.
+
+**Newton's method for $\sqrt N$**: from a guess $x$, the next guess is $\frac12\left(x+\frac Nx\right)$, equivalently $x-\frac{x^2-N}{2x}$; the number of correct digits roughly doubles each step.
+EXPLANATION:
+The square root function is almost linear near a perfect square, with slope $\frac{1}{2a}$. So $\sqrt{100+10}\approx10+\frac{10}{20}=10.5$. Since $\sqrt{\ }$ is concave, the tangent line overshoots; one Newton correction ($10.5^2=110.25$ is $0.25$ too big, and dividing by $2\times10.5=21$ gives $0.0119$) brings you to $10.488$.
+SOLUTION: Tangent line, then one Newton step
+First guess: $\sqrt{110}\approx10+\frac{10}{2\cdot10}=10.5$.
+
+Check: $10.5^2=110.25$, too big by $0.25$. Newton correction: subtract $\frac{0.25}{2\times10.5}=\frac{0.25}{21}\approx0.0119$.
+$$\sqrt{110}\approx10.5-0.0119=10.488.$$
+(True value $10.48809$.)
+SOLUTION: Second-order expansion
+$\sqrt{100+10}\approx10+\frac{10}{20}-\frac{100}{8\cdot1000}=10+0.5-0.0125=10.4875$, and the next term $+\frac{h^3}{16a^5}=\frac{1000}{1600000}\approx0.0006$ gives $10.4881$.
+FOLLOWUP: Square root of 0.9
+Compute $\sqrt{0.9}$ in your head (approximately).
+FOLLOWUP_ANSWER:
+$\approx0.949$. Expand around $1$: $\sqrt{1-0.1}\approx1-\frac{0.1}{2}-\frac{0.01}{8}=1-0.05-0.00125=0.94875$. Or $\sqrt{0.9}=\frac{\sqrt{90}}{10}$ with $\sqrt{90}\approx9.5-\frac{90.25-90}{19}=9.5-0.0132=9.4868$, giving $0.94868$ (true $0.948683$).
+FOLLOWUP: Square root of 2
+Estimate $\sqrt2$ to two decimal places.
+FOLLOWUP_ANSWER:
+$1.41$. Bracketing: $1.41^2=1.9881<2<2.0164=1.42^2$, and $2$ is much closer to $1.9881$, so $\sqrt2\approx1.41+\frac{0.0119}{2.82}\approx1.4142$. Newton from $1.5$: $\frac12(1.5+\frac{2}{1.5})=\frac12(1.5+1.3333)=1.4167$, then $\frac12(1.4167+1.4118)=1.41422$.
+===END===
+
+===TEASER===
+SLUG: expected-product-of-dice
+IDS: W-074, Q-173, Q-160, Q-166
+FIRMS: Optiver, Belvedere Trading, Old Mission, SIG, Transmarket Group
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Expected product of two dice
+QUESTION:
+Two fair six-sided dice are rolled and the two results are multiplied. What is the expected value of the product?
+HINT1:
+Are the two dice independent? What does that say about the expectation of a product?
+HINT2:
+For independent $X,Y$, $\mathbb E[XY]=\mathbb E[X]\,\mathbb E[Y]$.
+ANSWER:
+$3.5^2=12.25$
+REFRESH:
+**Expectation of a product**: if $X$ and $Y$ are independent (and integrable), $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]$. In general $\mathbb E[XY]=\mathbb E X\,\mathbb E Y+\operatorname{Cov}(X,Y)$.
+EXPLANATION:
+Independence kills the covariance term, so the expected product is the product of the expectations: $3.5\times3.5$. No need to list the $36$ outcomes. (Contrast: the expected **square** of one die, $\mathbb E[X^2]=\frac{91}{6}\approx15.17$, is larger than $12.25$ because $X$ is perfectly correlated with itself.)
+SOLUTION: Independence
+$\mathbb E[X]=\frac{1+2+\dots+6}{6}=3.5$, so $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]=3.5^2=12.25$.
+SOLUTION: Brute-force sum
+$$\mathbb E[XY]=\frac1{36}\sum_{i=1}^6\sum_{j=1}^6ij=\frac{1}{36}\Big(\sum_i i\Big)\Big(\sum_j j\Big)=\frac{21\cdot21}{36}=\frac{441}{36}=12.25.$$
+FOLLOWUP: Three dice
+Three fair dice are rolled and the results multiplied. What is the mean of the product?
+FOLLOWUP_ANSWER:
+$\frac{343}{8}=42.875$. By independence, $\mathbb E[XYZ]=3.5^3=\left(\frac72\right)^3=\frac{343}{8}$.
+FOLLOWUP: Market on the 19-strike call
+Consider options on the product $XY$ of two fair dice. Make a market $2$ units wide, centred on fair value, on the call struck at $19$ (payoff $\max(XY-19,0)$). Report the sum of your bid and ask.
+FOLLOWUP_ANSWER:
+$\frac{19}{6}$. Products above $19$: $20$ (two ways: $4\cdot5,5\cdot4$) pays $1$ each; $24$ (two ways) pays $5$ each; $25$ (one way) pays $6$; $30$ (two ways) pays $11$ each; $36$ (one way) pays $17$. Total $2+10+6+22+17=57$, so fair value $\frac{57}{36}=\frac{19}{12}\approx1.58$. The market is $\frac{19}{12}-1$ at $\frac{19}{12}+1$, i.e. about $0.58$ at $2.58$, and bid $+$ ask $=2\cdot\frac{19}{12}=\frac{19}{6}\approx3.17$.
+FOLLOWUP: Value of the 4-strike put
+In the same setting, what is the fair value of the put struck at $4$ (payoff $\max(4-XY,0)$)?
+FOLLOWUP_ANSWER:
+$\frac14$. Products below $4$: $1$ (one way) pays $3$; $2$ (two ways) pays $2$ each; $3$ (two ways) pays $1$ each. Total $3+4+2=9$, so the value is $\frac{9}{36}=\frac14$.
+===END===
+
+===TEASER===
+SLUG: wait-for-repeated-birthday
+IDS: W-088, Q-128
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: How many people until a shared birthday?
+QUESTION:
+People are sampled one at a time; each birthday is uniform over $365$ days, independently. Let $N$ be the number of people sampled until, for the first time, someone shares a birthday with a person already sampled ($N$ includes that person). What is $\mathbb E[N]$?
+HINT1:
+$N$ is a positive integer random variable. Is there a formula for $\mathbb E[N]$ in terms of the tail probabilities $P(N>k)$?
+HINT2:
+$\mathbb E[N]=\sum_{k\ge0}P(N>k)$, and $N>k$ means the first $k$ people all have different birthdays: $P(N>k)=\prod_{i=0}^{k-1}\left(1-\frac{i}{365}\right)$.
+ANSWER:
+$\mathbb E[N]=\sum_{k=0}^{365}\prod_{i=0}^{k-1}\left(1-\frac{i}{365}\right)\approx24.62$
+REFRESH:
+**Tail-sum formula**: for a random variable with values in $\{0,1,2,\dots\}$, $\mathbb E[N]=\sum_{k\ge0}P(N>k)$.
+
+**Birthday approximation**: $\prod_{i<k}(1-\frac iD)\approx e^{-k^2/(2D)}$.
+EXPLANATION:
+$N>k$ exactly when the first $k$ people have distinct birthdays, which is the classic birthday-problem probability. Summing those probabilities gives the mean. Since $P(N>k)\approx e^{-k^2/(2\cdot365)}$, the sum is roughly the integral $\int_0^\infty e^{-x^2/730}dx=\sqrt{\pi\cdot365/2}\approx23.9$; the exact answer is $24.62$ (a refined approximation is $\sqrt{\pi D/2}+\frac23$). So you need about $\sqrt{D}$ samples to see a repeat among $D$ values, not $D/2$: this square-root law is why hash collisions and "birthday attacks" happen early.
+SOLUTION: Tail sum
+$P(N>0)=P(N>1)=1$, and for $k\ge1$,
+$$P(N>k)=\frac{365}{365}\cdot\frac{364}{365}\cdots\frac{365-k+1}{365}=\prod_{i=0}^{k-1}\left(1-\frac{i}{365}\right),$$
+which is $0$ for $k\ge366$. Therefore
+$$\mathbb E[N]=\sum_{k=0}^{365}\prod_{i=0}^{k-1}\left(1-\frac i{365}\right)=1+1+\frac{364}{365}+\frac{364\cdot363}{365^2}+\dots\approx24.6166.$$
+(Evaluated numerically.) Approximation: $\sqrt{\pi\cdot365/2}+\frac23\approx23.94+0.67=24.61$.
+FOLLOWUP: 100-sided die
+You keep rolling a fair $100$-sided die. On average, how many rolls until you first see a face that has already appeared?
+FOLLOWUP_ANSWER:
+$\approx13.21$. Same argument with $D=100$: $\mathbb E[N]=\sum_{k=0}^{100}\prod_{i<k}\left(1-\frac{i}{100}\right)=1+1+0.99+0.99\cdot0.98+\dots\approx13.21$. Check with the approximation $\sqrt{\pi\cdot100/2}+\frac23\approx12.53+0.67=13.20$.
+===END===
+
+===TEASER===
+SLUG: expected-distinct-birthdays
+IDS: W-091, Q-500
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Expected number of distinct birthdays
+QUESTION:
+In a room of $n$ people with independent birthdays, uniform over $365$ days, what is the expected number of distinct birthdays (days of the year on which at least one person was born)?
+HINT1:
+Counting distinct values directly is messy. Write the count as a sum of indicators, one per day of the year.
+HINT2:
+Day $d$ is "used" unless all $n$ people miss it, which has probability $\left(\frac{364}{365}\right)^n$.
+ANSWER:
+$365\left(1-\left(\frac{364}{365}\right)^n\right)$
+REFRESH:
+**Indicator method**: if $X=\sum_i \mathbf 1_{A_i}$, then $\mathbb E X=\sum_iP(A_i)$, whether or not the events $A_i$ are independent.
+EXPLANATION:
+Each day of the year contributes $1$ if someone is born on it. By symmetry every day has the same chance of being used, $1-(364/365)^n$, and linearity of expectation adds these $365$ equal chances, even though the events are dependent. For small $n$ this is about $n-\frac{n(n-1)}{2\cdot365}$ (each pair that collides loses one); for large $n$ it approaches $365$ like $365(1-e^{-n/365})$.
+SOLUTION: Indicators per day
+Let $I_d=1$ if at least one person has birthday $d$. Then the number of distinct birthdays is $\sum_{d=1}^{365}I_d$, and
+$$P(I_d=1)=1-P(\text{nobody on day }d)=1-\left(\frac{364}{365}\right)^n.$$
+By linearity, $\mathbb E\left[\sum_dI_d\right]=365\left(1-\left(\frac{364}{365}\right)^n\right)$.
+FOLLOWUP: Most days with exactly one birthday
+Let $b(n)$ be the expected number of days of the year on which **exactly one** of the $n$ people has a birthday. Two values of $n$ maximise $b(n)$. What is their sum?
+FOLLOWUP_ANSWER:
+$729$. By indicators, $b(n)=365\cdot n\cdot\frac1{365}\left(\frac{364}{365}\right)^{n-1}=n\left(\frac{364}{365}\right)^{n-1}$. Compare consecutive terms: $\frac{b(n+1)}{b(n)}=\frac{n+1}{n}\cdot\frac{364}{365}\ge1\iff364(n+1)\ge365n\iff n\le364$, with equality at $n=364$. So $b$ increases up to $n=364$, $b(364)=b(365)$, and it decreases afterwards. The two maximisers are $364$ and $365$, summing to $729$.
+===END===
+
+===TEASER===
+SLUG: one-seventh-as-decimal
+IDS: W-093, W-115
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: One seventh as a decimal
+QUESTION:
+Write $\frac17$ as a decimal.
+HINT1:
+Do the long division: $10\div7$, carry the remainder, and repeat. When does a remainder come back?
+HINT2:
+The remainders can only be $1,\dots,6$, so the digits must repeat with a period of at most $6$. The remainders go $1\to3\to2\to6\to4\to5\to1$.
+ANSWER:
+$\frac17=0.\overline{142857}=0.142857142857\ldots$
+REFRESH:
+**Repeating decimals**: the decimal expansion of $\frac pq$ repeats with period equal to the order of $10$ modulo $q$ (for $q$ coprime to $10$); for $q=7$ that order is $6$ since $10^6=999999+1$ and $999999=7\times142857$.
+EXPLANATION:
+Long division by $7$ can only leave six nonzero remainders, and each remainder determines the rest of the expansion, so the digits repeat after at most six steps. For $7$ all six remainders appear, so the period is exactly $6$: $142857$. A lovely bonus: all of $\frac17,\frac27,\dots,\frac67$ use the **same** six digits in the same cyclic order, just starting at a different place: $\frac27=0.\overline{285714}$, $\frac37=0.\overline{428571}$, etc. Knowing this, any sevenths are instant.
+SOLUTION: Long division
+$10=1\cdot7+3$ (digit $1$), $30=4\cdot7+2$ (digit $4$), $20=2\cdot7+6$ (digit $2$), $60=8\cdot7+4$ (digit $8$), $40=5\cdot7+5$ (digit $5$), $50=7\cdot7+1$ (digit $7$), and the remainder $1$ is back. So $\frac17=0.\overline{142857}$.
+FOLLOWUP: 23/7 to two places
+Give $\frac{23}{7}$ as a decimal to two decimal places.
+FOLLOWUP_ANSWER:
+$3.29$. $\frac{23}{7}=3+\frac27$ and $\frac27=0.285714\ldots$ (the cycle $142857$ started at "$2$"). So $\frac{23}{7}=3.2857\ldots\approx3.29$.
+===END===

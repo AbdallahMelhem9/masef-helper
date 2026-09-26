@@ -1,11 +1,16 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { combineLatest } from 'rxjs';
 import { ApiService } from '../../core/api.service';
 import { TeaserBook, TeaserSection, TeaserSummary } from '../../core/models';
-import { BOOKS, BookTags, CATEGORIES, SECTION_INFO, categorySlug, isSection } from './teaser-meta';
+import { BOOKS, BookTags, CATEGORIES, SECTIONS, SECTION_INFO, categorySlug, firmSlug, isSection } from './teaser-meta';
 
-const BOOK_FILTER_KEY = 'masef_teaser_books';
+// Sources switched OFF, so sources added later show by default.
+const HIDDEN_SOURCES_KEY = 'masef_teaser_hidden_sources';
 const HIDE_DONE_KEY = 'masef_teaser_hide_done';
+
+type View = 'home' | 'topics' | 'section' | 'category' | 'companies' | 'company';
 
 interface Group {
   name: string;
@@ -14,11 +19,18 @@ interface Group {
   done: number;
 }
 
-// /teasers: the two sections; /teasers/:section: its categories;
-// /teasers/:section/:category: the puzzles of one category.
+interface Heading {
+  section: TeaserSection;
+  category: string;
+  items: TeaserSummary[];
+}
+
+// /teasers: pick "by topic" or "by company".
+// By topic: /teasers/topics → /teasers/:section → /teasers/:section/:category.
+// By company: /teasers/companies → /teasers/company/:firm.
 @Component({
   selector: 'app-teaser-browse',
-  imports: [RouterLink, BookTags],
+  imports: [RouterLink, NgTemplateOutlet, BookTags],
   templateUrl: './teaser-browse.html',
   styleUrl: './teasers.css',
 })
@@ -28,20 +40,34 @@ export class TeaserBrowse implements OnInit {
 
   all = signal<TeaserSummary[] | null>(null);
   error = signal('');
+  view = signal<View>('home');
   section = signal<TeaserSection | null>(null);
   categoryKey = signal<string | null>(null);
+  firmKey = signal<string | null>(null);
   books = signal<TeaserBook[]>(loadBooks());
   hideDone = signal(localStorage.getItem(HIDE_DONE_KEY) === '1');
 
   readonly BOOKS = BOOKS;
   readonly SECTION_INFO = SECTION_INFO;
-  readonly sections: TeaserSection[] = ['brainteaser', 'probability'];
+  readonly sections = SECTIONS;
 
-  // The list with the book filter applied (a puzzle shows if it is in any selected book).
+  // The list with the source filter applied (a puzzle shows if it is in any selected source).
   filtered = computed(() => {
     const list = this.all() ?? [];
     const books = this.books();
-    return books.length === 3 ? list : list.filter((t) => t.books.some((b) => books.includes(b)));
+    return books.length === BOOKS.length ? list : list.filter((t) => t.books.some((b) => books.includes(b)));
+  });
+
+  stats = computed(() => {
+    const list = this.filtered();
+    const withFirm = list.filter((t) => t.firms.length);
+    return {
+      total: list.length,
+      done: list.filter((t) => t.completed).length,
+      firmTotal: withFirm.length,
+      firmDone: withFirm.filter((t) => t.completed).length,
+      firms: new Set(withFirm.flatMap((t) => t.firms)).size,
+    };
   });
 
   sectionStats = computed(() => {
@@ -65,6 +91,14 @@ export class TeaserBrowse implements OnInit {
       .filter((g) => g.total > 0);
   });
 
+  firmGroups = computed<Group[]>(() => {
+    const by = new Map<string, TeaserSummary[]>();
+    for (const t of this.filtered()) for (const f of t.firms) by.set(f, [...(by.get(f) ?? []), t]);
+    return [...by.entries()]
+      .map(([name, items]) => ({ name, slug: firmSlug(name), total: items.length, done: items.filter((t) => t.completed).length }))
+      .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+  });
+
   category = computed(() => {
     const s = this.section();
     const key = this.categoryKey();
@@ -72,11 +106,22 @@ export class TeaserBrowse implements OnInit {
     return CATEGORIES[s].find((c) => categorySlug(c) === key) ?? null;
   });
 
+  firm = computed(() => {
+    const key = this.firmKey();
+    if (!key) return null;
+    for (const t of this.all() ?? []) {
+      const f = t.firms.find((x) => firmSlug(x) === key);
+      if (f) return f;
+    }
+    return null;
+  });
+
+  private visible = (list: TeaserSummary[]) => (this.hideDone() ? list.filter((t) => !t.completed) : list);
+
   items = computed(() => {
     const cat = this.category();
     if (!cat) return [];
-    const list = this.filtered().filter((t) => t.section === this.section() && t.category === cat);
-    return this.hideDone() ? list.filter((t) => !t.completed) : list;
+    return this.visible(this.filtered().filter((t) => t.section === this.section() && t.category === cat));
   });
 
   categoryTotals = computed(() => {
@@ -85,11 +130,51 @@ export class TeaserBrowse implements OnInit {
     return { total: list.length, done: list.filter((t) => t.completed).length };
   });
 
+  // A company's puzzles, grouped by topic.
+  firmHeadings = computed<Heading[]>(() => {
+    const f = this.firm();
+    if (!f) return [];
+    const list = this.filtered().filter((t) => t.firms.includes(f));
+    const out: Heading[] = [];
+    for (const s of this.sections)
+      for (const c of CATEGORIES[s]) {
+        const items = this.visible(list.filter((t) => t.section === s && t.category === c));
+        if (items.length) out.push({ section: s, category: c, items });
+      }
+    return out;
+  });
+
+  firmTotals = computed(() => {
+    const f = this.firm();
+    const list = this.filtered().filter((t) => f && t.firms.includes(f));
+    return { total: list.length, done: list.filter((t) => t.completed).length };
+  });
+
+  title = computed(() => {
+    switch (this.view()) {
+      case 'topics':
+        return 'By topic';
+      case 'companies':
+        return 'By company';
+      case 'company':
+        return this.firm() ?? 'Company';
+      case 'section':
+        return SECTION_INFO[this.section()!]?.title ?? '';
+      case 'category':
+        return this.category() ?? '';
+      default:
+        return 'Interview puzzles';
+    }
+  });
+
   ngOnInit() {
-    this.route.paramMap.subscribe((p) => {
+    combineLatest([this.route.data, this.route.paramMap]).subscribe(([data, p]) => {
       const s = p.get('section');
-      this.section.set(isSection(s) ? s : null);
+      this.firmKey.set(p.get('firm'));
       this.categoryKey.set(p.get('category'));
+      this.section.set(isSection(s) ? s : null);
+      const v = data['view'] as View | undefined;
+      this.view.set(v ?? (p.get('category') ? 'category' : 'section'));
     });
     this.api
       .getTeasers()
@@ -102,7 +187,7 @@ export class TeaserBrowse implements OnInit {
     let next = cur.includes(b) ? cur.filter((x) => x !== b) : [...cur, b];
     if (next.length === 0) next = BOOKS.map((x) => x.key);
     this.books.set(next);
-    localStorage.setItem(BOOK_FILTER_KEY, JSON.stringify(next));
+    localStorage.setItem(HIDDEN_SOURCES_KEY, JSON.stringify(BOOKS.map((x) => x.key).filter((k) => !next.includes(k))));
   }
 
   toggleHideDone() {
@@ -116,11 +201,13 @@ export class TeaserBrowse implements OnInit {
 }
 
 function loadBooks(): TeaserBook[] {
+  let hidden: string[] = [];
   try {
-    const v = JSON.parse(localStorage.getItem(BOOK_FILTER_KEY) || 'null');
-    if (Array.isArray(v) && v.length) return v.filter((b) => BOOKS.some((x) => x.key === b));
+    const v = JSON.parse(localStorage.getItem(HIDDEN_SOURCES_KEY) || '[]');
+    if (Array.isArray(v)) hidden = v;
   } catch {
-    /* default below */
+    /* show everything */
   }
-  return BOOKS.map((x) => x.key);
+  const shown = BOOKS.map((x) => x.key).filter((k) => !hidden.includes(k));
+  return shown.length ? shown : BOOKS.map((x) => x.key);
 }

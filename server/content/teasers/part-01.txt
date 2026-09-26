@@ -1,6 +1,7 @@
 ===TEASER===
 SLUG: screwy-pirates
-IDS: G2-01, R8-64, R8-65
+IDS: G2-01, R8-64, R8-65, Q-375
+FIRMS: Goldman Sachs
 SECTION: brainteaser
 CATEGORY: Strategy & games
 DIFFICULTY: medium
@@ -75,7 +76,8 @@ The only change from the strict-majority version is at $k=2$ (the second-to-last
 ===END===
 ===TEASER===
 SLUG: tigers-and-sheep
-IDS: G2-02, R8-63
+IDS: G2-02, R8-63, Q-433
+FIRMS: Citadel
 SECTION: brainteaser
 CATEGORY: Induction & recursion
 DIFFICULTY: medium
@@ -116,7 +118,8 @@ The lions-and-meat version is identical: with $n$ lions, if $n$ is odd the lion 
 ===END===
 ===TEASER===
 SLUG: river-crossing-torch
-IDS: G2-03
+IDS: G2-03, Q-311
+FIRMS: Belvedere Trading, Jane Street, SIG
 SECTION: brainteaser
 CATEGORY: Logic & deduction
 DIFFICULTY: medium
@@ -198,7 +201,8 @@ The assistant can follow the same reasoning, and writes **September 1**.
 ===END===
 ===TEASER===
 SLUG: red-black-pairs-card-game
-IDS: G2-05
+IDS: G2-05, Q-042, Q-405
+FIRMS: Jane Street, Squarepoint Capital
 SECTION: brainteaser
 CATEGORY: Invariants, parity & pigeonhole
 DIFFICULTY: easy
@@ -228,7 +232,8 @@ Subtracting, $2x = 2y$, so $x=y$: your pile and the dealer's pile always contain
 ===END===
 ===TEASER===
 SLUG: burning-ropes-45-minutes
-IDS: G2-06, H1B-22, H1B-21
+IDS: G2-06, H1B-22, H1B-21, W-008
+FIRMS: Citadel
 SECTION: brainteaser
 CATEGORY: Clocks, rates & motion
 DIFFICULTY: easy
@@ -263,7 +268,8 @@ Bend the fuse so that both ends are side by side and light both ends at the same
 ===END===
 ===TEASER===
 SLUG: twelve-balls-three-weighings
-IDS: G2-07, H1A-06
+IDS: G2-07, H1A-06, Q-354
+FIRMS: WorldQuant
 SECTION: brainteaser
 CATEGORY: Weighing & searching
 DIFFICULTY: hard
@@ -324,7 +330,8 @@ Again three weighings always suffice.
 ===END===
 ===TEASER===
 SLUG: trailing-zeros-100-factorial
-IDS: G2-08, H1B-24
+IDS: G2-08, H1B-24, Q-024, Q-245, Q-482
+FIRMS: Five Rings, SIG, Akuna Capital
 SECTION: brainteaser
 CATEGORY: Numbers & digits
 DIFFICULTY: easy
@@ -346,10 +353,17 @@ The number of trailing zeros of $100!$ is $\min(v_2, v_5)$, where $v_p$ is the e
 $$v_5 = \left\lfloor\frac{100}{5}\right\rfloor + \left\lfloor\frac{100}{25}\right\rfloor + \left\lfloor\frac{100}{125}\right\rfloor = 20 + 4 + 0 = 24,$$
 $$v_2 = 50 + 25 + 12 + 6 + 3 + 1 = 97.$$
 So $\min(v_2,v_5)=24$. In words: the 20 multiples of 5 ($5,10,\dots,100$) each give one 5, and the 4 multiples of 25 ($25,50,75,100$) each give an extra one. There are **24** trailing zeros.
+FOLLOWUP: Five Rings variant: trailing zeros of 142! in binary
+How many trailing zeros does $142!$ have when written in base $2$?
+FOLLOWUP_ANSWER:
+$138$. The number of trailing zeros in base $2$ is the exponent of $2$ in $142!$, given by Legendre's formula:
+$$v_2(142!) = \left\lfloor\tfrac{142}{2}\right\rfloor + \left\lfloor\tfrac{142}{4}\right\rfloor + \left\lfloor\tfrac{142}{8}\right\rfloor + \left\lfloor\tfrac{142}{16}\right\rfloor + \left\lfloor\tfrac{142}{32}\right\rfloor + \left\lfloor\tfrac{142}{64}\right\rfloor + \left\lfloor\tfrac{142}{128}\right\rfloor = 71+35+17+8+4+2+1 = 138.$$
+Shortcut check: $v_2(n!) = n - s_2(n)$, where $s_2(n)$ is the number of $1$s in the binary expansion of $n$. Here $142 = 10001110_2$ has four $1$s, so $v_2 = 142-4 = 138$.
 ===END===
 ===TEASER===
 SLUG: horse-race-top-three
-IDS: G2-09
+IDS: G2-09, Q-449, Q-491
+FIRMS: Goldman Sachs, Jane Street, Transmarket Group
 SECTION: brainteaser
 CATEGORY: Weighing & searching
 DIFFICULTY: medium
@@ -385,7 +399,8 @@ The candidates for places 2 and 3 are exactly $A2, A3, B1, B2, C1$: 5 horses.
 ===END===
 ===TEASER===
 SLUG: infinite-power-tower
-IDS: G2-10
+IDS: G2-10, Q-301
+FIRMS: Squarepoint Capital
 SECTION: brainteaser
 CATEGORY: Calculus & algebra
 DIFFICULTY: easy
@@ -612,7 +627,7 @@ SOLUTION: Light and heat
 ===END===
 ===TEASER===
 SLUG: average-salary-privately
-IDS: G2-17
+IDS: G2-17, W-026
 SECTION: brainteaser
 CATEGORY: Estimation & lateral thinking
 DIFFICULTY: easy
@@ -837,7 +852,8 @@ Any choice of distinct numbers of coins per bag works (e.g. $0,1,\dots,9$: the b
 ===END===
 ===TEASER===
 SLUG: two-glass-balls-100-floors
-IDS: G2-24
+IDS: G2-24, Q-225, Q-226, Q-227
+FIRMS: Optiver, Akuna Capital, Transmarket Group, WorldQuant
 SECTION: brainteaser
 CATEGORY: Weighing & searching
 DIFFICULTY: medium
@@ -867,10 +883,19 @@ $$F(N)=N+(N-1)+\dots+1=\frac{N(N+1)}{2}.$$
 **The strategy.** Drop ball 1 from floors
 $$14,\ 14+13=27,\ 27+12=39,\ 50,\ 60,\ 69,\ 77,\ 84,\ 90,\ 95,\ 99,\ 100.$$
 When it first breaks, say at floor $h_j$ after surviving floor $h_{j-1}$, drop ball 2 from $h_{j-1}+1, h_{j-1}+2,\dots$ until it breaks (or until $h_j-1$). For example, if ball 1 breaks at floor 14, ball 2 tests floors $1,\dots,13$: at most $1+13=14$ drops. If it breaks at 27 (after surviving 14), ball 2 tests $15,\dots,26$: at most $2+12=14$ drops. Each later interval is one floor shorter, so the total never exceeds 14.
+FOLLOWUP: Three eggs and nine drops
+You now have $3$ identical eggs and a building with $n$ floors. An egg dropped from below some unknown floor $X$ survives; dropped from floor $X$ or higher, it breaks. You know an egg certainly breaks from the top floor $n$ (so $X\in\{1,\dots,n\}$). What is the largest $n$ for which you can always find $X$ with at most $9$ drops?
+FOLLOWUP_ANSWER:
+$n = 130$. Let $F_k(d)$ be the number of floors that can be *tested* (fully resolved) with $k$ eggs and $d$ drops. Drop from some floor: if the egg breaks you are left with $k-1$ eggs and $d-1$ drops below it; if it survives, $k$ eggs and $d-1$ drops above it. So
+$$F_k(d) = F_{k-1}(d-1) + 1 + F_k(d-1),\qquad F_0(d)=F_k(0)=0,$$
+whose solution is $F_k(d) = \sum_{i=1}^{k}\binom{d}{i}$. (For $k=2$ this gives $d + \binom d2 = \frac{d(d+1)}2$, as in the main problem.) With $3$ eggs and $9$ drops:
+$$F_3(9) = \binom91+\binom92+\binom93 = 9+36+84 = 129.$$
+Testing $129$ floors distinguishes $130$ possibilities for $X$. Since floor $n$ is known to break, it never needs to be tested, so floors $1,\dots,129$ suffice and $n = 130$. (If $X$ could also be "never breaks", you would need to test all $n$ floors and the answer would be $129$.) The first drop is from floor $F_2(8)+1 = 37$, the next from $37 + F_2(7)+1 = 66$, and so on.
 ===END===
 ===TEASER===
 SLUG: red-black-card-stopping-game
-IDS: H1B-14, H1B-15
+IDS: H1B-14, H1B-15, Q-043, W-070
+FIRMS: Jane Street
 SECTION: probability
 CATEGORY: Games & optimal stopping
 DIFFICULTY: hard

@@ -1,0 +1,1068 @@
+===TEASER===
+SLUG: sixty-cents-nickels-dimes-quarters
+IDS: Q-052
+FIRMS: IMC
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Sixty cents in coins
+QUESTION:
+Brian has exactly 60 cents in his pocket, made up only of nickels (5 cents), dimes (10 cents) and quarters (25 cents). Let $N$ be the number of coins he holds.
+
+For some values of $N$, knowing "60 cents in $N$ coins" pins down exactly how many nickels, dimes and quarters he has; for other values of $N$ at least two different mixes are possible.
+
+What is the smallest $N$ for which the total (60 cents) and the number of coins $N$ are **not** enough to determine the mix?
+HINT1:
+There are only three possible numbers of quarters. List everything.
+HINT2:
+Fix the number of quarters $q\in\{0,1,2\}$. The rest $60-25q$ cents is made of dimes and nickels; write the coin count $N$ as a function of the number of dimes $d$, and look for the smallest value of $N$ that appears twice.
+ANSWER:
+$N = 6$
+REFRESH:
+NONE
+EXPLANATION:
+Everything is small enough to enumerate. Once the number of quarters $q$ is fixed, the remaining amount is split between dimes and nickels, and swapping one dime for two nickels adds exactly one coin. So for each $q$ the achievable coin counts form a run of consecutive integers. The three runs (one per value of $q$) overlap, and the smallest number in an overlap is the answer.
+SOLUTION: Enumerate by number of quarters
+Let $q, d, n$ be the numbers of quarters, dimes and nickels, with $25q + 10d + 5n = 60$, i.e. $5q + 2d + n = 12$.
+
+- $q = 0$: $n = 12 - 2d$ with $d = 0,\dots,6$, so $N = d + n = 12 - d \in \{12, 11, 10, 9, 8, 7, 6\}$.
+- $q = 1$: $2d + n = 7$, $n = 7 - 2d$ with $d = 0,\dots,3$, so $N = 1 + d + 7 - 2d = 8 - d \in \{8, 7, 6, 5\}$.
+- $q = 2$: $2d + n = 2$, so $(d,n) = (1,0)$ or $(0,2)$, giving $N = 3$ or $N = 4$.
+
+So $N = 3, 4, 5$ each occur once (unique mix), while $N = 6$ occurs twice:
+$$q=0,\ d=6,\ n=0 \qquad\text{and}\qquad q=1,\ d=2,\ n=3,$$
+both 6 coins worth 60 cents ($60 = 6\times 10$ and $60 = 25 + 20 + 15$). The smallest ambiguous $N$ is $\boxed{6}$.
+===END===
+
+===TEASER===
+SLUG: annulus-tangent-chord-area
+IDS: Q-053
+FIRMS: Squarepoint Capital
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Area of a ring from one chord
+QUESTION:
+Two circles have the same centre. A chord of the outer circle has length 8 and is tangent to the inner circle (it touches it at exactly one point). What is the area of the ring between the two circles?
+HINT1:
+You are not told either radius. Maybe you only need a combination of them.
+HINT2:
+Draw the radius of the inner circle to the point of tangency and the radius of the outer circle to one end of the chord. Which angle is a right angle?
+ANSWER:
+$16\pi$
+REFRESH:
+- A tangent line to a circle is perpendicular to the radius at the point of contact.
+- The perpendicular from the centre to a chord bisects the chord.
+EXPLANATION:
+The ring's area is $\pi R^2 - \pi r^2 = \pi(R^2 - r^2)$, so you do not need $R$ and $r$ separately, only $R^2 - r^2$. The tangency point, the centre and an end of the chord form a right triangle with hypotenuse $R$, one leg $r$ and the other leg half the chord, 4. Pythagoras gives $R^2 - r^2 = 16$ directly. A quick sanity check is the degenerate case $r = 0$: the chord becomes a diameter, $R = 4$, and the "ring" is a disc of area $16\pi$.
+SOLUTION: Right triangle
+Let $O$ be the centre, $r$ and $R$ the inner and outer radii, $T$ the tangency point and $A$ an end of the chord.
+
+Since the chord is tangent to the inner circle at $T$, $OT \perp$ chord and $OT = r$. The perpendicular from the centre bisects the chord, so $TA = 8/2 = 4$. Also $OA = R$.
+
+In the right triangle $OTA$:
+$$R^2 = r^2 + 4^2 \quad\Longrightarrow\quad R^2 - r^2 = 16.$$
+The ring's area is
+$$\pi R^2 - \pi r^2 = \pi(R^2 - r^2) = 16\pi.$$
+SOLUTION: Shrink the inner circle
+The problem does not give the radii, so if it is well posed the answer cannot depend on them. Take the limiting case $r \to 0$: the tangent chord passes through the centre, so it is a diameter, $R = 4$, and the area is $\pi\cdot 4^2 = 16\pi$. (This is a sanity check, not a proof; the first method is the proof.)
+===END===
+
+===TEASER===
+SLUG: cheesecake-three-cuts-eight-pieces
+IDS: Q-056
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Eight equal slices in three cuts
+QUESTION:
+You have a round cheesecake. Using exactly three straight cuts, how can you divide it into eight identical pieces?
+HINT1:
+Nobody said every cut has to be made from above.
+HINT2:
+A cake is a three-dimensional cylinder. Two cuts from above already give four equal wedges; what could a third plane do to each of them at once?
+ANSWER:
+Two perpendicular vertical cuts through the centre (4 quarters), then one horizontal cut halfway up the height: 8 identical pieces.
+REFRESH:
+NONE
+EXPLANATION:
+The trap is to think only in the plane of the top of the cake: three straight lines across a disc cannot produce 8 congruent pieces. But the cake is a cylinder, so a plane parallel to the base is also a "straight cut". Each of the four quarter wedges gets split into a top half and a bottom half of the same shape, and by symmetry all eight are identical.
+SOLUTION: Use the third dimension
+1. Cut vertically through the centre: two identical half-cylinders.
+2. Cut vertically through the centre, perpendicular to the first cut: four identical quarter-cylinders (90° wedges).
+3. Cut horizontally, parallel to the base, at half the height of the cake: each quarter wedge becomes two identical wedges of half the height.
+
+Result: $4 \times 2 = 8$ identical pieces (each a 90° wedge of half height).
+SOLUTION: Stack between cuts
+If you are allowed to move pieces between cuts:
+1. Cut through the centre: two halves.
+2. Stack the two halves exactly on top of each other and cut through the centre perpendicular to the flat side: four 90° wedges.
+3. Stack the four wedges exactly and cut along the bisector of the 90° angle: eight 45° wedges of full height, all identical.
+
+This version keeps the cheesecake's full height in every piece (nice if you care about the crust on the bottom).
+===END===
+
+===TEASER===
+SLUG: cinema-alternating-boys-girls
+IDS: Q-058
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Boys and girls alternating in a row
+QUESTION:
+You take 10 students, 5 boys and 5 girls, to the cinema, and they sit in a single row of 10 seats. No two children of the same gender may sit next to each other. In how many ways can the children be seated? (The children are distinguishable.)
+HINT1:
+First decide the pattern of genders along the row, then who sits where.
+HINT2:
+With 5 boys and 5 girls and no two of the same gender adjacent, the gender pattern is forced up to one choice. Then the boys fill their seats in any order, and so do the girls.
+ANSWER:
+$2 \times 5! \times 5! = 28\,800$
+REFRESH:
+- The number of orderings of $k$ distinct objects is $k! = k(k-1)\cdots 1$.
+EXPLANATION:
+The constraint only concerns genders, so split the count in two stages. The gender pattern must alternate, and with equal numbers it is either BGBGBGBGBG or GBGBGBGBGB. Once the pattern is fixed, the 5 boy-seats can be filled by the 5 boys in $5!$ ways and the 5 girl-seats by the girls in $5!$ ways, independently.
+SOLUTION: Pattern then permutations
+- Alternating patterns: a row of 10 with 5 B and 5 G and no two equal neighbours must alternate, and it can start with B or with G: 2 patterns.
+- For a fixed pattern, assign the boys to the 5 boy seats: $5! = 120$ ways; the girls to the 5 girl seats: $5! = 120$ ways.
+
+Total:
+$$2 \times 120 \times 120 = 28\,800.$$
+===END===
+
+===TEASER===
+SLUG: monte-carlo-pi-estimator-variance
+IDS: Q-060
+FIRMS: Goldman Sachs, SIG
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: Variance of the Monte Carlo estimate of pi
+QUESTION:
+To estimate $\pi$, you draw $N$ independent points uniformly in the unit square $[0,1]\times[0,1]$. Let $I_i$ be the indicator that the $i$-th point lands inside the quarter disc $x^2 + y^2 \le 1$, and let
+$$T_N = \frac{I_1 + \dots + I_N}{N}.$$
+Build the natural unbiased estimator of $\pi$ from $T_N$ and compute its variance. It can be written as $\dfrac{a\pi^2 + b\pi}{N}$ with integers $a, b$. What is $a + b$?
+
+(The variance involves $\pi$ itself, so it is not directly usable in practice, but it tells you how fast the estimate converges.)
+HINT1:
+What is the probability that one point lands in the quarter disc? What is $\mathbb{E}[T_N]$, and so what multiple of $T_N$ estimates $\pi$?
+HINT2:
+Each $I_i$ is Bernoulli($p$) with $p = \pi/4$, so $\operatorname{Var}(T_N) = p(1-p)/N$. Multiplying a variable by $c$ multiplies its variance by $c^2$.
+ANSWER:
+$\operatorname{Var}(4T_N) = \dfrac{4\pi - \pi^2}{N}$, so $a = -1$, $b = 4$, $a + b = 3$.
+REFRESH:
+- If $I \sim$ Bernoulli($p$), then $\mathbb{E}[I] = p$ and $\operatorname{Var}(I) = p(1-p)$.
+- For independent $X_i$: $\operatorname{Var}\left(\sum X_i\right) = \sum \operatorname{Var}(X_i)$, and $\operatorname{Var}(cX) = c^2\operatorname{Var}(X)$.
+EXPLANATION:
+A uniform point in the unit square lands in the quarter disc with probability equal to its area, $\pi/4$. So $T_N$ estimates $\pi/4$ and $\hat\pi = 4T_N$ is an unbiased estimator of $\pi$. The variance of an average of $N$ i.i.d. Bernoullis is $p(1-p)/N$, and the factor 4 in front multiplies the variance by 16. Numerically $4\pi - \pi^2 \approx 2.70$, so the standard error is about $1.64/\sqrt N$: to get $\pi$ to 3 decimals you need millions of points, which is why plain Monte Carlo is slow.
+SOLUTION: Bernoulli variance
+Each point is uniform on the unit square, so
+$$p = \mathbb{P}(x^2 + y^2 \le 1) = \text{area of quarter disc} = \frac{\pi}{4}.$$
+Hence $I_i \sim$ Bernoulli($\pi/4$), i.i.d., and $\mathbb{E}[T_N] = \pi/4$. The unbiased estimator of $\pi$ is $\hat\pi_N = 4T_N$.
+
+Variance:
+$$\operatorname{Var}(T_N) = \frac{1}{N^2}\sum_{i=1}^N \operatorname{Var}(I_i) = \frac{p(1-p)}{N},$$
+$$\operatorname{Var}(\hat\pi_N) = 16\,\frac{p(1-p)}{N} = \frac{16}{N}\cdot\frac{\pi}{4}\left(1 - \frac{\pi}{4}\right) = \frac{4\pi - \pi^2}{N}.$$
+So $a = -1$, $b = 4$ and $a + b = 3$.
+===END===
+
+===TEASER===
+SLUG: bracelet-three-red-three-blue-rotations
+IDS: Q-063
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Bracelets with 3 red and 3 blue beads
+QUESTION:
+A bracelet has 6 equally spaced positions around a circle. You place 3 red beads and 3 blue beads on it, one per position. Two arrangements count as the same if one can be **rotated** into the other; reflections (flipping the bracelet over) do **not** count as the same. How many distinct bracelets are there?
+HINT1:
+There are only $\binom{6}{3} = 20$ labelled arrangements. Group them into rotation classes, carefully.
+HINT2:
+Classify by how the 3 red beads sit: all together, two together and one apart, or all separated. Check which of these patterns have a mirror image that is not a rotation of itself.
+ANSWER:
+4
+REFRESH:
+- Burnside's lemma: the number of classes of objects under a group $G$ of symmetries equals $\frac{1}{|G|}\sum_{g\in G}\operatorname{Fix}(g)$, the average number of objects left unchanged by a symmetry.
+EXPLANATION:
+Counting circular arrangements is tricky because some patterns have fewer distinct rotations than others (a symmetric pattern like RBRBRB has only 2 rotations, not 6), so you cannot just divide 20 by 6. Either list the classes by the shape of the red block, or use Burnside, which averages the number of arrangements fixed by each rotation and handles symmetric patterns automatically. The subtle point is that "two red together, one apart" splits into two classes that are mirror images of each other: without reflections they are different bracelets.
+SOLUTION: Direct classification
+Label positions $0,\dots,5$ around the circle and look at the gaps of blue beads between consecutive red beads going clockwise. The three gaps are non-negative integers summing to 3, read cyclically.
+
+- Gaps $(0,0,3)$: RRRBBB, all reds together. Its 6 rotations are all different: 6 arrangements.
+- Gaps $(0,1,2)$: RRBRBB. Its 6 rotations are all different: 6 arrangements.
+- Gaps $(0,2,1)$: RRBBRB. Again 6 different rotations: 6 arrangements. This is the mirror image of RRBRBB, but no rotation turns one into the other (reading clockwise from the RR pair, one has the single blue first and the other has the double blue first).
+- Gaps $(1,1,1)$: RBRBRB, alternating. Only 2 distinct rotations: 2 arrangements.
+
+Check: $6 + 6 + 6 + 2 = 20 = \binom{6}{3}$. So there are $\boxed{4}$ distinct bracelets.
+
+Note: the source's example claims RRBRBB and RRBBRB are the same under rotation; they are actually mirror images, not rotations, of each other. The count 4 is correct precisely because they are different.
+SOLUTION: Burnside's lemma
+The rotation group has 6 elements: rotation by $k$ positions, $k = 0,\dots,5$. Count the arrangements (3 red, 3 blue) each one fixes.
+
+- $k = 0$: all $\binom{6}{3} = 20$.
+- $k = 1, 5$: a single 6-cycle, which would force all beads to be the same colour: 0.
+- $k = 2, 4$: two 3-cycles $\{0,2,4\}, \{1,3,5\}$; each cycle must be monochrome, and one must be red: 2 each.
+- $k = 3$: three 2-cycles $\{0,3\},\{1,4\},\{2,5\}$; monochrome pairs give an even number of reds, never 3: 0.
+
+$$\#\text{bracelets} = \frac{20 + 0 + 2 + 0 + 2 + 0}{6} = \frac{24}{6} = 4.$$
+FOLLOWUP: If reflections count too
+How many bracelets are there if two arrangements are identified when one can be rotated **or flipped** into the other?
+FOLLOWUP_ANSWER:
+3. The classes RRBRBB and RRBBRB are mirror images, so they merge; RRRBBB and RBRBRB are each their own mirror images. Burnside with the dihedral group of 12 elements gives the same: the 6 rotations fix $24$ arrangements in total; each of the 3 reflections through two opposite beads fixes those 2 beads and swaps 2 pairs, and 3 reds need exactly one fixed bead red plus one swapped pair red: $2\times 2 = 4$ arrangements each, total 12; the 3 reflections through edge midpoints swap 3 pairs, giving an even number of reds: 0. So $(24 + 12 + 0)/12 = 3$.
+===END===
+
+===TEASER===
+SLUG: incircle-of-isosceles-16-16-24
+IDS: Q-064
+FIRMS: Five Rings
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Largest circle in a 16-16-24 triangle
+QUESTION:
+A triangle has sides 16, 16 and 24. The largest circle that fits inside it has area $\dfrac{p\pi}{q}$ with $\dfrac pq$ in lowest terms. Find $p + q$.
+HINT1:
+The largest circle inside a triangle is the one touching all three sides.
+HINT2:
+There is a clean formula linking the inradius $r$ to the triangle's area and its semi-perimeter $s$. Get the area from the height onto the side of length 24.
+ANSWER:
+Area $= \dfrac{144\pi}{7}$, so $p + q = 151$.
+REFRESH:
+- The largest circle in a triangle is the incircle, and its radius is $r = \dfrac{\text{Area}}{s}$ with $s = \dfrac{a+b+c}{2}$.
+- In an isosceles triangle, the height onto the base hits the base at its midpoint.
+EXPLANATION:
+Split the triangle into three smaller triangles joining the incentre to each vertex. Each has height $r$ (the inradius) and one side of the triangle as base, so $\text{Area} = \frac12 r(a + b + c) = rs$. The area itself comes from the height of the isosceles triangle: dropping it onto the base of 24 gives a right triangle with hypotenuse 16 and leg 12.
+SOLUTION: Area over semi-perimeter
+Height onto the base 24 (it bisects the base):
+$$h = \sqrt{16^2 - 12^2} = \sqrt{256 - 144} = \sqrt{112} = 4\sqrt7.$$
+Area:
+$$A = \tfrac12\cdot 24\cdot 4\sqrt7 = 48\sqrt7.$$
+Semi-perimeter: $s = (16 + 16 + 24)/2 = 28$. Inradius:
+$$r = \frac{A}{s} = \frac{48\sqrt7}{28} = \frac{12\sqrt7}{7}, \qquad r^2 = \frac{144\cdot 7}{49} = \frac{144}{7}.$$
+Area of the circle: $\pi r^2 = \dfrac{144\pi}{7}$. Since $\gcd(144, 7) = 1$, $p + q = 144 + 7 = 151$.
+SOLUTION: Angle bisector at the base
+The incentre lies on the axis of symmetry, at height $r$ above the midpoint $M$ of the base. The base angle $B$ satisfies $\cos B = 12/16 = 3/4$, so $\sin B = \sqrt7/4$. The incentre is on the bisector from $B$, so
+$$r = BM\tan\frac B2 = 12\cdot\frac{\sin B}{1 + \cos B} = 12\cdot\frac{\sqrt7/4}{7/4} = \frac{12\sqrt7}{7},$$
+the same radius, so again $\pi r^2 = 144\pi/7$ and $p + q = 151$.
+===END===
+
+===TEASER===
+SLUG: round-table-five-seating-clues
+IDS: Q-065
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Who sits left of 5?
+QUESTION:
+Five people, labelled 1, 2, 3, 4, 5, sit around a round table with 5 chairs.
+
+- 4 sits immediately to the right of 2.
+- 2 sits immediately to the right of 5.
+- 1 does not sit next to 2 or to 5.
+
+Who sits immediately to the left of 5?
+HINT1:
+The first two clues glue three people into a block. Where can the remaining two go?
+HINT2:
+Going around the table in the "to the right" direction you meet 5, 2, 4 in a row, then two more seats before you are back at 5. Which of those two seats is next to 5?
+ANSWER:
+Person 3
+REFRESH:
+NONE
+EXPLANATION:
+The two "immediately to the right" clues chain together into the consecutive block 5, 2, 4. On a 5-seat table, the two remaining people (1 and 3) take the last two seats, one of them between 4 and the other, the other one between that person and 5. Person 1 cannot be next to 5, so 1 takes the seat next to 4 and 3 is forced into the seat next to 5 on the side away from 2, i.e. on 5's left.
+SOLUTION: Build the chain
+Walk around the table in the direction "to the right". From the clues, the order contains the block $5 \to 2 \to 4$. The two remaining seats come next: $4 \to X \to Y \to 5$, where $\{X, Y\} = \{1, 3\}$.
+
+Neighbours: $X$ is next to 4 and $Y$; $Y$ is next to $X$ and 5. Person 1 must not be next to 5, so $Y \ne 1$, hence $Y = 3$ and $X = 1$ (and 1 is then next to 4 and 3 only, not to 2 or 5, as required).
+
+5's two neighbours are 2 (to its right) and 3. So the person immediately to the left of 5 is $\boxed{3}$.
+===END===
+
+===TEASER===
+SLUG: race-to-three-heads-head-start
+IDS: Q-070
+FIRMS:
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Race to three heads with a head start
+QUESTION:
+Two players, A and B, take turns flipping a fair coin, A first. The first player to collect a total of 3 heads (on their own flips) wins.
+
+A has just made the first flip of the game and got heads. It is now B's turn. What is the probability that A wins?
+HINT1:
+The game only depends on how many heads each player still needs and whose turn it is. Set up probabilities for those states.
+HINT2:
+Let $a(i,j)$ be A's winning probability when A needs $i$ more heads, B needs $j$ more, and A is to flip; $b(i,j)$ the same with B to flip. Write one-step equations and solve upward from small $i, j$. You want $b(2,3)$.
+ANSWER:
+$\dfrac{19}{27}$
+REFRESH:
+- First-step analysis: condition on the outcome of the next flip and use the law of total probability to get linear equations between state probabilities.
+- Negative binomial: the number of fair-coin flips needed to get the $r$-th head is $k$ with probability $\binom{k-1}{r-1}2^{-k}$.
+EXPLANATION:
+The state of the game is (heads A still needs, heads B still needs, whose turn). A tails leaves the counts unchanged and hands the turn over, so each state is linked to itself through the other player's turn; solving the two equations together removes that loop. Alternatively, think of each player as flipping their own private coin sequence: A wins exactly when A reaches 2 more heads in strictly fewer of his own flips than B needs for 3, because B flips first in each round from now on.
+SOLUTION: First-step recursion
+Let $x = b(i-1, j)$ (A just scored) and $y = a(i, j-1)$ (B just scored). Conditioning on the next flip:
+$$a(i,j) = \tfrac12 b(i-1,j) + \tfrac12 b(i,j), \qquad b(i,j) = \tfrac12 a(i,j-1) + \tfrac12 a(i,j).$$
+Substituting the second into the first: $a = \frac x2 + \frac y4 + \frac a4$, so
+$$a(i,j) = \frac{2x + y}{3}, \qquad b(i,j) = \frac{x + 2y}{3}.$$
+Boundaries: $a(0,j) = b(0,j) = 1$ and $a(i,0) = b(i,0) = 0$.
+
+- $(1,1)$: $x = 1$, $y = 0$: $a = 2/3$, $b = 1/3$.
+- $(1,2)$: $x = 1$, $y = a(1,1) = 2/3$: $a = 8/9$, $b = 7/9$.
+- $(1,3)$: $x = 1$, $y = a(1,2) = 8/9$: $a = 26/27$, $b = 25/27$.
+- $(2,1)$: $x = b(1,1) = 1/3$, $y = 0$: $a = 2/9$, $b = 1/9$.
+- $(2,2)$: $x = b(1,2) = 7/9$, $y = a(2,1) = 2/9$: $a = 16/27$, $b = 11/27$.
+- $(2,3)$: $x = b(1,3) = 25/27$, $y = a(2,2) = 16/27$:
+$$b(2,3) = \frac{25/27 + 32/27}{3} = \frac{57}{81} = \frac{19}{27}.$$
+SOLUTION: Compare waiting times
+From now on the order is B, A, B, A, ... Let $K_A$ be the number of A's further flips until his 2nd additional head and $K_B$ the number of B's flips until her 3rd head; they are independent. A's $k$-th flip comes right after B's $k$-th flip, so A wins iff $K_A < K_B$.
+
+$\mathbb{P}(K_A = k) = (k-1)2^{-k}$ for $k \ge 2$, and $\mathbb{P}(K_B > k) = \mathbb{P}(\text{at most 2 heads in } k \text{ flips}) = \left(1 + k + \binom k2\right)2^{-k}$. Hence
+$$\mathbb{P}(\text{A wins}) = \sum_{k\ge 2}\frac{(k-1)\left(1 + k + \frac{k(k-1)}{2}\right)}{4^k}.$$
+Using $\sum_{k\ge0} x^k = \frac1{1-x}$ and its derivatives at $x = 1/4$, this sum evaluates to $19/27 \approx 0.7037$ (a quick numerical check of the first 50 terms confirms it).
+FOLLOWUP: No head start
+Same game, A flips first, but nobody has flipped yet. What is the probability that A wins?
+FOLLOWUP_ANSWER:
+We need $a(3,3)$. Continue the recursion. $(3,1)$: $x = b(2,1) = 1/9$, $y = 0$: $a(3,1) = 2/27$. $(3,2)$: $x = b(2,2) = 11/27$, $y = a(3,1) = 2/27$: $a(3,2) = (22/27 + 2/27)/3 = 8/27$. $(3,3)$: $x = b(2,3) = 19/27$, $y = a(3,2) = 8/27$: $a(3,3) = (38/27 + 8/27)/3 = 46/81 \approx 0.568$. Moving first is worth about 7 percentage points.
+===END===
+
+===TEASER===
+SLUG: geometric-count-of-die-rolls-see-a-one
+IDS: Q-073
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Coin decides how many die rolls
+QUESTION:
+Toss a fair coin until the first head appears; say this happens on toss $n$. Then roll a fair six-sided die $n$ times. What is the probability that at least one of the die rolls shows a 1?
+HINT1:
+Condition on $n$. It is easier to compute the probability of never seeing a 1.
+HINT2:
+$\mathbb{P}(N = n) = 2^{-n}$ and, given $N = n$, no 1 appears with probability $(5/6)^n$. Sum a geometric series.
+ANSWER:
+$\dfrac{2}{7}$
+REFRESH:
+- Law of total probability: $\mathbb{P}(A) = \sum_n \mathbb{P}(A \mid N = n)\,\mathbb{P}(N = n)$.
+- Geometric series: $\sum_{n\ge1} x^n = \dfrac{x}{1-x}$ for $|x| < 1$.
+EXPLANATION:
+The number of rolls is random (geometric), so condition on it. Given $n$ rolls, "no 1" has probability $(5/6)^n$, and averaging over $n$ with weights $2^{-n}$ gives a geometric series in $5/12$. There is also a neat step-by-step view: pair each coin toss with one die roll; the process stops either when the die shows a 1 (success) or when the coin shows heads after a non-1 roll (failure).
+SOLUTION: Condition on the number of rolls
+$N$, the toss of the first head, satisfies $\mathbb{P}(N = n) = (1/2)^n$ for $n \ge 1$. Given $N = n$, the probability of no 1 in $n$ rolls is $(5/6)^n$. So
+$$\mathbb{P}(\text{no } 1) = \sum_{n\ge1}\left(\frac12\right)^n\left(\frac56\right)^n = \sum_{n\ge1}\left(\frac5{12}\right)^n = \frac{5/12}{1 - 5/12} = \frac{5/12}{7/12} = \frac57.$$
+Hence $\mathbb{P}(\text{at least one } 1) = 1 - \frac57 = \frac27$.
+SOLUTION: Interleave coin and die
+Pair toss $k$ with roll $k$: roll $k$ happens exactly when the first $k-1$ tosses were tails. In each round, look at the roll first: it is a 1 with probability $1/6$ (success). Otherwise (probability $5/6$) look at the coin: heads (probability $1/2$) ends the game without a 1; tails starts a fresh round. With $p$ the success probability,
+$$p = \frac16 + \frac56\cdot\frac12\cdot p \quad\Longrightarrow\quad p\left(1 - \frac5{12}\right) = \frac16 \quad\Longrightarrow\quad p = \frac{1/6}{7/12} = \frac27.$$
+===END===
+
+===TEASER===
+SLUG: one-fair-coin-even-heads
+IDS: Q-077
+FIRMS: Citadel, Jane Street, SIG
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Even number of heads with one fair coin
+QUESTION:
+You have $n$ coins. One of them is fair; each of the other $n-1$ lands heads with probability $\lambda$, where $0 < \lambda < 1$. You toss all $n$ coins once. What is the probability that the total number of heads is even?
+HINT1:
+Toss the biased coins first and look at what is left to decide.
+HINT2:
+Whatever the parity of the heads from the $n-1$ biased coins, the fair coin flips that parity with probability exactly $1/2$.
+ANSWER:
+$\dfrac12$, whatever $\lambda$ and $n$.
+REFRESH:
+- For a random variable $X$ with values in $\{0,1,\dots\}$: $\mathbb{P}(X \text{ even}) = \frac{1 + \mathbb{E}[(-1)^X]}{2}$.
+EXPLANATION:
+The fair coin is independent of everything else. Condition on the biased coins: if they produced an even number of heads, the total is even iff the fair coin is tails; if odd, iff the fair coin is heads. Either way that is probability $1/2$, so the answer is $1/2$ unconditionally. The $\lambda$ is a red herring.
+SOLUTION: Condition on the biased coins
+Let $S$ be the number of heads among the $n-1$ biased coins and $F \in \{0,1\}$ the fair coin. $S$ and $F$ are independent. Then
+$$\mathbb{P}(S + F \text{ even}) = \mathbb{P}(S \text{ even})\,\mathbb{P}(F = 0) + \mathbb{P}(S \text{ odd})\,\mathbb{P}(F = 1) = \tfrac12\big(\mathbb{P}(S\text{ even}) + \mathbb{P}(S\text{ odd})\big) = \tfrac12.$$
+SOLUTION: Generating function at $-1$
+For independent coins with head probabilities $p_i$, $\mathbb{E}[(-1)^X] = \prod_i \mathbb{E}[(-1)^{X_i}] = \prod_i (1 - 2p_i)$. Here this is $(1 - 2\cdot\frac12)(1-2\lambda)^{n-1} = 0$. So
+$$\mathbb{P}(X \text{ even}) = \frac{1 + 0}{2} = \frac12.$$
+The same formula gives the answer without the fair coin: $\frac{1 + (1-2\lambda)^{n-1}}{2}$ for the $n-1$ biased coins alone.
+===END===
+
+===TEASER===
+SLUG: two-players-same-number-of-tails
+IDS: Q-079
+FIRMS: Optiver, SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Same number of tails in four tosses
+QUESTION:
+Two players each toss a fair coin 4 times. What is the probability that they get the same number of tails?
+HINT1:
+Either sum over the possible common number of tails, or find a trick that turns "equal counts" into a single count.
+HINT2:
+Player 2 has $k$ tails iff they have $4 - k$ heads. So "equal tails" means (tails of player 1) + (heads of player 2) $= 4$ over 8 fair tosses.
+ANSWER:
+$\dfrac{35}{128}$
+REFRESH:
+- Vandermonde's identity: $\sum_k \binom{m}{k}\binom{n}{r-k} = \binom{m+n}{r}$; in particular $\sum_k\binom nk^2 = \binom{2n}{n}$.
+EXPLANATION:
+The direct sum is $\sum_k \mathbb{P}(\text{both have } k \text{ tails}) = \sum_k \binom4k^2/2^8$. The slicker view: count player 2's heads instead of tails. Equality of tails becomes "the total of player 1's tails and player 2's heads is exactly 4" among 8 independent fair tosses, which is a single binomial probability $\binom84/2^8$.
+SOLUTION: Sum over the common value
+With $T_1, T_2 \sim$ Bin($4, \frac12$) independent,
+$$\mathbb{P}(T_1 = T_2) = \sum_{k=0}^4\left(\frac{\binom4k}{16}\right)^2 = \frac{1^2 + 4^2 + 6^2 + 4^2 + 1^2}{256} = \frac{1 + 16 + 36 + 16 + 1}{256} = \frac{70}{256} = \frac{35}{128}.$$
+SOLUTION: Heads-for-tails swap
+Let $H_2 = 4 - T_2$ be player 2's number of heads. Then $T_1 = T_2 \iff T_1 + H_2 = 4$. Now $T_1 + H_2$ counts "successes" among 8 independent fair tosses, so it is Bin($8, \frac12$):
+$$\mathbb{P}(T_1 + H_2 = 4) = \frac{\binom84}{2^8} = \frac{70}{256} = \frac{35}{128}.$$
+FOLLOWUP: $n$ tosses each
+What is the probability for $n$ tosses each, and how does it behave for large $n$?
+FOLLOWUP_ANSWER:
+The same swap gives $\binom{2n}{n}/4^n$. By Stirling, $\binom{2n}{n} \approx 4^n/\sqrt{\pi n}$, so the probability is about $1/\sqrt{\pi n}$ (for $n = 4$: $0.282$ vs exact $0.273$). It goes to 0, but slowly.
+===END===
+
+===TEASER===
+SLUG: stop-when-heads-ratio-exceeds-half
+IDS: Q-083
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Stop when heads pass one half
+QUESTION:
+You toss a fair coin repeatedly. After each toss, compute $r = \dfrac{\text{number of heads so far}}{\text{number of tosses so far}}$. You stop the first time $r$ is **strictly** greater than $\tfrac12$ (if $r = \tfrac12$ exactly you keep going), and you record that final value of $r$. What is the expected value of the recorded $r$?
+HINT1:
+Track heads minus tails. When you stop, what is its value, and what does that say about the recorded ratio?
+HINT2:
+You stop at the first time $2k+1$ at which heads minus tails reaches $+1$, and then $r = \frac{k+1}{2k+1}$. The number of such first-passage paths involves Catalan numbers. To sum the series, write $\frac{1}{2k+1} = \int_0^1 x^{2k}\,dx$.
+ANSWER:
+$\dfrac{\pi}{4} \approx 0.785$
+REFRESH:
+- Catalan numbers: $C_k = \frac{1}{k+1}\binom{2k}{k}$ counts $\pm1$ paths of length $2k$ from 0 back to 0 that never go above 0.
+- A symmetric simple random walk started at 0 reaches $+1$ with probability 1.
+- Binomial series: $\sum_{k\ge0}\binom{2k}{k}\frac{y^k}{4^k} = \frac{1}{\sqrt{1-y}}$ for $|y| < 1$.
+EXPLANATION:
+Let $S_m$ = heads minus tails after $m$ tosses, a symmetric random walk. $r > 1/2$ is the same as $S_m > 0$, and since $S$ moves by $\pm1$ you stop exactly when $S$ first hits $+1$. That happens at an odd time $2k+1$ with $k+1$ heads and $k$ tails, so the recorded ratio is $\frac{k+1}{2k+1}$: it is $1$ with probability $1/2$ (first toss heads), $2/3$ with probability $1/8$, and so on, always above $1/2$ and decreasing toward it. Weighting these by the first-passage probabilities gives a series that is exactly the Taylor series of $\arcsin$ at 1, hence $\pi/4$. The tempting guess $3/4$ is close but wrong.
+SOLUTION: First passage and an integral
+Let $\tau$ be the stopping time. $S_\tau = 1$ and $\tau = 2k+1$ for some $k \ge 0$, with $k+1$ heads, so the recorded value is $r = \frac{k+1}{2k+1}$.
+
+Distribution of $\tau$: the first $2k$ steps must go from 0 to 0 without ever exceeding 0 (there are $C_k$ such paths), then the next step is up. So
+$$\mathbb{P}(\tau = 2k+1) = \frac{C_k}{2^{2k+1}} = \frac{1}{k+1}\binom{2k}{k}\frac{1}{2^{2k+1}}.$$
+Since the walk hits $+1$ almost surely, these probabilities sum to 1. Then
+$$\mathbb{E}[r] = \sum_{k\ge0}\frac{k+1}{2k+1}\cdot\frac{1}{k+1}\binom{2k}{k}\frac{1}{2^{2k+1}} = \frac12\sum_{k\ge0}\binom{2k}{k}\frac{1}{4^k}\cdot\frac{1}{2k+1}.$$
+Write $\frac{1}{2k+1} = \int_0^1 x^{2k}\,dx$ and swap sum and integral (all terms are positive):
+$$\mathbb{E}[r] = \frac12\int_0^1\sum_{k\ge0}\binom{2k}{k}\left(\frac{x^2}{4}\right)^k dx = \frac12\int_0^1\frac{dx}{\sqrt{1 - x^2}} = \frac12\arcsin(1) = \frac12\cdot\frac\pi2 = \frac\pi4.$$
+Numerically $\pi/4 \approx 0.7854$; a simulation of 200,000 games gives $0.785$.
+
+Note: the source states $3/4$; the correct value is $\pi/4 \approx 0.785$, because the ratio at stopping is $\frac{k+1}{2k+1}$ with Catalan weights, whose expectation is the arcsine series evaluated at 1.
+SOLUTION: Recognise the arcsine series
+The Taylor series of $\arcsin$ is
+$$\arcsin x = \sum_{k\ge0}\binom{2k}{k}\frac{x^{2k+1}}{4^k(2k+1)}, \qquad |x| \le 1.$$
+From the first method, $\mathbb{E}[r] = \frac12\sum_{k\ge0}\binom{2k}{k}\frac{1}{4^k(2k+1)} = \frac12\arcsin(1) = \frac\pi4$. The first terms are $\frac12\left(1 + \frac16 + \frac{3}{40} + \frac{5}{112} + \dots\right)$; they converge slowly (terms decay like $k^{-3/2}$), which is why truncating early suggests a smaller number.
+===END===
+
+===TEASER===
+SLUG: tails-first-three-vs-last-two
+IDS: Q-085
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Tails in the first three vs the last two
+QUESTION:
+A fair coin is tossed 5 times. What is the probability that the number of tails in the first 3 tosses equals the number of tails in the last 2 tosses?
+HINT1:
+The two counts are independent binomials. The common value can only be 0, 1 or 2.
+HINT2:
+Or: replace "tails in the last 2" by "heads in the last 2". Equality becomes a statement about one total over all 5 tosses.
+ANSWER:
+$\dfrac{5}{16}$
+REFRESH:
+- If $X\sim$ Bin($n, \frac12$), $\mathbb{P}(X = k) = \binom nk/2^n$.
+EXPLANATION:
+Let $A$ = tails in the first 3 and $B$ = tails in the last 2. Summing $\mathbb{P}(A = k)\mathbb{P}(B = k)$ over $k$ works. The trick: $B = k$ is the same as "heads in the last 2 $= 2 - k$", so $A = B$ is the same as $A + (\text{heads in last 2}) = 2$, and that sum is a count of "successes" over 5 fair tosses.
+SOLUTION: Sum over the common value
+$A\sim$ Bin($3, \frac12$), $B\sim$ Bin($2,\frac12$), independent.
+$$\mathbb{P}(A = B) = \sum_{k=0}^{2}\frac{\binom3k}{8}\cdot\frac{\binom2k}{4} = \frac{1\cdot1 + 3\cdot2 + 3\cdot1}{32} = \frac{10}{32} = \frac5{16}.$$
+SOLUTION: Swap tails for heads
+Let $H_B = 2 - B$ be the heads among the last 2 tosses. Then $A = B \iff A + H_B = 2$. Now $A + H_B \sim$ Bin($5, \frac12$) (5 independent fair tosses, counting tails on the first 3 and heads on the last 2), so
+$$\mathbb{P}(A + H_B = 2) = \frac{\binom52}{32} = \frac{10}{32} = \frac5{16}.$$
+===END===
+
+===TEASER===
+SLUG: no-consecutive-heads-first-toss
+IDS: Q-086
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: First toss heads, given no two heads in a row
+QUESTION:
+A fair coin is tossed $n$ times, and you are told that no two heads occurred consecutively. Let $p(n)$ be the conditional probability that the first toss was heads. Find $p(n)$ and compute $p(10)$.
+HINT1:
+All sequences of $n$ tosses are equally likely, so conditioning means counting: how many sequences have no two consecutive heads?
+HINT2:
+Let $a_n$ be the number of valid sequences of length $n$. Split on the first toss: a first T leaves any valid sequence of length $n-1$, a first H forces the second toss to be T. You get a Fibonacci recursion.
+ANSWER:
+$p(n) = \dfrac{F_n}{F_{n+2}}$ (Fibonacci, $F_1 = F_2 = 1$), and $p(10) = \dfrac{55}{144}$.
+REFRESH:
+- Fibonacci numbers: $F_1 = F_2 = 1$, $F_{n} = F_{n-1} + F_{n-2}$: $1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, \dots$
+- Conditioning on an event with equally likely outcomes: $\mathbb{P}(A\mid B) = |A\cap B|/|B|$.
+EXPLANATION:
+Given the condition, every valid sequence is equally likely, so $p(n)$ = (valid sequences starting with H) / (all valid sequences). Valid sequences satisfy the Fibonacci recursion, and those starting with H are exactly "H T followed by any valid sequence of length $n-2$". As $n$ grows, $p(n)\to 1/\varphi^2 \approx 0.382$ where $\varphi$ is the golden ratio: the first toss is heads less than half the time, because a head "uses up" the next position.
+SOLUTION: Fibonacci counting
+Let $a_n$ = number of H/T strings of length $n$ with no HH. If the first letter is T, the rest is any valid string of length $n-1$; if it is H, the second must be T and the rest is any valid string of length $n-2$. So $a_n = a_{n-1} + a_{n-2}$, with $a_1 = 2$ (H, T) and $a_2 = 3$ (HT, TH, TT). Hence $a_n = F_{n+2}$.
+
+Valid strings starting with H: "HT" followed by a valid string of length $n-2$, so $a_{n-2} = F_n$ of them (for $n = 2$, just "HT": $F_2 = 1$).
+
+So
+$$p(n) = \frac{F_n}{F_{n+2}}, \qquad p(10) = \frac{F_{10}}{F_{12}} = \frac{55}{144} \approx 0.382.$$
+===END===
+
+===TEASER===
+SLUG: four-draws-blue-and-green-marble
+IDS: Q-087
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: At least one blue and one green in four draws
+QUESTION:
+A bag contains 6 marbles of 6 different colours, one of which is blue and one green. You draw 4 marbles **with replacement**. What is the probability that you draw at least one blue marble and at least one green marble?
+HINT1:
+"At least one of each" is awkward directly. Look at the complement.
+HINT2:
+The complement is "no blue OR no green". Use inclusion–exclusion on those two events.
+ANSWER:
+$\dfrac{151}{648} \approx 0.233$
+REFRESH:
+- Inclusion–exclusion: $\mathbb{P}(A\cup B) = \mathbb{P}(A) + \mathbb{P}(B) - \mathbb{P}(A\cap B)$.
+EXPLANATION:
+Each draw is independent and uniform over 6 colours. "No blue in 4 draws" has probability $(5/6)^4$, the same for "no green", and "neither blue nor green" has $(4/6)^4$. Inclusion–exclusion gives the probability of missing at least one of the two colours; subtract from 1.
+SOLUTION: Inclusion–exclusion
+Let $A$ = no blue, $B$ = no green.
+$$\mathbb{P}(A) = \mathbb{P}(B) = \left(\frac56\right)^4 = \frac{625}{1296}, \qquad \mathbb{P}(A\cap B) = \left(\frac46\right)^4 = \frac{256}{1296}.$$
+$$\mathbb{P}(\text{at least one blue and one green}) = 1 - \mathbb{P}(A\cup B) = 1 - \frac{625 + 625 - 256}{1296} = \frac{1296 - 994}{1296} = \frac{302}{1296} = \frac{151}{648}.$$
+SOLUTION: Direct count
+Count sequences of 4 draws (out of $6^4 = 1296$) containing both colours by the numbers $(b, g)$ of blues and greens, the other $4 - b - g$ draws coming from the 4 other colours: each case contributes $\frac{4!}{b!\,g!\,(4-b-g)!}4^{4-b-g}$.
+- $(1,1)$: $12\cdot 16 = 192$
+- $(1,2)$ and $(2,1)$: $12\cdot 4 = 48$ each, so 96
+- $(1,3)$ and $(3,1)$: 4 each, so 8; $(2,2)$: 6
+
+Total $192 + 96 + 8 + 6 = 302$, and $302/1296 = 151/648$.
+===END===
+
+===TEASER===
+SLUG: expected-runs-25-squares
+IDS: Q-088
+FIRMS: Akuna Capital, Goldman Sachs, Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Expected number of colour blocks
+QUESTION:
+A row of 25 squares is coloured: each square is independently black or white with probability $1/2$ each. A *block* is a maximal run of consecutive squares of the same colour; for example BBWBWWWBBW has 6 blocks. What is the expected number of blocks?
+HINT1:
+Don't try to find the distribution of the number of blocks. Count something simpler whose total gives the number of blocks.
+HINT2:
+Every block except the first starts at a position where the colour changes from the previous square. Use indicators for "square $i$ differs from square $i-1$".
+ANSWER:
+13
+REFRESH:
+- Linearity of expectation: $\mathbb{E}\left[\sum X_i\right] = \sum\mathbb{E}[X_i]$, even when the $X_i$ are dependent.
+EXPLANATION:
+Number of blocks = 1 + number of colour changes between neighbours. There are 24 neighbouring pairs, and each pair is a change with probability $1/2$ regardless of the rest. By linearity of expectation the answer is $1 + 24/2 = 13$. In general, for $n$ squares it is $(n+1)/2$.
+SOLUTION: Indicators of colour changes
+For $i = 2,\dots,25$ let $X_i = 1$ if square $i$ has a different colour from square $i-1$, else 0. Each block other than the first begins exactly at an $i$ with $X_i = 1$, so
+$$\#\text{blocks} = 1 + \sum_{i=2}^{25}X_i.$$
+$\mathbb{P}(X_i = 1) = \mathbb{P}(\text{BW or WB}) = \frac14 + \frac14 = \frac12$. By linearity,
+$$\mathbb{E}[\#\text{blocks}] = 1 + 24\cdot\frac12 = 13.$$
+FOLLOWUP: Biased colouring
+Same question if each square is black with probability $p$ (independently).
+FOLLOWUP_ANSWER:
+Now $\mathbb{P}(X_i = 1) = 2p(1-p)$, so the expectation is $1 + 24\cdot 2p(1-p) = 1 + 48p(1-p)$, maximal ($=13$) at $p = 1/2$ and equal to 1 when $p \in \{0, 1\}$.
+===END===
+
+===TEASER===
+SLUG: red-blue-arcs-purple-overlap
+IDS: Q-093
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: hard
+TITLE: How many purple arcs?
+QUESTION:
+On the unit circle, draw a random angle $\theta_1 \sim \mathrm{Unif}(0, 2\pi)$ and paint red the arc of length $\theta_1$ starting at the point $(1,0)$ and going counter-clockwise.
+
+Then draw two more independent angles $\theta_2, \alpha \sim \mathrm{Unif}(0, 2\pi)$ and paint blue the arc of length $\theta_2$ that starts at angle $\alpha$ and goes counter-clockwise.
+
+Where red and blue overlap the circle becomes purple. The purple set can be empty, one arc, or two separate arcs. Given that there is at least one purple section, what is the probability that there is exactly one?
+HINT1:
+Rescale the circle to circumference 1: you have three independent Unif(0,1) variables. How could the intersection of two arcs possibly split into two pieces?
+HINT2:
+The red arc is $[0, X]$ and does not wrap around. Two purple pieces happen exactly when the blue arc starts inside the red arc and wraps all the way around past $0$ (so it covers both ends of red but not a middle part). No purple happens exactly when blue fits inside the gap $[X, 1]$.
+ANSWER:
+$\dfrac45$
+REFRESH:
+- For independent uniforms, a probability is a volume: $\mathbb{P}(\text{condition}) = \int_0^1\mathbb{P}(\text{condition}\mid U = u)\,du$.
+- $\mathbb{P}(A\mid B) = \mathbb{P}(A\cap B)/\mathbb{P}(B)$.
+EXPLANATION:
+Measure angles in turns, so red is $[0, X]$, blue starts at $U$ and has length $Y$, all three uniform on $(0,1)$. The intersection of two arcs on a circle has two pieces only when each arc covers both endpoints of the other; since red starts at 0 and does not wrap, this means blue starts inside red ($U < X$) and is long enough to wrap past 0 ($U + Y > 1$). No overlap means blue lives in red's gap: $U > X$ and $U + Y < 1$. Both events have probability $1/6$, by the same integral $\int_0^1 u(1-u)\,du$. So $\mathbb{P}(\ge 1) = 5/6$, $\mathbb{P}(\text{exactly }1) = 4/6$, and the ratio is $4/5$.
+SOLUTION: Integrate over the start of the blue arc
+Rescale: red $= [0, X]$, blue $= [U, U + Y] \bmod 1$ with $X, Y, U$ i.i.d. Unif(0,1).
+
+**No purple.** Blue must lie inside $(X, 1)$: $U > X$ and $U + Y < 1$. Conditioning on $U = u$: $\mathbb{P}(X < u)\,\mathbb{P}(Y < 1 - u) = u(1-u)$, so
+$$\mathbb{P}(0\text{ pieces}) = \int_0^1 u(1-u)\,du = \frac12 - \frac13 = \frac16.$$
+**Two pieces.** If $U < X$ and $U + Y > 1$, blue covers $[U, 1)$, wraps, and covers $[0, U + Y - 1]$ with $U + Y - 1 < U$. The purple set is $[U, X] \cup [0, U + Y - 1]$: two disjoint arcs (they are separated by the uncovered stretch $(U + Y - 1, U)$). Conversely, if $U > X$ the purple set is at most $[0, U+Y-1]$ (one piece), and if $U + Y < 1$ blue does not wrap, so the purple set is a single interval. Hence
+$$\mathbb{P}(2\text{ pieces}) = \int_0^1\mathbb{P}(X > u)\,\mathbb{P}(Y > 1 - u)\,du = \int_0^1 (1-u)u\,du = \frac16.$$
+**Conclusion.**
+$$\mathbb{P}(\text{exactly one} \mid \text{at least one}) = \frac{1 - \frac16 - \frac16}{1 - \frac16} = \frac{4/6}{5/6} = \frac45.$$
+(A simulation with 20,000 trials gives $0.80$.)
+===END===
+
+===TEASER===
+SLUG: red-die-matches-one-blue-die
+IDS: Q-094
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Exactly one blue die matches the red die
+QUESTION:
+You roll three fair six-sided dice: two blue and one red. What is the probability that exactly one of the two blue dice shows the same number as the red die?
+HINT1:
+Roll the red die first and treat its value as fixed.
+HINT2:
+Given the red value, each blue die matches it independently with probability $1/6$. "Exactly one" out of two independent trials.
+ANSWER:
+$\dfrac{5}{18}$
+REFRESH:
+- Binomial: with 2 independent trials of success probability $p$, $\mathbb{P}(\text{exactly one success}) = 2p(1-p)$.
+EXPLANATION:
+Whatever the red die shows, each blue die equals it with probability $1/6$ independently of the other blue die. So the number of matches is Bin($2, 1/6$), and exactly one match has probability $2\cdot\frac16\cdot\frac56$.
+SOLUTION: Condition on the red die
+Fix the red value $r$. Blue die 1 matches with probability $1/6$, blue die 2 with probability $1/6$, independently. Exactly one matches:
+$$\mathbb{P} = \frac16\cdot\frac56 + \frac56\cdot\frac16 = \frac{10}{36} = \frac5{18}.$$
+This does not depend on $r$, so it is the unconditional answer.
+SOLUTION: Count outcomes
+Out of $6^3 = 216$ outcomes: choose which blue die matches (2 ways), the red value (6 ways), that blue die is forced, the other blue die avoids it (5 ways): $2\cdot6\cdot5 = 60$. $60/216 = 5/18$.
+===END===
+
+===TEASER===
+SLUG: concert-adults-bus-of-50
+IDS: Q-095
+FIRMS: Jane Street, Two Sigma
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Adults at the concert before the bus
+QUESTION:
+At a concert, $\frac{5}{12}$ of the audience are adults. Then a bus arrives carrying 50 more people (adults and/or children). Now $\frac{11}{25}$ of the audience are adults. What is the smallest possible number of adults at the concert before the bus arrived?
+HINT1:
+Numbers of people are integers. What must the audience size be divisible by, before and after the bus?
+HINT2:
+Let $T$ be the initial audience and $b$ the number of adults on the bus ($0 \le b \le 50$). Write $b$ in terms of $T$ and impose that it is an integer in $[0, 50]$.
+ANSWER:
+125
+REFRESH:
+- If $\frac{a}{n}\cdot T$ counts people with $\gcd(a,n) = 1$, then $n$ divides $T$.
+EXPLANATION:
+Two divisibility conditions do most of the work: $\frac5{12}T$ adults forces $12 \mid T$, and $\frac{11}{25}(T + 50)$ adults forces $25 \mid T + 50$, i.e. $25 \mid T$. So $T$ is a multiple of 300. Then check that the bus can supply the right number of adults: $b = \frac{11}{25}(T + 50) - \frac{5}{12}T$ must be between 0 and 50. The smallest $T = 300$ works with 29 adults and 21 children on the bus, giving $\frac5{12}\cdot 300 = 125$ adults before.
+SOLUTION: Divisibility then feasibility
+Let $T$ be the initial audience, $A = \frac5{12}T$ the initial adults, $b$ the adults on the bus.
+
+- $A$ integer and $\gcd(5,12) = 1$ $\Rightarrow$ $12 \mid T$.
+- $\frac{11}{25}(T + 50)$ integer and $\gcd(11, 25) = 1$ $\Rightarrow$ $25 \mid T + 50$ $\Rightarrow$ $25 \mid T$.
+
+So $T = 300k$. The adults on the bus:
+$$b = \frac{11}{25}(T + 50) - \frac5{12}T = \frac{132(T + 50) - 125T}{300} = \frac{7T + 6600}{300} = 7k + 22.$$
+We need $0 \le b \le 50$: $7k + 22 \le 50 \Rightarrow k \le 4$. So $k \in \{1, 2, 3, 4\}$ and $A = 125k$.
+
+The minimum is $k = 1$: $T = 300$, $A = 125$, bus with $b = 29$ adults and 21 children. Check: $(125 + 29)/(300 + 50) = 154/350 = 11/25$. Answer: $\boxed{125}$.
+FOLLOWUP: The maximum
+What is the largest possible number of adults before the bus?
+FOLLOWUP_ANSWER:
+$k = 4$: $T = 1200$, $A = 500$, and $b = 7\cdot 4 + 22 = 50$, i.e. the bus carries only adults. Check: $550/1250 = 11/25$. So the answer is 500.
+===END===
+
+===TEASER===
+SLUG: party-invite-feuding-friends
+IDS: Q-096
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Five guests, two who can't be together
+QUESTION:
+Jimmy has 8 friends and will invite exactly 5 of them to his party. Two of his friends are feuding and will not both attend. How many different groups of 5 guests can he invite?
+HINT1:
+It is easier to count the forbidden groups than the allowed ones.
+HINT2:
+A forbidden group contains both feuding friends plus 3 others chosen from the remaining 6.
+ANSWER:
+36
+REFRESH:
+- $\binom nk = \dfrac{n!}{k!(n-k)!}$ counts the subsets of size $k$ of an $n$-element set.
+EXPLANATION:
+Count all possible groups of 5 from 8, then remove those containing both feuding friends. Equivalently, split by who among the pair is invited: neither, only the first, or only the second.
+SOLUTION: Complement
+All groups: $\binom85 = 56$. Groups containing both feuding friends: choose the other 3 from the remaining 6, $\binom63 = 20$. Allowed: $56 - 20 = 36$.
+SOLUTION: Case split
+- Neither feuding friend: choose all 5 from the other 6: $\binom65 = 6$.
+- Exactly one of them (2 choices), plus 4 of the other 6: $2\binom64 = 2\cdot 15 = 30$.
+
+Total $6 + 30 = 36$.
+===END===
+
+===TEASER===
+SLUG: count-digit-one-1-to-1000
+IDS: Q-100
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: How many 1s from 1 to 1000?
+QUESTION:
+If you write out all the integers from 1 to 1000, how many times do you write the digit 1?
+HINT1:
+Treat the units, tens and hundreds positions separately, and handle 1000 on its own.
+HINT2:
+Pad the numbers 0 to 999 with leading zeros to three digits. By symmetry, how often does each digit appear in each position?
+ANSWER:
+301
+REFRESH:
+NONE
+EXPLANATION:
+Write 000, 001, ..., 999: that is 1000 strings of 3 digits, 3000 digits in total, and every digit appears equally often in each position (each position cycles uniformly through 0–9). So each digit appears 300 times. Leading zeros and the number 0 add no 1s, so 1 to 999 contains 300 ones, and 1000 adds one more.
+SOLUTION: Symmetry on 000–999
+Among the 1000 three-digit strings 000 to 999, each position takes each digit exactly 100 times. So the digit 1 appears $3 \times 100 = 300$ times. Padding zeros and the string 000 contain no 1, so the integers 1 to 999 contain exactly 300 ones. Adding 1000 (one more 1): $\boxed{301}$.
+SOLUTION: Position by position
+- Units digit 1: 1, 11, 21, ..., 991: 100 times.
+- Tens digit 1: 10–19, 110–119, ..., 910–919: 10 blocks of 10 = 100 times.
+- Hundreds digit 1: 100–199: 100 times.
+- Thousands digit: 1000: once.
+
+Total $100 + 100 + 100 + 1 = 301$.
+===END===
+
+===TEASER===
+SLUG: max-covariance-given-variances
+IDS: Q-102
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Largest possible covariance
+QUESTION:
+Two random variables satisfy $\mathbb{E}[X_1] = -3$, $\mathbb{E}[X_2] = 7$, $\operatorname{Var}(X_1) = 24$ and $\operatorname{Var}(X_2) = 6$. What is the largest possible value of $\operatorname{Cov}(X_1, X_2)$?
+HINT1:
+Some of the information given is irrelevant.
+HINT2:
+Correlation is between $-1$ and $1$.
+ANSWER:
+12
+REFRESH:
+- Cauchy–Schwarz: $|\operatorname{Cov}(X, Y)| \le \sqrt{\operatorname{Var}(X)\operatorname{Var}(Y)}$, with equality iff $Y$ is an affine function of $X$ (almost surely).
+EXPLANATION:
+Covariance does not depend on the means (shifting a variable doesn't change it). It is bounded by the product of standard deviations, $\sqrt{24}\sqrt6 = \sqrt{144} = 12$, and that bound is reached when the variables are perfectly positively correlated.
+SOLUTION: Cauchy–Schwarz and an example
+$$\operatorname{Cov}(X_1, X_2) = \rho\,\sigma_1\sigma_2 \le \sigma_1\sigma_2 = \sqrt{24\cdot 6} = \sqrt{144} = 12.$$
+It is attained: take $Z$ with mean 0, variance 1 and set $X_1 = -3 + \sqrt{24}Z$, $X_2 = 7 + \sqrt6 Z$. Then the means and variances are as required and $\operatorname{Cov}(X_1, X_2) = \sqrt{24}\sqrt6\operatorname{Var}(Z) = 12$. The means $-3$ and $7$ play no role.
+===END===
+
+===TEASER===
+SLUG: cats-and-dogs-on-the-avenue
+IDS: Q-105
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Cats and dogs along an endless avenue
+QUESTION:
+Walking along an endless avenue, you notice that among the animals on the pavement, 6 out of every 7 cats are followed by a dog, while 1 out of every 4 dogs is followed by a cat. (Every animal is a cat or a dog.) What fraction of the animals are dogs?
+HINT1:
+Think of the sequence of animals as a chain where the next animal depends only on the current one.
+HINT2:
+In a long sequence, the number of cat-to-dog switches must (almost) equal the number of dog-to-cat switches.
+ANSWER:
+$\dfrac{24}{31}$
+REFRESH:
+- Stationary distribution of a two-state Markov chain with switching probabilities $a$ (state 1 to 2) and $b$ (2 to 1): $\pi_1 = \frac{b}{a+b}$, $\pi_2 = \frac{a}{a+b}$. It solves the balance equation $\pi_1 a = \pi_2 b$.
+EXPLANATION:
+Along the avenue, the changes of species alternate: every cat-then-dog switch is eventually followed by a dog-then-cat switch. So in the long run the two kinds of switches are equally frequent. If a fraction $c$ of animals are cats and $d$ are dogs, cat-to-dog switches occur at rate $\frac67c$ and dog-to-cat switches at rate $\frac14d$. Setting them equal gives $d/c = 24/7$.
+SOLUTION: Balance of switches
+Let $c$ and $d = 1 - c$ be the long-run fractions of cats and dogs. The fraction of positions where a cat is followed by a dog is $\frac67 c$; where a dog is followed by a cat, $\frac14 d$. Switches alternate, so these are equal:
+$$\frac67c = \frac14d \quad\Longrightarrow\quad d = \frac{24}{7}c \quad\Longrightarrow\quad d = \frac{24/7}{1 + 24/7} = \frac{24}{31}.$$
+SOLUTION: Stationary distribution
+Model the species as a Markov chain on $\{C, D\}$ with $P(C\to D) = \frac67$, $P(C\to C) = \frac17$, $P(D\to C) = \frac14$, $P(D\to D) = \frac34$. The stationary distribution solves $\pi_D = \pi_C\cdot\frac67 + \pi_D\cdot\frac34$, i.e. $\frac14\pi_D = \frac67\pi_C$, and $\pi_C + \pi_D = 1$. Using the two-state formula with $a = 6/7$, $b = 1/4$:
+$$\pi_D = \frac{a}{a + b} = \frac{6/7}{6/7 + 1/4} = \frac{24/28}{31/28} = \frac{24}{31}.$$
+===END===
+
+===TEASER===
+SLUG: ode-f-minus-f-prime-cubic
+IDS: Q-107
+FIRMS: WorldQuant
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Solve f minus f prime equals a cube
+QUESTION:
+A function $f$ satisfies
+$$f(x) - f'(x) = (x + 1)^3 \quad\text{for all } x, \qquad f(0) = 16.$$
+Find $f(9)$.
+HINT1:
+Look for a polynomial solution first. What degree must it have?
+HINT2:
+If $P - P' = g$ with $g$ a polynomial, then $P = g + g' + g'' + g''' + \dots$ (the sum stops). The general solution adds $Ce^x$; check what $f(0) = 16$ says about $C$.
+ANSWER:
+$f(9) = 1366$
+REFRESH:
+- Linear first-order ODE: the general solution is a particular solution plus the general solution of the homogeneous equation $f - f' = 0$, which is $Ce^x$.
+- Integrating factor: $(e^{-x}f)' = e^{-x}(f' - f)$.
+EXPLANATION:
+Think of the equation as $(1 - D)f = g$ with $D$ the derivative. On polynomials, $D$ is nilpotent, so $(1 - D)^{-1} = 1 + D + D^2 + D^3$ applied to a cubic: the particular solution is $g + g' + g'' + g'''$. Its value at 0 is $1 + 3 + 6 + 6 = 16$, exactly the initial condition, so the exponential part vanishes and $f$ is this cubic polynomial.
+SOLUTION: Polynomial particular solution
+Let $g(x) = (x+1)^3$. Try $P = g + g' + g'' + g'''$:
+$$P(x) = (x+1)^3 + 3(x+1)^2 + 6(x+1) + 6.$$
+Check: $P' = g' + g'' + g'''$ (since $g'''' = 0$), so $P - P' = g$. ✓
+
+General solution: $f(x) = P(x) + Ce^x$. At 0: $P(0) = 1 + 3 + 6 + 6 = 16$, so $16 = 16 + C$ and $C = 0$.
+
+Then
+$$f(9) = 10^3 + 3\cdot10^2 + 6\cdot 10 + 6 = 1000 + 300 + 60 + 6 = 1366.$$
+SOLUTION: Integrating factor
+Rewrite as $f' - f = -(x+1)^3$ and multiply by $e^{-x}$:
+$$\left(e^{-x}f(x)\right)' = -e^{-x}(x+1)^3.$$
+Integrating by parts three times (or checking by differentiation, using $\frac{d}{dx}\left[e^{-x}P\right] = e^{-x}(P' - P)$):
+$$\int -e^{-x}(x+1)^3\,dx = e^{-x}\left[(x+1)^3 + 3(x+1)^2 + 6(x+1) + 6\right] + C.$$
+So $f(x) = (x+1)^3 + 3(x+1)^2 + 6(x+1) + 6 + Ce^x$, $f(0) = 16 + C = 16$ gives $C = 0$, and $f(9) = 1366$.
+===END===
+
+===TEASER===
+SLUG: variance-of-integral-s-dbs
+IDS: Q-109
+FIRMS: Goldman Sachs
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Variance of the integral of s dB
+QUESTION:
+Let $(B_t)$ be a standard Brownian motion (variance 1 per unit time) and define
+$$X_t = \int_0^t s\,dB_s.$$
+Its variance can be written $k\,t^3$. Find $k$.
+
+(You may use the fact that for a deterministic integrand $f$, $\operatorname{Var}\left(\int_0^t f(s)\,dB_s\right) = \int_0^t f(s)^2\,ds$.)
+HINT1:
+Apply the given formula with $f(s) = s$.
+HINT2:
+If the formula feels like magic: approximate the integral by $\sum s_i(B_{s_{i+1}} - B_{s_i})$, a sum of independent Gaussians. Add their variances.
+ANSWER:
+$k = \dfrac13$, i.e. $\operatorname{Var}(X_t) = t^3/3$
+REFRESH:
+- Brownian increments over disjoint intervals are independent, and $B_{u} - B_{v} \sim \mathcal N(0, u - v)$ for $u > v$.
+- For independent $Y_i$: $\operatorname{Var}\left(\sum c_iY_i\right) = \sum c_i^2\operatorname{Var}(Y_i)$.
+- Itô isometry (deterministic case): $\operatorname{Var}\left(\int_0^t f\,dB\right) = \int_0^t f^2\,ds$.
+EXPLANATION:
+The stochastic integral of a deterministic function is a limit of sums $\sum f(s_i)\Delta B_i$ of independent centred Gaussians with variances $f(s_i)^2\Delta s$. Adding variances gives a Riemann sum for $\int f^2\,ds$. With $f(s) = s$ this is $\int_0^t s^2\,ds = t^3/3$. So $X_t \sim \mathcal N(0, t^3/3)$: later times get more weight, so the variance grows like $t^3$ instead of $t$.
+SOLUTION: Isometry formula
+With $f(s) = s$,
+$$\operatorname{Var}(X_t) = \int_0^t s^2\,ds = \left[\frac{s^3}{3}\right]_0^t = \frac{t^3}{3}.$$
+So $k = 1/3$.
+SOLUTION: Riemann sums, no stochastic calculus
+Split $[0, t]$ into $n$ steps $s_i = it/n$, $\Delta = t/n$, and let $\Delta B_i = B_{s_{i+1}} - B_{s_i}$: independent, each $\mathcal N(0, \Delta)$. Then
+$$X_t \approx \sum_{i=0}^{n-1}s_i\,\Delta B_i, \qquad \operatorname{Var} = \sum_{i=0}^{n-1}s_i^2\,\Delta = \frac{t^3}{n^3}\sum_{i=0}^{n-1}i^2 = \frac{t^3}{n^3}\cdot\frac{(n-1)n(2n-1)}{6} \xrightarrow[n\to\infty]{} \frac{t^3}{3}.$$
+SOLUTION: Integration by parts
+$d(sB_s) = B_s\,ds + s\,dB_s$ (no correction term since $s$ is deterministic), so $X_t = tB_t - \int_0^t B_s\,ds$. Using $\operatorname{Cov}(B_u, B_v) = \min(u,v)$:
+- $\operatorname{Var}(tB_t) = t^3$,
+- $\operatorname{Var}\left(\int_0^t B_s\,ds\right) = \int_0^t\!\int_0^t\min(u,v)\,du\,dv = \frac{t^3}{3}$,
+- $\operatorname{Cov}\left(tB_t, \int_0^t B_s\,ds\right) = t\int_0^t s\,ds = \frac{t^3}{2}$.
+
+So $\operatorname{Var}(X_t) = t^3 + \frac{t^3}{3} - 2\cdot\frac{t^3}{2} = \frac{t^3}{3}$.
+===END===
+
+===TEASER===
+SLUG: cube-faces-red-green-blue-corner
+IDS: Q-111
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Do red, green and blue meet at a corner?
+QUESTION:
+The 6 faces of a cube are painted with 6 different colours (red, blue, green, yellow, purple, pink), one colour per face, uniformly at random. What is the probability that the red, green and blue faces all meet at a common vertex?
+HINT1:
+Three faces of a cube share a vertex exactly when no two of them are opposite each other.
+HINT2:
+Fix the red face. Which colour ends up opposite red? Then, given that, where can green be relative to blue?
+ANSWER:
+$\dfrac25$
+REFRESH:
+- A cube has 6 faces in 3 opposite pairs, and 8 vertices; each vertex is where 3 mutually adjacent faces meet.
+EXPLANATION:
+Three faces meet at a corner iff they are pairwise adjacent, i.e. none of the three opposite pairs contains two of them. Place red first; the face opposite red is equally likely to be any of the other 5 colours, and we need it to be one of the 3 "other" colours. Then blue and green are both on the belt of 4 faces around red, and they must not be opposite each other on that belt.
+SOLUTION: Sequential placement
+By symmetry, put red on top. The bottom face gets one of the 5 other colours uniformly: it is neither blue nor green with probability $3/5$.
+
+Given that, blue and green are both on the 4 side faces. Place blue on one of them; green is uniform over the 3 remaining side faces, of which 2 are adjacent to blue and 1 is opposite. So
+$$\mathbb{P} = \frac35\cdot\frac23 = \frac25.$$
+SOLUTION: Count face triples
+The set of 3 faces receiving red, green and blue is a uniformly random 3-subset of the 6 faces: $\binom63 = 20$ possibilities. The 3-subsets of pairwise adjacent faces are exactly the corners: 8 of them. So the probability is $8/20 = 2/5$.
+===END===
+
+===TEASER===
+SLUG: move-last-digit-4-times-four
+IDS: Q-113
+FIRMS: WorldQuant
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: hard
+TITLE: Move the final 4 to the front
+QUESTION:
+Find the smallest positive integer ending in the digit 4 such that moving that final 4 to the front of the number (for example $1234 \to 4123$) gives exactly 4 times the original number.
+HINT1:
+Write the number as $10y + 4$ where $y$ has $k$ digits. What is the new number in terms of $y$ and $k$?
+HINT2:
+You get $4\cdot10^k + y = 4(10y + 4)$, i.e. $39y = 4\cdot 10^k - 16$. Find the smallest $k$ that makes this divisible by 39. Or: build the number digit by digit from the right using the multiplication by 4.
+ANSWER:
+$102564$ (indeed $4 \times 102564 = 410256$)
+REFRESH:
+- Modular arithmetic: $a \equiv b \pmod n$ means $n \mid a - b$; you can reduce powers step by step, $10^{k+1} \equiv 10\cdot(10^k \bmod n) \pmod n$.
+EXPLANATION:
+Moving the last digit to the front turns $10y + 4$ into $4\cdot10^k + y$. The condition becomes a divisibility condition: $39 \mid 4(10^k - 4)$, i.e. $10^k \equiv 4 \pmod{39}$. The smallest such $k$ gives the smallest number. Alternatively, do the multiplication by 4 backwards: the last digit of the product is the last digit of $4\times 4$, which is the second-last digit of the number, and so on, carrying as you go, until a 4 appears with no carry.
+SOLUTION: Algebra and modular arithmetic
+Let $x = 10y + 4$ with $y$ having $k$ digits (so $10^{k-1} \le y < 10^k$). Moving the 4 to the front gives $4\cdot10^k + y$. The condition:
+$$4\cdot10^k + y = 4(10y + 4) = 40y + 16 \quad\Longrightarrow\quad 39y = 4\cdot10^k - 16 = 4(10^k - 4).$$
+Since $\gcd(4, 39) = 1$, we need $10^k \equiv 4 \pmod{39}$. Powers of 10 mod 39: $10^1 \equiv 10$, $10^2 \equiv 100 - 78 = 22$, $10^3 \equiv 220 - 195 = 25$, $10^4 \equiv 250 - 234 = 16$, $10^5 \equiv 160 - 156 = 4$. So $k = 5$:
+$$y = \frac{4\cdot 10^5 - 16}{39} = \frac{399\,984}{39} = 10\,256,$$
+which indeed has 5 digits. So $x = 102\,564$. Check: $4\times102564 = 410256$. ✓
+SOLUTION: Long multiplication from the right
+Write $x = \ldots d_2d_1\,4$ and $4x = 4\ldots d_2d_1$. Multiplying by 4 digit by digit from the right, each digit of the product is the next digit (to the left) of $x$:
+- $4\times4 = 16$: product digit 6, so $d_1 = 6$, carry 1.
+- $4\times6 + 1 = 25$: digit 5, so $d_2 = 5$, carry 2.
+- $4\times5 + 2 = 22$: digit 2, carry 2.
+- $4\times2 + 2 = 10$: digit 0, carry 1.
+- $4\times0 + 1 = 1$: digit 1, carry 0.
+- $4\times1 + 0 = 4$: digit 4 with no carry: this 4 is the leading digit of $4x$, so we stop.
+
+Reading $x$'s digits from the left: $102564$.
+===END===
+
+===TEASER===
+SLUG: plutonium-survival-three-seconds
+IDS: Q-115
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Surviving three seconds of decay
+QUESTION:
+An atom decays at a constant rate of 1 event per second on average (memoryless decay). What is the probability that it has not decayed after the next 3 seconds? Write the answer as $e^a$ and give $a$.
+HINT1:
+Constant rate and memorylessness point to one specific distribution for the waiting time.
+HINT2:
+Lifetime $\sim$ Exponential($\lambda$), and $\mathbb{P}(T > t) = e^{-\lambda t}$.
+ANSWER:
+$e^{-3}$, so $a = -3$
+REFRESH:
+- Exponential distribution with rate $\lambda$: density $\lambda e^{-\lambda t}$ for $t\ge0$, survival $\mathbb{P}(T > t) = e^{-\lambda t}$, mean $1/\lambda$.
+- Equivalently, the number of events in time $t$ of a Poisson process with rate $\lambda$ is Poisson($\lambda t$), and $\mathbb{P}(0\text{ events}) = e^{-\lambda t}$.
+EXPLANATION:
+A constant decay rate means that in every small interval $dt$ the atom decays with probability $\lambda\,dt$, independently of its past. Surviving $t$ seconds is surviving each of $n$ small steps: $(1 - \lambda t/n)^n \to e^{-\lambda t}$. With $\lambda = 1$ and $t = 3$ this is $e^{-3} \approx 0.050$.
+SOLUTION: Exponential survival
+The lifetime $T$ is Exponential with rate $\lambda = 1$ per second, so
+$$\mathbb{P}(T > 3) = \int_3^\infty e^{-s}\,ds = e^{-3} \approx 0.0498.$$
+So $a = -3$.
+SOLUTION: Poisson count
+Decays form a Poisson process of rate 1, so the number of decay events in 3 seconds is Poisson(3), and no event has probability $e^{-3}\frac{3^0}{0!} = e^{-3}$.
+===END===
+
+===TEASER===
+SLUG: point-99-to-the-100
+IDS: Q-116
+FIRMS: Citi
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: medium
+TITLE: First three decimals of 0.99 to the 100
+QUESTION:
+Without a calculator, find the first three digits after the decimal point of $0.99^{100}$.
+HINT1:
+$(1 - \frac1n)^n$ should remind you of a famous constant. How close is it?
+HINT2:
+Write $0.99^{100} = e^{100\ln(0.99)}$ and expand $\ln(1 - x) = -x - \frac{x^2}{2} - \dots$ with $x = 0.01$. You need $e^{-1} \approx 0.367879$.
+ANSWER:
+$0.99^{100} \approx 0.36603$, so the digits are 366
+REFRESH:
+- $\ln(1 - x) = -x - \frac{x^2}{2} - \frac{x^3}{3} - \dots$ for $|x| < 1$.
+- $e^{-1} = 0.367879\ldots$ and $e^{\varepsilon} \approx 1 + \varepsilon$ for small $\varepsilon$.
+EXPLANATION:
+$(1 - 1/n)^n$ tends to $e^{-1} \approx 0.3679$, but it approaches it from below, so the first-order guess "0.367" is wrong in the third decimal. The correction comes from the second term of the logarithm: $100\ln 0.99 = -1 - 0.005 - \dots$, so $0.99^{100} \approx e^{-1}e^{-0.005} \approx 0.3679\times0.995 \approx 0.3660$.
+SOLUTION: Logarithm expansion
+$$\ln(0.99) = -0.01 - \frac{0.0001}{2} - \frac{0.000001}{3} - \dots = -0.01005033\ldots$$
+$$100\ln(0.99) = -1.005033\ldots$$
+$$0.99^{100} = e^{-1}\cdot e^{-0.005033} \approx 0.367879\times(1 - 0.005033 + 0.0000127) \approx 0.367879\times 0.994979 \approx 0.366032.$$
+The first three decimals are $\boxed{366}$ (margin: we are far from a digit boundary, 0.3660 vs 0.3670 or 0.3650).
+SOLUTION: Binomial expansion
+$$(1 - 0.01)^{100} = \sum_{k}\binom{100}{k}(-0.01)^k.$$
+Terms: $1 - 1 + 0.495 - 0.1617 + 0.039212 - 0.007529 + 0.001192 - 0.000160 + 0.0000186 - 0.0000019 + \dots$
+
+Partial sums: $0.495 \to 0.3333 \to 0.372512 \to 0.364984 \to 0.366176 \to 0.366015 \to 0.366034 \to 0.366032$. The terms alternate and shrink quickly, so the value is $0.36603\ldots$ and the digits are 366. (Slower by hand, but fully elementary.)
+===END===
+
+===TEASER===
+SLUG: six-digit-phone-numbers
+IDS: Q-117
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: How many six-digit phone numbers?
+QUESTION:
+A phone number has 6 digits, and each position can be any digit from 0 to 9 with no restrictions (leading zeros and repeats allowed). How many different phone numbers are possible?
+HINT1:
+Choose the digits one position at a time.
+HINT2:
+Each of the 6 positions has 10 independent choices: multiplication principle.
+ANSWER:
+$10^6 = 1\,000\,000$
+REFRESH:
+- Multiplication principle: if a choice is made in $k$ independent stages with $n_1, \dots, n_k$ options, there are $n_1 n_2\cdots n_k$ outcomes.
+EXPLANATION:
+The six positions are filled independently with 10 options each, giving $10^6$. Another way to see it: the phone numbers are exactly the strings 000000 to 999999, i.e. the integers 0 to 999,999 written with 6 digits, and there are one million of those.
+SOLUTION: Multiplication principle
+$$10\times10\times10\times10\times10\times10 = 10^6 = 1\,000\,000.$$
+===END===
+
+===TEASER===
+SLUG: even-odd-die-bet-stake
+IDS: Q-120
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: How much to stake on even or odd?
+QUESTION:
+A spirit rolls a fair six-sided die. You may bet on "even" or on "odd" (or both, or nothing).
+
+- For every 4 dollars staked on even, you receive 6 dollars back (in total, stake included) if the roll is even; otherwise you lose the stake.
+- For every 6 dollars staked on odd, you receive 9 dollars back (in total) if the roll is odd; otherwise you lose the stake.
+
+Playing optimally, how much should you stake?
+HINT1:
+Compute the expected profit per dollar on each bet.
+HINT2:
+Even and odd each have probability $1/2$. A bet that returns 1.5 times the stake with probability $1/2$ is worth how much per dollar? Also check whether combining the two bets could help.
+ANSWER:
+Nothing: stake 0 dollars (both bets have negative expected value).
+REFRESH:
+- Expected profit of a bet = $\mathbb{P}(\text{win})\times\text{payout} - \text{stake}$.
+EXPLANATION:
+Both bets pay back 1.5 times the stake on a $50\%$ event, so each dollar staked returns 0.75 dollars on average: a 25% expected loss. Betting on both sides doesn't help either: you lose whichever side is wrong and recover only 1.5 times the other stake. With only negative-EV options, the optimal stake is 0. (If the payout were profit on top of the stake, each bet would return 2.5 per 1 on a coin flip and you'd want to bet; the wording "receive back" settles it.)
+SOLUTION: Expected value per dollar
+Even: stake 4, receive 6 with probability $1/2$:
+$$\mathbb{E}[\text{profit}] = \tfrac12\cdot 6 - 4 = -1 \quad(-0.25\text{ per dollar}).$$
+Odd: stake 6, receive 9 with probability $1/2$:
+$$\mathbb{E}[\text{profit}] = \tfrac12\cdot 9 - 6 = -1.5 \quad(-0.25\text{ per dollar}).$$
+Any combination (stake $e$ on even and $o$ on odd) has expected profit $-0.25(e + o) \le 0$, with equality only at $e = o = 0$. So the optimal stake is $\boxed{0}$.
+===END===

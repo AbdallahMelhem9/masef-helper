@@ -11,8 +11,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dirArg = process.argv.slice(2).find((a) => !a.startsWith('--'));
 const dir = path.resolve(dirArg || path.join(__dirname, '..', 'content', 'teasers'));
 
-const BOOK_OF = { G: 'green', R: 'red', H: 'heard' };
-const SECTIONS = new Set(['brainteaser', 'probability']);
+// Raw id prefix -> source: G/R/H are the books, Q the QuantQA dataset; W ids
+// (web pages) carry their site in refs.json ("EverythingQuant: <url>").
+const BOOK_OF = { G: 'green', R: 'red', H: 'heard', Q: 'quantqa' };
+const WEB_SOURCE = { WSO: 'wso', EverythingQuant: 'everythingquant', Quantt: 'quantt' };
+const SECTIONS = new Set(['brainteaser', 'probability', 'trading']);
 // Category order within each section (the order the app lists them in).
 export const CATEGORIES = {
   brainteaser: [
@@ -26,6 +29,7 @@ export const CATEGORIES = {
     'Clocks, rates & motion',
     'Estimation & lateral thinking',
     'Calculus & algebra',
+    'Mental math',
   ],
   probability: [
     'Counting & combinatorics',
@@ -41,6 +45,7 @@ export const CATEGORIES = {
     'Brownian motion',
     'Statistics & estimation',
   ],
+  trading: ['Market making', 'Options & Greeks', 'Markets & risk'],
 };
 
 // Sentinel format: one-line fields, multi-line fields, and repeatable
@@ -63,7 +68,7 @@ export function parseTeasers(text) {
       buf = [];
     };
     for (const line of body.split(/\r?\n/)) {
-      const single = line.match(/^(SLUG|IDS|SECTION|CATEGORY|DIFFICULTY|TITLE):\s*(.*)$/);
+      const single = line.match(/^(SLUG|IDS|FIRMS|SECTION|CATEGORY|DIFFICULTY|TITLE):\s*(.*)$/);
       const multi = line.match(/^(QUESTION|HINT1|HINT2|ANSWER|REFRESH|EXPLANATION|FOLLOWUP_ANSWER):\s*(.*)$/);
       const block = line.match(/^(SOLUTION|FOLLOWUP):\s*(.*)$/);
       if (single) {
@@ -110,11 +115,13 @@ if (errors.length) {
   if (!process.argv.includes('--force')) process.exit(1);
 }
 
-// Raw IDs (G2-07, R3A-12, H1B-03) give the books; refs.json maps each to
-// its place in the book (section, question number, page).
+// Raw IDs (G2-07, R3A-12, H1B-03, Q-012, W-004) give the sources; refs.json
+// maps each to its place in the book or its question bank / page.
 const refsPath = path.join(dir, 'refs.json');
 const rawRefs = new Map(fs.existsSync(refsPath) ? Object.entries(JSON.parse(fs.readFileSync(refsPath, 'utf8'))) : []);
 const BOOK_NAME = { green: 'Green book (Zhou)', red: 'Red book (Joshi et al.)', heard: 'Heard on the Street (Crack)' };
+// Books and QuantQA by id prefix; a web question by the site its ref names.
+const sourceOf = (id) => BOOK_OF[id[0]] || WEB_SOURCE[(rawRefs.get(id) || '').split(':')[0].trim()] || null;
 
 // Illustrations: one SVG per slug. Checked against a whitelist of plain
 // drawing elements (they are served as images, but keep them inert anyway).
@@ -137,23 +144,27 @@ const catRank = (t) => CATEGORIES[t.section]?.indexOf(t.category) ?? 99;
 all.sort((a, b) => a.section.localeCompare(b.section) || catRank(a) - catRank(b));
 
 const insert = db.prepare(`INSERT INTO teasers
-  (slug, section, category, title, difficulty, question, hint1, hint2, answer, refresh, explanation, solutions, followups, books, refs, illustration, position)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+  (slug, section, category, title, difficulty, question, hint1, hint2, answer, refresh, explanation, solutions, followups, firms, books, refs, illustration, position)
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 db.exec('BEGIN');
 db.exec('DELETE FROM teasers');
 all.forEach((t, i) => {
   const ids = (t.ids || '').split(/[,\s]+/).filter(Boolean);
-  const books = [...new Set(ids.map((id) => BOOK_OF[id[0]]).filter(Boolean))];
+  const books = [...new Set(ids.map(sourceOf).filter(Boolean))];
   // Follow-ups and footnoted variants sit inside their parent's entry, so
   // only the main questions are cited.
   const isFollowup = (id) => /follow-up|related question|footnote|fn \d|variation/i.test(rawRefs.get(id) || '');
-  const refs = ids.filter((id) => !isFollowup(id)).map((id) => {
-    const book = BOOK_OF[id[0]];
-    return `${BOOK_NAME[book] || book}: ${rawRefs.get(id) || id}`;
-  });
+  const refs = [
+    ...new Set(
+      ids
+        .filter((id) => !isFollowup(id))
+        .map((id) => (BOOK_NAME[BOOK_OF[id[0]]] ? `${BOOK_NAME[BOOK_OF[id[0]]]}: ${rawRefs.get(id) || id}` : rawRefs.get(id) || id))
+    ),
+  ];
+  const firms = [...new Set((t.firms || '').split(',').map((f) => f.trim()).filter(Boolean))];
   insert.run(
     t.slug, t.section, t.category, t.title, t.difficulty || null, t.question, t.hint1 || null, t.hint2 || null,
-    t.answer || null, t.refresh || null, t.explanation || null, JSON.stringify(t.solutions), JSON.stringify(t.followups), JSON.stringify(books), JSON.stringify(refs), illustrations.get(t.slug) || null, i
+    t.answer || null, t.refresh || null, t.explanation || null, JSON.stringify(t.solutions), JSON.stringify(t.followups), JSON.stringify(firms), JSON.stringify(books), JSON.stringify(refs), illustrations.get(t.slug) || null, i
   );
 });
 db.exec('COMMIT');

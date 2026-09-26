@@ -1,0 +1,1150 @@
+===TEASER===
+SLUG: seven-ages-round-table
+IDS: Q-007, Q-008
+FIRMS: Belvedere Trading, Goldman Sachs, IMC, Jane Street, Optiver, SIG, WorldQuant
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Seven ages around a round table
+QUESTION:
+Seven people, all of different ages, sit down at random around a circular table with seven seats. What is the probability that, going around the table, they are seated in increasing order of age? Either direction counts: the ages may increase clockwise or counterclockwise.
+HINT1:
+On a round table, what matters is who sits next to whom, not which physical seat anyone takes. How many genuinely different circular arrangements are there?
+HINT2:
+Fix the youngest person's seat to remove the rotational symmetry. The other six people can then be arranged in $6!$ equally likely ways. How many of these give increasing ages clockwise, and how many counterclockwise?
+ANSWER:
+$\dfrac{2}{6!} = \dfrac{1}{360}$
+REFRESH:
+**Circular arrangements**: $n$ distinct people around a round table (seats identical up to rotation) can be arranged in $(n-1)!$ distinct ways. If the seats are labelled, there are $n!$ seatings, and each circular arrangement corresponds to exactly $n$ of them (its $n$ rotations).
+EXPLANATION:
+The trick is to kill the symmetry: wherever the youngest person sits, look at the table from their seat. Everyone else is then placed relative to them, and all $6! = 720$ relative orderings are equally likely. Being "in increasing order" pins down the arrangement completely once a direction is chosen: going clockwise from the youngest you must meet the 2nd youngest, the 3rd, …, the oldest. There are exactly two such arrangements (clockwise or counterclockwise), so the probability is $2/720$.
+SOLUTION: Fix the youngest person
+Condition on the seat taken by the youngest person (call them 1); by symmetry this seat does not matter. Reading the other seats clockwise starting next to person 1, the remaining six people $2,\dots,7$ occupy the six seats in a uniformly random order, so each of the $6! = 720$ orders has probability $1/720$.
+
+Ages increase clockwise iff the order read clockwise is $2,3,4,5,6,7$: one order.
+Ages increase counterclockwise iff the order read clockwise is $7,6,5,4,3,2$: one order.
+
+These are distinct, so
+$$P = \frac{2}{720} = \frac{1}{360}.$$
+SOLUTION: Count labelled seatings
+Label the seats $1$ to $7$. There are $7! = 5040$ equally likely seatings. An increasing clockwise arrangement is determined by the seat of the youngest person ($7$ choices), and likewise for counterclockwise ($7$ choices), giving $14$ favourable seatings:
+$$P = \frac{14}{5040} = \frac{1}{360}.$$
+===END===
+
+===TEASER===
+SLUG: smallest-multiple-of-77-above-700000
+IDS: Q-001, Q-332
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: First multiple of 77 above 700,000
+QUESTION:
+Find the smallest multiple of $77$ that is greater than or equal to $700\,000$. Explain why no smaller multiple of $77$ works.
+HINT1:
+You want the smallest integer $n$ with $77n \ge 700\,000$. Is there a product involving $77$ that you already know is very close to a power of ten?
+HINT2:
+$7 \times 11 \times 13 = 1001$, so $77 \times 13 = 1001$. Alternatively, $11 \times 9091 = 100\,001$. Either way, find a multiple of $77$ just around $700\,000$, then check the neighbours.
+ANSWER:
+$700\,007 = 77 \times 9091$
+REFRESH:
+**Ceiling division**: the smallest multiple of $d$ that is $\ge N$ is $d\lceil N/d\rceil$. If $N = qd + r$ with $0 \le r < d$, it equals $N$ when $r=0$ and $N + (d - r)$ otherwise.
+EXPLANATION:
+We need the remainder of $700\,000$ modulo $77$: the answer is $700\,000$ plus whatever is missing to reach the next multiple. The shortcut is that $100\,001 = 11 \times 9091$, so $700\,007 = 7 \times 100\,001 = 7 \times 11 \times 9091 = 77 \times 9091$ is a multiple of $77$ sitting just $7$ above $700\,000$. The previous multiple is $77$ lower, i.e. $699\,930$, which is below $700\,000$, so $700\,007$ is the smallest.
+SOLUTION: Division with remainder
+Divide: $77 \times 9000 = 693\,000$, leaving $700\,000 - 693\,000 = 7\,000$. Then $77 \times 90 = 6\,930$, leaving $70$. Since $70 < 77$,
+$$700\,000 = 77 \times 9090 + 70.$$
+So $77 \times 9090 = 699\,930 < 700\,000$, and the next multiple is
+$$77 \times 9091 = 699\,930 + 77 = 700\,007 \ge 700\,000.$$
+Any multiple $77n$ with $n \le 9090$ is at most $699\,930 < 700\,000$, so none smaller works. The answer is $700\,007$.
+SOLUTION: Using 100001 = 11 × 9091
+Since $10^5 \equiv -1 \pmod{11}$ (because $10 \equiv -1$ and $5$ is odd), $11$ divides $100\,001$; indeed $100\,001 = 11 \times 9091$. Then
+$$700\,007 = 7 \times 100\,001 = 77 \times 9091.$$
+It is a multiple of $77$, only $7$ above $700\,000$. The multiple below it is $700\,007 - 77 = 699\,930 < 700\,000$. Hence $700\,007$ is the smallest multiple of $77$ that is at least $700\,000$.
+FOLLOWUP: The 70,000 version
+What is the smallest multiple of $77$ that is not less than $70\,000$?
+FOLLOWUP_ANSWER:
+$70\,070$. Using $77 \times 13 = 1001$: $77 \times 910 = 77 \times 13 \times 70 = 1001 \times 70 = 70\,070$. The previous multiple is $70\,070 - 77 = 69\,993 < 70\,000$, so $70\,070$ is the smallest. (Equivalently $70\,000 = 77 \times 909 + 7$, so we need $77 - 7 = 70$ more.)
+===END===
+
+===TEASER===
+SLUG: burnt-pancakes-top-side
+IDS: Q-054, W-005, Q-480, Q-090, Q-034
+FIRMS: SIG, Goldman Sachs, Hudson River Trading, Citi
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Three pancakes, burnt side up
+QUESTION:
+There are three pancakes: one is burnt on both sides, one is burnt on exactly one side, and one is not burnt at all. They are stacked in a random order, each with a random side facing up, and you can see only the top side of the top pancake. That side is burnt. What is the probability that the top pancake is the one burnt on both sides (i.e. that its hidden side is burnt too)?
+HINT1:
+The intuitive answer "it is one of two pancakes, so 1/2" is wrong. Think about what you actually observe: a *side*, not a pancake.
+HINT2:
+There are six equally likely (pancake, side-up) possibilities for the top. Count how many of them show a burnt side, and how many of those belong to the doubly burnt pancake.
+ANSWER:
+$2/3$
+REFRESH:
+**Bayes' rule**: $P(A \mid B) = \dfrac{P(B \mid A)\,P(A)}{P(B)}$, where by total probability $P(B) = \sum_i P(B \mid A_i) P(A_i)$ for a partition $(A_i)$.
+EXPLANATION:
+The evidence "burnt side up" is twice as likely to come from the doubly burnt pancake (it shows burnt whatever way it lies) as from the singly burnt one (it shows burnt only half the time). The unburnt pancake is ruled out. Starting from equal prior weights $1/3, 1/3$, the likelihoods $1$ and $1/2$ reweight the odds to $2 : 1$ in favour of the doubly burnt pancake, i.e. probability $2/3$. The tempting answer $1/2$ ignores that the two candidates don't explain the evidence equally well.
+SOLUTION: Count the burnt sides
+Each pancake is equally likely to be on top, and each of its two sides is equally likely to face up, so the visible top side is a uniformly random one of the $6$ sides.
+
+Of these $6$ sides, $3$ are burnt: two belong to the doubly burnt pancake (call it BB) and one to the singly burnt pancake (BU). Given that we see a burnt side, it is uniformly one of these $3$, and in $2$ of the $3$ cases the pancake is BB:
+$$P(\text{BB} \mid \text{burnt up}) = \frac{2}{3}.$$
+SOLUTION: Bayes' rule
+Priors for the top pancake: $P(\text{BB}) = P(\text{BU}) = P(\text{UU}) = 1/3$. Likelihoods of seeing a burnt side: $1$, $1/2$, $0$. Then
+$$P(\text{burnt up}) = \tfrac13 \cdot 1 + \tfrac13 \cdot \tfrac12 + \tfrac13 \cdot 0 = \tfrac12,$$
+$$P(\text{BB} \mid \text{burnt up}) = \frac{\tfrac13 \cdot 1}{\tfrac12} = \frac23.$$
+FOLLOWUP: Three boxes of balls
+Three boxes: one holds two white balls, one holds two black balls, one holds one white and one black ball. You pick a box at random and draw one ball at random from it. It is white. What is the probability that the other ball in that box is also white?
+FOLLOWUP_ANSWER:
+$2/3$. This is the same problem: there are $6$ equally likely balls, $3$ are white, and $2$ of those $3$ sit in the white–white box. By Bayes: $\dfrac{\frac13 \cdot 1}{\frac13 \cdot 1 + \frac13 \cdot \frac12} = \dfrac23$.
+FOLLOWUP: Draw again with replacement
+Three bowls: one with $2$ blue balls, one with $2$ red balls, one with $1$ red and $1$ blue. You choose a bowl at random and draw a blue ball. You put the ball back and draw again from the same bowl. What is the probability that the second draw is blue as well?
+FOLLOWUP_ANSWER:
+$5/6$. After the first blue draw, the posterior is $P(\text{blue–blue bowl}) = 2/3$ and $P(\text{mixed bowl}) = 1/3$ (as above). Since the ball is replaced, the second draw is blue with probability $1$ from the blue–blue bowl and $1/2$ from the mixed bowl:
+$$\tfrac23 \cdot 1 + \tfrac13 \cdot \tfrac12 = \tfrac56.$$
+===END===
+
+===TEASER===
+SLUG: josephus-circle-2000-remove-first
+IDS: Q-059, Q-061, Q-312
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Every other number on a circle of 2000
+QUESTION:
+The numbers $1, 2, \dots, 2000$ are written clockwise around a circle. Starting at $1$, you go around the circle clockwise, alternately **removing** a number and **keeping** it: remove $1$, keep $2$, remove $3$, keep $4$, and so on. The alternation continues without interruption as you go round and round (skipping numbers already removed), until every number has been removed. Which number is removed last?
+HINT1:
+Try small circles ($n = 2, 3, 4, 5, 8$) and look for a pattern. What happens to the circle after one complete trip around?
+HINT2:
+After you remove $1$, you are left with a circle of $1999$ numbers starting at $2$ in which the *first* number is kept. That is the classic Josephus problem ("$1$ kills $2$, $3$ kills $4$, …"). For that problem, if $m = 2^a + \ell$ with $0 \le \ell < 2^a$, the survivor is in position $2\ell + 1$.
+ANSWER:
+$1952$
+REFRESH:
+**Josephus problem ($k=2$)**: $m$ people in a circle, the first is kept, the second eliminated, and so on alternately. Writing $m = 2^a + \ell$ with $0 \le \ell < 2^a$, the survivor is $J(m) = 2\ell + 1$. It follows from $J(2m) = 2J(m) - 1$, $J(2m+1) = 2J(m)+1$, $J(1) = 1$.
+EXPLANATION:
+The last number removed is the one that "survives" everything else. After the very first removal (number $1$), we are in the standard Josephus setup on the $1999$ numbers $2, 3, \dots, 2000$, where the first one ($2$) is kept. The key fact of Josephus: when the count is a power of two, one full lap removes exactly half and the starting person is again first in line, so the starting person survives. With $m = 2^a + \ell$, you just eliminate $\ell$ people first; the person you are standing at then is the survivor, and that is position $2\ell + 1$. Here $1999 = 1024 + 975$, so the survivor is at position $2 \cdot 975 + 1 = 1951$ of the list $2,3,\dots,2000$, i.e. the number $1952$.
+SOLUTION: Reduce to the Josephus formula
+Step 1. Remove $1$. The remaining numbers $2, 3, \dots, 2000$ form a circle of $m = 1999$ numbers, and the alternation continues with "keep $2$, remove $3$, keep $4$, …". Relabel them $1, \dots, 1999$ (label $j$ stands for number $j+1$). This is exactly the Josephus problem where the first is kept.
+
+Step 2. Josephus with $m = 2^a$: in one lap all even labels are removed, and since $m$ is even the last label $m$ is removed, so the next lap starts again by keeping label $1$. The circle halves with label $1$ still first, so by induction label $1$ survives: $J(2^a) = 1$.
+
+Step 3. General $m = 2^a + \ell$, $0 \le \ell < 2^a$: after $\ell$ removals (labels $2, 4, \dots, 2\ell$), $2^a$ labels remain and the next one to be kept is label $2\ell + 1$. By Step 2 it survives: $J(m) = 2\ell + 1$.
+
+Step 4. $1999 = 1024 + 975$, so $J(1999) = 2 \cdot 975 + 1 = 1951$. Label $1951$ is the number $1952$.
+
+So $1952$ is the last number removed.
+
+Note: the source states the answer $20$; the correct value is $1952$ (checked by direct simulation). Even if the rule is read as "restart each new lap by removing", the answer would be $1024$, never $20$.
+SOLUTION: Halving recursion
+Let $f(n)$ be the last number removed when the circle is $1, \dots, n$ and we start by removing $1$.
+
+If $n$ is even, the first lap removes all odd numbers and keeps $n$; the next number, $2$, is then removed. So we have the same game on $2, 4, \dots, n$ starting by removing $2$: $f(n) = 2f(n/2)$.
+
+If $n = 2k+1$ is odd, the first lap removes $1, 3, \dots, 2k+1$ and the next number $2$ is kept: the game continues on $2, 4, \dots, 2k$ starting by keeping $2$. This equals: remove $4$ first on the circle $4, 6, \dots, 2k, 2$, so $f(2k+1) = 2\,\big(f(k) + 1\big)$ with indices taken cyclically (i.e. $2(f(k)+1)$, replaced by $2$ if $f(k) = k$).
+
+Now $f(2000) = 2 f(1000) = 4 f(500) = 8 f(250) = 16 f(125)$, and $125 = 2\cdot 62 + 1$ gives $f(125) = 2(f(62)+1)$; $f(62) = 2f(31)$; $f(31) = 2(f(15)+1)$; $f(15) = 2(f(7)+1)$; $f(7) = 2(f(3)+1)$; $f(3) = 2(f(1)+1)$ with cyclic rule: $f(1) = 1 = k$, so $f(3) = 2$. Check: circle $1,2,3$: remove $1$, keep $2$, remove $3$, remove $2$. Yes, $f(3) = 2$.
+
+Then $f(7) = 2(2+1) = 6$, $f(15) = 2(6+1) = 14$, $f(31) = 2(14+1) = 30$, $f(62) = 60$, $f(125) = 2(60+1) = 122$, and
+$$f(2000) = 16 \times 122 = 1952.$$
+FOLLOWUP: 100 people, 1 eliminates 2
+One hundred people stand in a circle, labelled $1$ to $100$. Starting with person $1$, each living person eliminates the next living person clockwise: $1$ eliminates $2$, $3$ eliminates $4$, and so on around the circle. Who survives?
+FOLLOWUP_ANSWER:
+$73$. This is Josephus with the first person kept: $100 = 64 + 36$, so the survivor is $2 \cdot 36 + 1 = 73$. (After $36$ eliminations, $64$ people remain and it is person $73$'s turn; with a power of two remaining, whoever starts survives.)
+FOLLOWUP: 1000 numbers, remove 1 first
+The integers $1$ to $1000$ are arranged in a circle. Starting at $1$: remove $1$, skip $2$, remove $3$, skip $4$, … continuing around the circle until one number remains. Which one?
+FOLLOWUP_ANSWER:
+$976$. After removing $1$ we have Josephus on $999$ numbers $2, \dots, 1000$ with the first kept. $999 = 512 + 487$, so the survivor is in position $2\cdot 487 + 1 = 975$ of that list, which is the number $976$.
+===END===
+
+===TEASER===
+SLUG: hth-vs-hht-coin-race
+IDS: Q-069, Q-395
+FIRMS: Akuna Capital, SIG, WorldQuant, Citi
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: HTH versus HHT
+QUESTION:
+You and a friend flip a fair coin repeatedly and write down the results. You win if the pattern $HTH$ appears before $HHT$; your friend wins if $HHT$ appears first. What is the probability that your friend wins?
+HINT1:
+Both patterns start with $H$. Think about what can happen once two heads in a row have appeared.
+HINT2:
+Set up a small Markov chain whose state is the useful suffix of the flips so far: $\varnothing$, $H$, $HH$, $HT$. Write one equation per state for the probability that $HHT$ wins from there.
+ANSWER:
+$2/3$
+REFRESH:
+**First-step analysis**: for a Markov chain and a target event, let $p_s$ be the probability of the event starting from state $s$. Then $p_s = \sum_{s'} P(s \to s')\,p_{s'}$, with boundary values $1$ on winning states and $0$ on losing ones.
+EXPLANATION:
+The patterns have the same length and each appears with probability $1/8$ at any given position, yet the race is not fair. The reason is what happens at $HH$: once two heads in a row appear, $HHT$ is guaranteed to win, because extra heads keep you at $HH$ and the first tail completes $HHT$, while $HTH$ would need a tail followed by a head. On the other side, $HTH$ can be ruined: from $HT$ a tail sends you back to the start. So $HHT$ has a "trap" state in its favour, and working out the equations gives it $2/3$.
+SOLUTION: Markov chain on suffixes
+States (the relevant end of the sequence): $S$ (start / nothing useful), $H$, $HH$, $HT$. Let $p_X$ be the probability that $HHT$ comes first from state $X$.
+
+- From $HH$: a $T$ completes $HHT$; an $H$ leaves us at $HH$. So $p_{HH} = 1$.
+- From $H$: $H \to HH$, $T \to HT$: $p_H = \tfrac12 \cdot 1 + \tfrac12 p_{HT}$.
+- From $HT$: $H$ completes $HTH$ (friend loses), $T$ gives $HTT$, which has no useful suffix: $p_{HT} = \tfrac12 \cdot 0 + \tfrac12 p_S$.
+- From $S$: $H \to H$, $T \to S$: $p_S = \tfrac12 p_H + \tfrac12 p_S$, so $p_S = p_H$.
+
+Substituting: $p_H = \tfrac12 + \tfrac12 \cdot \tfrac12 p_H = \tfrac12 + \tfrac14 p_H$, so $\tfrac34 p_H = \tfrac12$ and $p_H = \tfrac23$.
+
+Hence your friend (HHT) wins with probability $2/3$.
+SOLUTION: Conway's correlation numbers
+For patterns $A, B$ define the correlation $AB$ as the binary number whose $k$-th digit (from the left, $k = $ pattern length down to $1$) is $1$ if the last $k$ letters of $A$ equal the first $k$ letters of $B$. Conway's rule: the odds that $B$ appears before $A$ are $(AA - AB) : (BB - BA)$.
+
+With $A = HTH$, $B = HHT$:
+- $AA$: suffixes of $HTH$ vs prefixes of $HTH$: length 3 yes, 2 ($TH$ vs $HT$) no, 1 ($H$ vs $H$) yes: $101_2 = 5$.
+- $AB$: $HTH$ suffixes vs $HHT$ prefixes: 3 no, 2 ($TH$ vs $HH$) no, 1 yes: $001_2 = 1$.
+- $BB$: $HHT$ vs $HHT$: 3 yes, 2 ($HT$ vs $HH$) no, 1 ($T$ vs $H$) no: $100_2 = 4$.
+- $BA$: $HHT$ suffixes vs $HTH$ prefixes: 3 no, 2 ($HT$ vs $HT$) yes, 1 ($T$ vs $H$) no: $010_2 = 2$.
+
+Odds that $HHT$ comes first: $(5-1):(4-2) = 4:2 = 2:1$, i.e. probability $2/3$.
+FOLLOWUP: HHT versus THH
+A fair coin is flipped repeatedly. What is the probability that $HHT$ appears before $THH$?
+FOLLOWUP_ANSWER:
+$1/4$. If the first two flips are $HH$, then $HHT$ must win (the first tail completes it, and $THH$ would need a $T$ before an $HH$, which is impossible before the $HHT$ is complete). This has probability $1/4$. Otherwise a $T$ appears before any $HH$ has occurred; from then on, the first time $HH$ appears it is preceded by a $T$, which completes $THH$ before $HHT$ can finish. So $P(HHT \text{ first}) = 1/4$. Check with Conway's rule, $A = THH$, $B = HHT$: $AA = 100_2 = 4$, $AB = 011_2 = 3$, $BB = 100_2 = 4$, $BA = 001_2 = 1$, so the odds that $HHT$ comes first are $(4-3):(4-1) = 1:3$, i.e. probability $1/4$.
+===END===
+
+===TEASER===
+SLUG: simulate-one-third-with-coin
+IDS: Q-075, Q-112, Q-124
+FIRMS: Akuna Capital, Goldman Sachs, Optiver, WorldQuant, Two Sigma
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Simulating probability 1/3 with a coin
+QUESTION:
+To simulate an event of probability $\tfrac13$ with a fair coin, use this procedure: toss the coin twice. If you get $HH$, the event occurs; if you get $HT$ or $TH$, it does not occur; if you get $TT$, discard the result and repeat the two tosses under the same rules. What is the expected total number of coin tosses needed?
+HINT1:
+Each round uses exactly two tosses. How likely is a round to settle the question?
+HINT2:
+The number of rounds is geometric with success probability $3/4$.
+ANSWER:
+$8/3$ tosses
+REFRESH:
+**Geometric distribution**: if each trial succeeds independently with probability $p$, the number of trials $R$ up to and including the first success satisfies $P(R = r) = (1-p)^{r-1}p$ and $\mathbb{E}[R] = 1/p$.
+EXPLANATION:
+This is rejection sampling: the four outcomes $HH, HT, TH, TT$ are equally likely; we throw away $TT$ and keep the other three, which remain equally likely, so $HH$ has conditional probability $1/3$. The price is that a round is wasted with probability $1/4$. The number of rounds is geometric with success probability $3/4$, mean $4/3$ rounds, i.e. $2 \times 4/3 = 8/3$ tosses.
+SOLUTION: Geometric number of rounds
+A round (two tosses) ends the procedure unless it is $TT$, so it ends with probability $p = 3/4$, independently of previous rounds. The number of rounds $R$ is geometric: $\mathbb{E}[R] = 1/p = 4/3$. Each round costs two tosses, so
+$$\mathbb{E}[\text{tosses}] = 2\,\mathbb{E}[R] = \frac{8}{3}.$$
+SOLUTION: First-step equation
+Let $E$ be the expected number of tosses. After the first two tosses, with probability $3/4$ we are done, and with probability $1/4$ we start over:
+$$E = 2 + \tfrac14 E \quad\Longrightarrow\quad \tfrac34 E = 2 \quad\Longrightarrow\quad E = \tfrac83.$$
+FOLLOWUP: Probability 2/5 from fair coins
+Using only flips of fair coins, design an experiment that produces an event of probability exactly $2/5$.
+FOLLOWUP_ANSWER:
+Toss the coin three times, giving $8$ equally likely outcomes. Assign $2$ of them (say $HHH$, $HHT$) to "event", $3$ of them ($HTH$, $HTT$, $THH$) to "no event", and if one of the other $3$ outcomes appears, discard and repeat. Conditional on stopping, the $5$ kept outcomes are equally likely, so $P(\text{event}) = 2/5$. A round succeeds with probability $5/8$, so the expected number of tosses is $3 \cdot 8/5 = 24/5$. (Any dyadic block works: with $2^k$ outcomes, keep a multiple of $5$ of them and split $2:3$.)
+FOLLOWUP: Two dice rolls and one coin flip
+You may roll a fair die twice and flip a fair coin once (and nothing else). What is the smallest positive probability $p$ of an event you can simulate this way?
+FOLLOWUP_ANSWER:
+$1/72$. The experiment has $6 \times 6 \times 2 = 72$ equally likely outcomes, and any event you can build is a union of them, so its probability is $k/72$ for an integer $k$. The smallest positive value is $1/72$, achieved e.g. by "first die $1$, second die $1$, coin $H$".
+===END===
+
+===TEASER===
+SLUG: exactly-four-heads-in-nine-flips
+IDS: Q-078, Q-210, W-006
+FIRMS: Jane Street, DRW, SIG
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Exactly four heads in nine flips
+QUESTION:
+A fair coin is flipped $9$ times. What is the probability of getting exactly $4$ heads?
+HINT1:
+Every sequence of $9$ flips is equally likely. Count the sequences with exactly four heads.
+HINT2:
+Choose which $4$ of the $9$ positions are heads: $\binom{9}{4}$ ways, out of $2^9$ sequences.
+ANSWER:
+$\binom{9}{4}/2^9 = 126/512 = 63/256$
+REFRESH:
+**Binomial distribution**: the number of heads in $n$ independent flips with $P(H) = p$ satisfies $P(K = k) = \binom{n}{k} p^k (1-p)^{n-k}$.
+EXPLANATION:
+All $2^9 = 512$ outcomes are equally likely. A sequence with exactly four heads is fixed by choosing the positions of the heads, and there are $\binom94 = 126$ ways to do that. The probability is $126/512 = 63/256 \approx 0.246$. A quick check: the most likely counts are $4$ and $5$ (symmetric around $4.5$), each with about a quarter of the mass.
+SOLUTION: Binomial count
+$$\binom{9}{4} = \frac{9 \cdot 8 \cdot 7 \cdot 6}{4 \cdot 3 \cdot 2 \cdot 1} = \frac{3024}{24} = 126.$$
+$$P(K = 4) = \frac{126}{2^9} = \frac{126}{512} = \frac{63}{256}.$$
+FOLLOWUP: Exactly two heads in three flips, and is the bet fair?
+A fair coin is tossed three times. (a) What is the probability of exactly two heads? (b) You are offered a bet: you win if exactly two tosses are heads and lose otherwise. At even money (win $\$1$ or lose $\$1$), is it fair? What payout would make it fair?
+FOLLOWUP_ANSWER:
+(a) $\binom32/8 = 3/8$ (the sequences $HHT, HTH, THH$).
+(b) At even money, $\mathbb{E}[\text{gain}] = \tfrac38 \cdot 1 - \tfrac58 \cdot 1 = -\tfrac14$ per $\$1$ staked: unfavourable to you, not fair. The bet is fair when the win $w$ satisfies $\tfrac38 w = \tfrac58 \cdot 1$, i.e. $w = \tfrac53$: odds of $5:3$ (win $\$5$ for every $\$3$ risked).
+===END===
+
+===TEASER===
+SLUG: jellybean-pairs-same-colours
+IDS: Q-091, Q-092
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Two mouthfuls of jellybeans
+QUESTION:
+A child has $6$ green and $10$ yellow jellybeans in a bag. The child draws $4$ jellybeans at random, one at a time without replacement, and eats them in two mouthfuls: the first two drawn, then the last two. The draw is "good" if both mouthfuls have the same colour content: both green–green, both yellow–yellow, or both one green and one yellow (order inside a mouthful does not matter). For example $GYYG$ is good, $GGYG$ is not. What is the probability of a good draw?
+HINT1:
+Split into three disjoint cases according to the content of the first mouthful.
+HINT2:
+Count ordered draws: there are $16 \cdot 15 \cdot 14 \cdot 13$ of them. For "both mixed", the first mouthful can be $GY$ or $YG$ and so can the second.
+ANSWER:
+$\dfrac{135}{364} \approx 0.371$
+REFRESH:
+**Sequential draws without replacement**: the probability of a specific ordered colour sequence is the product of conditional probabilities, e.g. $P(G, G) = \frac{6}{16}\cdot\frac{5}{15}$. Summing over the orderings that realise a given multiset gives its probability.
+EXPLANATION:
+The three good cases are disjoint, so add their probabilities. All four green or all four yellow are single colour sequences ($GGGG$, $YYYY$). The mixed–mixed case has $2 \times 2 = 4$ orderings ($GY|GY$, $GY|YG$, $YG|GY$, $YG|YG$), all with the same probability since each uses $2$ greens and $2$ yellows. Counting ordered draws avoids any mistakes about "order not mattering".
+SOLUTION: Count ordered draws
+The number of ordered draws of 4 distinct beans is $16 \cdot 15 \cdot 14 \cdot 13 = 43\,680$.
+
+- $GGGG$: $6 \cdot 5 \cdot 4 \cdot 3 = 360$.
+- $YYYY$: $10 \cdot 9 \cdot 8 \cdot 7 = 5\,040$.
+- Mixed then mixed: first mouthful $GY$ or $YG$: $2 \cdot 6 \cdot 10 = 120$ ordered ways; second mouthful from the remaining $5$ green and $9$ yellow: $2 \cdot 5 \cdot 9 = 90$. Total $120 \cdot 90 = 10\,800$.
+
+Good draws: $360 + 5\,040 + 10\,800 = 16\,200$.
+$$P = \frac{16\,200}{43\,680} = \frac{135}{364} \approx 0.371.$$
+(Divide numerator and denominator by $120$: $135/364$.)
+SOLUTION: Conditional probabilities
+$P(GG, GG) = \frac{6}{16}\cdot\frac{5}{15}\cdot\frac{4}{14}\cdot\frac{3}{13} = \frac{360}{43680}$,
+$P(YY, YY) = \frac{10}{16}\cdot\frac{9}{15}\cdot\frac{8}{14}\cdot\frac{7}{13} = \frac{5040}{43680}$.
+$P(\text{first mixed}) = 2\cdot\frac{6}{16}\cdot\frac{10}{15} = \frac12$. Given that, $5$ green and $9$ yellow remain, and $P(\text{second mixed}) = 2\cdot\frac{5}{14}\cdot\frac{9}{13} = \frac{45}{91}$. So $P(\text{mixed, mixed}) = \frac12\cdot\frac{45}{91} = \frac{45}{182} = \frac{10800}{43680}$.
+Sum: $\frac{16200}{43680} = \frac{135}{364}$.
+FOLLOWUP: Two red then two blue
+A bag has $6$ red and $10$ blue jellybeans. A child draws $4$ one at a time without replacement. What is the probability that the first two are red and the last two are blue?
+FOLLOWUP_ANSWER:
+$$\frac{6}{16}\cdot\frac{5}{15}\cdot\frac{10}{14}\cdot\frac{9}{13} = \frac{2700}{43680} = \frac{45}{728} \approx 0.062.$$
+===END===
+
+===TEASER===
+SLUG: perfectly-correlated-sum-and-difference
+IDS: Q-098, Q-372
+FIRMS: Five Rings, Transmarket Group
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Correlation of X+Y and X−Y
+QUESTION:
+Random variables $X$ and $Y$ are perfectly correlated, $\rho(X, Y) = 1$, and their standard deviations satisfy $\sigma_Y < \sigma_X$. What is the correlation between $X + Y$ and $X - Y$?
+HINT1:
+What does $\rho = 1$ tell you about the relationship between $Y$ and $X$?
+HINT2:
+Compute $\operatorname{Cov}(X+Y, X-Y) = \sigma_X^2 - \sigma_Y^2$, and use $\operatorname{Cov}(X,Y) = \sigma_X\sigma_Y$ to get $\operatorname{Var}(X \pm Y) = (\sigma_X \pm \sigma_Y)^2$.
+ANSWER:
+$1$ (in general it is $\operatorname{sign}(\sigma_X - \sigma_Y)$)
+REFRESH:
+**Bilinearity of covariance**: $\operatorname{Cov}(aX+bY, cX+dY) = ac\,\sigma_X^2 + (ad+bc)\operatorname{Cov}(X,Y) + bd\,\sigma_Y^2$.
+**Perfect correlation**: $\rho(X,Y) = 1$ iff $Y = a + bX$ almost surely with $b = \sigma_Y/\sigma_X > 0$.
+EXPLANATION:
+If $\rho = 1$ then $Y$ is an increasing affine function of $X$: $Y = a + bX$ with $b = \sigma_Y/\sigma_X$. Then both $X + Y = a + (1+b)X$ and $X - Y = -a + (1-b)X$ are affine functions of the same $X$. Two affine functions of one variable have correlation $\pm 1$, with the sign being the sign of the product of the slopes. Since $1 + b > 0$, the sign is that of $1 - b$, i.e. positive when $\sigma_Y < \sigma_X$. The answer is $1$.
+SOLUTION: Direct covariance computation
+With $\operatorname{Cov}(X,Y) = \rho\sigma_X\sigma_Y = \sigma_X\sigma_Y$:
+$$\operatorname{Cov}(X+Y, X-Y) = \sigma_X^2 - \operatorname{Cov}(X,Y) + \operatorname{Cov}(Y,X) - \sigma_Y^2 = \sigma_X^2 - \sigma_Y^2.$$
+$$\operatorname{Var}(X+Y) = \sigma_X^2 + 2\sigma_X\sigma_Y + \sigma_Y^2 = (\sigma_X+\sigma_Y)^2,\qquad \operatorname{Var}(X-Y) = (\sigma_X - \sigma_Y)^2.$$
+So
+$$\rho(X+Y, X-Y) = \frac{\sigma_X^2 - \sigma_Y^2}{(\sigma_X + \sigma_Y)\,|\sigma_X - \sigma_Y|} = \frac{(\sigma_X-\sigma_Y)(\sigma_X+\sigma_Y)}{(\sigma_X + \sigma_Y)|\sigma_X - \sigma_Y|} = \operatorname{sign}(\sigma_X - \sigma_Y).$$
+With $\sigma_Y < \sigma_X$ this equals $1$. (If $\sigma_X = \sigma_Y$, $X - Y$ is constant and the correlation is undefined.)
+SOLUTION: Affine representation
+Write $Y = a + bX$, $b = \sigma_Y/\sigma_X \in (0,1)$. Then $X+Y = a + (1+b)X$ and $X - Y = -a + (1-b)X$, both increasing functions of $X$ since $1+b > 0$ and $1 - b > 0$. Two increasing affine functions of the same variable have correlation exactly $1$.
+FOLLOWUP: The other case
+Same question, but now $\sigma_Y > \sigma_X$ (still $\rho(X,Y) = 1$). What is $\rho(X+Y, X-Y)$?
+FOLLOWUP_ANSWER:
+$-1$. From the formula $\rho = \operatorname{sign}(\sigma_X - \sigma_Y)$: now $\sigma_X - \sigma_Y < 0$. Equivalently, $b = \sigma_Y/\sigma_X > 1$, so $X - Y = -a + (1-b)X$ is a *decreasing* function of $X$ while $X + Y$ is increasing, giving correlation $-1$.
+===END===
+
+===TEASER===
+SLUG: correlation-from-sd-of-sum
+IDS: Q-101, Q-401, Q-099
+FIRMS: Citadel, Five Rings, Transmarket Group
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Correlation from the sum's volatility
+QUESTION:
+Random variables $X$ and $Y$ have $\sigma_X = 4$, $\sigma_Y = 7$ and $\sigma_{X+Y} = 11$. What is $\rho(X, Y)$?
+HINT1:
+Write the variance of a sum in terms of the individual variances and the covariance.
+HINT2:
+$\sigma_{X+Y}^2 = \sigma_X^2 + \sigma_Y^2 + 2\rho\,\sigma_X\sigma_Y$. Plug in and solve for $\rho$.
+ANSWER:
+$\rho = 1$
+REFRESH:
+**Variance of a sum**: $\operatorname{Var}(X+Y) = \operatorname{Var}X + \operatorname{Var}Y + 2\operatorname{Cov}(X,Y)$, with $\operatorname{Cov}(X,Y) = \rho\,\sigma_X\sigma_Y$ and $-1 \le \rho \le 1$. Hence $|\sigma_X - \sigma_Y| \le \sigma_{X+Y} \le \sigma_X + \sigma_Y$.
+EXPLANATION:
+Standard deviations add like the sides of a triangle: $\sigma_{X+Y} \le \sigma_X + \sigma_Y$, with equality exactly when $\rho = 1$ (the "vectors" point the same way). Here $11 = 4 + 7$, so the maximum is reached and $\rho = 1$ without any computation.
+SOLUTION: Solve the variance identity
+$$121 = 16 + 49 + 2\rho \cdot 4 \cdot 7 = 65 + 56\rho \quad\Longrightarrow\quad 56\rho = 56 \quad\Longrightarrow\quad \rho = 1.$$
+SOLUTION: Triangle inequality
+Since $\sigma_{X+Y}^2 = \sigma_X^2 + \sigma_Y^2 + 2\rho\sigma_X\sigma_Y \le (\sigma_X + \sigma_Y)^2$ with equality iff $\rho = 1$, and here $\sigma_{X+Y} = 11 = \sigma_X + \sigma_Y$, we get $\rho = 1$.
+FOLLOWUP: Standard deviations 1, 3 and 4
+$X$ and $Y$ have standard deviations $1$ and $3$, and $X + Y$ has standard deviation $4$. Find $\operatorname{Corr}(X,Y)$.
+FOLLOWUP_ANSWER:
+$16 = 1 + 9 + 2\rho\cdot 1 \cdot 3$ gives $6\rho = 6$, so $\rho = 1$ (again $4 = 1 + 3$, the triangle inequality is an equality).
+FOLLOWUP: The standard deviation of a sum
+$\operatorname{Var}X = 9$, $\operatorname{Var}Y = 16$, and $\rho(X,Y) = -3/8$. What is the standard deviation of $X+Y$?
+FOLLOWUP_ANSWER:
+$\operatorname{Cov}(X,Y) = -\tfrac38 \cdot 3 \cdot 4 = -\tfrac92$, so $\operatorname{Var}(X+Y) = 9 + 16 + 2\cdot(-\tfrac92) = 25 - 9 = 16$ and $\sigma_{X+Y} = 4$.
+===END===
+
+===TEASER===
+SLUG: cube-six-colours-rotations
+IDS: Q-106, Q-178
+FIRMS: Jane Street, Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Painting a cube with six colours
+QUESTION:
+You have $6$ different colours and paint each face of a cube a different colour (so all six colours are used). Two colourings are the same if one can be rotated into the other. How many distinct colourings are there? (Equivalently: in how many genuinely different ways can the faces of a blank die be numbered $1$ to $6$?)
+HINT1:
+Use a rotation to put one particular colour in a fixed place, and see how much freedom you still have.
+HINT2:
+Put colour 1 on the bottom. Its opposite face (top) can be any of the remaining $5$ colours. The $4$ side faces form a ring that can still be rotated around the vertical axis.
+ANSWER:
+$30$
+REFRESH:
+**Rotation group of the cube** has $24$ elements ($6$ choices of which face goes to the bottom, times $4$ quarter-turns about the vertical axis). **Orbit counting**: if a group of size $|G|$ acts on a set and no non-identity element fixes any point, every orbit has size $|G|$, so the number of orbits is (set size)$/|G|$.
+EXPLANATION:
+There are $6! = 720$ ways to paint labelled faces. The cube has $24$ rotations, and when all colours are distinct no non-trivial rotation maps a colouring to itself (some face would have to move to a face of a different colour). So each distinct colouring appears exactly $24$ times among the $720$, giving $720/24 = 30$.
+SOLUTION: Count the orbits
+Labelled colourings: $6! = 720$. Rotations of the cube: $24$. A non-identity rotation moves at least one face to a different face, so it cannot preserve a colouring in which all faces have different colours. Therefore every equivalence class contains exactly $24$ labelled colourings, and
+$$\#\text{distinct colourings} = \frac{720}{24} = 30.$$
+SOLUTION: Fix faces step by step
+Rotate so that colour 1 is on the bottom. The top face can be any of the $5$ other colours. With bottom and top fixed, the remaining $4$ colours go around the sides; rotating about the vertical axis lets us put the smallest of them facing us, and then the other $3$ can be arranged in $3! = 6$ ways around the ring, all genuinely different. Total: $5 \times 6 = 30$.
+===END===
+
+===TEASER===
+SLUG: painted-3x3x3-cube-roll
+IDS: Q-108, Q-097, Q-030, Q-104, Q-292, Q-362
+FIRMS: Jane Street, Citadel, SIG, Five Rings, Hudson River Trading
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Rolling a piece of a painted cube
+QUESTION:
+A $3 \times 3 \times 3$ cube has its outside painted, and is then cut into $27$ unit cubes. You pick one unit cube at random and roll it (each of its $6$ faces equally likely to land on top). What is the probability that the top face is painted?
+HINT1:
+Instead of classifying the small cubes, think of all the small faces together.
+HINT2:
+Every one of the $27 \times 6$ small faces is equally likely to end up on top. How many of them are painted?
+ANSWER:
+$1/3$
+REFRESH:
+**Painted-cube census** for an $n\times n\times n$ cube ($n \ge 2$): $8$ corners with $3$ painted faces, $12(n-2)$ edge cubes with $2$, $6(n-2)^2$ face cubes with $1$, and $(n-2)^3$ interior cubes with $0$. The total painted area is $6n^2$ unit faces.
+EXPLANATION:
+Choosing a random cube and then a random face of it is the same as choosing a uniformly random face among all $27 \times 6 = 162$ small faces (every cube has $6$ faces). The painted small faces are exactly the $6 \times 9 = 54$ unit squares on the big cube's surface. So the probability is $54/162 = 1/3$. For an $n$-cube the same argument gives $6n^2/(6n^3) = 1/n$.
+SOLUTION: Count painted unit faces
+Total unit faces: $27 \times 6 = 162$, each equally likely to be on top.
+Painted unit faces: the big cube's surface, $6 \times 3^2 = 54$.
+$$P = \frac{54}{162} = \frac13.$$
+SOLUTION: Condition on the type of cube
+Corners: $8$ cubes, $3$ painted faces. Edges: $12$ cubes, $2$ painted. Face centres: $6$ cubes, $1$ painted. Core: $1$ cube, $0$.
+$$P = \frac{8}{27}\cdot\frac36 + \frac{12}{27}\cdot\frac26 + \frac{6}{27}\cdot\frac16 + \frac{1}{27}\cdot 0 = \frac{24 + 24 + 6}{162} = \frac{54}{162} = \frac13.$$
+FOLLOWUP: Was it a corner?
+Same $3\times3\times3$ painted cube; you roll a random small cube and the top face is painted. What is the probability that it is a corner cube?
+FOLLOWUP_ANSWER:
+$4/9$. Of the $54$ equally likely painted top faces, corners contribute $8 \times 3 = 24$. So $P(\text{corner} \mid \text{painted top}) = 24/54 = 4/9$.
+FOLLOWUP: Five white faces
+You pick a random small cube from the painted $3\times3\times3$ cube and look at it in a random orientation: $5$ of its faces are visible and all are unpainted. What is the probability that the cube has exactly one painted face?
+FOLLOWUP_ANSWER:
+$1/2$. Only two types can show $5$ white faces: the core cube ($1$ of $27$; always shows $5$ white faces) and a face-centre cube ($6$ of $27$; shows $5$ white faces only if its painted face is the hidden one, probability $1/6$). Bayes: $\dfrac{\frac{6}{27}\cdot\frac16}{\frac{6}{27}\cdot\frac16 + \frac{1}{27}\cdot 1} = \dfrac{1/27}{2/27} = \dfrac12$.
+FOLLOWUP: Is the hidden face red?
+Same setting, phrased differently: a $3\times3\times3$ cube of white unit cubes is painted red on the outside and taken apart. You pick a unit cube at random, in a random orientation, and see $5$ white faces. What is the probability that the unseen face is red?
+FOLLOWUP_ANSWER:
+$1/2$, by the same computation: the hidden face is red exactly when the cube is a face-centre cube, which has posterior probability $\frac{1/27}{1/27 + 1/27} = \frac12$ (the core cube and the face-centre cubes contribute equal weight $1/27$ each).
+FOLLOWUP: A 5×5×5 cube
+A $5\times5\times5$ cube is painted red and cut into $125$ unit cubes. You pick one at random and roll it. What is the probability that a red face is on top?
+FOLLOWUP_ANSWER:
+$1/5$. Painted unit faces: $6 \cdot 25 = 150$; all unit faces: $125 \cdot 6 = 750$; $150/750 = 1/5$ (in general $1/n$).
+FOLLOWUP: Expected painted faces, 10×10×10
+A $10\times10\times10$ cube is painted and cut into $1000$ unit cubes. One is chosen at random. What is the expected number of painted faces on it?
+FOLLOWUP_ANSWER:
+$3/5$. By linearity, the total number of painted unit faces is the surface area $6 \cdot 100 = 600$, spread over $1000$ cubes, so the average is $600/1000 = 3/5$. (Check with the census: $8\cdot3 + 96\cdot2 + 384\cdot1 + 512\cdot0 = 24 + 192 + 384 = 600$.)
+===END===
+
+===TEASER===
+SLUG: two-black-cards-which-deck
+IDS: Q-114, W-013
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two black cards: small or big deck?
+QUESTION:
+You may choose one of two decks: a small deck with $13$ red and $13$ black cards, or a large deck with $26$ red and $26$ black cards. You draw two cards without replacement from the chosen deck and win if both are black. Which deck should you choose?
+HINT1:
+Both decks are half black, so the first card is black with probability $1/2$ either way. What about the second?
+HINT2:
+After a black card is removed, the proportion of black cards left drops. By how much does it drop in each deck?
+ANSWER:
+The larger deck ($26$ red, $26$ black): $P = 25/102 \approx 0.245$ versus $6/25 = 0.24$.
+REFRESH:
+**Sampling without replacement**: $P(\text{two black}) = \frac{b}{N}\cdot\frac{b-1}{N-1}$ for $b$ black cards among $N$.
+EXPLANATION:
+Removing one black card hurts the small deck more: the second draw is black with probability $12/25 = 0.48$ in the small deck but $25/51 \approx 0.49$ in the large one. The bigger the deck, the closer we get to sampling with replacement, where the probability would be $1/4$. Both are below $1/4$, and the larger deck is closer to it.
+SOLUTION: Compute both
+Small deck: $\dfrac{13}{26}\cdot\dfrac{12}{25} = \dfrac12\cdot\dfrac{12}{25} = \dfrac{6}{25} = 0.24$.
+Large deck: $\dfrac{26}{52}\cdot\dfrac{25}{51} = \dfrac12\cdot\dfrac{25}{51} = \dfrac{25}{102} \approx 0.2451$.
+Since $\frac{25}{51} > \frac{12}{25}$ (cross-multiply: $625 > 612$), choose the large deck.
+SOLUTION: General formula
+With $n$ black and $n$ red cards, $P = \frac12\cdot\frac{n-1}{2n-1}$. The function $\frac{n-1}{2n-1} = \frac12 - \frac{1}{2(2n-1)}$ is increasing in $n$, so more cards is always better, approaching $1/4$.
+FOLLOWUP: Two red cards: one deck or two?
+You can use one standard $52$-card deck or two decks shuffled together ($104$ cards). You draw two cards without replacement and win if both are red. Which should you choose?
+FOLLOWUP_ANSWER:
+The $104$-card deck: $\frac{52}{104}\cdot\frac{51}{103} = \frac{51}{206} \approx 0.2476$ versus $\frac{26}{52}\cdot\frac{25}{51} = \frac{25}{102} \approx 0.2451$. Same reason: removing one red card depletes the reds less in the bigger deck.
+===END===
+
+===TEASER===
+SLUG: dice-pattern-five-then-six
+IDS: Q-121, Q-167
+FIRMS: Optiver, JP Morgan
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Waiting for a 5 followed by a 6
+QUESTION:
+A fair six-sided die is rolled repeatedly. What is the expected number of rolls until you see a $5$ immediately followed by a $6$ (the $6$ being the last roll counted)?
+HINT1:
+Keep track of only one thing: whether the last roll was a $5$.
+HINT2:
+Let $E_0$ be the expected remaining rolls from scratch and $E_1$ the expected remaining rolls when the last roll was a $5$. Be careful: from $E_1$, rolling another $5$ keeps you in $E_1$.
+ANSWER:
+$36$
+REFRESH:
+**First-step analysis for expected hitting times**: if $E_s$ is the expected number of steps to reach a target from state $s$, then $E_s = 1 + \sum_{s'} P(s \to s') E_{s'}$ with $E_{\text{target}} = 0$.
+EXPLANATION:
+The pattern $56$ cannot overlap with itself (no proper suffix of $56$ is a prefix of it), so a failed attempt never leaves you with more partial progress than "last roll was a $5$". For non-overlapping patterns the expected waiting time is simply $1/P(\text{pattern})$: here $1/(1/6 \cdot 1/6) = 36$. By contrast, $55$ overlaps with itself and takes $42$ rolls on average.
+SOLUTION: Two-state first-step analysis
+States: $0$ = "last roll not a 5" (or start), $1$ = "last roll was a 5".
+From $0$: roll $5$ (prob $1/6$) $\to 1$; otherwise stay at $0$:
+$$E_0 = 1 + \tfrac16 E_1 + \tfrac56 E_0 \quad\Longrightarrow\quad E_0 = 6 + E_1.$$
+From $1$: roll $6$ (prob $1/6$) $\to$ done; roll $5$ (prob $1/6$) $\to 1$; otherwise $\to 0$:
+$$E_1 = 1 + \tfrac16 E_1 + \tfrac46 E_0.$$
+Substitute $E_1 = E_0 - 6$: $\tfrac56(E_0 - 6) = 1 + \tfrac23 E_0$, so $\tfrac56 E_0 - 5 = 1 + \tfrac46 E_0$, hence $\tfrac16 E_0 = 6$ and $E_0 = 36$.
+SOLUTION: Fair-casino (martingale) argument
+Before each roll a new gambler arrives with $\$1$ and bets it on "next roll is 5" at fair odds (he receives $\$6$ if right). If he wins, he bets all $\$6$ on "next is 6", ending with $\$36$ if he wins again. Every bet is fair, so when the pattern first appears at roll $N$, the casino's expected net gain is $0$: $\mathbb{E}[N]$ (the total money brought in) equals the expected total payout. At that moment the only gambler holding money is the one who started at roll $N-1$ (with $\$36$); the gambler who started at roll $N$ bet on 5 and lost. So $\mathbb{E}[N] = 36$.
+FOLLOWUP: Sum of 4 then sum of 5 with two dice
+You roll two fair dice repeatedly. What is the expected number of rolls until a total of $4$ is immediately followed by a total of $5$?
+FOLLOWUP_ANSWER:
+$108$. $P(\text{sum}=4) = 3/36 = 1/12$, $P(\text{sum} = 5) = 4/36 = 1/9$. The pattern "4 then 5" cannot overlap itself, so the expected waiting time is $1/(p_4 p_5) = 1/(1/108) = 108$. First-step check: $E_0 = 1 + \frac1{12}E_1 + \frac{11}{12}E_0$ gives $E_0 = 12 + E_1$; $E_1 = 1 + \frac1{12}E_1 + (1 - \frac19 - \frac1{12})E_0$ gives $\frac{11}{12}E_1 = 1 + \frac{29}{36}E_0$. Substituting, $\frac{11}{12}E_0 - 11 = 1 + \frac{29}{36}E_0$, so $\frac{4}{36}E_0 = 12$ and $E_0 = 108$.
+===END===
+
+===TEASER===
+SLUG: roll-until-five-or-six-payout
+IDS: Q-141, Q-190
+FIRMS: Citadel, Two Sigma
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Roll until a 5 or a 6
+QUESTION:
+You roll a fair six-sided die repeatedly until a $5$ or a $6$ appears for the first time, and then the game stops. If the final roll is a $5$, you are paid the sum of all the previous rolls (each of which was $1$, $2$, $3$ or $4$). If the final roll is a $6$, you are paid nothing. What is the expected payout?
+HINT1:
+Two things are random: how many rolls come before the stop, and whether the stop is a $5$ or a $6$. Are they related?
+HINT2:
+The number $K$ of rolls before the stop is geometric, each of those rolls is uniform on $\{1,2,3,4\}$, and the final roll is $5$ or $6$ with probability $1/2$ each, independently of everything before.
+ANSWER:
+$5/2$
+REFRESH:
+**Wald's identity**: if $X_1, X_2, \dots$ are i.i.d. with mean $\mu$ and $K$ is a stopping time (or independent of them) with $\mathbb{E}K < \infty$, then $\mathbb{E}\big[\sum_{i=1}^K X_i\big] = \mu\,\mathbb{E}K$.
+**Geometric count of failures**: with success probability $p$, the number of failures before the first success has mean $(1-p)/p$.
+EXPLANATION:
+Given that a roll is not $5$ or $6$, it is uniform on $\{1,2,3,4\}$ with mean $2.5$. Each roll stops the game with probability $1/3$, so on average there are $(2/3)/(1/3) = 2$ rolls before the stop, adding up to $2 \times 2.5 = 5$ on average. Whether the stopping roll is a $5$ or a $6$ is a fair coin flip, independent of how long the game lasted, so you get that sum half the time: $5/2$.
+SOLUTION: Condition on the number of rolls
+Let $K$ be the number of rolls before the terminating roll. Each roll terminates with probability $2/6 = 1/3$, so $P(K = k) = (2/3)^k (1/3)$ and $\mathbb{E}K = \frac{2/3}{1/3} = 2$.
+Given $K = k$, the $k$ earlier rolls are i.i.d. uniform on $\{1,2,3,4\}$ (mean $5/2$), and the terminating roll is $5$ or $6$ with probability $1/2$ each, independent of them. So
+$$\mathbb{E}[\text{payout} \mid K = k] = \tfrac12 \cdot \tfrac52 k.$$
+Hence $\mathbb{E}[\text{payout}] = \tfrac54\,\mathbb{E}K = \tfrac54 \cdot 2 = \tfrac52$.
+SOLUTION: First-step equation
+Let $f(s)$ be the expected final payout when the current running total is $s$. Then
+$$f(s) = \frac16\sum_{k=1}^{4} f(s+k) + \frac16 s + \frac16 \cdot 0.$$
+Try $f(s) = \alpha s + c$: the right side is $\frac16(4\alpha s + 10\alpha + 4c) + \frac{s}{6} = \frac{4\alpha + 1}{6}s + \frac{10\alpha + 4c}{6}$. Matching coefficients: $\alpha = \frac{4\alpha+1}{6} \Rightarrow \alpha = \frac12$, and $c = \frac{5 + 4c}{6} \Rightarrow c = \frac52$. So $f(0) = 5/2$.
+FOLLOWUP: With the option to cash out
+Same game, but at any moment (before a roll) you may stop and take the current sum of your rolls. Playing optimally, what is the expected payout (to two decimals)?
+FOLLOWUP_ANSWER:
+$\approx 3.03$ (exactly $183\,324\,769/6^{10} \approx 3.0319$).
+Rolling a $5$ pays the same as cashing out, so rolling again from total $s$ is worth, as a one-step comparison, $\frac16\big(4s + 1+2+3+4\big) + \frac16 s = \frac{5s + 10}{6}$, which beats $s$ iff $s < 10$. Since the total only grows, this one-step rule is optimal: keep rolling while the total is below $10$, cash out once it is $\ge 10$.
+Backward induction with $V(s) = s$ for $s \ge 10$ and $V(s) = \frac16\big(s + V(s+1)+V(s+2)+V(s+3)+V(s+4)\big)$ for $s \le 9$:
+$V(9) = \frac{9 + 10+11+12+13}{6} = \frac{55}{6} \approx 9.167$, $V(8) \approx 8.361$, $V(7) \approx 7.588$, $V(6) \approx 6.853$, $V(5) \approx 6.161$, $V(4) \approx 5.494$, $V(3) \approx 4.849$, $V(2) \approx 4.226$, $V(1) \approx 3.622$, and $V(0) = \frac16\big(0 + V(1)+V(2)+V(3)+V(4)\big) \approx 3.03$.
+===END===
+
+===TEASER===
+SLUG: expected-max-of-two-dice
+IDS: Q-145, W-083, Q-185, Q-170
+FIRMS: DRW, Citadel, Akuna Capital
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: easy
+TITLE: Expected maximum of two dice
+QUESTION:
+Two fair six-sided dice are rolled. What is the expected value of the larger of the two numbers?
+HINT1:
+Find the distribution of the maximum first. It is easier to compute $P(\max \le k)$ than $P(\max = k)$.
+HINT2:
+$P(\max \le k) = (k/6)^2$, so $P(\max = k) = \frac{k^2 - (k-1)^2}{36} = \frac{2k-1}{36}$.
+ANSWER:
+$161/36 \approx 4.47$
+REFRESH:
+**Distribution of a maximum**: for independent $X_1, \dots, X_n$, $P(\max X_i \le k) = \prod_i P(X_i \le k)$.
+**Tail-sum formula**: for a random variable with values in $\{1, 2, \dots\}$, $\mathbb{E}X = \sum_{k \ge 1} P(X \ge k)$.
+EXPLANATION:
+The maximum of two dice is at most $k$ exactly when both dice are at most $k$, which has probability $(k/6)^2$. Differencing gives $P(\max = k) = (2k-1)/36$: in the $6\times 6$ grid, the cells whose larger coordinate is $k$ form an L-shape of $2k - 1$ cells. The big values are favoured, so the mean is well above $3.5$.
+SOLUTION: Direct expectation
+$$\mathbb{E}[\max] = \sum_{k=1}^6 k\cdot\frac{2k-1}{36} = \frac{2\sum k^2 - \sum k}{36} = \frac{2\cdot 91 - 21}{36} = \frac{161}{36} \approx 4.47.$$
+SOLUTION: Tail sum
+$P(\max \ge k) = 1 - \left(\frac{k-1}{6}\right)^2$. Summing for $k = 1, \dots, 6$:
+$$\mathbb{E}[\max] = 6 - \frac{0 + 1 + 4 + 9 + 16 + 25}{36} = 6 - \frac{55}{36} = \frac{161}{36}.$$
+SOLUTION: Max plus min
+$\max + \min = X_1 + X_2$, so $\mathbb{E}\max + \mathbb{E}\min = 7$. $\mathbb{E}\min = \sum_{k=1}^6 P(\min \ge k) = \sum_{k=1}^6 \left(\frac{7-k}{6}\right)^2 = \frac{91}{36}$. So $\mathbb{E}\max = 7 - \frac{91}{36} = \frac{161}{36}$.
+FOLLOWUP: Minimum of three dice
+Three fair dice are rolled. What is the expected value of the smallest number?
+FOLLOWUP_ANSWER:
+$49/24 \approx 2.04$. $P(\min \ge k) = \left(\frac{7-k}{6}\right)^3$, so
+$$\mathbb{E}\min = \sum_{k=1}^{6}\left(\frac{7-k}{6}\right)^3 = \frac{216 + 125 + 64 + 27 + 8 + 1}{216} = \frac{441}{216} = \frac{49}{24}.$$
+FOLLOWUP: Best of 20 rolls of a 100-sided die
+You roll a fair $100$-sided die (faces $1$ to $100$) $20$ times and keep the maximum. What is its expected value?
+FOLLOWUP_ANSWER:
+$\approx 95.72$. Tail sum: $P(\max \ge k) = 1 - \left(\frac{k-1}{100}\right)^{20}$, so
+$$\mathbb{E}\max = \sum_{k=1}^{100}\left[1 - \left(\tfrac{k-1}{100}\right)^{20}\right] = 100 - \sum_{j=0}^{99}\left(\tfrac{j}{100}\right)^{20} \approx 100 - 4.279 = 95.72.$$
+Quick estimate: the sum is about $100\int_0^1 x^{20}dx - \tfrac12 = \tfrac{100}{21} - \tfrac12 \approx 4.26$ (Euler–Maclaurin: the right endpoint term $1^{20}$ is missing from the sum), giving $\approx 95.74$. Note: the source states $95.24$, which is the continuous approximation $100 \cdot \frac{20}{21}$; for the discrete die the correct value is $\approx 95.72$.
+===END===
+
+===TEASER===
+SLUG: max-of-two-dice-equals-four
+IDS: Q-171, Q-341
+FIRMS: Squarepoint Capital, Citadel
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: easy
+TITLE: The largest die shows a 4
+QUESTION:
+Two fair dice are rolled. What is the probability that the larger of the two numbers is exactly $4$?
+HINT1:
+"Largest equals 4" means "largest is at most 4" but not "largest is at most 3".
+HINT2:
+$P(\max \le k) = (k/6)^2$. Subtract.
+ANSWER:
+$7/36$
+REFRESH:
+**Point probability from the CDF**: for integer-valued $M$, $P(M = k) = P(M \le k) - P(M \le k-1)$.
+EXPLANATION:
+Both dice at most $4$: a $4 \times 4$ block of $16$ outcomes. Remove the $3 \times 3$ block where both are at most $3$: $9$ outcomes. What is left is the L-shaped set of $16 - 9 = 7$ outcomes where at least one die is $4$ and neither exceeds $4$.
+SOLUTION: Difference of squares
+$$P(\max = 4) = \left(\frac46\right)^2 - \left(\frac36\right)^2 = \frac{16 - 9}{36} = \frac{7}{36}.$$
+SOLUTION: Direct count
+Outcomes with max $4$: $(4,1),(4,2),(4,3),(1,4),(2,4),(3,4),(4,4)$: $7$ of $36$.
+FOLLOWUP: Three dice
+Three fair dice are rolled. What is the probability that the largest number is exactly $4$?
+FOLLOWUP_ANSWER:
+$$\left(\frac46\right)^3 - \left(\frac36\right)^3 = \frac{64 - 27}{216} = \frac{37}{216}.$$
+===END===
+
+===TEASER===
+SLUG: digits-of-99-to-the-99
+IDS: Q-197, W-014, Q-244
+FIRMS: Five Rings, WorldQuant, DRW, SIG
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: medium
+TITLE: How many digits in 99^99?
+QUESTION:
+How many digits does $99^{99}$ have (in base $10$)?
+HINT1:
+Compare $99^{99}$ with $100^{99}$. How far below it can it be?
+HINT2:
+$99^{99} = 10^{198}\cdot(0.99)^{99}$. Is $(0.99)^{99}$ bigger or smaller than $0.1$?
+ANSWER:
+$198$
+REFRESH:
+**Number of digits**: a positive integer $N$ has $\lfloor \log_{10} N\rfloor + 1$ digits, i.e. $d$ digits iff $10^{d-1} \le N < 10^d$.
+**Compound decay**: $(1 - 1/n)^n \approx e^{-1} \approx 0.368$ for large $n$, and $(1-1/n)^n \ge 1/4$ for every $n \ge 2$.
+EXPLANATION:
+$99^{99}$ is just a bit smaller than $100^{99} = 10^{198}$, which has $199$ digits. "A bit smaller" means a factor $(0.99)^{99} \approx e^{-1} \approx 0.37$. Multiplying $10^{198}$ by $0.37$ gives a number between $10^{197}$ and $10^{198}$, so it has $198$ digits. The only thing to check is that the shrinking factor is more than $1/10$, and it comfortably is.
+SOLUTION: Sandwich between powers of ten
+Upper bound: $99^{99} < 100^{99} = 10^{198}$.
+Lower bound: $99^{99} = 10^{198}(1 - \tfrac1{100})^{99} > 10^{198}(1-\tfrac1{100})^{100}$. Since $(1-\tfrac1n)^n$ increases with $n$ and equals $\tfrac14$ at $n = 2$, we get $(0.99)^{100} \ge \tfrac14 > \tfrac1{10}$. So $99^{99} > 10^{197}$.
+Hence $10^{197} < 99^{99} < 10^{198}$, and $99^{99}$ has $198$ digits.
+SOLUTION: Logarithms
+$\log_{10} 99 = 2 + \log_{10}0.99$, and $\log_{10} 0.99 = \frac{\ln 0.99}{\ln 10} \approx \frac{-0.01005}{2.3026} \approx -0.00436$. So $\log_{10} 99 \approx 1.99564$ and
+$$\log_{10} 99^{99} = 99 \times 1.99564 \approx 197.57.$$
+The number of digits is $\lfloor 197.57\rfloor + 1 = 198$.
+FOLLOWUP: Digits of 100!
+How many digits does $100!$ have?
+FOLLOWUP_ANSWER:
+$158$. Use Stirling: $n! \approx \sqrt{2\pi n}\,(n/e)^n$, so
+$$\log_{10} 100! \approx \tfrac12\log_{10}(200\pi) + 100\,(\log_{10}100 - \log_{10} e) \approx \tfrac12(2.798) + 100(2 - 0.43429) = 1.399 + 156.571 = 157.97.$$
+(The exact value is $157.9700\ldots$; Stirling's relative error here is below $0.1\%$, far too small to cross an integer.) So $100!$ has $\lfloor 157.97\rfloor + 1 = 158$ digits. Cruder check: the sum exceeds $\frac{1}{\ln 10}\int_1^{100}\ln x\,dx = \frac{100\ln 100 - 99}{\ln 10} \approx 157.0$ (each term $\log_{10}k \ge \int_{k-1}^{k}\log_{10}x\,dx$), so there are at least $158$ digits; the trapezoid correction $\tfrac12(\log_{10}1 + \log_{10}100) = 1$ minus a small curvature term brings the value to $157.97$, still below $158$.
+===END===
+
+===TEASER===
+SLUG: smallest-number-digit-product-10000
+IDS: Q-199, Q-200
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Smallest number whose digits multiply to 10,000
+QUESTION:
+What is the smallest positive integer whose digits multiply to exactly $10\,000$?
+HINT1:
+Factor $10\,000$ into primes. Which primes can appear, and which single digits can carry them?
+HINT2:
+$10\,000 = 2^4 \cdot 5^4$. Every factor $5$ must be its own digit $5$. Then pack the $2^4$ into as few digits as possible, and order the digits increasingly.
+ANSWER:
+$255\,558$
+REFRESH:
+**Comparing integers**: a number with fewer digits is smaller; among numbers with the same multiset of digits, the smallest writes them in increasing order.
+EXPLANATION:
+Fewer digits beat everything else, so first minimise the digit count, then the leading digits. $10\,000 = 2^4\cdot 5^4$. A digit divisible by $5$ must be $5$ itself (the only other multiple of $5$ below $10$ is $0$, which would kill the product), so we need four $5$s. The factor $2^4 = 16$ does not fit in one digit, so it needs at least two digits: $2\times 8$ or $4\times 4$. That gives six digits. Among $\{2,8,5,5,5,5\}$ and $\{4,4,5,5,5,5\}$ sorted, $255558 < 445555$.
+SOLUTION: Minimise digits, then sort
+1. No digit can be $0$. The prime factorisation is $10\,000 = 2^4 \cdot 5^4$, so only digits built from $2$s and $5$s are allowed: $1, 2, 4, 5, 8$ (not $10$ or more).
+2. Each $5$ needs its own digit $5$: four digits.
+3. $2^4 = 16$ cannot be one digit; with two digits the options are $\{2, 8\}$ and $\{4, 4\}$. So the minimum is $6$ digits (digits $1$ only make the number longer).
+4. Candidates sorted increasingly: $255558$ and $445555$. The first is smaller.
+
+Answer: $255\,558$ (check: $2\cdot 5^4 \cdot 8 = 2 \cdot 625 \cdot 8 = 10\,000$).
+===END===
+
+===TEASER===
+SLUG: three-coins-two-headed-next-flip
+IDS: Q-211, W-007, W-061, Q-021
+FIRMS: Goldman Sachs, SIG, IMC, Citadel, DRW, Five Rings, Hudson River Trading, Jane Street, Transmarket Group, Two Sigma, WorldQuant
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Three coins, one head seen
+QUESTION:
+There are three coins: one with heads on both sides, one with tails on both sides, and one fair coin. You pick one uniformly at random and flip it: it shows heads.
+(a) What is the probability that you picked the two-headed coin?
+(b) If you flip the same coin again, what is the probability of heads?
+HINT1:
+First update your beliefs about which coin you hold, then predict the next flip.
+HINT2:
+The two-headed coin produces heads with probability $1$, the fair coin with probability $1/2$, the two-tailed coin never. Use Bayes, then average the next-flip probability over the posterior.
+ANSWER:
+(a) $2/3$; (b) $5/6$
+REFRESH:
+**Bayes' rule**: $P(C_i \mid H) = \dfrac{P(H \mid C_i)P(C_i)}{\sum_j P(H\mid C_j)P(C_j)}$.
+**Posterior predictive**: $P(H_2 \mid H_1) = \sum_i P(H_2 \mid C_i)\,P(C_i \mid H_1)$ when flips are independent given the coin.
+EXPLANATION:
+Seeing a head rules out the two-tailed coin and makes the two-headed coin twice as likely as the fair one (it explains the head twice as well), so the posterior is $2/3$ versus $1/3$. The second flip is heads for sure with the two-headed coin and half the time with the fair one: $\frac23 + \frac13\cdot\frac12 = \frac56$. Note that the two flips are *not* independent unconditionally: the first flip carries information about the coin.
+SOLUTION: Bayes then predict
+Priors $1/3$ each. $P(H) = \frac13\cdot 1 + \frac13\cdot\frac12 + \frac13\cdot 0 = \frac12$.
+(a) $P(\text{HH coin} \mid H) = \dfrac{\frac13}{\frac12} = \dfrac23$, $P(\text{fair} \mid H) = \dfrac{\frac16}{\frac12} = \dfrac13$.
+(b) $P(H_2 \mid H_1) = \frac23 \cdot 1 + \frac13 \cdot \frac12 = \frac56$.
+SOLUTION: Joint probability of two heads
+$P(H_1 H_2) = \frac13\cdot 1 + \frac13\cdot\frac14 + 0 = \frac{5}{12}$ and $P(H_1) = \frac12$, so $P(H_2 \mid H_1) = \frac{5/12}{1/2} = \frac56$.
+FOLLOWUP: 98 fair coins and two trick coins
+A bag holds $98$ fair coins, one two-headed coin and one two-tailed coin. You pick a coin at random and flip it: heads. What is the probability that it is the two-headed coin?
+FOLLOWUP_ANSWER:
+$1/50$. $P(H) = \frac{98}{100}\cdot\frac12 + \frac1{100}\cdot 1 + \frac{1}{100}\cdot 0 = \frac{49 + 1}{100} = \frac12$, and $P(\text{two-headed and } H) = \frac1{100}$. So the posterior is $\frac{1/100}{1/2} = \frac{1}{50}$. (Count heads-faces: there are $98 + 2 = 100$ head faces, $2$ of them on the two-headed coin.)
+===END===
+
+===TEASER===
+SLUG: normal-x-and-x-plus-y-positive
+IDS: Q-212, Q-220
+FIRMS: Goldman Sachs, Squarepoint Capital
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: P(X > 0 and X + Y > 0)
+QUESTION:
+$X$ and $Y$ are independent standard normal random variables. What is $P(X > 0 \text{ and } X + Y > 0)$?
+HINT1:
+The joint density of $(X, Y)$ depends only on the distance from the origin. What does that say about the probability of a wedge with its tip at the origin?
+HINT2:
+Both conditions are half-planes through the origin: $X > 0$ and $Y > -X$. Find the angle of their intersection.
+ANSWER:
+$3/8$
+REFRESH:
+**Rotational symmetry of the standard bivariate normal**: the density $\frac{1}{2\pi}e^{-(x^2+y^2)/2}$ depends only on $r = \sqrt{x^2+y^2}$, so the polar angle $\Theta$ is uniform on $[0, 2\pi)$. The probability of a wedge of angle $\alpha$ at the origin is $\alpha/(2\pi)$.
+EXPLANATION:
+Because the standard 2D normal is rotationally symmetric, only angles matter. $\{X > 0\}$ is the wedge of angles $(-90^\circ, 90^\circ)$; $\{X + Y > 0\}$ is the wedge $(-45^\circ, 135^\circ)$. Their overlap is $(-45^\circ, 90^\circ)$, an angle of $135^\circ$, which is $135/360 = 3/8$ of the full turn. This is also the classic "Brownian motion positive at times 1 and 2" probability, since $(W_1, W_2) \stackrel{d}{=} (X, X+Y)$.
+SOLUTION: Angle of the wedge
+In polar coordinates $(X,Y) = (R\cos\Theta, R\sin\Theta)$ with $\Theta$ uniform on $(-\pi, \pi]$ and independent of $R$.
+$X > 0 \iff \Theta \in (-\pi/2, \pi/2)$.
+$X + Y > 0 \iff \cos\Theta + \sin\Theta > 0 \iff \sqrt2\sin(\Theta + \pi/4) > 0 \iff \Theta \in (-\pi/4, 3\pi/4)$.
+The intersection is $(-\pi/4, \pi/2)$, of length $3\pi/4$. So
+$$P = \frac{3\pi/4}{2\pi} = \frac38.$$
+SOLUTION: Correlation formula for orthant probabilities
+Let $U = X$ and $V = (X+Y)/\sqrt2$; they are standard normal with correlation $\rho = \operatorname{Cov}(X, (X+Y)/\sqrt2) = 1/\sqrt2$. For a standard bivariate normal with correlation $\rho$, $P(U > 0, V > 0) = \frac14 + \frac{\arcsin\rho}{2\pi}$. With $\arcsin(1/\sqrt2) = \pi/4$:
+$$P = \frac14 + \frac{\pi/4}{2\pi} = \frac14 + \frac18 = \frac38.$$
+===END===
+
+===TEASER===
+SLUG: regression-duplicated-data-r-squared
+IDS: Q-224, Q-215, Q-216, Q-425, Q-426
+FIRMS: Squarepoint Capital, Two Sigma
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: Regression on a duplicated dataset
+QUESTION:
+You fit an ordinary least squares regression of $y$ on $x$ (with intercept) and get $R^2 = 0.56$. You then fit the same regression on a new dataset in which every original data point appears twice. What is the new $R^2$? (If it cannot be determined, say so.)
+HINT1:
+Does duplicating every point change which line minimises the sum of squared residuals?
+HINT2:
+Write $R^2 = 1 - \dfrac{\text{SSE}}{\text{SST}}$. What happens to each of the two sums when every point is counted twice?
+ANSWER:
+$0.56$ (unchanged)
+REFRESH:
+**OLS and $R^2$**: $\hat\beta$ minimises $\text{SSE} = \sum_i (y_i - \beta_0 - \beta_1 x_i)^2$; $\text{SST} = \sum_i (y_i - \bar y)^2$; $R^2 = 1 - \text{SSE}/\text{SST}$, which in simple regression equals $\operatorname{corr}(x,y)^2$.
+**Variance of the estimator**: under $y = X\beta + \varepsilon$ with i.i.d. errors of variance $\sigma^2$, $\operatorname{Var}(\hat\beta) = \sigma^2(X^\top X)^{-1}$; the $t$-statistic is $\hat\beta_1/\widehat{\text{SE}}(\hat\beta_1)$ with $\widehat{\text{SE}}^2 = \hat\sigma^2/S_{xx}$, $\hat\sigma^2 = \text{SSE}/(n-2)$.
+EXPLANATION:
+Duplicating every point multiplies the objective function $\text{SSE}(\beta)$ by $2$ for every candidate line, so the minimiser (the fitted line) is the same. At that line, both SSE and SST are exactly doubled (the mean $\bar y$ is unchanged), so their ratio, and hence $R^2$, is unchanged. $R^2$ is a descriptive ratio of sums of squares and is blind to sample size. What *does* change is inference: standard errors shrink roughly by $\sqrt2$, because the formulas wrongly treat the copies as new independent information.
+SOLUTION: Sums of squares
+For any $(\beta_0, \beta_1)$, the new sum of squared residuals is $2\,\text{SSE}(\beta_0,\beta_1)$, so the OLS solution is unchanged: $\hat\beta' = \hat\beta$. The new mean of $y$ is still $\bar y$, so
+$$\text{SSE}' = 2\,\text{SSE},\qquad \text{SST}' = 2\,\text{SST},\qquad R'^2 = 1 - \frac{2\,\text{SSE}}{2\,\text{SST}} = R^2 = 0.56.$$
+SOLUTION: Correlation view
+In simple regression $R^2 = \operatorname{corr}(x,y)^2$. The sample correlation is built from averages ($\bar x$, $\bar y$, $\overline{xy}$, $\overline{x^2}$, $\overline{y^2}$), and each average is unchanged when every point is duplicated. So $R^2$ stays $0.56$.
+FOLLOWUP: Doubling every value
+You fit $y$ on $x$ and get $R^2 = 0.48$. Now every value is doubled: each point $(x_i, y_i)$ becomes $(2x_i, 2y_i)$ (e.g. $(2,5) \to (4,10)$). What is the new $R^2$?
+FOLLOWUP_ANSWER:
+$0.48$. Scaling $x$ and $y$ by positive constants does not change the correlation: $\operatorname{corr}(2x, 2y) = \operatorname{corr}(x,y)$, so $R^2 = \operatorname{corr}^2$ is unchanged. (Directly: the fitted line becomes $\hat y' = 2\hat\beta_0 + \hat\beta_1 x'$, all residuals double, so SSE and SST are both multiplied by $4$.)
+FOLLOWUP: The t-statistic after doubling the values
+Let $t_0$ be the $t$-statistic for $H_0: \beta_1 = 0$ in the regression of $y$ on $x$. Double every value, $(x_i, y_i) \to (2x_i, 2y_i)$, refit, and let $t_1$ be the new $t$-statistic for the slope. Find $t_1^2/t_0^2$.
+FOLLOWUP_ANSWER:
+$1$. The slope is unchanged: $\hat\beta_1' = \frac{\sum (2x_i - 2\bar x)(2y_i - 2\bar y)}{\sum (2x_i - 2\bar x)^2} = \hat\beta_1$. Residuals double, so $\hat\sigma'^2 = 4\hat\sigma^2$ ($n$ unchanged), and $S_{xx}' = 4S_{xx}$. Hence $\widehat{\text{SE}}'^2 = \frac{4\hat\sigma^2}{4S_{xx}} = \widehat{\text{SE}}^2$ and $t_1 = t_0$. (Contrast: if instead every point were *duplicated*, $\hat\sigma'^2 = \frac{2\,\text{SSE}}{2n-2}$ and $S_{xx}' = 2S_{xx}$, so $t_1^2/t_0^2 = \frac{2n-2}{n-2}$, which depends on $n$.)
+FOLLOWUP: Variance of the coefficients after doubling
+With $\operatorname{Var}(\hat\beta) = \sigma^2(X^\top X)^{-1}$, suppose every entry of the data (the design matrix $X$ and the response $y$) is doubled and the regression is refitted, giving $\hat\beta'$. Find $c$ such that $\operatorname{Var}(\hat\beta') = c\operatorname{Var}(\hat\beta)$.
+FOLLOWUP_ANSWER:
+$c = 1$. The new model is $2y = (2X)\beta + 2\varepsilon$: the design is $X' = 2X$ and the errors have variance $4\sigma^2$. So $\operatorname{Var}(\hat\beta') = 4\sigma^2\big((2X)^\top(2X)\big)^{-1} = 4\sigma^2 \cdot \tfrac14 (X^\top X)^{-1} = \sigma^2(X^\top X)^{-1}$. (If an intercept column of ones is kept at $1$ rather than doubled, the slope variances are still unchanged but the intercept, which doubles, has $4$ times the variance.)
+FOLLOWUP: Variance of the coefficients after duplicating
+Same setup, but now every data point is included twice (the design matrix is $X$ stacked on top of itself, and $y$ likewise), with i.i.d. errors of variance $\sigma^2$ as the formula assumes. Find $c$ with $\operatorname{Var}(\hat\beta') = c\operatorname{Var}(\hat\beta)$.
+FOLLOWUP_ANSWER:
+$c = 1/2$. Stacking gives $X'^\top X' = X^\top X + X^\top X = 2X^\top X$, so $\operatorname{Var}(\hat\beta') = \sigma^2(2X^\top X)^{-1} = \tfrac12\sigma^2(X^\top X)^{-1}$. (The formula thinks it has twice as much independent data; in reality the copies are not new information, which is why duplicating data makes standard errors look misleadingly small.) Note: the source words this as "doubling each entry" but gives $1/2$, which is the answer for duplicated rows; doubled values give $c = 1$ (previous follow-up).
+===END===
+
+===TEASER===
+SLUG: two-regressors-combined-r-squared
+IDS: Q-409, Q-407
+FIRMS: Squarepoint Capital, Two Sigma
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: hard
+TITLE: Two weak regressors together
+QUESTION:
+You have data $x_1$, $x_2$ and $y$. The simple regressions $y \sim \alpha_1 + \beta_1 x_1$ and $y \sim \alpha_2 + \beta_2 x_2$ each have $R^2 = 0.05$. What are the greatest lower bound and the least upper bound for the $R^2$ of the multiple regression $y \sim \alpha + \beta' x_1 + \beta'' x_2$?
+HINT1:
+Adding a regressor can never make the least-squares fit worse. Can it make it enormously better?
+HINT2:
+Think geometrically: after centring, $R^2$ is $\cos^2$ of the angle between $y$ and the plane spanned by $x_1, x_2$. Can two vectors each almost orthogonal to $y$ span a plane that contains $y$?
+ANSWER:
+$0.05 \le R^2 \le 1$, and both bounds are attained.
+REFRESH:
+**$R^2$ as a projection**: with centred data, $R^2 = \|\hat y\|^2/\|y\|^2$, where $\hat y$ is the orthogonal projection of $y$ on the span of the regressors; for one regressor $R^2 = \operatorname{corr}(x,y)^2$.
+**Two regressors**: with $r_1 = \operatorname{corr}(y,x_1)$, $r_2 = \operatorname{corr}(y,x_2)$, $r_{12} = \operatorname{corr}(x_1,x_2)$: $R^2 = \dfrac{r_1^2 + r_2^2 - 2r_1r_2r_{12}}{1 - r_{12}^2}$.
+EXPLANATION:
+Lower bound: the two-variable model can always set $\beta'' = 0$, so it fits at least as well as either simple regression: $R^2 \ge 0.05$, with equality e.g. when $x_2 = x_1$. Upper bound: surprisingly, $1$. Two regressors can each be nearly useless alone but perfect together: if $x_1 = y + \text{noise}$ and $x_2 = y - \text{noise}$ with a huge common noise, each alone barely correlates with $y$, but $(x_1 + x_2)/2 = y$ exactly. The noise cancels in the combination (a "suppressor" effect).
+SOLUTION: Geometric bounds with a construction
+Lower bound. The model $y \sim \alpha + \beta' x_1 + \beta'' x_2$ contains $y \sim \alpha_1 + \beta_1 x_1$ as the special case $\beta'' = 0$, so its minimal SSE is no larger and $R^2 \ge 0.05$. Taking $x_2 = x_1$ gives exactly $0.05$, so $0.05$ is attained.
+
+Upper bound. $R^2 \le 1$ always. To attain it, take centred, uncorrelated, unit-variance data vectors $u$ and $v$, and set $c = \sqrt{0.05}$, $s = \sqrt{0.95}$,
+$$y = u,\qquad x_1 = c\,u + s\,v,\qquad x_2 = c\,u - s\,v.$$
+Then $\operatorname{corr}(y, x_1) = \operatorname{corr}(y, x_2) = c$, so each simple $R^2 = c^2 = 0.05$. But $x_1 + x_2 = 2c\,u = 2c\,y$, so $y = \frac{1}{2c}(x_1 + x_2)$ lies exactly in the span of the regressors and the combined $R^2 = 1$.
+
+So the greatest lower bound is $0.05$ (i.e. $5\%$) and the least upper bound is $1$.
+SOLUTION: Formula in terms of the correlation between regressors
+With $r_1 = r_2 = r$, $r^2 = 0.05$:
+$$R^2 = \frac{2r^2 - 2r^2 r_{12}}{1 - r_{12}^2} = \frac{2r^2(1 - r_{12})}{(1-r_{12})(1+r_{12})} = \frac{0.1}{1 + r_{12}}.$$
+The correlation matrix of $(y, x_1, x_2)$ must be positive semidefinite, which here forces $R^2 \le 1$, i.e. $r_{12} \ge -0.9$. As $r_{12}$ ranges over $[-0.9, 1]$, $R^2 = 0.1/(1+r_{12})$ ranges over $[0.05, 1]$: $0.05$ at $r_{12} = 1$ (identical regressors) and $1$ at $r_{12} = -0.9$ (the construction above, where $\operatorname{corr}(x_1,x_2) = c^2 - s^2 = -0.9$). (With $r_1 = -r_2$ the same range comes out with $r_{12} \to -r_{12}$.)
+Note: the source's "5" for the lower bound means $5\%$, i.e. $R^2 = 0.05$.
+===END===
+
+===TEASER===
+SLUG: even-number-of-heads-parity
+IDS: Q-237, Q-259, Q-350, Q-366, Q-367, W-019
+FIRMS: Citadel, Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: An even number of heads
+QUESTION:
+You flip $n \ge 1$ fair coins (for instance $n = 4$, or $n = 100$). What is the probability that the number of heads is even? Does the answer depend on whether $n$ is odd or even? And what happens if the coins are not all fair, coin $i$ landing heads with probability $p_i$?
+HINT1:
+Look at the last coin. Whatever the other coins did, how does the last coin decide the parity?
+HINT2:
+For biased coins, consider $\mathbb{E}\big[(-1)^{\#\text{heads}}\big] = P(\text{even}) - P(\text{odd})$ and use independence to factor it.
+ANSWER:
+$1/2$ for every $n \ge 1$ (odd or even). With biases $p_i$: $P(\text{even}) = \frac12\big(1 + \prod_i (1 - 2p_i)\big)$, which is still $1/2$ as soon as one coin is fair.
+REFRESH:
+**Binomial identity**: $\sum_k \binom{n}{k}(-1)^k = (1-1)^n = 0$ for $n \ge 1$, so the even-indexed and odd-indexed binomial coefficients have equal sums $2^{n-1}$.
+**Expectation of a product**: for independent $Z_i$, $\mathbb{E}\prod_i Z_i = \prod_i \mathbb{E} Z_i$.
+EXPLANATION:
+Condition on the first $n-1$ coins. Whatever their parity, the last fair coin makes the total even with probability exactly $1/2$ (heads flips the parity, tails keeps it). So the answer is $1/2$ for any $n \ge 1$; the parity of $n$ is irrelevant. The same argument shows that one fair coin anywhere is enough to make the parity a fair coin flip. With all coins biased, the signed expectation $\mathbb{E}[(-1)^{H}]$ factors as $\prod (1-2p_i)$, which measures how far the parity is from fair.
+SOLUTION: Last-coin argument
+Let $S$ be the number of heads among the first $n-1$ coins and $X_n \in \{0,1\}$ the last coin, independent of $S$ with $P(X_n = 1) = 1/2$. Then
+$$P(S + X_n \text{ even}) = P(S \text{ even})\cdot\tfrac12 + P(S \text{ odd})\cdot\tfrac12 = \tfrac12.$$
+This holds for $n = 1$ (then $S = 0$) and every larger $n$, in particular for $4$ and $100$ coins, and likewise $P(\text{odd}) = 1/2$.
+SOLUTION: Binomial sums
+$P(\text{even}) - P(\text{odd}) = \frac{1}{2^n}\sum_{k=0}^n \binom nk (-1)^k = \frac{(1-1)^n}{2^n} = 0$ for $n \ge 1$, and $P(\text{even}) + P(\text{odd}) = 1$, so both equal $1/2$. For $n=4$: even counts $\binom40 + \binom42 + \binom44 = 1 + 6 + 1 = 8$ out of $16$.
+SOLUTION: Biased coins via the sign trick
+Let $X_i \in \{0,1\}$ be independent with $P(X_i = 1) = p_i$, and $H = \sum X_i$. Then $\mathbb{E}[(-1)^{X_i}] = (1-p_i) - p_i = 1 - 2p_i$, and by independence
+$$P(H \text{ even}) - P(H \text{ odd}) = \mathbb{E}\big[(-1)^H\big] = \prod_{i=1}^n (1 - 2p_i).$$
+Adding $P(\text{even}) + P(\text{odd}) = 1$:
+$$P(H \text{ even}) = \frac{1 + \prod_i (1-2p_i)}{2}.$$
+If any $p_i = 1/2$, the product vanishes and $P = 1/2$. With all $p_i = 1/2$ this recovers the fair case.
+===END===
+
+===TEASER===
+SLUG: fives-before-first-six
+IDS: Q-252, Q-254
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Exactly four 5s before the first 6
+QUESTION:
+James rolls a fair six-sided die until the first $6$ appears. What is the probability that he rolls a $5$ exactly four times before stopping?
+HINT1:
+Rolls of $1$, $2$, $3$, $4$ change nothing. What if you simply ignore them?
+HINT2:
+Among the rolls that are a $5$ or a $6$, each one is a $5$ or a $6$ with probability $1/2$, independently.
+ANSWER:
+$1/32$
+REFRESH:
+**Thinning a sequence of i.i.d. trials**: conditioning an i.i.d. sequence on the subsequence of trials that land in a set $A$, those trials are i.i.d. with law $P(\cdot \mid A)$.
+**Geometric distribution (failures before first success)**: $P(F = k) = (1-p)^k p$ for $k = 0, 1, 2, \dots$, with mean $(1-p)/p$.
+EXPLANATION:
+Only rolls that are $5$ or $6$ matter. Each such "relevant" roll is equally likely to be a $5$ or a $6$, independently of the others. So the number of $5$s before the first $6$ is the number of failures before the first success in a fair coin-flip sequence: exactly four $5$s means "$5, 5, 5, 5, 6$" among the relevant rolls, probability $(1/2)^5$.
+SOLUTION: Keep only the relevant rolls
+The subsequence of rolls that show $5$ or $6$ is an i.i.d. sequence with $P(5) = P(6) = 1/2$. The number $F$ of $5$s before the first $6$ is the number of failures before the first success with $p = 1/2$:
+$$P(F = 4) = \left(\tfrac12\right)^4\cdot\tfrac12 = \frac{1}{32}.$$
+SOLUTION: Sum over the ignored rolls
+Before each relevant roll there is a run of irrelevant rolls ($1$–$4$) of any length. The probability that the next relevant roll comes and is a $5$ is $\sum_{j\ge0}\left(\tfrac46\right)^j\tfrac16 = \frac{1/6}{1/3} = \frac12$, and similarly for a $6$. The pattern "$5,5,5,5,6$" of relevant rolls therefore has probability $(1/2)^5 = 1/32$.
+FOLLOWUP: Expected number of 5s
+Same game: roll until the first $6$. What is the expected number of $5$s rolled before stopping?
+FOLLOWUP_ANSWER:
+$1$. The number of $5$s is geometric (failures before the first success) with $p = 1/2$, whose mean is $(1-p)/p = 1$. Intuition: $5$ and $6$ are symmetric, and exactly one $6$ is rolled.
+===END===
+
+===TEASER===
+SLUG: married-couples-handshake-puzzle
+IDS: Q-278, Q-275
+FIRMS: Citadel, Jane Street
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: How many hands did my partner shake?
+QUESTION:
+You and your partner host a party with $8$ other couples, so $18$ people in all. Some people shake hands; nobody shakes their own hand or their own partner's hand, and no pair shakes more than once. At the end you ask each of the other $17$ people how many hands they shook, and all $17$ answers are different. How many hands did your partner shake?
+HINT1:
+What are the possible handshake counts? With $17$ different answers, which exact set of numbers must you have heard?
+HINT2:
+Look at the person who shook $16$ hands and the person who shook $0$. What can you say about their relationship? Then remove that couple and repeat.
+ANSWER:
+$8$ (and you also shook $8$ hands)
+REFRESH:
+**Pigeonhole / forced values**: if $k$ integers are distinct and all lie in a set of exactly $k$ values, they take each value exactly once.
+EXPLANATION:
+Each person can shake at most $16$ hands (not themselves, not their partner), so the $17$ distinct answers must be exactly $0, 1, \dots, 16$. The "16" person shook everyone except their partner, including everyone else; so the only person who could have shaken nobody is that partner: $16$ and $0$ are a couple. Remove them: everyone else loses exactly one handshake (with the 16), so the answers become $0, \dots, 14$ with the same structure, and $15$ and $1$ are a couple. Continuing peels off couples $(16,0), (15,1), \dots, (9,7)$, and the only guest left unpaired is the one who said $8$, who must be your partner.
+SOLUTION: Peel off couples
+1. Possible counts are $0, \dots, 16$ ($18$ people minus yourself and your partner). The $17$ guests gave $17$ distinct answers, so they are exactly $0, 1, \dots, 16$.
+2. Let $A$ have said $16$: $A$ shook hands with all $16$ people other than $A$ and $A$'s partner. Let $Z$ have said $0$. If $Z$ were not $A$'s partner, $A$ would have shaken $Z$'s hand, contradiction. So $A$ and $Z$ are partners. Neither of them is your partner: that would make the other one you, but you are not among the respondents.
+3. Remove $A$ and $Z$. Every remaining person shook $A$'s hand and not $Z$'s, so each remaining count drops by exactly $1$. The remaining $15$ guests now report $0, 1, \dots, 14$ (formerly $1, \dots, 15$), all distinct, with $16$ people left and max possible $14$. Apply the same argument: the former $15$ and former $1$ are partners.
+4. After $8$ such steps we have removed the couples with original answers $(16,0), (15,1), (14,2), (13,3), (12,4), (11,5), (10,6), (9,7)$. These are $8$ couples, i.e. all $8$ guest couples. The only remaining guest is the one who answered $8$, and the only remaining couple is you and your partner. So your partner shook $8$ hands.
+
+Bonus: you shook hands with exactly one member of each removed couple (the high one, by the argument at each step), so you also shook $8$ hands.
+FOLLOWUP: Thirty people
+$30$ people form $15$ married couples. People shake hands with anyone except their own spouse (and at most once per pair). $29$ of the $30$ people have pairwise different handshake counts. How many hands did the $30$th person shake?
+FOLLOWUP_ANSWER:
+$14$. Counts range over $0, \dots, 28$, so the $29$ distinct counts are exactly $0, 1, \dots, 28$. As above, $28$ and $0$ are spouses; removing them lowers every other count by $1$, so $27$ and $1$ are spouses, and so on: couples $(28,0), (27,1), \dots, (15,13)$, which is $14$ couples. The remaining two people, the one with count $14$ and the $30$th person, must be spouses. The $30$th person shook the hand of the high member of each of the $14$ removed couples and of nobody else, so $14$ handshakes.
+===END===
+
+===TEASER===
+SLUG: handshakes-ten-people-count
+IDS: Q-277, Q-276, W-012
+FIRMS: Five Rings, Citadel
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Everyone shakes everyone's hand
+QUESTION:
+Ten people are in a room and every pair of distinct people shakes hands exactly once. How many handshakes take place?
+HINT1:
+Each person shakes $9$ hands. Does $10 \times 9$ count each handshake once?
+HINT2:
+A handshake is an unordered pair of people. Count the pairs.
+ANSWER:
+$\binom{10}{2} = 45$
+REFRESH:
+**Pairs**: the number of unordered pairs from $n$ objects is $\binom n2 = \frac{n(n-1)}{2}$.
+EXPLANATION:
+Each person takes part in $9$ handshakes, giving $10 \times 9 = 90$ "person–handshake" incidences, but each handshake involves two people and is counted twice. So there are $90/2 = 45$. The same idea is the triangle-number formula $1 + 2 + \dots + 9 = 45$: person 1 shakes $9$ new hands, person 2 then $8$ new ones, and so on.
+SOLUTION: Double counting
+$$\#\text{handshakes} = \frac{10 \times 9}{2} = 45.$$
+SOLUTION: One person at a time
+Let the people arrive one by one; the $k$-th arrival shakes hands with the $k - 1$ already present: $0 + 1 + 2 + \dots + 9 = \frac{9 \cdot 10}{2} = 45$.
+FOLLOWUP: A hundred people
+At a gathering of $100$ people, each pair shakes hands exactly once. How many handshakes?
+FOLLOWUP_ANSWER:
+$\binom{100}{2} = \frac{100 \times 99}{2} = 4950$.
+===END===
+
+===TEASER===
+SLUG: six-weights-balance-heaviest-side
+IDS: Q-290, Q-516
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Six weights on a balance
+QUESTION:
+Six weights of $101, 102, 103, 104, 105$ and $106$ grams are split at random into two groups of three, one group on each pan of a balance. What is the probability that the pan holding the $106$-gram weight is the heavier one?
+HINT1:
+Once you know which two weights share the pan with $106$, everything is determined. How many equally likely possibilities is that?
+HINT2:
+The total is $621$, so the $106$ pan is heavier iff its sum is at least $311$, i.e. its two companions sum to at least $205$. Count the companion pairs that fail.
+ANSWER:
+$4/5$
+REFRESH:
+**Uniform random split**: splitting $2m$ objects uniformly into two labelled-free groups of $m$, the group containing a given object has its other $m - 1$ members uniformly distributed among the $\binom{2m-1}{m-1}$ subsets.
+EXPLANATION:
+Only the two companions of the $106$ matter: $\binom52 = 10$ equally likely pairs from $\{101, \dots, 105\}$. The totals cannot tie (the total $621$ is odd). The $106$ side loses only if its companions are among the very lightest: $\{101, 102\}$ or $\{101, 103\}$. That leaves $8$ winning pairs out of $10$. The $100$ offset in each weight is a distraction: subtract $100$ from each weight and the comparison is the same, since both pans hold three weights.
+SOLUTION: Count companion pairs
+Subtract $100$ from every weight (each pan loses $300$, which does not change the comparison): weights $1, \dots, 6$, total $21$. The $6$ pan is heavier iff its sum is $\ge 11$, i.e. its two companions sum to $\ge 5$.
+Companion pairs from $\{1,2,3,4,5\}$: $\binom52 = 10$, all equally likely. Pairs summing to less than $5$: $\{1,2\}$ (sum $3$) and $\{1,3\}$ (sum $4$). All others have sum $\ge 5$.
+$$P = \frac{10 - 2}{10} = \frac45.$$
+FOLLOWUP: Weights 201 to 206
+Now the weights are $201, 202, \dots, 206$ grams, again split randomly three and three. What is the probability that the side with the $206$-gram weight is heavier?
+FOLLOWUP_ANSWER:
+$4/5$ again. Subtract $200$ from each weight (the same amount, $600$, is removed from each pan): the problem becomes exactly the $1, \dots, 6$ problem above, where the $6$ side loses only with companions $\{1,2\}$ or $\{1,3\}$.
+===END===
+
+===TEASER===
+SLUG: uniform-records-last-record-expectation
+IDS: Q-293, Q-345
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: hard
+TITLE: Keep drawing while you set records
+QUESTION:
+Draw $X_1, X_2, \dots$ i.i.d. uniform on $(0,1)$. The current record starts at $m = X_1$. At each step draw the next $X_n$: if $X_n > m$, set $m = X_n$ and continue; if $X_n \le m$, stop. Let $N$ be the index at which you stop, so the last record is $X_{N-1}$. The value $\mathbb{E}[X_{N-1}]$ can be written as $a + be$ with integers $a, b$. Find $a + b$.
+HINT1:
+The process continues exactly as long as the sequence is increasing. Split according to the length $k$ of the initial increasing run.
+HINT2:
+The density of $X_k$ at $x$ on the event $\{X_1 < X_2 < \dots < X_k\}$ is $\frac{x^{k-1}}{(k-1)!}$. Multiply by the probability $x$ that the next draw is $\le x$, sum over $k$, and integrate $x \cdot(\dots)$.
+ANSWER:
+$\mathbb{E}[X_{N-1}] = e - 2 \approx 0.718$, so $a + b = -2 + 1 = -1$.
+REFRESH:
+**Ordered uniforms**: $P(X_1 < \dots < X_k) = 1/k!$, and $P(X_1 < \dots < X_{k-1} < X_k,\ X_k \in dx) = \frac{x^{k-1}}{(k-1)!}dx$ (the first $k-1$ values must be an increasing arrangement inside $(0,x)$, probability $x^{k-1}/(k-1)!$).
+**Useful integral**: $\int_0^1 x^2 e^x\,dx = \big[e^x(x^2 - 2x + 2)\big]_0^1 = e - 2$.
+EXPLANATION:
+The process stops right after the first descent, and the last record is the top of the initial increasing run. For a run of exact length $k$ ending at height $x$, we need an increasing sequence of length $k$ ending at $x$ (weight $x^{k-1}/(k-1)!$) and then a drop below $x$ (probability $x$). Summing over $k$ turns the $x^{k-1}/(k-1)!$ into $e^x$, so the density of the last record is $x e^x$ on $(0,1)$ (a quick check: $\int_0^1 xe^x dx = 1$). Its mean is $\int_0^1 x^2 e^x\,dx = e - 2$.
+SOLUTION: Sum over the run length
+For $k \ge 1$, $\{N - 1 = k\} = \{X_1 < \dots < X_k,\ X_{k+1} \le X_k\}$. On this event $X_{N-1} = X_k$. Using the density of $X_k$ on the increasing event and independence of $X_{k+1}$:
+$$\mathbb{E}\big[X_{N-1}\mathbf 1_{\{N-1=k\}}\big] = \int_0^1 x \cdot \frac{x^{k-1}}{(k-1)!}\cdot x\,dx.$$
+Summing over $k \ge 1$ and using $\sum_{k\ge1}\frac{x^{k-1}}{(k-1)!} = e^x$:
+$$\mathbb{E}[X_{N-1}] = \int_0^1 x^2 e^x\,dx.$$
+Integrate by parts twice: $\int x^2 e^x = x^2e^x - 2\int x e^x = x^2 e^x - 2(xe^x - e^x)$, so
+$$\int_0^1 x^2 e^x\,dx = \big[e^x(x^2 - 2x + 2)\big]_0^1 = e(1 - 2 + 2) - 2 = e - 2.$$
+Thus $a = -2$, $b = 1$ and $a + b = -1$. (Simulation: $\approx 0.718$.)
+SOLUTION: Density of the last record
+From the above, the last record $M = X_{N-1}$ has density $f_M(x) = \sum_{k\ge1}\frac{x^{k-1}}{(k-1)!}\,x = x e^x$ on $(0,1)$. Check normalisation: $\int_0^1 xe^x dx = [e^x(x-1)]_0^1 = 0 - (-1) = 1$. Then $\mathbb{E}M = \int_0^1 x\cdot xe^x\,dx = e - 2$.
+FOLLOWUP: Records going down
+Same setting, but now you keep going as long as each new draw is a new **minimum**: $m = X_1$, and if $X_n < m$ set $m = X_n$ and continue, otherwise stop. Let $Y$ be the last minimum before stopping. $\mathbb{E}[Y] = a + be$ with integers $a, b$; find $a + b$.
+FOLLOWUP_ANSWER:
+$\mathbb{E}Y = 3 - e \approx 0.282$, so $a + b = 3 + (-1) = 2$.
+By symmetry ($X \mapsto 1 - X$ turns the decreasing run into an increasing one), $1 - Y$ has the law of the last record above, so $\mathbb{E}Y = 1 - (e - 2) = 3 - e$. Directly: the density of $Y$ is $\sum_{k\ge1}\frac{(1-y)^{k-1}}{(k-1)!}(1-y) = (1-y)e^{1-y}$, and with $u = 1 - y$,
+$$\mathbb{E}Y = \int_0^1 (1-u)\,u e^u\,du = \int_0^1 u e^u du - \int_0^1 u^2 e^u du = 1 - (e - 2) = 3 - e.$$
+===END===
+
+===TEASER===
+SLUG: st-petersburg-paradox
+IDS: Q-300, Q-081
+FIRMS: Akuna Capital, Belvedere Trading, Goldman Sachs, IMC, Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: The St. Petersburg game
+QUESTION:
+A fair coin is tossed until the first head appears. If the first head appears on toss $n$, you are paid $2^n$ dollars. What is the fair value (expected payout) of this game?
+HINT1:
+Write the expectation as a sum over $n$. What does each term contribute?
+HINT2:
+$P(\text{first head on toss } n) = 2^{-n}$, and the payout is $2^n$.
+ANSWER:
+Infinite: every term contributes $1$, so the expected payout diverges.
+REFRESH:
+**Expectation of a discrete variable**: $\mathbb{E}[g(N)] = \sum_n g(n)P(N = n)$, possibly $+\infty$ when $g \ge 0$ and the series diverges.
+**Geometric law**: the toss of the first head satisfies $P(N = n) = 2^{-n}$, $n \ge 1$.
+EXPLANATION:
+Each possible outcome "first head on toss $n$" is half as likely as the previous one but pays twice as much, so each contributes exactly $\$1$ to the expectation, and there are infinitely many of them. The expected value is infinite, yet nobody would pay very much to play: this is the St. Petersburg paradox. The resolutions used in practice: payouts are capped by the bank's finite wealth (a cap makes the value small, see the follow-up), and people value money with a concave utility (with log utility the certainty equivalent is only about $\$4$).
+SOLUTION: Sum the series
+$$\mathbb{E}[\text{payout}] = \sum_{n=1}^{\infty} 2^n\cdot 2^{-n} = \sum_{n=1}^\infty 1 = +\infty.$$
+So the "fair value" is infinite (answer code $-1$ in the source's convention).
+Why nobody pays much: with log utility, the expected utility is $\sum_n 2^{-n}\ln(2^n) = \ln 2\sum_n n2^{-n} = 2\ln 2 = \ln 4$, so the certainty equivalent is $e^{\ln 4} = \$4$.
+FOLLOWUP: Capped payout
+Ken tosses a fair coin until the first head. If this takes $k$ tosses, he earns $\min(64, 2^k)$ dollars. What are his expected earnings?
+FOLLOWUP_ANSWER:
+$\$7$. For $k = 1, \dots, 6$ the payout is $2^k$ with probability $2^{-k}$: each contributes $1$, total $6$. For $k \ge 7$ the payout is $64$, and $P(k \ge 7) = 2^{-6} = 1/64$ (the first six tosses are tails), contributing $64 \cdot \frac{1}{64} = 1$. Total $6 + 1 = 7$. In general a cap of $2^m$ gives value $m + 1$: the paradox dissolves once the bank has finite money (a cap of about $\$10^{12} \approx 2^{40}$ gives only about $\$41$).
+===END===
+
+===TEASER===
+SLUG: three-ring-dartboard
+IDS: Q-303, Q-412, Q-494
+FIRMS: Belvedere Trading, Citadel, DRW, IMC
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Three darts on a three-ring board
+QUESTION:
+A dartboard consists of three concentric circles of radii $1$, $2$ and $3$ feet. You throw $3$ darts; each one hits the board at a uniformly random point, independently. What is the probability that at least one dart lands inside the inner circle (radius $1$)?
+HINT1:
+For a uniformly random point on a disc, probabilities are proportional to areas.
+HINT2:
+One dart lands in the inner circle with probability $\frac{\pi\cdot1^2}{\pi\cdot 3^2}$. Use the complement: none of the three does.
+ANSWER:
+$1 - (8/9)^3 = 217/729 \approx 0.298$
+REFRESH:
+**Uniform point in a region**: $P(\text{point} \in A) = \operatorname{area}(A)/\operatorname{area}(\text{region})$.
+**Complement for "at least one"**: $P(\text{at least one}) = 1 - P(\text{none})$, and for independent trials $P(\text{none}) = (1-p)^n$.
+EXPLANATION:
+The inner circle has area $\pi$, the board $9\pi$, so one dart lands inside with probability $1/9$. It is easier to compute the chance that all three darts miss it, $(8/9)^3 = 512/729$, and subtract from $1$. Note it is area, not radius, that matters: the inner circle is a third of the radius but only a ninth of the area.
+SOLUTION: Complement
+$p = \frac{\pi \cdot 1^2}{\pi\cdot 3^2} = \frac19$. Independently for the three darts:
+$$P(\text{at least one inside}) = 1 - \left(\frac89\right)^3 = 1 - \frac{512}{729} = \frac{217}{729} \approx 0.298.$$
+FOLLOWUP: The middle ring
+One dart lands uniformly on the same board. What is the probability that it lands in the middle ring, between radius $1$ and radius $2$?
+FOLLOWUP_ANSWER:
+$\frac{\pi(2^2 - 1^2)}{\pi\cdot 3^2} = \frac{3}{9} = \frac13$.
+FOLLOWUP: One dart per region
+Three darts land independently and uniformly on the board. What is the probability that the three darts are in three different regions (one in the inner disc, one in the middle ring, one in the outer ring)?
+FOLLOWUP_ANSWER:
+$10/81$. Region probabilities: inner $\frac19$, middle $\frac{4-1}{9} = \frac39$, outer $\frac{9-4}{9} = \frac59$. The three darts can be assigned to the three regions in $3! = 6$ ways, each with probability $\frac19\cdot\frac39\cdot\frac59 = \frac{15}{729}$:
+$$P = 6\cdot\frac{15}{729} = \frac{90}{729} = \frac{10}{81} \approx 0.123.$$
+===END===
+
+===TEASER===
+SLUG: expected-distance-two-uniforms-0-60
+IDS: Q-306, Q-507
+FIRMS: Goldman Sachs, Citadel, DRW, WorldQuant
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Distance between two uniform points
+QUESTION:
+Two numbers $x$ and $y$ are chosen independently and uniformly from $[0, 60]$. Find the expected value and the variance of $|x - y|$.
+HINT1:
+Draw the square $[0,60]^2$. Where is $|x - y| > d$?
+HINT2:
+$P(|x-y| > d) = \left(1 - \frac{d}{60}\right)^2$: two corner triangles. For the variance, note that $\mathbb{E}[(x-y)^2]$ is easy without absolute values.
+ANSWER:
+$\mathbb{E}|x-y| = 20$ and $\operatorname{Var}|x - y| = 200$.
+REFRESH:
+**Uniform moments**: for $U \sim \text{Unif}[0,L]$, $\mathbb{E}U = L/2$ and $\operatorname{Var}U = L^2/12$.
+**Tail formula**: for $D \ge 0$, $\mathbb{E}D = \int_0^\infty P(D > d)\,dd$.
+EXPLANATION:
+In the square $[0,60]^2$, the region where $|x-y| > d$ consists of two right triangles with legs $60 - d$, total area $(60-d)^2$. So $D = |x-y|$ has survival function $(1 - d/60)^2$: it is distributed like $60$ times the minimum of two uniforms, with mean $60/3 = 20$. For the variance, drop the absolute value: $D^2 = (x-y)^2$, whose mean is $2\operatorname{Var}(x) = 2 \cdot 300 = 600$.
+SOLUTION: Tail integral and second moment
+Scale: $x = 60U$, $y = 60V$ with $U, V$ i.i.d. uniform on $[0,1]$, $D = 60|U - V|$.
+$P(|U - V| > t) = (1-t)^2$ for $t \in [0,1]$ (two triangles of legs $1-t$, each of area $(1-t)^2/2$). Hence
+$$\mathbb{E}|U - V| = \int_0^1 (1-t)^2\,dt = \frac13, \qquad \mathbb{E}D = \frac{60}{3} = 20.$$
+Second moment: $\mathbb{E}[(U-V)^2] = \operatorname{Var}(U - V) = \frac1{12} + \frac1{12} = \frac16$, so $\mathbb{E}D^2 = 3600\cdot\frac16 = 600$.
+$$\operatorname{Var}D = 600 - 20^2 = 200.$$
+SOLUTION: Density of the difference
+$T = |U - V|$ has density $f(t) = 2(1 - t)$ on $[0,1]$ (derivative of $1 - (1-t)^2$). Then $\mathbb{E}T = \int_0^1 2t(1-t)\,dt = 1 - \frac23 = \frac13$ and $\mathbb{E}T^2 = \int_0^1 2t^2(1-t)\,dt = \frac23 - \frac12 = \frac16$, so $\operatorname{Var}T = \frac16 - \frac19 = \frac1{18}$. Scaling by $60$: $\mathbb{E}D = 20$, $\operatorname{Var}D = \frac{3600}{18} = 200$.
+FOLLOWUP: Uniforms on [3, 4]
+$X, Y$ are i.i.d. uniform on $(3, 4)$. Find $\mathbb{E}|X - Y|$.
+FOLLOWUP_ANSWER:
+$1/3$. Shifting both by $3$ doesn't change the difference: $X - 3$, $Y - 3$ are i.i.d. uniform on $(0,1)$, and $\mathbb{E}|U - V| = \int_0^1 (1-t)^2 dt = \frac13$. In general, for uniforms on an interval of length $L$, $\mathbb{E}|X - Y| = L/3$.
+===END===

@@ -1,0 +1,911 @@
+===TEASER===
+SLUG: dice-sum-five-before-two
+IDS: Q-175
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Sum of 5 before sum of 2
+QUESTION:
+A pair of fair six-sided dice is rolled over and over. What is the probability that a total of $5$ appears before a total of $2$?
+HINT1:
+Most rolls give neither $5$ nor $2$ and simply don't matter. What happens if you only look at the rolls that do matter?
+HINT2:
+Count how many of the $36$ outcomes give a total of $5$ and how many give a total of $2$. Condition on the first roll whose total is either $5$ or $2$.
+ANSWER:
+$\dfrac{4}{5}$
+REFRESH:
+- **Conditioning on a relevant event**: if $A$ and $B$ are disjoint events of an i.i.d. trial, the first trial landing in $A\cup B$ lands in $A$ with probability $\dfrac{P(A)}{P(A)+P(B)}$.
+EXPLANATION:
+The race is decided by the first roll that is either a $5$ or a $2$; all other rolls are wasted time and carry no information. So the answer is just the relative weight of the two totals on a single roll. A total of $5$ comes from $(1,4),(2,3),(3,2),(4,1)$: $4$ outcomes. A total of $2$ only from $(1,1)$: $1$ outcome. The $5$ is four times as likely on every roll, so it wins the race with probability $4/(4+1)$.
+SOLUTION: Condition on the deciding roll
+On one roll, $P(\text{sum}=5)=\frac{4}{36}$ and $P(\text{sum}=2)=\frac{1}{36}$. Rolls are independent, so the first roll that lands in $\{5,2\}$ is, conditionally on landing there, a $5$ with probability
+$$\frac{4/36}{4/36+1/36}=\frac{4}{5}.$$
+SOLUTION: First-step recursion
+Let $p$ be the required probability. On the first roll: with probability $\frac{4}{36}$ we win, with probability $\frac{1}{36}$ we lose, and with probability $\frac{31}{36}$ nothing happens and the situation restarts. So
+$$p=\frac{4}{36}+\frac{31}{36}p\quad\Longrightarrow\quad \frac{5}{36}p=\frac{4}{36}\quad\Longrightarrow\quad p=\frac{4}{5}.$$
+===END===
+===TEASER===
+SLUG: three-dice-range-exactly-four
+IDS: Q-176
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Range of three dice equals 4
+QUESTION:
+Three fair six-sided dice are rolled. What is the probability that the difference between the largest and the smallest value shown is exactly $4$?
+HINT1:
+There are only two possible (smallest, largest) pairs. Count the triples for one of them.
+HINT2:
+For the pair $(\min,\max)=(1,5)$: all three dice lie in $\{1,\dots,5\}$, at least one shows $1$ and at least one shows $5$. Use inclusion–exclusion on "no $1$" and "no $5$".
+ANSWER:
+$\dfrac{2}{9}$
+REFRESH:
+- **Inclusion–exclusion**: $|A\cup B|=|A|+|B|-|A\cap B|$, so the number of outcomes avoiding neither restriction is total $-|A|-|B|+|A\cap B|$.
+EXPLANATION:
+A range of $4$ on a die with faces $1$ to $6$ means (min, max) is $(1,5)$ or $(2,6)$, and by symmetry the two cases have the same count. For $(1,5)$ the three dice live in a window of $5$ values and must touch both ends of the window. Counting "all in the window" and subtracting "misses the bottom end" and "misses the top end" (adding back "misses both") gives the count for one window; double it and divide by $6^3$.
+SOLUTION: Inclusion–exclusion
+Fix the window $\{1,\dots,5\}$. Ordered triples inside it: $5^3=125$. Those with no $1$: $4^3=64$. Those with no $5$: $4^3=64$. Those with neither: $3^3=27$. Triples in the window using both $1$ and $5$:
+$$125-64-64+27=24.$$
+The window $\{2,\dots,6\}$ gives another $24$, and the two sets are disjoint (different minima). So
+$$P=\frac{48}{216}=\frac{2}{9}.$$
+SOLUTION: Direct case count
+With min $1$ and max $5$ the multiset of values is $\{1,5,x\}$.
+- $x\in\{2,3,4\}$: three distinct values, $3!=6$ orders each: $18$.
+- $x=1$ or $x=5$: multisets $\{1,1,5\}$ and $\{1,5,5\}$, $3$ orders each: $6$.
+Total $24$ per window, $48$ overall, $48/216=2/9$.
+===END===
+===TEASER===
+SLUG: die-one-face-reduced-even
+IDS: Q-177
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: A die with one face lowered
+QUESTION:
+A fair die has faces $1,2,3,4,5,6$. One face is chosen uniformly at random and the number written on it is decreased by $1$ (so a $1$ becomes $0$, a $4$ becomes $3$, and so on). The altered die is then rolled. What is the probability that it shows an even number?
+HINT1:
+Whether the altered face was odd or even changes how many even faces the new die has.
+HINT2:
+Condition on the parity of the chosen face: lowering an odd number makes it even, lowering an even number makes it odd. ($0$ counts as even.)
+ANSWER:
+$\dfrac{1}{2}$
+REFRESH:
+- **Law of total probability**: $P(E)=\sum_i P(E\mid H_i)P(H_i)$ for a partition $(H_i)$.
+- $0$ is even.
+EXPLANATION:
+The original die has $3$ even faces. If an odd face is lowered it turns even, so the die now has $4$ even faces; if an even face is lowered it turns odd, leaving $2$ even faces. The two cases are equally likely, so on average the die still has $3$ even faces out of $6$: the alteration moves the count up or down by one symmetrically.
+SOLUTION: Total probability
+Let $O$ = "the chosen face was odd", $P(O)=\frac12$.
+$$P(\text{even})=P(O)\cdot\frac{4}{6}+P(O^c)\cdot\frac{2}{6}=\frac12\cdot\frac46+\frac12\cdot\frac26=\frac{1}{2}.$$
+SOLUTION: Expected number of even faces
+Let $K$ be the number of even faces after the change: $K=4$ or $K=2$ with probability $\frac12$ each, so $\mathbb E[K]=3$. Given the die, a roll is even with probability $K/6$, hence $P(\text{even})=\mathbb E[K/6]=3/6=\frac12$.
+===END===
+===TEASER===
+SLUG: reroll-until-at-least-first
+IDS: Q-179
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Roll until you match the first roll
+QUESTION:
+Francisco rolls a fair die and records the result. He then keeps rolling until he gets a number that is greater than or equal to that first result. Let $N$ be the number of rolls he makes after the first one (the last, successful roll included). Find $\mathbb E[N]$.
+HINT1:
+Once the first roll is known, what kind of random variable is $N$?
+HINT2:
+If the first roll is $k$, each later roll succeeds independently with probability $\frac{7-k}{6}$, so $N$ is geometric. Average its mean over $k$.
+ANSWER:
+$\mathbb E[N]=\dfrac{49}{20}=2.45$
+REFRESH:
+- **Geometric distribution**: the number of independent trials up to and including the first success, with success probability $p$, has mean $1/p$.
+- **Tower rule**: $\mathbb E[N]=\mathbb E\big[\mathbb E[N\mid K]\big]$.
+EXPLANATION:
+Given the first roll $k$, the number of faces $\ge k$ is $7-k$, so every further roll is a success with probability $\frac{7-k}{6}$ and the waiting time has mean $\frac{6}{7-k}$. As $k$ runs through $1,\dots,6$, $7-k$ runs through $6,\dots,1$, so the average of $\frac{6}{7-k}$ is $\frac16\cdot 6\left(1+\frac12+\dots+\frac16\right)$: the harmonic number $H_6$. A bad first roll ($6$) costs on average $6$ extra rolls, which is why the answer is much more than $1$.
+SOLUTION: Condition on the first roll
+Let $K$ be the first roll. Given $K=k$, $N\sim\text{Geometric}\left(\frac{7-k}{6}\right)$, so $\mathbb E[N\mid K=k]=\frac{6}{7-k}$. Then
+$$\mathbb E[N]=\frac16\sum_{k=1}^{6}\frac{6}{7-k}=\sum_{j=1}^{6}\frac1j=1+\frac12+\frac13+\frac14+\frac15+\frac16=\frac{60+30+20+15+12+10}{60}=\frac{147}{60}=\frac{49}{20}.$$
+===END===
+===TEASER===
+SLUG: d60-beats-d40
+IDS: Q-180
+FIRMS: Belvedere Trading, DRW
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: 60-sided die against 40-sided die
+QUESTION:
+A fair $40$-sided die (faces $1$ to $40$) and a fair $60$-sided die (faces $1$ to $60$) are rolled. What is the probability that the $60$-sided die shows a strictly larger number than the $40$-sided die?
+HINT1:
+Split according to whether the big die lands in the range the small die can reach.
+HINT2:
+If the $60$-sided die shows $41$ to $60$ it wins for sure. Otherwise both dice are uniform on $\{1,\dots,40\}$: use symmetry and the probability of a tie.
+ANSWER:
+$\dfrac{79}{120}$
+REFRESH:
+- **Symmetry**: for two i.i.d. discrete variables, $P(X>Y)=P(Y>X)=\frac{1-P(X=Y)}{2}$.
+EXPLANATION:
+One third of the time the $60$-sided die lands above $40$, where it cannot lose. The other two thirds of the time both dice are uniform on the same set $\{1,\dots,40\}$, so they are exchangeable: each wins equally often, apart from ties, which happen with probability $\frac1{40}$. So in that case the big die wins with probability $\frac{39}{80}$, a hair under one half.
+SOLUTION: Split on the big die
+Let $X$ be the $40$-sided roll and $Y$ the $60$-sided roll.
+- $P(Y>40)=\frac{20}{60}=\frac13$, and then $Y>X$ surely.
+- Given $Y\le 40$, $Y$ is uniform on $\{1,\dots,40\}$, independent of $X$, so $P(Y>X\mid Y\le40)=\frac{1-1/40}{2}=\frac{39}{80}$.
+$$P(Y>X)=\frac13+\frac23\cdot\frac{39}{80}=\frac13+\frac{13}{40}=\frac{40+39}{120}=\frac{79}{120}.$$
+SOLUTION: Condition on the small die
+Given $X=x$, $P(Y>x)=\frac{60-x}{60}$. Averaging over $x$:
+$$P(Y>X)=\frac{1}{40}\sum_{x=1}^{40}\frac{60-x}{60}=\frac{60-\bar x}{60},\qquad \bar x=\frac{41}{2},$$
+so $P=\frac{60-20.5}{60}=\frac{39.5}{60}=\frac{79}{120}$.
+===END===
+===TEASER===
+SLUG: odd-even-doubling-die-reroll
+IDS: Q-181
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Doubled evens, one re-roll
+QUESTION:
+You roll a fair six-sided die. If the face is odd you are paid the face value; if it is even you are paid twice the face value. After seeing the first roll you may, once, choose to roll again, in which case you are paid according to the second roll instead (and must accept it). With optimal play, what is the expected payoff?
+HINT1:
+Work backwards: what is a second roll worth on average?
+HINT2:
+The payoffs of the six faces are $1,4,3,8,5,12$. Keep the first roll exactly when its payoff beats the average of a fresh roll.
+ANSWER:
+$7$
+REFRESH:
+- **One-step optimal stopping**: with one option left to continue, stop iff the current reward is at least the expected reward of continuing.
+EXPLANATION:
+The payoff table is $1\to1$, $2\to4$, $3\to3$, $4\to8$, $5\to5$, $6\to12$. A second roll is worth its average, $\frac{33}{6}=5.5$. So after the first roll you keep $8$ and $12$ and throw back everything else (including the $5$, which is below $5.5$). The value is the average of "keep if good, otherwise $5.5$".
+SOLUTION: Backward induction
+Payoffs per face: $1,4,3,8,5,12$, sum $33$, mean $5.5$: this is the value of the forced second roll.
+First roll: keep iff payoff $>5.5$, i.e. faces $4$ and $6$ (payoffs $8$ and $12$). Otherwise re-roll for $5.5$ on average.
+$$\mathbb E=\frac{8+12}{6}+\frac46\cdot 5.5=\frac{20}{6}+\frac{22}{6}=\frac{42}{6}=7.$$
+===END===
+===TEASER===
+SLUG: d20-roll-or-take-100-moves
+IDS: Q-182
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Roll or take with a d20, 100 moves
+QUESTION:
+A fair $20$-sided die starts with $1$ on top. You have $100$ moves. Each move is one of:
+1. **Roll**: the top face is replaced by a uniform random number from $1$ to $20$.
+2. **Take**: add the current top face to your score. The die is not changed, so you can take again on the next move.
+
+Consider threshold strategies: fix $n\in\{1,\dots,20\}$ in advance and roll until the die shows a value $\ge n$. Assume the move on which the threshold is first reached counts both as the roll and as the first take; so if this happens on move $R$, you collect that value on each of the $101-R$ moves $R,R+1,\dots,100$.
+
+Which threshold $n$ maximises the expected total score, and what is that maximal expected score?
+HINT1:
+Two things depend on $n$: how long you wait before collecting, and how big the value is once you collect. Write each as a function of $n$.
+HINT2:
+With threshold $n$, each roll succeeds with probability $\frac{21-n}{20}$, so $R$ is geometric with mean $\frac{20}{21-n}$. The value you lock in is uniform on $\{n,\dots,20\}$ with mean $\frac{n+20}{2}$, and it is independent of $R$.
+ANSWER:
+$n=18$, expected score $\dfrac{5377}{3}\approx 1792.33$
+REFRESH:
+- **Geometric waiting time**: trials until the first success with probability $p$ has mean $1/p$.
+- **Conditioning on success**: given a uniform roll on $\{1,\dots,20\}$ is $\ge n$, it is uniform on $\{n,\dots,20\}$, and this does not depend on how many attempts it took.
+EXPLANATION:
+The game is really a single decision: once you lock onto a good face you should never roll again (the problem fixes this), so everything is decided by how picky you are. A high threshold locks in a bigger number but costs more moves waiting. The expected score is roughly (value locked in) $\times$ (moves left), and since the locked value and the waiting time are independent, you can multiply their expectations. Waiting is cheap with $100$ moves: even requiring $18$ or more costs only $\frac{20}{3}\approx 6.7$ moves on average, while it raises the per-move value to $19$. Going to $19$ or $20$ doubles or triples the waiting time for a small gain, and that no longer pays.
+SOLUTION: Maximise value × remaining moves
+Fix $n$ and let $p=\frac{21-n}{20}$. The number of moves $R$ until the first success is geometric with $\mathbb E[R]=\frac1p=\frac{20}{21-n}$, and the locked value $V$ is uniform on $\{n,\dots,20\}$, independent of $R$, with $\mathbb E[V]=\frac{n+20}{2}$. The score is $V\,(101-R)$, so
+$$f(n)=\mathbb E[V]\,\big(101-\mathbb E[R]\big)=\frac{n+20}{2}\left(101-\frac{20}{21-n}\right).$$
+Values near the top:
+$$\begin{aligned}
+f(16)&=18\,(101-4)=1746,\\
+f(17)&=18.5\,(101-5)=1776,\\
+f(18)&=19\left(101-\tfrac{20}{3}\right)=19\cdot\tfrac{283}{3}=\tfrac{5377}{3}\approx1792.33,\\
+f(19)&=19.5\,(101-10)=1774.5,\\
+f(20)&=20\,(101-20)=1620.
+\end{aligned}$$
+$f$ increases up to $n=18$ and decreases after (for small $n$ it is far lower, e.g. $f(1)=10.5\cdot100=1050$). So the optimal threshold is $n=18$, giving $\frac{5377}{3}\approx 1792.33$.
+
+Strictly, if the threshold is never reached within $100$ moves the score is $0$ rather than the negative number the formula assigns; with $n=18$ this correction is of order $19\cdot(0.85)^{100}\cdot 5.7\approx 10^{-5}$, so the exact value is $1792.333\ldots+0.00001$, which is $\frac{5377}{3}$ for all practical purposes.
+===END===
+===TEASER===
+SLUG: d4-running-total-past-100
+IDS: Q-183
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: First total above 100 with a d4
+QUESTION:
+A fair four-sided die (faces $1,2,3,4$) is rolled repeatedly and the results are added to a running total that starts at $0$. What is the expected value of the first running total that is strictly greater than $100$?
+
+Follow-up in the same question: what is this expected value if the running total starts at $96$ instead?
+HINT1:
+The first total above $100$ is one of $101,102,103,104$. They are not equally likely: think about how the walk can land on each of them.
+HINT2:
+Far from the start, the walk lands on any given integer with probability $1/\mathbb E[\text{roll}]=\frac{2}{5}$. The first total above $100$ equals $100+j$ when the walk visits $100+j-k$ and then rolls $k$, for some $k\ge j$. For the start at $96$, just do backward recursion from $100$ down to $96$.
+ANSWER:
+From $0$: $102$ (to within $10^{-19}$). From $96$: $\dfrac{52277}{512}\approx 102.10$.
+REFRESH:
+- **Renewal theorem (lattice case)**: for a random walk with i.i.d. positive integer steps of mean $\mu$ (and gcd of possible steps $1$), the probability that the walk visits integer $m$ tends to $1/\mu$ as $m\to\infty$ (here exponentially fast).
+- **First-step analysis**: $f(s)=\frac14\sum_{k=1}^4 f(s+k)$ for $s\le 100$, with $f(s)=s$ for $s>100$.
+EXPLANATION:
+The naive answer "uniform on $101..104$, so $102.5$" is wrong: a big roll is more likely to be the one that jumps over a line (the inspection paradox), so the overshoot is biased towards small values. Landing on $101$ happens from $100$, $99$, $98$ or $97$ (four ways), while landing on $104$ only happens from $100$ with a $4$ (one way). Starting at $0$, the walk has long forgotten its start when it reaches $100$, so each of $97,\dots,100$ is visited with probability essentially $\frac{1}{2.5}=\frac25$. That makes the overshoot probabilities proportional to $4:3:2:1$, whose mean position is $102$.
+
+Starting at $96$ the walk has not had time to "mix", so the exact answer must be computed by a short backward recursion, and it comes out slightly above $102$.
+SOLUTION: Renewal / overshoot distribution (start at 0)
+Let $u_m=P(\text{walk visits } m)$. With mean step $\mu=\frac{1+2+3+4}{4}=\frac52$, $u_m\to\frac25$ geometrically fast; at $m\approx 100$ the error is below $10^{-19}$.
+
+The first total above $100$ equals $100+j$ ($j=1,\dots,4$) iff for some $k\in\{j,\dots,4\}$ the walk visits $100+j-k\le100$ and the next roll is $k$. These events are disjoint, so
+$$P(100+j)=\sum_{k=j}^{4}u_{100+j-k}\cdot\frac14\approx\frac25\cdot\frac{5-j}{4}=\frac{5-j}{10}.$$
+So $P(101)=0.4$, $P(102)=0.3$, $P(103)=0.2$, $P(104)=0.1$, and
+$$\mathbb E=101(0.4)+102(0.3)+103(0.2)+104(0.1)=40.4+30.6+20.6+10.4=102.$$
+(Exact computation by recursion gives $102-1.9\times10^{-20}$.)
+SOLUTION: Backward recursion (start at 96)
+Let $f(s)$ be the expected first total above $100$ from total $s$. For $s>100$, $f(s)=s$; for $s\le100$, $f(s)=\frac14\sum_{k=1}^4 f(s+k)$.
+$$\begin{aligned}
+f(100)&=\tfrac14(101+102+103+104)=102.5,\\
+f(99)&=\tfrac14(f(100)+101+102+103)=\tfrac{408.5}{4}=102.125,\\
+f(98)&=\tfrac14(f(99)+f(100)+101+102)=\tfrac{407.625}{4}=101.90625,\\
+f(97)&=\tfrac14(f(98)+f(99)+f(100)+101)=\tfrac{407.53125}{4}=101.8828125,\\
+f(96)&=\tfrac14(f(97)+f(98)+f(99)+f(100))=\tfrac{408.4140625}{4}=102.103515625.
+\end{aligned}$$
+So from $96$ the answer is $\frac{52277}{512}\approx102.10$. The same recursion run all the way down to $0$ gives $102$ to $19$ decimal places, confirming the first method.
+
+Note: the source states $102.5$; that is the value from a start of $100$ (or the naive uniform-overshoot guess). The correct value from $0$ is $102$, and from $96$ it is $\approx102.10$, because larger rolls are more likely to be the ones that cross $100$.
+===END===
+===TEASER===
+SLUG: five-dice-top-three-sum-18
+IDS: Q-184
+FIRMS: Jane Street, Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Best three of five dice total 18
+QUESTION:
+Five fair six-sided dice are rolled and the three largest values are added up. What is the probability that this sum is $18$?
+HINT1:
+What must the three largest dice be for their sum to be $18$?
+HINT2:
+The event is "at least three of the five dice show $6$". Count it with the binomial distribution.
+ANSWER:
+$\dfrac{23}{648}$
+REFRESH:
+- **Binomial distribution**: the number of successes in $n$ independent trials with success probability $p$ satisfies $P(K=k)=\binom nk p^k(1-p)^{n-k}$.
+EXPLANATION:
+Three dice can only total $18$ if all three show $6$. So the top three sum to $18$ exactly when at least three of the five dice are sixes, and the other two can be anything. The number of sixes among five dice is binomial with $p=\frac16$, so we just add up the cases of $3$, $4$ and $5$ sixes.
+SOLUTION: Count outcomes with at least three sixes
+Out of $6^5=7776$ equally likely outcomes:
+- exactly $3$ sixes: $\binom53\cdot5^2=250$,
+- exactly $4$ sixes: $\binom54\cdot5=25$,
+- exactly $5$ sixes: $1$.
+Total $276$, so
+$$P=\frac{276}{7776}=\frac{23}{648}\approx0.0355.$$
+===END===
+===TEASER===
+SLUG: dice-sum-at-most-four-n-rolls
+IDS: Q-186
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: A small total in n rolls
+QUESTION:
+Alex rolls a pair of fair dice $n$ times. Let $p$ be the probability that in at least one of the $n$ rolls the total of the two dice is $4$ or less. What is the largest $n$ for which $p<\frac12$?
+HINT1:
+"At least once" is easiest through its complement.
+HINT2:
+First find the probability $q$ that a single roll has total $\le4$; then $p=1-(1-q)^n$.
+ANSWER:
+$n=3$
+REFRESH:
+- **Complement of "at least one"**: for independent trials each succeeding with probability $q$, $P(\text{at least one success in } n)=1-(1-q)^n$.
+EXPLANATION:
+Totals $2,3,4$ come from $1+2+3=6$ of the $36$ outcomes, so a single roll succeeds with probability $\frac16$. The chance of never succeeding in $n$ rolls is $(5/6)^n$, which crosses $\frac12$ between $n=3$ and $n=4$.
+SOLUTION: Complement
+Totals $\le4$: $(1,1)$; $(1,2),(2,1)$; $(1,3),(2,2),(3,1)$: $6$ outcomes, so $q=\frac{6}{36}=\frac16$. Then $p<\frac12\iff(5/6)^n>\frac12$.
+$$\left(\tfrac56\right)^3=\tfrac{125}{216}\approx0.579>\tfrac12,\qquad \left(\tfrac56\right)^4=\tfrac{625}{1296}\approx0.482<\tfrac12.$$
+Since $(5/6)^n$ decreases in $n$, the largest $n$ with $p<\frac12$ is $n=3$ (there $p\approx0.421$).
+===END===
+===TEASER===
+SLUG: hundred-dice-vs-400-coins
+IDS: Q-187
+FIRMS: Hudson River Trading
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: 100 dice against 400 coin flips
+QUESTION:
+Roll a fair six-sided die $100$ times and let $X$ be the sum of the faces. Flip a fair coin $400$ times and let $Y$ be the number of heads. What is $P(X>Y)$?
+HINT1:
+Compare the means and the standard deviations of $X$ and $Y$.
+HINT2:
+Look at $D=X-Y$: find its mean and variance, and ask how many standard deviations $0$ is away from the mean. Is the probability exactly $1$?
+ANSWER:
+$P(X>Y)\approx1-7.5\times10^{-15}$: essentially $1$, but not exactly $1$.
+REFRESH:
+- **Sum of i.i.d. variables**: mean and variance add. One die roll has mean $\frac72$ and variance $\frac{35}{12}$; one fair coin has mean $\frac12$ and variance $\frac14$.
+- **Central limit theorem**: a sum of many i.i.d. terms is approximately normal with that mean and variance.
+- **Normal tail**: $P(Z>z)\approx\frac{\varphi(z)}{z}$ for large $z$.
+EXPLANATION:
+$X$ sits around $350$ with standard deviation about $17$; $Y$ sits around $200$ with standard deviation $10$. The gap of $150$ is about $7.6$ standard deviations of $X-Y$, which is astronomically safe: $X>Y$ essentially always. But it is not a certain event: $X=100$ (all ones) and $Y=400$ (all heads) is possible, so the probability is $1$ minus something tiny and positive. The interview point is to see the gap in standard deviations quickly and to not say "exactly $1$".
+SOLUTION: Normal approximation
+$\mathbb E[X]=100\cdot3.5=350$, $\operatorname{Var}X=100\cdot\frac{35}{12}\approx291.7$; $\mathbb E[Y]=200$, $\operatorname{Var}Y=400\cdot\frac14=100$. With $D=X-Y$ (independent parts):
+$$\mathbb E[D]=150,\qquad \operatorname{Var}D\approx391.7,\qquad \sigma_D\approx19.8.$$
+$P(X\le Y)=P(D\le0)\approx P\!\left(Z\le-\frac{150}{19.8}\right)=P(Z\le-7.58)\approx\frac{\varphi(7.58)}{7.58}\approx2\times10^{-14}.$
+So $P(X>Y)\approx1-10^{-14}$.
+
+An exact convolution of the two distributions gives $P(X\le Y)\approx7.5\times10^{-15}$ (the normal approximation is only rough that far in the tail, but the order of magnitude is right). Since $P(X=100,Y=400)=6^{-100}2^{-400}>0$, the probability is strictly less than $1$.
+
+Note: the source states the answer as $1$; the correct statement is "$1-7.5\times10^{-15}$, i.e. $1$ to $14$ decimal places", because $X\le Y$ is possible.
+===END===
+===TEASER===
+SLUG: die-squared-vs-two-dice-product
+IDS: Q-189
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Square one die or multiply two
+QUESTION:
+You are paid according to one of two games, your choice:
+- roll one fair die and receive the square of the result, or
+- roll two fair dice and receive the product of the two results.
+
+Which game has the higher expected payoff, and what is it?
+HINT1:
+Compute both expectations; for the second one use independence.
+HINT2:
+$\mathbb E[X^2]$ versus $\mathbb E[X]\,\mathbb E[Y]=\mathbb E[X]^2$. Their difference has a name.
+ANSWER:
+Square one die: $\mathbb E[X^2]=\dfrac{91}{6}\approx15.17$, against $\dfrac{49}{4}=12.25$ for the product.
+REFRESH:
+- $\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}{6}$.
+- For independent $X,Y$: $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]$.
+- $\operatorname{Var}X=\mathbb E[X^2]-\mathbb E[X]^2\ge0$.
+EXPLANATION:
+Squaring one die is multiplying a die by itself: the two factors are perfectly correlated, so big values go with big values. With two independent dice a big value is often paired with a small one. Algebraically, $\mathbb E[X^2]-\mathbb E[X]\mathbb E[Y]=\mathbb E[X^2]-\mathbb E[X]^2=\operatorname{Var}X=\frac{35}{12}$, which is positive: the squared game always wins on average, by exactly the variance of one die.
+SOLUTION: Direct computation
+$$\mathbb E[X^2]=\frac{1+4+9+16+25+36}{6}=\frac{91}{6}\approx15.17,\qquad \mathbb E[XY]=\mathbb E[X]\mathbb E[Y]=\left(\frac72\right)^2=\frac{49}{4}=12.25.$$
+Choose to square one die; expected payoff $\frac{91}{6}$. The advantage is $\frac{91}{6}-\frac{49}{4}=\frac{182-147}{12}=\frac{35}{12}=\operatorname{Var}X$.
+===END===
+===TEASER===
+SLUG: two-dice-product-multiple-of-six
+IDS: Q-191
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Product of two dice divisible by 6
+QUESTION:
+Two fair dice are rolled. What is the probability that the product of the two numbers is a multiple of $6$?
+HINT1:
+The product needs a factor $2$ and a factor $3$. It is easier to count products that miss one of them.
+HINT2:
+Let $A$ = "no factor $2$" (both dice odd) and $B$ = "no factor $3$" (neither die is $3$ or $6$). Count $|A\cup B|$ by inclusion–exclusion.
+ANSWER:
+$\dfrac{5}{12}$
+REFRESH:
+- **Inclusion–exclusion**: $|A\cup B|=|A|+|B|-|A\cap B|$.
+- A product of integers is divisible by a prime $p$ iff one of the factors is.
+EXPLANATION:
+The product fails to be a multiple of $6$ when it has no factor $2$ (both dice odd) or no factor $3$ (both dice from $\{1,2,4,5\}$). Count those two families, remove the double count (both dice in $\{1,5\}$), and take the complement.
+SOLUTION: Complement with inclusion–exclusion
+- $|A|$: both dice in $\{1,3,5\}$: $3^2=9$.
+- $|B|$: both dice in $\{1,2,4,5\}$: $4^2=16$.
+- $|A\cap B|$: both dice in $\{1,5\}$: $2^2=4$.
+So $|A\cup B|=9+16-4=21$ outcomes are not multiples of $6$, and $36-21=15$ are.
+$$P=\frac{15}{36}=\frac{5}{12}.$$
+SOLUTION: Direct count by first die
+For each first die value, count second values making the product divisible by $6$: first $=1$: $\{6\}$ ($1$); $2$: $\{3,6\}$ ($2$); $3$: $\{2,4,6\}$ ($3$); $4$: $\{3,6\}$ ($2$); $5$: $\{6\}$ ($1$); $6$: all ($6$). Total $1+2+3+2+1+6=15$, so $P=\frac{15}{36}=\frac5{12}$.
+===END===
+===TEASER===
+SLUG: two-dice-sum-at-least-product
+IDS: Q-192
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Sum at least the product
+QUESTION:
+Two fair six-sided dice are rolled. What is the probability that the sum of the two numbers is greater than or equal to their product?
+HINT1:
+For most pairs the product is much bigger than the sum. Which pairs are the exceptions?
+HINT2:
+Rewrite $a+b\ge ab$ as $(a-1)(b-1)\le1$.
+ANSWER:
+$\dfrac{1}{3}$
+REFRESH:
+- $ab-a-b+1=(a-1)(b-1)$.
+EXPLANATION:
+$a+b\ge ab$ is the same as $(a-1)(b-1)\le 1$. With $a-1,b-1\in\{0,\dots,5\}$, this product is at most $1$ only when one of them is $0$ (some die shows $1$) or both are $1$ (the pair $(2,2)$). Everything else has product at least $2$.
+SOLUTION: Factorisation
+$a+b\ge ab\iff ab-a-b+1\le1\iff(a-1)(b-1)\le1$.
+- $(a-1)(b-1)=0$: at least one die is $1$: $36-25=11$ outcomes.
+- $(a-1)(b-1)=1$: $a=b=2$: $1$ outcome.
+Total $12$, so $P=\frac{12}{36}=\frac13$.
+===END===
+===TEASER===
+SLUG: die-game-123-gain-6-forfeit
+IDS: Q-193
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Keep rolling on 1–3, bust on 6
+QUESTION:
+You roll a fair die repeatedly. On a $1$, $2$ or $3$ you win \$1 and roll again. On a $4$ or $5$ the game ends and you keep everything you have won. On a $6$ the game ends and you lose everything you have won. You have no decisions to make. What is the most you should pay to play?
+HINT1:
+The fair price is the expected final payout. Can you separate "how much is accumulated" from "whether you keep it"?
+HINT2:
+Each roll ends the game with probability $\frac12$, and given that it ends, it is a keep ($4$ or $5$) with probability $\frac23$, whatever happened before. Alternatively, let $V(w)$ be the expected payout holding $w$ dollars and guess that $V$ is linear.
+ANSWER:
+$\dfrac{2}{3}$ of a dollar (about 67 cents)
+REFRESH:
+- **Geometric distribution (failures before first success)**: with stopping probability $p$ per trial, the number of non-stopping trials has mean $\frac{1-p}{p}$.
+- **Independence of the stopping type**: for i.i.d. trials, the outcome of the stopping trial is independent of how many trials preceded it.
+EXPLANATION:
+The number of dollars accumulated is the number of $1$–$3$ rolls before the game ends. Each roll ends the game with probability $\frac12$, so on average you collect $\frac{1/2}{1/2}=1$ dollar. Separately, the roll that ends the game is a $4$ or $5$ with probability $\frac{2}{3}$ and a $6$ with probability $\frac13$, and this has nothing to do with how long the game lasted. So the payout is (accumulated) × (indicator of keeping), a product of independent pieces with means $1$ and $\frac23$.
+SOLUTION: Independent decomposition
+Let $K$ be the number of rolls in $\{1,2,3\}$ before the first roll in $\{4,5,6\}$, and $I=1$ if that final roll is $4$ or $5$. $K$ is geometric: $P(K=k)=(\frac12)^k\frac12$, $\mathbb E[K]=1$. The final roll is uniform on $\{4,5,6\}$ independently of $K$, so $\mathbb E[I]=\frac23$. Payout $=KI$, hence
+$$\mathbb E[KI]=\mathbb E[K]\,\mathbb E[I]=1\cdot\frac23=\frac23.$$
+SOLUTION: Recursion in the current winnings
+Let $V(w)$ be the expected payout when you hold $w$ dollars and are about to roll:
+$$V(w)=\frac12V(w+1)+\frac13w+\frac16\cdot0.$$
+Try $V(w)=aw+b$: $aw+b=\frac12(aw+a+b)+\frac13w$. Matching $w$ terms: $a=\frac a2+\frac13$, so $a=\frac23$. Constants: $b=\frac a2+\frac b2$, so $b=a=\frac23$. Hence $V(0)=\frac23$.
+===END===
+===TEASER===
+SLUG: die-stop-or-roll-six-busts
+IDS: Q-194
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Stop or roll, a six busts you
+QUESTION:
+You roll a fair die. If it shows $6$, the game ends and you get nothing. Otherwise you may either stop and receive the value $k$ just rolled (in dollars), or roll again under the same rules, as many times as you like. With optimal play, what is your expected gain?
+HINT1:
+Because the game after a re-roll is the same game as at the start, the value of rolling again is the value of the game itself.
+HINT2:
+Let $V$ be the value. After seeing $k\in\{1,\dots,5\}$ you get $\max(k,V)$. Write the equation for $V$ and try candidate thresholds.
+ANSWER:
+$3$ dollars (stop on $3$, $4$ or $5$, or only on $4$ or $5$: both rules give the same value)
+REFRESH:
+- **Optimal stopping with a stationary game**: if continuing restarts the same game, its value $V$ solves $V=\mathbb E[\max(\text{reward now},V)]$ over the non-terminal outcomes.
+EXPLANATION:
+Re-rolling puts you back at the start, so it is worth exactly $V$. The optimal rule is therefore a threshold: stop when the face is at least $V$. Plugging in candidate thresholds, stopping on $\{4,5\}$ or on $\{3,4,5\}$ both give $3$, while stricter or looser rules give less. At the value $3$, a face of $3$ makes you exactly indifferent, which is why two thresholds tie.
+SOLUTION: Fixed-point equation
+$V=\frac16\sum_{k=1}^{5}\max(k,V)+\frac16\cdot0$. Test $V=3$: $\frac16(3+3+3+4+5)=\frac{18}{6}=3$, so $V=3$ is a fixed point.
+The map $g(V)=\frac16\sum_{k=1}^5\max(k,V)$ has slope at most $\frac56<1$, so it has a unique fixed point, which is $V=3$.
+SOLUTION: Compare threshold rules
+Rule "stop iff $k\ge t$": each roll either stops with a face in $\{t,\dots,5\}$, busts, or repeats (faces $<t$). So
+$$V_t=\frac{\frac16\sum_{k=t}^{5}k}{1-\frac{t-1}{6}}.$$
+$V_5=\frac{5/6}{2/6}=2.5$, $V_4=\frac{9/6}{3/6}=3$, $V_3=\frac{12/6}{4/6}=3$, $V_2=\frac{14/6}{5/6}=2.8$, $V_1=\frac{15/6}{1}=2.5$. The best is $3$.
+===END===
+===TEASER===
+SLUG: roll-until-different-from-first
+IDS: Q-195
+FIRMS: DRW, Hudson River Trading
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Roll until something new appears
+QUESTION:
+You roll a fair die. You then keep rolling until you get a result different from your first roll. You are paid the sum of all your rolls, the first one included. What is the fair value of this game?
+HINT1:
+Condition on the first roll $k$. The rolls after it split into repeats of $k$ and one final, different roll.
+HINT2:
+The number of repeats of $k$ is geometric with mean $\frac{1/6}{5/6}=\frac15$, and the final roll is uniform on the five faces other than $k$.
+ANSWER:
+$7.7$
+REFRESH:
+- **Failures before first success**: with success probability $p$, the expected number of failures is $\frac{1-p}{p}$.
+- **Conditioning on a set**: a fair die roll conditioned to avoid $k$ is uniform on the other five faces, with mean $\frac{21-k}{5}$.
+EXPLANATION:
+Given a first roll $k$, the payout is $k$, plus $k$ for each repeat, plus one final roll different from $k$. Repeats are rare (on average $\frac15$ of one), and the final roll averages $\frac{21-k}{5}$. Adding up gives $k+\frac k5+\frac{21-k}{5}=k+\frac{21}{5}$: the $k$-dependence of the repeats and of the final roll cancel neatly, so the average over $k$ is simply $3.5+4.2$.
+SOLUTION: Condition on the first roll
+Given first roll $k$: let $M$ be the number of further rolls equal to $k$ before the first different roll; $P(M=m)=(\frac16)^m\frac56$, $\mathbb E[M]=\frac{1/6}{5/6}=\frac15$. The final roll $F$ is uniform on $\{1,\dots,6\}\setminus\{k\}$, $\mathbb E[F]=\frac{21-k}{5}$.
+$$\mathbb E[\text{payout}\mid k]=k+k\,\mathbb E[M]+\mathbb E[F]=k+\frac k5+\frac{21-k}{5}=k+\frac{21}{5}.$$
+Averaging over $k$: $\mathbb E[\text{payout}]=3.5+4.2=7.7$.
+===END===
+===TEASER===
+SLUG: leading-digit-powers-of-two
+IDS: Q-196
+FIRMS: Akuna Capital
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Powers of 2 starting with 1
+QUESTION:
+Look at the numbers $2^n$ for $n=0,1,2,\dots$. In the long run, what fraction of them have leading (first) decimal digit equal to $1$? In other words, what is the probability that $2^n$ starts with $1$ when $n$ is a "random" non-negative integer (natural density)?
+HINT1:
+Between $10^k$ and $10^{k+1}$, how many powers of $2$ start with a $1$?
+HINT2:
+Every range $[10^k,2\cdot10^k)$ contains exactly one power of $2$ (why?). So count how many powers of ten lie below $2^N$, compared with $N$. Alternatively, $2^n$ starts with $1$ iff the fractional part of $n\log_{10}2$ lies in $[0,\log_{10}2)$.
+ANSWER:
+$\log_{10}2\approx0.3010$
+REFRESH:
+- **Leading digit via logarithms**: $x>0$ starts with digit $d$ iff the fractional part $\{\log_{10}x\}\in[\log_{10}d,\log_{10}(d+1))$.
+- **Equidistribution (Weyl)**: if $\alpha$ is irrational, the fractional parts $\{n\alpha\}$ are uniformly distributed on $[0,1)$.
+- $\log_{10}2$ is irrational ($2^p=10^q$ is impossible for positive integers $p,q$, since the right side has a factor $5$).
+EXPLANATION:
+Doubling a number that starts with $1$ can only give a number starting with $2$ or $3$; the leading digit is $1$ exactly once each time the powers of two pass a new power of ten. Precisely: when the sequence $2^n$ first exceeds $10^k$, it lands in $[10^k,2\cdot10^k)$, since the previous term was below $10^k$. So there is exactly one power of $2$ starting with $1$ per decade. Up to $2^N$ there are about $N\log_{10}2$ decades, hence about $N\log_{10}2$ powers starting with $1$: a fraction $\log_{10}2\approx30.1\%$. This is Benford's law for $d=1$.
+SOLUTION: One per decade
+Claim: for every $k\ge0$ exactly one power of $2$ lies in $[10^k,2\cdot10^k)$. Let $2^m$ be the smallest power of $2$ that is $\ge10^k$. Then $2^{m-1}<10^k$, so $2^m<2\cdot10^k$: $2^m$ is in the range. Any larger power is $\ge2^{m+1}\ge2\cdot10^k$, outside it.
+
+A power of $2$ starts with $1$ iff it lies in some $[10^k,2\cdot10^k)$. Among $2^0,\dots,2^N$ the decades reached are $k=0,1,\dots,\lfloor N\log_{10}2\rfloor$ (possibly minus the last one), so the count is $N\log_{10}2+O(1)$. The fraction is
+$$\frac{N\log_{10}2+O(1)}{N+1}\longrightarrow\log_{10}2\approx0.3010.$$
+SOLUTION: Equidistribution of fractional parts
+$2^n$ starts with $1$ iff $1\le 2^n/10^{\lfloor n\log_{10}2\rfloor}<2$, i.e. iff $\{n\log_{10}2\}\in[0,\log_{10}2)$. Because $\log_{10}2$ is irrational, Weyl's theorem says $\{n\log_{10}2\}$ is equidistributed on $[0,1)$, so the density of such $n$ is the length of the interval: $\log_{10}2\approx0.3010$.
+===END===
+===TEASER===
+SLUG: sum-1-to-100-without-7-or-8
+IDS: Q-198
+FIRMS: Akuna Capital
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Sum avoiding the digits 7 and 8
+QUESTION:
+Add up all integers from $1$ to $100$ except those whose decimal representation contains a $7$ or an $8$. What is the total?
+HINT1:
+Write the numbers below $100$ with two digits ($00$ to $99$). Which tens digits and which units digits are allowed?
+HINT2:
+Both digits range over the same $8$ allowed values $\{0,1,2,3,4,5,6,9\}$, independently. Add the contribution of the tens digits and of the units digits separately, then deal with $100$.
+ANSWER:
+$2740$
+REFRESH:
+- **Digit-by-digit summation**: if a set of numbers is all pairs $(t,u)$ with $t\in T$, $u\in U$, the sum of $10t+u$ over the set is $10|U|\sum T+|T|\sum U$.
+EXPLANATION:
+The allowed two-digit strings are exactly those whose tens digit and units digit both come from $\{0,1,2,3,4,5,6,9\}$, whose sum is $30$. Each allowed tens digit appears with $8$ units digits and vice versa, so tens digits contribute $10\cdot30\cdot8$ and units digits $30\cdot8$. $00$ contributes nothing and $100$ is allowed, so add it at the end.
+SOLUTION: Digit contributions
+Allowed digits $D=\{0,1,2,3,4,5,6,9\}$, $\sum D=30$, $|D|=8$. Over all $64$ strings $tu$ with $t,u\in D$ (this includes $00$, which adds $0$):
+$$\sum(10t+u)=10\cdot8\cdot30+8\cdot30=2400+240=2640.$$
+Adding $100$ (no $7$ or $8$): $2640+100=2740$.
+SOLUTION: Subtract the excluded numbers
+$1+\dots+100=5050$. Numbers from $1$ to $99$ containing a $7$ or $8$: tens digit $7$ or $8$ gives $70$–$89$, sum $\frac{(70+89)\cdot20}{2}=1590$; the others have units digit $7$ or $8$ and tens digit in $D$: $\sum(10t+u)$ over $t\in D$, $u\in\{7,8\}$ $=10\cdot30\cdot2+8\cdot15=600+120=720$. Excluded total $1590+720=2310$, and $5050-2310=2740$.
+===END===
+===TEASER===
+SLUG: digit-sum-one-to-million
+IDS: Q-201
+FIRMS: Two Sigma
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: All the digits up to a million
+QUESTION:
+Add up all the digits of all the integers from $1$ to $1{,}000{,}000$ inclusive. (For example, $46$ contributes $4+6=10$.) What is the total?
+HINT1:
+Pad every number below a million with leading zeros to six digits. What does each digit position look like across all of them?
+HINT2:
+Pair $n$ with $999999-n$. What is the combined digit sum of each pair?
+ANSWER:
+$27{,}000{,}001$
+REFRESH:
+- Leading zeros do not change a digit sum.
+EXPLANATION:
+Write $0,\dots,999999$ as six-digit strings. In each of the six positions every digit $0$–$9$ appears equally often, $10^5$ times, so each position contributes $10^5\cdot45$. Six positions give $6\cdot4.5\cdot10^6=27\,000\,000$. Including $0$ changes nothing, and $1{,}000{,}000$ adds $1$.
+SOLUTION: Symmetry by position
+Among the $10^6$ strings $000000$–$999999$, each position takes each digit exactly $10^5$ times. Sum per position: $10^5(0+1+\dots+9)=45\cdot10^5$. Six positions: $6\cdot45\cdot10^5=27\,000\,000$. Add the digit sum of $1\,000\,000$, which is $1$:
+$$27\,000\,001.$$
+SOLUTION: Complementary pairs
+For $0\le n\le999999$, the digits of $999999-n$ are $9$ minus the digits of $n$ (no borrowing), so the pair has digit sum $6\cdot9=54$. There are $500\,000$ such pairs, total $500\,000\cdot54=27\,000\,000$. Plus $1$ for one million: $27\,000\,001$.
+===END===
+===TEASER===
+SLUG: diophantine-3x-plus-7y-10000
+IDS: Q-202
+FIRMS: Five Rings, Goldman Sachs, IMC, Jane Street, WorldQuant
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Integer solutions of 3x + 7y = 10000
+QUESTION:
+Find all integer pairs $(x,y)$ with $3x+7y=10000$. Every solution can be written $x=a+7n$, $y=b-3n$ with $n\in\mathbb Z$, where $a,b$ are integers and $b$ is chosen to be the smallest positive possible value of $y$. Compute $ab$.
+HINT1:
+Look at the equation modulo $3$: what does it force on $y$?
+HINT2:
+Modulo $3$, $7y\equiv y$ and $10000\equiv1$. Take the smallest positive $y$ that works, find the matching $x$, then describe all solutions by moving along the direction that keeps $3x+7y$ fixed.
+ANSWER:
+$ab=3331$ (with $a=3331$, $b=1$)
+REFRESH:
+- **Linear Diophantine equations**: if $\gcd(p,q)=1$ and $(x_0,y_0)$ solves $px+qy=c$, all integer solutions are $x=x_0+qn$, $y=y_0-pn$, $n\in\mathbb Z$.
+- $10^k\equiv1\pmod 3$.
+EXPLANATION:
+Reducing mod $3$ kills the $3x$ term: $y\equiv10000\equiv1\pmod3$. So the positive values of $y$ are $1,4,7,\dots$, and the smallest is $y=1$, giving $3x=9993$, $x=3331$. Moving $x$ up by $7$ and $y$ down by $3$ keeps $3x+7y$ unchanged, and since $3$ and $7$ are coprime these are all the solutions.
+SOLUTION: Reduce mod 3
+$3x+7y=10000\Rightarrow y\equiv1\pmod 3$ (as $7\equiv1$ and $10000=9999+1$). Smallest positive $y$: $b=1$. Then $3x=10000-7=9993$, $x=a=3331$.
+If $(x,y)$ is another solution, $3(x-3331)=-7(y-1)$; since $\gcd(3,7)=1$, $7\mid x-3331$, so $x=3331+7n$ and then $y=1-3n$. All solutions: $(3331+7n,\,1-3n)$, and
+$$ab=3331\cdot1=3331.$$
+===END===
+===TEASER===
+SLUG: expected-distance-center-unit-disk
+IDS: Q-203
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Distance to the centre of a disk
+QUESTION:
+A point $X$ is chosen uniformly at random in the unit disk. What is the expected distance from $X$ to the centre?
+HINT1:
+The distance $R$ is not uniform on $[0,1]$: there is more room far from the centre than near it.
+HINT2:
+Find $P(R\le r)$ as a ratio of areas, differentiate to get the density, then integrate $r$ against it.
+ANSWER:
+$\dfrac{2}{3}$
+REFRESH:
+- **Uniform point in a region**: the probability of a sub-region is its area divided by the total area.
+- **Max of uniforms**: if $U_1,U_2$ are i.i.d. uniform on $[0,1]$, $P(\max\le r)=r^2$.
+EXPLANATION:
+The chance of landing within distance $r$ of the centre is the area of the small disk over the area of the unit disk, $\frac{\pi r^2}{\pi}=r^2$. So $R$ has density $2r$, which puts more weight near the rim, and the mean is pulled above $\frac12$, to $\frac23$.
+SOLUTION: Density of the radius
+$P(R\le r)=r^2$ for $r\in[0,1]$, so $f_R(r)=2r$ and
+$$\mathbb E[R]=\int_0^1 r\cdot2r\,dr=\left[\tfrac{2r^3}{3}\right]_0^1=\frac23.$$
+SOLUTION: Recognise a maximum
+$P(R\le r)=r^2$ is the CDF of the maximum of two independent uniforms on $[0,1]$. The expected maximum of $n$ i.i.d. uniforms is $\frac{n}{n+1}$, so $\mathbb E[R]=\frac23$.
+===END===
+===TEASER===
+SLUG: divisor-of-10-pow-99-multiple-10-pow-80
+IDS: Q-204
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: A random divisor of 10^99
+QUESTION:
+A positive divisor of $10^{99}$ is chosen uniformly at random. What is the probability that it is a multiple of $10^{80}$?
+HINT1:
+Write $10^{99}$ in prime factors and describe every divisor by its exponents.
+HINT2:
+Divisors are $2^a5^b$ with $0\le a,b\le99$, all equally likely. Being a multiple of $10^{80}$ is a condition on $a$ and on $b$ separately.
+ANSWER:
+$\dfrac{1}{25}$
+REFRESH:
+- **Divisors from the factorisation**: the divisors of $p^{m}q^{k}$ are exactly $p^aq^b$ with $0\le a\le m$, $0\le b\le k$; there are $(m+1)(k+1)$ of them.
+EXPLANATION:
+$10^{99}=2^{99}5^{99}$, so a random divisor is the same as choosing the exponents $a$ and $b$ independently and uniformly from $\{0,\dots,99\}$. It is a multiple of $10^{80}=2^{80}5^{80}$ iff $a\ge80$ and $b\ge80$: each has probability $\frac{20}{100}=\frac15$.
+SOLUTION: Count exponents
+Divisors: $100\times100=10^4$. Multiples of $2^{80}5^{80}$ among them: $a,b\in\{80,\dots,99\}$, $20\times20=400$.
+$$P=\frac{400}{10\,000}=\frac1{25}.$$
+===END===
+===TEASER===
+SLUG: divisors-of-2160
+IDS: Q-205
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: How many divisors does 2160 have?
+QUESTION:
+The number $20$ has exactly $6$ positive divisors ($1,2,4,5,10,20$). How many positive divisors does $2160$ have?
+HINT1:
+Why does $20$ have $6$ divisors? Look at $20=2^2\cdot5$.
+HINT2:
+Factor $2160$ into primes. A divisor picks an exponent for each prime independently.
+ANSWER:
+$40$
+REFRESH:
+- **Number of divisors**: if $n=p_1^{e_1}\cdots p_r^{e_r}$, then $n$ has $(e_1+1)\cdots(e_r+1)$ positive divisors.
+EXPLANATION:
+A divisor of $n$ is built by choosing, for each prime, an exponent between $0$ and the exponent in $n$. For $20=2^2\cdot5^1$ that is $3\cdot2=6$ choices. $2160=216\cdot10=2^3 3^3\cdot2\cdot5=2^4\cdot3^3\cdot5$, so there are $5\cdot4\cdot2$ choices.
+SOLUTION: Prime factorisation
+$2160=2^4\cdot3^3\cdot5^1$ (check: $16\cdot27=432$, $432\cdot5=2160$). Number of divisors:
+$$(4+1)(3+1)(1+1)=5\cdot4\cdot2=40.$$
+===END===
+===TEASER===
+SLUG: nesting-dolls-arrangements
+IDS: Q-206
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Nesting dolls
+QUESTION:
+Kaushik has $7$ nesting dolls, all of different sizes. A valid arrangement uses at least $2$ of the dolls, placed one inside another so that sizes decrease from the outermost to the innermost. How many valid arrangements are there?
+HINT1:
+Once you have chosen which dolls to use, how many ways are there to nest them?
+HINT2:
+An arrangement is the same thing as a subset of the dolls with at least $2$ elements. Count subsets.
+ANSWER:
+$120$
+REFRESH:
+- A set with $n$ elements has $2^n$ subsets, of which $\binom n0=1$ is empty and $\binom n1=n$ are singletons.
+EXPLANATION:
+The size rule leaves no freedom in the order: the chosen dolls must go biggest outside, smallest inside. So an arrangement is determined by the set of dolls used, and we just count subsets of size at least $2$: all $2^7$ subsets minus the empty set and the $7$ single dolls.
+SOLUTION: Count subsets
+$$2^7-\binom70-\binom71=128-1-7=120.$$
+Equivalently $\sum_{k=2}^{7}\binom7k=21+35+35+21+7+1=120$.
+===END===
+===TEASER===
+SLUG: two-fives-before-four-and-six
+IDS: Q-209
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Two fives, or a four and a six
+QUESTION:
+Jenny rolls a fair die repeatedly and writes down the results. She stops as soon as either she has seen two $5$s in total (not necessarily in a row), or she has seen both a $4$ and a $6$ (in any order). What is the probability that she stops because of the two $5$s?
+HINT1:
+Faces $1$, $2$, $3$ never change anything. What happens if you only record $4$, $5$ and $6$?
+HINT2:
+Restricted to the relevant rolls, each of $4,5,6$ has probability $\frac13$. Track the state (number of $5$s seen, whether one of $\{4,6\}$ has been seen) and condition on the first relevant roll.
+ANSWER:
+$\dfrac{7}{18}$
+REFRESH:
+- **First-step analysis**: the probability of absorption in a target set satisfies $h(s)=\sum_{s'}P(s,s')\,h(s')$, with $h=1$ on the target and $0$ on the other absorbing states.
+- **Self-loops**: if from state $s$ you stay in $s$ with probability $r$, you can divide the other transition probabilities by $1-r$.
+EXPLANATION:
+Ignoring $1,2,3$, each relevant roll is $4$, $5$ or $6$ with probability $\frac13$ each. The two stopping conditions race: two $5$s needs two specific hits, while the $4$-and-$6$ condition needs two different hits, but a repeat of the same one ($4$ then $4$) wastes a roll. After one $5$ and one of $\{4,6\}$, the next useful roll is a coin flip between "another $5$" and "the missing one". Working the few states out by hand gives $\frac{7}{18}$, a bit under one half.
+SOLUTION: First-step analysis on the relevant rolls
+Record only $4,5,6$; each has probability $\frac13$. Let $w(f,s)$ be the probability of stopping with two $5$s, where $f$ = number of $5$s seen, $s$ = whether one of $\{4,6\}$ has been seen.
+
+State $(1,\text{yes})$: next roll is $5$ (win), the missing one of $\{4,6\}$ (lose), or the same one again (stay). So $w(1,\text{yes})=\frac{1/3}{2/3}=\frac12$.
+
+State $(0,\text{yes})$: $5$ goes to $(1,\text{yes})$; the missing one loses; the same one stays. So $w(0,\text{yes})=\frac{\frac13\cdot\frac12}{\frac23}=\frac14$.
+
+State $(1,\text{no})$: $5$ wins; $4$ or $6$ goes to $(1,\text{yes})$. So $w(1,\text{no})=\frac13+\frac23\cdot\frac12=\frac23$.
+
+Start $(0,\text{no})$: $5$ goes to $(1,\text{no})$; $4$ or $6$ goes to $(0,\text{yes})$:
+$$w(0,\text{no})=\frac13\cdot\frac23+\frac23\cdot\frac14=\frac29+\frac16=\frac{4+3}{18}=\frac{7}{18}.$$
+===END===
+===TEASER===
+SLUG: oil-drilling-break-even-probability
+IDS: Q-217
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Should we drill for oil?
+QUESTION:
+A company is deciding whether to drill for oil at a site. Drilling costs \$350,000, paid up front. If there is oil, the company earns \$1,400,000 of revenue; if not, it earns nothing. Let $p$ be the probability that there is oil. What is the smallest $p$ for which drilling is a rational decision (for a risk-neutral company)?
+HINT1:
+Write the expected profit of drilling as a function of $p$.
+HINT2:
+Drilling is worth it when expected revenue covers the cost: $p\cdot1{,}400{,}000\ge350{,}000$.
+ANSWER:
+$p=\dfrac14$
+REFRESH:
+- **Risk neutrality**: a risk-neutral decision maker takes a gamble iff its expected profit is non-negative.
+EXPLANATION:
+The cost is sunk the moment you drill; the payoff is a lottery paying \$1.4M with probability $p$. Break-even is where the expected payoff equals the cost, i.e. $p$ equals the cost-to-payoff ratio $\frac{0.35}{1.4}=\frac14$. It is the same logic as the break-even probability of a bet: pay 1 to win 4 is fair at odds of one in four. A risk-averse firm would need $p$ somewhat above $\frac14$.
+SOLUTION: Expected profit
+$$\mathbb E[\text{profit}]=p\cdot1{,}400{,}000-350{,}000\ge0\iff p\ge\frac{350{,}000}{1{,}400{,}000}=\frac14.$$
+At $p=\frac14$ the company is exactly indifferent; for any $p>\frac14$ drilling has positive expected value.
+===END===
+===TEASER===
+SLUG: rabbit-turtle-lawnmowers
+IDS: Q-221
+FIRMS: Jane Street, SIG, Transmarket Group
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Rabbit and Turtle mow a lawn
+QUESTION:
+Mr. Rabbit can mow a lawn alone in $1$ hour. Mr. Turtle needs $1$ hour $15$ minutes to mow the same lawn alone. If they mow the lawn together, working at the same time, how many minutes does it take?
+HINT1:
+Think in "lawns per minute", not "minutes per lawn".
+HINT2:
+Rates add: Rabbit does $\frac1{60}$ of the lawn per minute, Turtle $\frac1{75}$.
+ANSWER:
+$\dfrac{100}{3}$ minutes $=33$ minutes $20$ seconds
+REFRESH:
+- **Work rates**: if $A$ alone takes time $a$ and $B$ alone takes $b$, together they take $\frac{1}{1/a+1/b}=\frac{ab}{a+b}$.
+EXPLANATION:
+Times do not add but rates do. Rabbit mows $\frac1{60}$ lawn per minute and Turtle $\frac1{75}$; together $\frac{5+4}{300}=\frac{3}{100}$ lawn per minute. The whole lawn takes the reciprocal, $\frac{100}{3}$ minutes. Sanity check: it must be less than Rabbit's $60$ minutes, and more than $30$ (what two Rabbits would take).
+SOLUTION: Add rates
+$$\frac1{60}+\frac1{75}=\frac{5}{300}+\frac{4}{300}=\frac{9}{300}=\frac3{100}\ \text{lawn/min},\qquad T=\frac{100}{3}\ \text{min}\approx33.3\ \text{min}.$$
+SOLUTION: Harmonic formula
+$T=\frac{ab}{a+b}=\frac{60\cdot75}{135}=\frac{4500}{135}=\frac{100}{3}$ minutes.
+===END===
+===TEASER===
+SLUG: alternating-players-two-tails
+IDS: Q-222
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Race to two tails, alternating turns
+QUESTION:
+Two players take turns flipping a fair coin, one flip per turn, player A first. Each player's own flips form their own sequence (the other player's flips in between do not count for them). The game ends as soon as one of the players gets two tails in a row in their own sequence. What is the expected total number of flips (both players counted)?
+HINT1:
+What does the game need to remember? For each player, only whether their last flip was a tail.
+HINT2:
+Let $x_{ab}$ be the expected number of remaining flips when it is A's turn, with $a=1$ if A's last flip was a tail and $b$ likewise for B. By symmetry, the value when it is B's turn with states $(a,b)$ equals $x_{ba}$. Write four linear equations.
+ANSWER:
+$\dfrac{34}{5}=6.8$
+REFRESH:
+- **First-step analysis for expected hitting times**: $m(s)=1+\sum_{s'}P(s,s')\,m(s')$ with $m=0$ on the absorbing states.
+- **Waiting time for TT** with one fair coin has mean $6$.
+EXPLANATION:
+Alone, a player needs on average $6$ of their own flips to see TT. With two players racing, the game stops at whichever clock rings first, but each player flips only every other turn, so the total is not obvious and needs an actual computation. The state is tiny: whose turn it is, and whether each player's last flip was a tail. Using the symmetry "B's turn in state $(a,b)$ looks like A's turn in state $(b,a)$" cuts it to four unknowns, and solving the linear system gives $6.8$.
+SOLUTION: Four-state first-step analysis
+Let $x_{ab}$ = expected remaining flips with A to move, A's last flip tail iff $a=1$, B's iff $b=1$. When A flips: heads (prob $\frac12$) sets $a=0$; tails either ends the game (if $a=1$) or sets $a=1$. Then it is B's turn, which by symmetry is worth $x$ with the roles swapped. Hence
+$$x_{ab}=1+\tfrac12x_{b0}+\tfrac12\,[a=0]\,x_{b1}.$$
+$$\begin{aligned}
+x_{10}&=1+\tfrac12x_{00},\\
+x_{11}&=1+\tfrac12x_{10}=\tfrac32+\tfrac14x_{00},\\
+x_{01}&=1+\tfrac12x_{10}+\tfrac12x_{11}=1+\tfrac12+\tfrac14x_{00}+\tfrac34+\tfrac18x_{00}=\tfrac94+\tfrac38x_{00},\\
+x_{00}&=1+\tfrac12x_{00}+\tfrac12x_{01}=1+\tfrac12x_{00}+\tfrac98+\tfrac3{16}x_{00}.
+\end{aligned}$$
+The last line gives $\left(1-\frac12-\frac3{16}\right)x_{00}=\frac{17}{8}$, i.e. $\frac{5}{16}x_{00}=\frac{17}{8}$, so $x_{00}=\frac{34}{5}=6.8$.
+SOLUTION: Independent clocks
+Let $T_A,T_B$ be i.i.d. copies of the TT waiting time of one player (in own flips). A's $k$-th flip is global flip $2k-1$ and B's is $2k$, so the game length is $G=\min(2T_A-1,\,2T_B)$ and $\mathbb E[G]=\sum_{g\ge0}P(T_A>\tfrac{g+1}{2})\,P(T_B>\tfrac g2)$. With $P(T>n)=F_{n+2}/2^n$ (Fibonacci, $F_1=F_2=1$: sequences of length $n$ without TT), the series sums numerically to $6.8$, confirming the first method.
+===END===
+===TEASER===
+SLUG: pair-removed-deck-another-pair
+IDS: Q-223
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Another pair after a pair is removed
+QUESTION:
+Marissa has a $40$-card deck: four cards of each number $1,2,\dots,10$. A pair (two cards with the same number) is removed from the deck. She then draws $2$ cards at random from the remaining $38$. What is the probability that these two cards also form a pair?
+HINT1:
+After the removal, the deck is no longer symmetric: one number has fewer cards.
+HINT2:
+The remaining deck has $9$ numbers with $4$ cards and $1$ number with $2$ cards. Count pairs and divide by $\binom{38}{2}$.
+ANSWER:
+$\dfrac{55}{703}$
+REFRESH:
+- $\binom{n}{2}=\frac{n(n-1)}{2}$ counts unordered pairs.
+EXPLANATION:
+Whatever pair was removed, the $38$ remaining cards consist of nine numbers with four copies and one number with only two. A matching pair can come from any of the nine full numbers ($\binom42=6$ ways each) or from the two survivors of the depleted number ($1$ way). For comparison, two cards drawn from the full $40$-card deck pair up with probability $\frac{3}{39}\approx0.0769$; after the removal it is $\frac{55}{703}\approx0.0782$, slightly higher, because the smaller deck leaves the nine intact numbers relatively more concentrated.
+SOLUTION: Count matching pairs
+Matching pairs among the $38$ cards: $9\binom42+\binom22=9\cdot6+1=55$. All pairs: $\binom{38}{2}=\frac{38\cdot37}{2}=703$.
+$$P=\frac{55}{703}\approx0.0782.$$
+SOLUTION: Sequential drawing
+Draw one card, then another. The first card is from a full number with probability $\frac{36}{38}$ (then $3$ matches remain among $37$), or from the depleted number with probability $\frac{2}{38}$ (then $1$ match remains):
+$$P=\frac{36}{38}\cdot\frac{3}{37}+\frac{2}{38}\cdot\frac{1}{37}=\frac{108+2}{1406}=\frac{110}{1406}=\frac{55}{703}.$$
+===END===
+===TEASER===
+SLUG: eigenvalues-squares-sum-2x2
+IDS: Q-228
+FIRMS: Goldman Sachs, Transmarket Group
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Sum of squared eigenvalues
+QUESTION:
+The matrix
+$$A=\begin{pmatrix}-5&2\\-7&4\end{pmatrix}$$
+has two eigenvalues $a$ and $b$. Find them and compute $a^2+b^2$.
+HINT1:
+You may not even need the eigenvalues themselves: what do trace and determinant tell you?
+HINT2:
+$a+b=\operatorname{tr}A$ and $ab=\det A$, and $a^2+b^2=(a+b)^2-2ab$. (Or: $a^2+b^2=\operatorname{tr}(A^2)$.)
+ANSWER:
+Eigenvalues $2$ and $-3$; $a^2+b^2=13$
+REFRESH:
+- For a $2\times2$ matrix, the characteristic polynomial is $\lambda^2-(\operatorname{tr}A)\lambda+\det A$, so the eigenvalues sum to the trace and multiply to the determinant.
+- The eigenvalues of $A^2$ are the squares of those of $A$, so $\operatorname{tr}(A^2)=a^2+b^2$.
+EXPLANATION:
+$\operatorname{tr}A=-5+4=-1$ and $\det A=(-5)(4)-(2)(-7)=-20+14=-6$. The eigenvalues solve $\lambda^2+\lambda-6=0=(\lambda+3)(\lambda-2)$, so they are $2$ and $-3$, and $4+9=13$. The symmetric-function shortcut $(a+b)^2-2ab=1+12=13$ gets there without solving anything.
+SOLUTION: Characteristic polynomial
+$\det(A-\lambda I)=(-5-\lambda)(4-\lambda)+14=\lambda^2+\lambda-20+14=\lambda^2+\lambda-6=(\lambda+3)(\lambda-2)$. Eigenvalues $-3$ and $2$; $a^2+b^2=9+4=13$.
+SOLUTION: Trace and determinant
+$a+b=-1$, $ab=-6$, so $a^2+b^2=(a+b)^2-2ab=1+12=13$.
+SOLUTION: Trace of the square
+$A^2=\begin{pmatrix}25-14&-10+8\\35-28&-14+16\end{pmatrix}=\begin{pmatrix}11&-2\\7&2\end{pmatrix}$, and $\operatorname{tr}(A^2)=11+2=13$.
+===END===
+===TEASER===
+SLUG: integers-ending-in-four
+IDS: Q-229
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Numbers ending in 4
+QUESTION:
+How many integers from $1$ to $1000$ inclusive have last digit $4$?
+HINT1:
+Group the numbers in blocks of ten.
+HINT2:
+Each block $10k+1,\dots,10k+10$ contains exactly one number ending in $4$. How many blocks are there?
+ANSWER:
+$100$
+REFRESH:
+NONE
+EXPLANATION:
+Last digits cycle through $1,2,\dots,9,0$ in every consecutive block of ten, so each block contributes exactly one number ending in $4$. The range $1$–$1000$ is exactly $100$ such blocks.
+SOLUTION: Count the arithmetic progression
+The numbers are $4,14,24,\dots,994$, i.e. $10k+4$ for $k=0,\dots,99$: that is $100$ numbers.
+===END===

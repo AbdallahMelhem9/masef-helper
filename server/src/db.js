@@ -140,15 +140,23 @@ for (const [name, ddl] of [
 const courseCols = db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name);
 if (!courseCols.includes('unavailable_reason')) db.exec('ALTER TABLE courses ADD COLUMN unavailable_reason TEXT');
 
-// Brain teasers and probability puzzles from the interview books (content,
-// rebuilt by scripts/build-teasers.js). slug is the stable key user data
-// hangs on, so rebuilding the table never loses progress or boards.
-// solutions / followups / books / refs are JSON arrays.
+// Interview puzzles from the books and free question banks (content, rebuilt
+// by scripts/build-teasers.js). A table created before the 'trading' section
+// existed is dropped and recreated: it holds content only, user progress
+// lives in teaser_user.
+{
+  const old = db.prepare("SELECT sql FROM sqlite_master WHERE name = 'teasers'").get();
+  if (old && !old.sql.includes("'trading'")) db.exec('DROP TABLE teasers');
+}
+// slug is the stable key user data hangs on, so rebuilding the table never
+// loses progress or boards.
+// solutions / followups / firms / books / refs are JSON arrays; books holds
+// the sources (the three books, or a question bank / site).
 db.exec(`
   CREATE TABLE IF NOT EXISTS teasers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     slug TEXT NOT NULL UNIQUE,
-    section TEXT NOT NULL CHECK (section IN ('brainteaser', 'probability')),
+    section TEXT NOT NULL CHECK (section IN ('brainteaser', 'probability', 'trading')),
     category TEXT NOT NULL,
     title TEXT NOT NULL,
     difficulty TEXT,
@@ -160,6 +168,8 @@ db.exec(`
     explanation TEXT,
     solutions TEXT NOT NULL DEFAULT '[]',
     followups TEXT NOT NULL DEFAULT '[]',
+    firms TEXT NOT NULL DEFAULT '[]',
+    illustration TEXT,
     books TEXT NOT NULL DEFAULT '[]',
     refs TEXT NOT NULL DEFAULT '[]',
     position INTEGER NOT NULL DEFAULT 0
@@ -181,3 +191,4 @@ const teaserCols = db.prepare('PRAGMA table_info(teasers)').all().map((c) => c.n
 if (!teaserCols.includes('followups')) db.exec("ALTER TABLE teasers ADD COLUMN followups TEXT NOT NULL DEFAULT '[]'");
 // Small SVG drawing shown with the puzzle (content/teasers/illustrations).
 if (!teaserCols.includes('illustration')) db.exec('ALTER TABLE teasers ADD COLUMN illustration TEXT');
+if (!teaserCols.includes('firms')) db.exec("ALTER TABLE teasers ADD COLUMN firms TEXT NOT NULL DEFAULT '[]'");

@@ -1,0 +1,988 @@
+===TEASER===
+SLUG: three-face-die-coins-until-repeat
+IDS: Q-125
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Coins until a repeated face
+QUESTION:
+A six-sided die has faces $1, 2, 3, 1, 2, 3$ (so each of $1, 2, 3$ comes up with probability $1/3$). You roll it repeatedly and after each roll you receive as many coins as the face shown. The game stops as soon as two consecutive rolls show the same face (the coins of that last roll are still paid). What is the expected total number of coins you receive?
+HINT1:
+Separate two questions: how many rolls do you expect to make, and how much is an average roll worth?
+HINT2:
+After the first roll, each new roll repeats the previous face with probability $1/3$, independently of the past, so the number of rolls is $1$ plus a geometric variable. Then check whether you may multiply "expected number of rolls" by "expected value of a roll".
+ANSWER:
+8 coins
+REFRESH:
+Geometric distribution: if each trial succeeds with probability $p$ independently, the number of trials up to and including the first success has mean $1/p$.
+Wald's identity: if $X_1, X_2, \dots$ are i.i.d. with finite mean and $N$ is a stopping time with $\mathbb{E}N < \infty$ (whether to stop after roll $n$ depends only on $X_1,\dots,X_n$), then $\mathbb{E}\big[\sum_{i=1}^N X_i\big] = \mathbb{E}N \cdot \mathbb{E}X_1$.
+EXPLANATION:
+The rolls themselves are i.i.d. with mean $2$. The rule for stopping only looks at rolls already made, so it is a stopping time, and Wald's identity says the total is on average (number of rolls) $\times$ (mean roll). The number of rolls is $1 + \text{Geometric}(1/3)$: the first roll can never end the game, and every later roll ends it with probability exactly $1/3$ whatever came before. So $\mathbb{E}N = 1 + 3 = 4$ and the expected total is $4 \times 2 = 8$.
+
+It is tempting to worry that the rolls that end the game are "special" and so bias the average. They are special in the sense that they equal the previous roll, but the previous roll is itself uniform on $\{1,2,3\}$, so there is no bias: Wald's identity takes care of this rigorously.
+SOLUTION: Wald's identity
+Let $X_1, X_2, \dots$ be the rolls, i.i.d. uniform on $\{1,2,3\}$, so $\mathbb{E}X_i = 2$. Let $N$ be the index of the roll that ends the game, i.e. the first $n \ge 2$ with $X_n = X_{n-1}$.
+
+For $n \ge 2$, given the whole past $X_1,\dots,X_{n-1}$, the event $X_n = X_{n-1}$ has probability $1/3$. So the rolls $2, 3, \dots$ are independent trials each "succeeding" with probability $1/3$, and $N - 1 \sim \text{Geometric}(1/3)$ on $\{1,2,\dots\}$:
+$$\mathbb{E}N = 1 + \frac{1}{1/3} = 4.$$
+The event $\{N \le n\}$ depends only on $X_1, \dots, X_n$, so $N$ is a stopping time with finite mean. By Wald's identity
+$$\mathbb{E}\Big[\sum_{i=1}^N X_i\Big] = \mathbb{E}N \cdot \mathbb{E}X_1 = 4 \times 2 = 8.$$
+SOLUTION: First-step recursion
+Let $V_a$ be the expected number of coins still to come when the last roll showed $a$ (not counting that roll). The next roll $r$ is uniform on $\{1,2,3\}$ and pays $r$; if $r = a$ the game stops, otherwise we are in state $r$:
+$$V_a = \underbrace{\tfrac{1+2+3}{3}}_{=2} + \frac{1}{3}\sum_{r \ne a} V_r .$$
+Add the three equations, with $S = V_1 + V_2 + V_3$: $S = 6 + \frac{1}{3}\cdot 2S$, so $S = 18$. Then $V_a = 2 + \frac{S - V_a}{3}$ gives $\frac{4}{3}V_a = 8$, i.e. $V_a = 6$ for every $a$.
+
+The first roll pays $2$ on average and puts us in some state $a$, after which $6$ more coins are expected. Total: $2 + 6 = 8$.
+===END===
+
+===TEASER===
+SLUG: die-see-every-face-twice
+IDS: Q-126
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: Every face once, then every face twice
+QUESTION:
+You roll a fair six-sided die repeatedly.
+
+1. What is the expected number of rolls until each of the faces $1,\dots,6$ has appeared at least once?
+2. What is the expected number of rolls until each face has appeared at least **twice**?
+
+For part 2, explain why it is wrong to split the process into two independent phases ("first collect one of each face, then collect a second copy of each face"), and compute the expectation by treating the whole sequence of rolls at once, for instance with the tail-sum formula $\mathbb{E}T = \sum_{n \ge 0}\mathbb{P}(T > n)$.
+HINT1:
+Part 1 is the coupon collector. For part 2, think about what the counts look like at the moment the last new face first appears: are they all equal to 1?
+HINT2:
+For part 2, $T \le n$ means that in $n$ rolls every face occurs at least twice; count such sequences with the exponential generating function $(e^x - 1 - x)^6$. Summing the tail $\mathbb{P}(T>n)$ over $n$ becomes an integral once you write $n! = \int_0^\infty t^n e^{-t}\,dt$.
+ANSWER:
+Once: $14.7$ rolls. Twice: $\frac{390968681}{16200000} \approx 24.13$ rolls.
+REFRESH:
+Tail-sum formula: for a random variable $T$ with values in $\{0,1,2,\dots\}$, $\mathbb{E}T = \sum_{n\ge 0}\mathbb{P}(T>n)$.
+Exponential generating functions: the number of words of length $n$ over 6 letters in which each letter appears a number of times allowed by a set $A$ is $n!\,[x^n]\big(\sum_{k\in A} x^k/k!\big)^6$.
+Gamma integral: $\int_0^\infty t^n e^{-t}\,dt = n!$.
+EXPLANATION:
+Part 1 is the classic coupon collector: when $k$ faces have been seen, a new one appears with probability $(6-k)/6$, so the waiting time for it is geometric with mean $6/(6-k)$. Summing gives $6(1 + \tfrac12 + \dots + \tfrac16) = 14.7$.
+
+For part 2 the "two phases" idea fails because the phases overlap. While we are still waiting for the last new face, the other faces keep being rolled, so at the moment all six have been seen, several faces already have two or more copies. The second phase therefore does not start from "all counts equal to 1"; how far along it already is depends on how long the first phase took. Adding $14.7 + 14.7 = 29.4$ badly overestimates (and even the second phase alone is not a clean coupon collector).
+
+The clean route is the tail sum. $\mathbb{P}(T > n)$ is the probability that after $n$ rolls some face has fewer than two copies, which is a counting problem for words of length $n$. Exponential generating functions do this counting, and the sum over $n$ turns into a single integral:
+$$\mathbb{E}T = 6\int_0^\infty \Big[1 - \big(1 - e^{-s}(1+s)\big)^6\Big]\,ds .$$
+This has a nice reading: imagine the rolls arrive as a Poisson process of rate 1, so each face arrives as an independent Poisson process of rate $1/6$. $e^{-s}(1+s)$ is the probability that a face has fewer than 2 arrivals by time $6s$, and the integral is the expected time until all six faces have 2 arrivals. The same formula with $e^{-s}$ in place of $e^{-s}(1+s)$ gives back $14.7$.
+SOLUTION: Coupon collector, then tail sum with generating functions
+**Part 1.** Let $T_k$ be the number of rolls needed to go from $k$ distinct faces seen to $k+1$. Each roll shows a new face with probability $(6-k)/6$, so $T_k$ is geometric with mean $6/(6-k)$:
+$$\mathbb{E}T^{(1)} = \sum_{k=0}^{5}\frac{6}{6-k} = 6\Big(1+\tfrac12+\tfrac13+\tfrac14+\tfrac15+\tfrac16\Big) = 6\cdot\frac{49}{20} = 14.7 .$$
+
+**Part 2: why not two phases.** Let $\tau$ be the time all faces have appeared once. At time $\tau$ the face just seen has exactly one copy, but the others have typically been rolled several times while we waited. The number of faces still lacking a second copy at time $\tau$ is random and depends on $\tau$ (a long first phase means most faces are already doubled). So the second phase is not an independent copy of anything, and its length is not $14.7$.
+
+**Part 2: tail sum.** Let $T$ be the first time every face has at least two copies. $T \le n$ exactly when, in the first $n$ rolls, every face appears at least twice. The number of such words of length $n$ is $n!\,[x^n]\,(e^x - 1 - x)^6$, since $e^x - 1 - x = \sum_{k\ge 2}x^k/k!$. Also $6^n = n!\,[x^n]\,e^{6x}$. Hence
+$$\mathbb{P}(T>n) = \frac{n!}{6^n}[x^n]\,G(x), \qquad G(x) = e^{6x} - (e^x-1-x)^6 = \sum_n g_n x^n .$$
+Using $n! = \int_0^\infty t^n e^{-t}dt$ (all terms are non-negative, so sum and integral can be swapped):
+$$\mathbb{E}T = \sum_{n\ge0}\frac{n!}{6^n}g_n = \int_0^\infty e^{-t}\sum_n g_n\Big(\frac t6\Big)^n dt = \int_0^\infty e^{-t}G(t/6)\,dt .$$
+Substitute $t = 6s$ and use $e^{-6s}(e^s - 1 - s)^6 = \big(1 - e^{-s}(1+s)\big)^6$:
+$$\mathbb{E}T = 6\int_0^\infty\Big[1 - \big(1-u(s)\big)^6\Big]ds, \qquad u(s) = e^{-s}(1+s).$$
+Expand $1-(1-u)^6 = \sum_{j=1}^6\binom6j(-1)^{j+1}u^j$ and use
+$$\int_0^\infty e^{-js}(1+s)^j ds = \sum_{i=0}^{j}\binom ji\frac{i!}{j^{i+1}} .$$
+The six integrals are $I_1 = 2$, $I_2 = \tfrac54$, $I_3 = \tfrac{26}{27}$, $I_4 = \tfrac{103}{128}$, $I_5 = \tfrac{2194}{3125}$, $I_6 = \tfrac{1223}{1944}$, and
+$$\mathbb{E}T = 6\big(6I_1 - 15I_2 + 20I_3 - 15I_4 + 6I_5 - I_6\big) = \frac{390968681}{16200000} \approx 24.134 .$$
+(A simulation of $2\times10^5$ games gives $24.14$.) Sanity check: with $u = e^{-s}$ the same formula gives $6\sum_j \binom6j(-1)^{j+1}/j = 6H_6 = 14.7$, the part 1 answer.
+===END===
+
+===TEASER===
+SLUG: die-ones-fives-correlation
+IDS: Q-127
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Correlation of ones and fives
+QUESTION:
+A fair six-sided die is rolled $n$ times. Let $X$ be the number of 1s and $Y$ the number of 5s. Find $\operatorname{Corr}(X,Y)$.
+HINT1:
+Write $X$ and $Y$ as sums of indicators, one per roll. Which pairs of indicators are correlated?
+HINT2:
+Indicators from different rolls are independent. On the same roll, "it is a 1" and "it is a 5" cannot both happen, so their product is $0$.
+ANSWER:
+$-1/5$ (for every $n$)
+REFRESH:
+Covariance is bilinear: $\operatorname{Cov}(\sum_i A_i, \sum_j B_j) = \sum_{i,j}\operatorname{Cov}(A_i,B_j)$.
+For an indicator of an event with probability $p$: mean $p$, variance $p(1-p)$.
+$\operatorname{Corr}(X,Y) = \operatorname{Cov}(X,Y)/\sqrt{\operatorname{Var}X\operatorname{Var}Y}$.
+EXPLANATION:
+$X$ and $Y$ compete for the same $n$ rolls: every roll that is a 1 is a roll that cannot be a 5, so they are negatively correlated. All the covariance comes from within a single roll, where the two indicators are mutually exclusive, and it is $-\frac16\cdot\frac16$ per roll. Each count has variance $n\cdot\frac16\cdot\frac56$. The ratio does not depend on $n$:
+$$\operatorname{Corr} = \frac{-n/36}{5n/36} = -\frac15 .$$
+In general, for multinomial counts with probabilities $p_i, p_j$, $\operatorname{Corr} = -\sqrt{\frac{p_ip_j}{(1-p_i)(1-p_j)}}$.
+SOLUTION: Indicators
+Let $A_k = \mathbf 1\{\text{roll }k = 1\}$, $B_k = \mathbf 1\{\text{roll }k = 5\}$, so $X = \sum_k A_k$, $Y = \sum_k B_k$.
+
+- $\operatorname{Var}X = n\cdot\frac16\cdot\frac56 = \frac{5n}{36}$, and likewise $\operatorname{Var}Y = \frac{5n}{36}$.
+- For $k \ne l$, $A_k$ and $B_l$ are independent, so $\operatorname{Cov}(A_k,B_l) = 0$.
+- For the same roll, $A_kB_k = 0$, so $\operatorname{Cov}(A_k,B_k) = 0 - \frac16\cdot\frac16 = -\frac1{36}$.
+
+Hence $\operatorname{Cov}(X,Y) = -\frac{n}{36}$ and
+$$\operatorname{Corr}(X,Y) = \frac{-n/36}{\sqrt{\frac{5n}{36}\cdot\frac{5n}{36}}} = -\frac15 .$$
+SOLUTION: Variance of the sum
+$X + Y$ counts rolls showing a 1 or a 5, so $X+Y \sim \text{Bin}(n, 1/3)$ and $\operatorname{Var}(X+Y) = n\cdot\frac13\cdot\frac23 = \frac{8n}{36}$. But also
+$$\operatorname{Var}(X+Y) = \operatorname{Var}X + \operatorname{Var}Y + 2\operatorname{Cov}(X,Y) = \frac{10n}{36} + 2\operatorname{Cov}(X,Y).$$
+So $\operatorname{Cov}(X,Y) = \frac12\big(\frac{8n}{36} - \frac{10n}{36}\big) = -\frac{n}{36}$, and dividing by $\frac{5n}{36}$ gives $-\frac15$.
+===END===
+
+===TEASER===
+SLUG: two-dice-repeat-same-pair
+IDS: Q-129
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Rolling the same pair again
+QUESTION:
+Two fair six-sided dice are rolled and the pair of numbers shown is noted. Both dice are then rolled a second time. What is the probability that the second roll shows the same pair of numbers as the first, where the order does not matter (for example, a 2 and a 5 the first time and a 5 and a 2 the second time counts as the same)?
+HINT1:
+Not every first roll is equally easy to repeat. Compare a double like $(3,3)$ with a mixed pair like $(2,5)$.
+HINT2:
+Condition on whether the first roll was a double. A double can be repeated in $1$ of the $36$ ordered outcomes, a mixed pair in $2$.
+ANSWER:
+$11/216$
+REFRESH:
+Law of total probability: $\mathbb{P}(A) = \sum_i \mathbb{P}(A\mid B_i)\mathbb{P}(B_i)$ for a partition $(B_i)$.
+EXPLANATION:
+The unordered pair you must repeat is random, and its difficulty depends on its type. A double such as $\{3,3\}$ is hit again only by the ordered outcome $(3,3)$: probability $1/36$. A mixed pair $\{2,5\}$ is hit by $(2,5)$ and $(5,2)$: probability $2/36$. The first roll is a double with probability $6/36$ and mixed with probability $30/36$, so
+$$\mathbb{P} = \frac{6}{36}\cdot\frac1{36} + \frac{30}{36}\cdot\frac2{36} = \frac{66}{1296} = \frac{11}{216}.$$
+If the dice were distinguishable and each had to repeat its own number, the answer would simply be $1/36$; the unordered reading adds the extra chances from swapped pairs.
+SOLUTION: Condition on the type of the first roll
+The 36 ordered outcomes of the first roll are equally likely.
+
+- Double (6 outcomes, probability $\frac16$): the second roll matches only if it is the same ordered double, probability $\frac1{36}$.
+- Mixed pair (30 outcomes, probability $\frac56$): the second roll matches if it shows the two numbers in either order, probability $\frac{2}{36}$.
+
+$$\mathbb{P}(\text{match}) = \frac16\cdot\frac1{36} + \frac56\cdot\frac{2}{36} = \frac{1 + 10}{216} = \frac{11}{216} \approx 0.051 .$$
+SOLUTION: Sum of squared probabilities
+Group the 36 ordered outcomes into 21 unordered pairs: 6 doubles of probability $\frac1{36}$ and 15 mixed pairs of probability $\frac2{36}$. Two independent rolls give the same unordered pair with probability $\sum_{\text{pairs}}\mathbb{P}(\text{pair})^2$:
+$$6\Big(\frac1{36}\Big)^2 + 15\Big(\frac2{36}\Big)^2 = \frac{6 + 60}{1296} = \frac{11}{216}.$$
+===END===
+
+===TEASER===
+SLUG: die-remove-rolled-face
+IDS: Q-130
+FIRMS: Hudson River Trading
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Roll, then remove the face
+QUESTION:
+You roll a standard six-sided die. The number that comes up is then removed from the die, leaving five numbered faces. You roll again, repeating until one of those five numbers comes up (equivalently, the second result is uniform on the five remaining numbers). What is the expected sum of the first roll and this second result?
+HINT1:
+Linearity of expectation: you only need the expected value of each roll separately.
+HINT2:
+Given the first roll is $k$, the second result is uniform on $\{1,\dots,6\}\setminus\{k\}$. What is its mean in terms of $k$?
+ANSWER:
+$7$
+REFRESH:
+Tower property: $\mathbb{E}[Y] = \mathbb{E}\big[\mathbb{E}[Y\mid X]\big]$.
+EXPLANATION:
+The first roll has mean $3.5$. The second result is uniform on the other five numbers, whose total is $21 - k$, so its conditional mean is $(21-k)/5$. Averaging over $k$ gives $(21-3.5)/5 = 3.5$. Removing a face does not bias the second roll overall, because the removed face is itself a uniformly random face. By symmetry: the ordered pair (first, second) is a uniformly random ordered pair of distinct faces, so each coordinate is uniform on $\{1,\dots,6\}$.
+SOLUTION: Conditional expectation
+Let $X$ be the first roll and $Y$ the second result. $\mathbb{E}X = 3.5$. Given $X = k$, $Y$ is uniform on the five numbers other than $k$, whose sum is $21 - k$:
+$$\mathbb{E}[Y\mid X=k] = \frac{21-k}{5}.$$
+So $\mathbb{E}Y = \frac{21 - \mathbb{E}X}{5} = \frac{21 - 3.5}{5} = 3.5$ and
+$$\mathbb{E}[X+Y] = 3.5 + 3.5 = 7.$$
+SOLUTION: Symmetry
+$(X,Y)$ is uniform over the $30$ ordered pairs of distinct faces. Each face appears as the second coordinate in exactly $5$ of them, so $Y$ is uniform on $\{1,\dots,6\}$ and $\mathbb{E}Y = 3.5$. Hence $\mathbb{E}[X+Y] = 7$.
+===END===
+
+===TEASER===
+SLUG: loaded-die-maximize-seven
+IDS: Q-133
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Tuning a loaded die for sevens
+QUESTION:
+A six-sided die shows $1,2,3,4,5,6$ with probabilities
+$$\tfrac16,\quad \tfrac15 - x,\quad \tfrac1{10} + 2x,\quad \tfrac15 - x,\quad \tfrac16,\quad \tfrac16 .$$
+It is rolled twice. Which value of $x$ maximises the probability that the two rolls sum to $7$?
+HINT1:
+List the ordered pairs that sum to 7 and write the probability as a function of $x$.
+HINT2:
+Only the pairs $(2,5),(5,2),(3,4),(4,3)$ involve $x$. You get a quadratic in $x$; find its vertex and check the probabilities stay valid.
+ANSWER:
+$x = 1/30$ (which makes the die fair)
+EXPLANATION:
+A total of 7 pairs the faces as $1\leftrightarrow6$, $2\leftrightarrow5$, $3\leftrightarrow4$, so
+$$\mathbb{P}(7) = 2\big(p_1p_6 + p_2p_5 + p_3p_4\big).$$
+Increasing $x$ takes mass from faces 2 and 4 and gives it to face 3. The term $p_2p_5$ falls linearly, while $p_3p_4 = (\frac1{10}+2x)(\frac15-x)$ is a downward parabola. The optimum balances these, and it lands exactly at $x = 1/30$, where every face has probability $1/6$. A nice sanity check: for a fair die $\mathbb{P}(7) = 1/6$.
+SOLUTION: Maximise the quadratic
+$$\begin{aligned}\tfrac12\mathbb{P}(7) &= \tfrac16\cdot\tfrac16 + \big(\tfrac15-x\big)\tfrac16 + \big(\tfrac1{10}+2x\big)\big(\tfrac15-x\big)\\ &= \tfrac1{36} + \tfrac1{30} - \tfrac x6 + \tfrac1{50} + \tfrac{2x}{5} - \tfrac{x}{10} - 2x^2 .\end{aligned}$$
+The derivative in $x$ is
+$$-\tfrac16 + \tfrac25 - \tfrac1{10} - 4x = \tfrac{-5 + 12 - 3}{30} - 4x = \tfrac{4}{30} - 4x ,$$
+which vanishes at $x = \frac1{30}$; the $-2x^2$ term makes this a maximum. At $x = \frac1{30}$ the probabilities are $\frac15 - \frac1{30} = \frac16$ and $\frac1{10} + \frac1{15} = \frac16$, all valid (all six equal $\frac16$). Then $\mathbb{P}(7) = 2\cdot 3\cdot\frac1{36} = \frac16$.
+===END===
+
+===TEASER===
+SLUG: two-dice-absolute-difference
+IDS: Q-134
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Mean gap between two dice
+QUESTION:
+Two fair six-sided dice are rolled. What is the expected absolute difference between the two numbers?
+HINT1:
+The gap can only be $0,1,\dots,5$. How many of the 36 outcomes give each gap?
+HINT2:
+A gap of $d \ge 1$ occurs in $2(6-d)$ ordered outcomes.
+ANSWER:
+$35/18 \approx 1.944$
+EXPLANATION:
+Count by gap. A gap of $d\ge1$ can be placed with the smaller number anywhere from $1$ to $6-d$, and either die can be the smaller one, giving $2(6-d)$ outcomes. The gap distribution is triangular: 10 outcomes of gap 1, 8 of gap 2, 6 of 3, 4 of 4, 2 of 5 (and 6 ties). Weighting by $d$ gives $10+16+18+16+10 = 70$, so the mean is $70/36$.
+SOLUTION: Count by gap
+$$\mathbb{E}|X-Y| = \frac1{36}\sum_{d=1}^5 d\cdot 2(6-d) = \frac{2(5 + 8 + 9 + 8 + 5)}{36} = \frac{70}{36} = \frac{35}{18}.$$
+SOLUTION: Max minus min
+$|X-Y| = \max - \min$ and $\max + \min = X + Y$, so $\mathbb{E}|X-Y| = 2\mathbb{E}[\max] - 7$. With $\mathbb{P}(\max \le k) = k^2/36$,
+$$\mathbb{E}[\max] = \sum_{k=1}^6\Big(1 - \frac{(k-1)^2}{36}\Big) = 6 - \frac{0+1+4+9+16+25}{36} = 6 - \frac{55}{36} = \frac{161}{36}.$$
+So $\mathbb{E}|X-Y| = \frac{322}{36} - 7 = \frac{70}{36} = \frac{35}{18}$.
+===END===
+
+===TEASER===
+SLUG: thirty-sided-dice-absolute-difference
+IDS: Q-135
+FIRMS: DRW, Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Gap between two 30-sided dice
+QUESTION:
+$X$ and $Y$ are the results of two independent rolls of a fair 30-sided die numbered $1$ to $30$. Compute $\mathbb{E}|X-Y|$.
+HINT1:
+Solve it for a general $n$-sided die; the 30 then just gets plugged in.
+HINT2:
+A gap of $d$ happens in $2(n-d)$ of the $n^2$ ordered outcomes. You will need $\sum d$ and $\sum d^2$.
+ANSWER:
+$\mathbb{E}|X-Y| = \frac{n^2-1}{3n} = \frac{899}{90} \approx 9.99$
+REFRESH:
+$\sum_{d=1}^{m} d = \frac{m(m+1)}2$ and $\sum_{d=1}^{m} d^2 = \frac{m(m+1)(2m+1)}6$.
+EXPLANATION:
+Same counting as for ordinary dice: the gap distribution is triangular, with $2(n-d)$ outcomes for gap $d$. Summing gives the closed form $(n^2-1)/(3n)$, which is slightly less than $n/3$. That matches the continuous limit: for two independent uniforms on $[0,1]$, $\mathbb{E}|U-V| = 1/3$. For $n = 6$ the formula gives $35/18$, the classic two-dice answer.
+SOLUTION: Triangular gap distribution
+For an $n$-sided die,
+$$\mathbb{E}|X-Y| = \frac{2}{n^2}\sum_{d=1}^{n-1}d(n-d) = \frac2{n^2}\Big[n\cdot\frac{(n-1)n}{2} - \frac{(n-1)n(2n-1)}{6}\Big] = \frac{2(n-1)}{n}\cdot\frac{3n - (2n-1)}{6} = \frac{(n-1)(n+1)}{3n}.$$
+For $n = 30$: $\frac{29\cdot31}{90} = \frac{899}{90} \approx 9.989$.
+SOLUTION: Via the maximum
+$|X-Y| = 2\max(X,Y) - (X+Y)$, so $\mathbb{E}|X-Y| = 2\mathbb{E}\max - (n+1)$. With $\mathbb{P}(\max \ge k) = 1 - \frac{(k-1)^2}{n^2}$,
+$$\mathbb{E}\max = \sum_{k=1}^{n}\Big(1 - \frac{(k-1)^2}{n^2}\Big) = n - \frac{(n-1)(2n-1)}{6n}.$$
+Then $\mathbb{E}|X-Y| = n - 1 - \frac{(n-1)(2n-1)}{3n} = \frac{(n-1)(n+1)}{3n}$, and for $n=30$ this is $\frac{899}{90}$.
+===END===
+
+===TEASER===
+SLUG: d4-or-d6-bayes-roll-two
+IDS: Q-136
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Which die rolled the 2?
+QUESTION:
+You pick one of two dice uniformly at random: a fair four-sided die (faces $1$ to $4$) or a fair six-sided die (faces $1$ to $6$). You roll the chosen die and get a $2$. What is the probability that you picked the four-sided die?
+HINT1:
+Which die is more likely to produce a 2?
+HINT2:
+Apply Bayes' rule: prior $\frac12$ each, likelihood of a 2 is $\frac14$ for one die and $\frac16$ for the other.
+ANSWER:
+$3/5$
+REFRESH:
+Bayes' rule: $\mathbb{P}(A\mid B) = \dfrac{\mathbb{P}(B\mid A)\mathbb{P}(A)}{\mathbb{P}(B\mid A)\mathbb{P}(A) + \mathbb{P}(B\mid A^c)\mathbb{P}(A^c)}$.
+EXPLANATION:
+With equal priors the posterior odds equal the likelihood ratio: $\frac14 : \frac16 = 3 : 2$ in favour of the four-sided die, so the posterior is $3/(3+2)$. The smaller die spreads its probability over fewer faces, so any face it can show is more likely under it.
+SOLUTION: Bayes' rule
+$$\mathbb{P}(D_4\mid 2) = \frac{\frac12\cdot\frac14}{\frac12\cdot\frac14 + \frac12\cdot\frac16} = \frac{\frac14}{\frac14+\frac16} = \frac{3/12}{5/12} = \frac35.$$
+SOLUTION: Counting equally likely cases
+Imagine 24 trials with 12 using each die. The four-sided die shows a 2 in $12/4 = 3$ of them, the six-sided die in $12/6 = 2$. Of the 5 trials showing a 2, 3 used the four-sided die: $3/5$.
+===END===
+
+===TEASER===
+SLUG: second-die-only-if-four-or-less
+IDS: Q-137
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Second die only on a low first roll
+QUESTION:
+You roll a fair six-sided die. If it shows $4$ or less, you roll a second fair six-sided die; if it shows $5$ or $6$, you stop. What is the expected total of all the dice you rolled?
+HINT1:
+Linearity: the total is the first die plus (second die if rolled, else 0).
+HINT2:
+The second die, when rolled, still has mean $3.5$, and it is rolled with probability $4/6$.
+ANSWER:
+$35/6 \approx 5.83$
+EXPLANATION:
+The first die contributes $3.5$ on average no matter what. The second die contributes $3.5$ when it is rolled, which happens with probability $2/3$, so it adds $\frac23\cdot3.5$. The decision to roll depends only on the first die, and the second die is independent of it, so there is no hidden correlation: $3.5(1 + \frac23) = \frac{35}{6}$.
+SOLUTION: Linearity
+Let $D_1, D_2$ be independent dice and $R = \mathbf 1\{D_1 \le 4\}$. The total is $D_1 + R\,D_2$ and, since $R$ is independent of $D_2$,
+$$\mathbb{E}[D_1 + R D_2] = 3.5 + \mathbb{P}(D_1\le4)\cdot 3.5 = 3.5 + \frac46\cdot3.5 = \frac72\cdot\frac53 = \frac{35}{6}.$$
+SOLUTION: Condition on the first die
+If $D_1 \in\{1,2,3,4\}$ the expected total is $D_1 + 3.5$; if $D_1\in\{5,6\}$ it is $D_1$:
+$$\frac16\big[(1+2+3+4) + 4\cdot3.5 + 5 + 6\big] = \frac{10 + 14 + 11}{6} = \frac{35}{6}.$$
+===END===
+
+===TEASER===
+SLUG: d8-keep-or-switch-d12
+IDS: Q-138
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: easy
+TITLE: Keep the d8 or gamble on a d12
+QUESTION:
+You roll a fair 8-sided die once. You may either keep that number as your payout, or roll a fair 12-sided die once and take that number instead (you cannot go back). With the best strategy, what is your expected payout?
+HINT1:
+What is a roll of the 12-sided die worth on average? Compare each possible 8-sided result with that.
+HINT2:
+Switch exactly when the 8-sided result is below the average value of the 12-sided die.
+ANSWER:
+$27/4 = 6.75$
+EXPLANATION:
+The alternative is always worth $\mathbb{E}[D_{12}] = 6.5$, so keep any result above $6.5$ (that is $7$ or $8$) and switch otherwise. The expected payout is then $\mathbb{E}[\max(D_8, 6.5)]$: $6.5$ in six cases out of eight and $7.5$ on average in the other two.
+SOLUTION: Threshold rule
+$\mathbb{E}[D_{12}] = \frac{13}{2} = 6.5$. Keep if $D_8 \in\{7,8\}$, otherwise switch.
+$$\mathbb{E}[\text{payout}] = \frac68\cdot6.5 + \frac18\cdot7 + \frac18\cdot8 = \frac{39 + 15}{8} = \frac{54}{8} = \frac{27}{4}.$$
+===END===
+
+===TEASER===
+SLUG: one-die-vs-hundred-dice-average
+IDS: Q-140
+FIRMS: Citadel
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: easy
+TITLE: One die or the average of a hundred
+QUESTION:
+It costs $4$ to play. You may choose between two payoffs:
+
+- roll one fair six-sided die and receive the number shown, or
+- roll one hundred fair six-sided dice and receive the average of the hundred numbers.
+
+Which choice is better?
+HINT1:
+Compute the expected payoff of each choice and compare with the price.
+HINT2:
+The means are equal; what differs is the spread. With a negative expected profit, ask what each option gives you in terms of the chance of ending up ahead.
+ANSWER:
+Both pay $3.5$ on average, so both lose $0.5$ per game: don't play. If forced, the single die is the only one with a real chance to profit ($1/3$); the 100-dice average almost surely loses about $0.5$.
+REFRESH:
+The average of $n$ i.i.d. variables with variance $\sigma^2$ has the same mean and variance $\sigma^2/n$; for large $n$ it is approximately normal (CLT).
+Variance of a fair die: $35/12$.
+EXPLANATION:
+Expectation is linear, so the average of 100 dice has the same mean, $3.5$, as one die. Both games cost $4$, so both have expected profit $-0.5$: a risk-neutral player is indifferent between them and should refuse to play at all.
+
+What differs is risk. One die has standard deviation $\sqrt{35/12}\approx 1.71$; the 100-dice average has $1.71/10 \approx 0.17$. With a negative edge, spread is your only friend: the single die pays $5$ or $6$ with probability $1/3$, whereas the average exceeds $4$ only if it is about $2.9$ standard deviations above its mean, probability about $0.2\%$. So a risk-averse player who must play takes the average (a near-certain small loss, no disasters), while someone who wants a shot at a profit takes the single die. This is the classic lesson: averaging removes variance, not a negative edge.
+SOLUTION: Mean and spread
+**Means.** $\mathbb{E}[D] = 3.5$ and $\mathbb{E}\big[\frac1{100}\sum_{i=1}^{100}D_i\big] = 3.5$. Expected profit of each choice: $3.5 - 4 = -0.5$.
+
+**Spreads.** $\operatorname{Var}D = \frac{35}{12}$, $\operatorname{sd} \approx 1.708$. For the average, $\operatorname{Var} = \frac{35}{1200}$, $\operatorname{sd}\approx0.171$.
+
+**Probability of profit.** Single die: $\mathbb{P}(D > 4) = \mathbb{P}(D\in\{5,6\}) = \frac13$. Average: by the CLT,
+$$\mathbb{P}(\bar D > 4) \approx \mathbb{P}\Big(Z > \frac{0.5}{0.171}\Big) = \mathbb{P}(Z > 2.93) \approx 0.002 .$$
+
+**Conclusion.** Equal (negative) expected value, so the rational choice is not to play. If you must play, pick by risk appetite: the 100-dice average gives an almost certain loss near $0.5$, the single die a $1/3$ chance of making $1$ or $2$ against a $1/2$ chance of losing $1$ to $3$.
+===END===
+
+===TEASER===
+SLUG: hundred-d100-sum-divisible
+IDS: Q-142
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Hundred d100s, sum divisible by 100
+QUESTION:
+You roll $100$ fair dice, each with $100$ faces numbered $1$ to $100$. What is the probability that the total is divisible by $100$?
+HINT1:
+You do not need the distribution of the sum. Imagine the dice are rolled one at a time.
+HINT2:
+Fix the first 99 dice. How many values of the last die make the total divisible by 100?
+ANSWER:
+$1/100$
+REFRESH:
+Law of total probability: if $\mathbb{P}(A\mid B = b) = p$ for every value $b$ of some variable $B$, then $\mathbb{P}(A) = p$.
+EXPLANATION:
+Whatever the first 99 dice show, their sum has some remainder $r$ modulo 100. The last die's value modulo 100 runs over all residues $0, 1, \dots, 99$ exactly once (100 gives residue 0), so exactly one of its 100 equally likely faces makes the total a multiple of 100. The conditional probability is $1/100$ in every case, so the unconditional one is too. The number of dice is irrelevant: one fair 100-sided die in the mix is enough.
+SOLUTION: Condition on all but the last die
+Let $S' = D_1 + \dots + D_{99}$ and $r = S' \bmod 100$. Then $100 \mid S' + D_{100}$ iff $D_{100} \equiv -r \pmod{100}$. Among $1,\dots,100$ exactly one number has each residue modulo 100, so
+$$\mathbb{P}\big(100 \mid S' + D_{100} \,\big|\, S'\big) = \frac1{100}$$
+for every value of $S'$, hence the answer is $\frac1{100}$.
+===END===
+
+===TEASER===
+SLUG: race-to-multiple-of-seven
+IDS: Q-143
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: First to hit a multiple of 7
+QUESTION:
+You and a friend take turns rolling a fair six-sided die, keeping a running total of all rolls. The player whose roll first makes the running total a multiple of $7$ wins. You may choose whether to roll first or second. What is your probability of winning if you choose well?
+HINT1:
+Can the very first roll of the game win?
+HINT2:
+If the running total is not a multiple of 7, how many faces make the next total a multiple of 7?
+ANSWER:
+Roll second; you win with probability $6/11$.
+REFRESH:
+Alternating race: if each turn wins with probability $p$ independently and two players alternate, the player who moves first wins with probability $\frac{p}{1-(1-p)^2} = \frac{1}{2-p}$.
+EXPLANATION:
+From a total that is not a multiple of 7, the next multiple of 7 is between $1$ and $6$ away, so exactly one face hits it: every roll wins with probability $1/6$, no matter the history. The only exception is the first roll of the game: from $0$, the next multiple is $7$, out of reach. So the first roll is a wasted turn, and after it the second player is the one who starts an alternating race with success probability $1/6$ per turn. Moving first in such a race is an advantage: $\frac{1/6}{1 - (5/6)^2} = \frac{6}{11}$.
+SOLUTION: Alternating race
+Call the players A (first) and B (second). A's first roll gives a total between 1 and 6, never a multiple of 7. After that, each roll wins with probability $\frac16$ independently (exactly one face reaches the next multiple of 7; if it is overshot, the new total again is not a multiple of 7 and the argument repeats).
+
+So from B's first turn on, B and A alternate, B first, each winning with probability $\frac16$ per roll. B wins at B's $k$-th turn with probability $\big(\frac56\big)^{2(k-1)}\frac16$:
+$$\mathbb{P}(B) = \frac16\sum_{k\ge1}\Big(\frac{25}{36}\Big)^{k-1} = \frac{1/6}{11/36} = \frac6{11}, \qquad \mathbb{P}(A) = \frac5{11}.$$
+Choose to roll second.
+SOLUTION: One-step equation
+Let $q$ be the probability that the player about to roll (from a total that is not a multiple of 7) eventually wins. Either they win now, or with probability $\frac56$ the opponent becomes the one about to roll: $q = \frac16 + \frac56(1-q)$, so $\frac{11}{6}q = 1$, $q = \frac6{11}$. B is that player right after A's forced first roll.
+===END===
+
+===TEASER===
+SLUG: two-dice-sum-divisible-by-six
+IDS: Q-144
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two dice, sum divisible by 6
+QUESTION:
+Two fair six-sided dice are rolled. What is the probability that their sum is divisible by $6$?
+HINT1:
+Which totals between 2 and 12 are multiples of 6?
+HINT2:
+Alternatively: fix the first die and ask how many values of the second work.
+ANSWER:
+$1/6$
+EXPLANATION:
+Whatever the first die shows, the second die's value runs over all residues modulo 6 exactly once, so exactly one face makes the sum a multiple of 6. Direct count: a sum of 6 in 5 ways, a sum of 12 in 1 way, $6/36$.
+SOLUTION: Direct count
+Sum $6$: $(1,5),(2,4),(3,3),(4,2),(5,1)$, 5 outcomes. Sum $12$: $(6,6)$, 1 outcome. Total $6/36 = 1/6$.
+SOLUTION: Residue argument
+Given the first die shows $a$, the sum is divisible by 6 iff the second die is $\equiv -a \pmod 6$, which holds for exactly one of its six faces. So the probability is $1/6$ for every $a$.
+===END===
+
+===TEASER===
+SLUG: count-fives-before-four-and-six
+IDS: Q-146
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Fives while waiting for a 4 and a 6
+QUESTION:
+Kathy rolls a fair six-sided die repeatedly and stops as soon as both a $4$ and a $6$ have appeared at least once (in either order). What is the probability that exactly two of all her rolls are $5$s?
+HINT1:
+Faces 1, 2 and 3 have no effect on anything. Throw them away and look only at the rolls showing 4, 5 or 6.
+HINT2:
+Split into two stages: before the first 4-or-6, and after it (while waiting for the missing one). In each stage the number of 5s is geometric, with a different parameter.
+ANSWER:
+$19/108$
+REFRESH:
+Geometric count of failures: if each trial is a "failure" with probability $q$ and a "success" otherwise, the number of failures before the first success satisfies $\mathbb{P}(K=k) = q^k(1-q)$.
+EXPLANATION:
+Only 4, 5, 6 matter, and among those rolls each is equally likely ($1/3$). Stage 1 lasts until the first 4 or 6: each relevant roll is a 5 with probability $1/3$ and ends the stage with probability $2/3$. Stage 2 waits for the other target: now the already-seen target is irrelevant too, so among the remaining relevant faces, 5 and the missing target are equally likely. The two stages' counts of 5s are independent geometric variables, with $\mathbb{P}(A = k) = \frac23(\frac13)^k$ and $\mathbb{P}(B = k) = (\frac12)^{k+1}$, and we need $\mathbb{P}(A+B = 2)$.
+SOLUTION: Two geometric stages
+Stage 1 (among rolls showing 4, 5 or 6): number $A$ of 5s before the first 4 or 6, $\mathbb{P}(A=k) = \big(\frac13\big)^k\frac23$.
+
+Stage 2: say a 4 was seen first (the case of 6 is symmetric). Now only 5 and 6 matter, each with conditional probability $\frac12$. The number $B$ of 5s before the first 6 satisfies $\mathbb{P}(B = k) = \big(\frac12\big)^{k}\frac12$. $A$ and $B$ are independent since they depend on disjoint sets of rolls.
+$$\begin{aligned}\mathbb{P}(A+B=2) &= \sum_{k=0}^{2}\frac23\Big(\frac13\Big)^k\Big(\frac12\Big)^{3-k} = \frac23\Big(\frac18 + \frac13\cdot\frac14 + \frac19\cdot\frac12\Big)\\ &= \frac23\cdot\frac{9 + 6 + 4}{72} = \frac23\cdot\frac{19}{72} = \frac{19}{108}\approx 0.176 .\end{aligned}$$
+SOLUTION: Generating functions
+$\mathbb{E}[z^A] = \frac{2/3}{1 - z/3} = \frac{2}{3-z}$ and $\mathbb{E}[z^B] = \frac{1/2}{1 - z/2} = \frac{1}{2-z}$. So
+$$\mathbb{E}[z^{A+B}] = \frac{2}{(3-z)(2-z)} = 2\Big(\frac1{2-z} - \frac1{3-z}\Big) = \sum_{k\ge0}\Big(\frac{1}{2^{k}} - \frac{2}{3^{k+1}}\Big)z^k .$$
+The coefficient of $z^2$ is $\frac14 - \frac2{27} = \frac{27 - 8}{108} = \frac{19}{108}$.
+===END===
+
+===TEASER===
+SLUG: d6-vs-d8-sums-balanced
+IDS: Q-148
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Balancing d6 sums against d8 sums
+QUESTION:
+Alice rolls $m$ fair six-sided dice and Bob rolls $n$ fair eight-sided dice. Let $S_m$ be the total of Alice's dice and $T_n$ the total of Bob's. Let $m^*, n^*$ be the smallest positive integers for which
+$$\mathbb{P}(S_{m^*} < T_{n^*}) = \mathbb{P}(S_{m^*} > T_{n^*}).$$
+What is $m^* n^*$?
+HINT1:
+Each total has a distribution that is symmetric about its mean. When is the difference $T_n - S_m$ symmetric about $0$?
+HINT2:
+A $k$-sided die is symmetric about $(k+1)/2$, so $S_m$ is symmetric about $3.5m$ and $T_n$ about $4.5n$. Make the centres coincide with integers $m, n$ as small as possible.
+ANSWER:
+$m^*n^* = 63$ ($m^* = 9$, $n^* = 7$)
+REFRESH:
+If $X$ and $Y$ are independent and symmetric about $a$ and $b$ respectively, then $X - Y$ is symmetric about $a - b$.
+EXPLANATION:
+A die numbered $1$ to $k$ looks the same after the relabelling $x \mapsto k+1-x$, so its value is symmetric about $(k+1)/2$, and so is a sum of such dice about $m(k+1)/2$. If the two centres agree, $T_n - S_m$ is symmetric about $0$, and then $\mathbb{P}(T_n - S_m > 0) = \mathbb{P}(T_n - S_m < 0)$ automatically. The centres are $3.5m$ and $4.5n$; they agree when $7m = 9n$, and since $7$ and $9$ are coprime the smallest solution is $m = 9$, $n = 7$ (both totals centred at $31.5$).
+
+Could a smaller pair work by accident, without equal centres? If the centres differ, one total is shifted up relative to the other and the probabilities tilt strictly; an exact computation for every $m, n \le 13$ confirms that $(9,7)$ is the only pair where equality holds.
+SOLUTION: Symmetry
+For one $k$-sided die $D$, $k + 1 - D$ has the same distribution as $D$. Applying this to every die, $7m - S_m \overset{d}{=} S_m$ and $9n - T_n \overset{d}{=} T_n$, so $S_m$ is symmetric about $\frac{7m}{2}$ and $T_n$ about $\frac{9n}{2}$.
+
+If $7m = 9n =: 2c$, then $W = T_n - S_m$ satisfies $-W = (2c - T_n) - (2c - S_m) \overset{d}{=} T_n - S_m = W$ (using independence), hence $\mathbb{P}(W > 0) = \mathbb{P}(W < 0)$, i.e. $\mathbb{P}(S < T) = \mathbb{P}(S > T)$.
+
+$7m = 9n$ with $\gcd(7,9) = 1$ forces $9 \mid m$ and $7 \mid n$, so the smallest solution is $m^* = 9$, $n^* = 7$. A direct computation of $\mathbb{P}(S_m<T_n) - \mathbb{P}(S_m>T_n)$ for all $m,n \le 13$ shows it vanishes only at $(9,7)$, so no smaller accidental solution exists. Therefore $m^*n^* = 63$.
+===END===
+
+===TEASER===
+SLUG: roll-until-45-or-44-paid-per-roll
+IDS: Q-149
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Paid per roll: wait for 4-5 or 4-4?
+QUESTION:
+Without pen and paper: you roll a fair die repeatedly until a chosen pair of consecutive results appears, and you are paid the total number of rolls. Should you choose (1) a $4$ followed by a $5$, (2) a $4$ followed by a $4$, or (3) does it not matter? Answer with the option number.
+HINT1:
+Both patterns have the same probability $1/36$ at any given position. What happens after a near miss, when you have just rolled a 4 but the next roll is wrong?
+HINT2:
+Waiting for 4-5: if you are on a 4 and roll another 4, you are still one step away. Waiting for 4-4: if you are on a 4 and fail, you are always back to the start.
+ANSWER:
+Option 2 (4-4 takes 42 rolls on average, 4-5 only 36)
+REFRESH:
+First-step analysis: for a Markov chain, the expected time to hit a target from state $i$ satisfies $E_i = 1 + \sum_j p_{ij}E_j$, with $E = 0$ on the target.
+EXPLANATION:
+Since you are paid per roll, you want the pattern that takes longer to appear. The two patterns are equally likely at each position, but they differ in how failures recycle. For 4-5, a failed attempt that shows a 4 immediately gives you a new start ("4 then 4" keeps you one step away). For 4-4, the only way to fail from a 4 is to roll something else, which sends you back to zero. Self-overlapping patterns (like 44, or HH for coins) are slower to appear; the famous values are $36$ for 4-5 and $42 = 36 + 6$ for 4-4, the extra $6$ being the overlap term.
+SOLUTION: First-step analysis
+States: $0$ (no progress) and $4$ (last roll was a 4).
+
+**Pattern 4-5.** $E_0 = 1 + \frac16E_4 + \frac56E_0$, so $E_0 = 6 + E_4$. From $4$: a 5 ends it, a 4 keeps us in state $4$, anything else resets: $E_4 = 1 + \frac16E_4 + \frac46E_0$. Substituting $E_0 = 6 + E_4$: $E_4 = 1 + \frac16E_4 + 4 + \frac46E_4$, so $\frac16E_4 = 5$, $E_4 = 30$, $E_0 = 36$.
+
+**Pattern 4-4.** $E_0 = 6 + E_4$ as before; from $4$: $E_4 = 1 + \frac56E_0$. Then $E_0 = 7 + \frac56E_0$, so $E_0 = 42$.
+
+$42 > 36$: choose option 2.
+SOLUTION: Overlap (fair-casino) formula
+For a pattern of letters each of probability $\frac16$, the expected waiting time is $\sum 6^{k}$ over all $k$ such that the pattern's prefix of length $k$ equals its suffix of length $k$. For 45 only $k = 2$ works: $36$. For 44, both $k=1$ and $k=2$ work: $6 + 36 = 42$. Longer wait, larger pay: option 2.
+===END===
+
+===TEASER===
+SLUG: de-mere-one-six-vs-double-six
+IDS: Q-150
+FIRMS: Goldman Sachs, Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: A six in 4 rolls or double-six in 24
+QUESTION:
+Which game is more likely to be won? Answer $1$, $2$, or $3$ if they are equally likely.
+
+- Game 1: roll one fair die $4$ times; you win if at least one $6$ appears.
+- Game 2: roll two fair dice $24$ times; you win if at least one double-six appears.
+HINT1:
+"At least one" is easiest through the complement.
+HINT2:
+Compare $1 - (5/6)^4$ with $1 - (35/36)^{24}$. The naive "4 × 1/6 = 24 × 1/36" reasoning suggests they are equal; why is it wrong?
+ANSWER:
+Game 1 ($\approx 0.518$ against $\approx 0.491$)
+REFRESH:
+$\mathbb{P}(\text{at least one success in } n \text{ independent trials}) = 1 - (1-p)^n$.
+$\ln(1-p) \approx -p - p^2/2$ for small $p$.
+EXPLANATION:
+This is the Chevalier de Méré's problem that started Pascal and Fermat's correspondence. The naive rule "probability $\approx$ number of tries $\times$ chance per try" gives $\frac46 = \frac{24}{36}$ for both, but it double counts multiple successes. The correct values are $1 - (5/6)^4$ and $1 - (35/36)^{24}$. Both games have the same expected number of successes, $2/3$. What decides is how often successes pile up: with $np$ fixed, the probability of zero successes $(1-p)^n$ increases towards $e^{-np}$ as $p$ gets smaller, so the game made of many rare trials (game 2, close to a Poisson with mean $2/3$) is more likely to produce nothing at all.
+SOLUTION: Complements
+$$\mathbb{P}(\text{Game 1}) = 1 - \Big(\frac56\Big)^4 = 1 - \frac{625}{1296} = \frac{671}{1296} \approx 0.5177 .$$
+$$\mathbb{P}(\text{Game 2}) = 1 - \Big(\frac{35}{36}\Big)^{24} \approx 1 - e^{24\ln(35/36)} \approx 1 - e^{-0.6761} \approx 0.4914 .$$
+(Mentally: $24\ln(1 - \frac1{36}) \approx -24\big(\frac1{36} + \frac1{2592}\big) = -\frac23 - 0.0093$.) Game 1 is better: option $1$.
+===END===
+
+===TEASER===
+SLUG: alternating-die-duel-unequal-odds
+IDS: Q-151
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: easy
+TITLE: Duel with lopsided winning faces
+QUESTION:
+Two players take turns rolling a fair die, Player 1 first. On Player 1's turn, a $1$ or $2$ wins for Player 1; otherwise Player 2 rolls. On Player 2's turn, a $3$, $4$, $5$ or $6$ wins for Player 2; otherwise it is Player 1's turn again, and so on until someone wins. With $p_1, p_2$ the players' winning probabilities, find $\max(p_1, p_2)$.
+HINT1:
+After one full round with no winner, the game is exactly as at the start.
+HINT2:
+Write $p_1 = \frac13 + \mathbb{P}(\text{round with no winner})\cdot p_1$.
+ANSWER:
+$4/7$ (Player 2 is the favourite)
+EXPLANATION:
+Player 1 wins on a turn with probability $1/3$, Player 2 with $2/3$. A round with no winner happens with probability $\frac23\cdot\frac13 = \frac29$, and then everything restarts. So $p_1 = \frac{1/3}{1 - 2/9} = \frac37$. Moving first is not enough to compensate for having half the winning faces.
+SOLUTION: Renewal equation
+$$p_1 = \frac13 + \frac23\cdot\frac13\,p_1 \quad\Longrightarrow\quad p_1\Big(1 - \frac29\Big) = \frac13 \quad\Longrightarrow\quad p_1 = \frac{1/3}{7/9} = \frac37 .$$
+The game ends with probability 1, so $p_2 = 1 - \frac37 = \frac47$, and $\max(p_1,p_2) = \frac47$.
+SOLUTION: Race by rounds
+In each round, Player 1 wins with probability $\frac13$, Player 2 with $\frac23\cdot\frac23 = \frac49$, and the round is void with probability $\frac29$. Conditioning on the round that decides the game, $p_2 = \frac{4/9}{1/3 + 4/9} = \frac{4/9}{7/9} = \frac47$.
+===END===
+
+===TEASER===
+SLUG: four-dice-max-min-team-vs-middle
+IDS: Q-152
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: hard
+TITLE: Extremes team versus middle team
+QUESTION:
+Four people each roll a fair six-sided die. The person with the highest roll teams up with the person with the lowest roll; the two middle rolls form the other team. The team with the larger total wins, and the payoff is the difference between the two totals. Find the probability that the extremes team wins, that the middle team wins, and that they tie; then find the expected payoff (to the extremes team) and the expected size of the winning margin.
+HINT1:
+What happens to the whole game if you replace every roll $x$ by $7 - x$?
+HINT2:
+Sort the rolls $a \le b \le c \le d$. The extremes team's advantage $(a+d) - (b+c)$ equals (top gap $d-c$) minus (bottom gap $b-a$). The reflection $x \mapsto 7-x$ swaps the two gaps.
+ANSWER:
+Extremes win $10/27$, middle wins $10/27$, tie $7/27$; expected payoff $0$; expected winning margin $203/162 \approx 1.25$.
+REFRESH:
+If a random variable $W$ has the same distribution as $-W$, then $\mathbb{P}(W>0) = \mathbb{P}(W<0)$ and $\mathbb{E}W = 0$.
+EXPLANATION:
+With sorted rolls $a \le b \le c \le d$, the extremes team's advantage is
+$$W = (a + d) - (b + c) = (d - c) - (b - a),$$
+the top gap minus the bottom gap. Replacing each roll $x$ by $7 - x$ keeps the rolls i.i.d. uniform, reverses the order and swaps the two gaps, so $W \overset{d}{=} -W$. Hence the two teams are equally likely to win, and the expected payoff is exactly $0$: the game is fair. What remains is to count ties and the size of the margin, which is a finite enumeration of the $6^4 = 1296$ outcomes.
+
+Note: the source states $707/324$ as the expected payoff; that value does not match any natural reading of the question. By the symmetry above the expected signed payoff is $0$, and the expected absolute margin is $203/162$.
+SOLUTION: Symmetry plus enumeration
+**Symmetry.** Let $W = (a+d) - (b+c)$. Under $x \mapsto 7-x$ the sorted rolls become $7-d \le 7-c \le 7-b \le 7-a$, and the new advantage is $(14 - a - d) - (14 - b - c) = -W$. The map is a bijection of the 1296 equally likely outcomes, so $W$ and $-W$ have the same distribution: $\mathbb{P}(W>0) = \mathbb{P}(W<0)$ and $\mathbb{E}W = 0$.
+
+**Distribution.** Enumerating the 1296 ordered outcomes (easy by computer, or by hand by listing the 126 sorted multisets with their multiplicities) gives the counts of $W = w$:
+
+| $w$ | $0$ | $\pm1$ | $\pm2$ | $\pm3$ | $\pm4$ | $\pm5$ |
+|---|---|---|---|---|---|---|
+| count (each sign) | $336$ | $260$ | $136$ | $60$ | $20$ | $4$ |
+
+Check: $336 + 2(260+136+60+20+4) = 336 + 960 = 1296$.
+
+**Probabilities.** Tie: $\frac{336}{1296} = \frac{7}{27}$. Each team wins with probability $\frac{480}{1296} = \frac{10}{27}$.
+
+**Margin.**
+$$\mathbb{E}|W| = \frac{2(1\cdot260 + 2\cdot136 + 3\cdot60 + 4\cdot20 + 5\cdot4)}{1296} = \frac{2\cdot812}{1296} = \frac{203}{162}\approx 1.253 .$$
+Conditional on a winner, the average margin is $\frac{812}{480} = \frac{203}{120} \approx 1.69$. The expected payoff to either team is $\mathbb{E}W = 0$.
+===END===
+
+===TEASER===
+SLUG: dave-buster-dice-reroll
+IDS: Q-153
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Dave, Buster and the reroll
+QUESTION:
+Dave and Buster each roll a fair six-sided die at the same time. If the dice are equal, Buster wins. If Buster's number is strictly larger than Dave's, Dave wins. If Dave's number is strictly larger, they roll again, and continue until one of the first two outcomes happens. What is the probability that Buster wins?
+HINT1:
+The rerolls change nothing about the relative odds of the two decisive outcomes.
+HINT2:
+Condition on the round being decisive: compare the number of outcomes that give each result.
+ANSWER:
+$2/7$
+REFRESH:
+If rounds are i.i.d. and the game stops at the first round in event $A \cup B$ (disjoint), then $\mathbb{P}(\text{stop in }A) = \frac{\mathbb{P}(A)}{\mathbb{P}(A)+\mathbb{P}(B)}$.
+EXPLANATION:
+Out of the 36 outcomes, 6 are ties (Buster wins), 15 have Buster higher (Dave wins) and 15 have Dave higher (reroll). Rerolls just restart the experiment, so the winner is decided by the first decisive round, and in a decisive round Buster wins in 6 of the 21 cases.
+SOLUTION: Decisive rounds
+Per round: $\mathbb{P}(\text{tie}) = \frac6{36}$, $\mathbb{P}(\text{Buster higher}) = \frac{15}{36}$, $\mathbb{P}(\text{Dave higher}) = \frac{15}{36}$. Let $q = \mathbb{P}(\text{Buster wins})$:
+$$q = \frac{6}{36} + \frac{15}{36}q \quad\Longrightarrow\quad q = \frac{6/36}{21/36} = \frac{6}{21} = \frac27 .$$
+===END===
+
+===TEASER===
+SLUG: two-dice-per-round-all-faces
+IDS: Q-154
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Two dice per round, see every face
+QUESTION:
+Each round, two fair six-sided dice are rolled and both faces are recorded. What is the expected number of rounds until all six faces have been seen at least once? (Hint of a model: the number of distinct faces seen so far is a Markov chain.)
+HINT1:
+It is not simply half of the one-die coupon collector (14.7), because a round can waste a die by showing a repeated or doubled face.
+HINT2:
+From state $k$ (faces seen), a round adds 0, 1 or 2 new faces. With $m = 6 - k$ unseen: $\mathbb{P}(0) = (k/6)^2$, $\mathbb{P}(2) = m(m-1)/36$, and $\mathbb{P}(1)$ the rest. Solve backwards from $k = 6$.
+ANSWER:
+$\frac{70219}{9240} \approx 7.60$ rounds
+REFRESH:
+First-step analysis with self-loops: if from state $k$ you stay with probability $p_0$ and otherwise move to $k+j$ with probability $p_j$, then $E_k = \dfrac{1 + \sum_{j\ge1}p_jE_{k+j}}{1 - p_0}$.
+EXPLANATION:
+Track $k$ = number of distinct faces seen. In a round, two new faces appear only if both dice show unseen faces and they differ; nothing new appears if both dice show seen faces. Everything else gives one new face. The expected remaining time $E_k$ satisfies a backward recursion from $E_6 = 0$, which is short to compute by hand. The answer, about $7.60$ rounds ($15.2$ dice), is a little more than half of the one-die value $14.7$ because doubles within a round waste a die.
+SOLUTION: Backward recursion
+With $m = 6-k$, the transition probabilities (in 36ths) are:
+
+| $k$ | $p_0$ | $p_1$ | $p_2$ |
+|---|---|---|---|
+| 0 | 0 | 6 | 30 |
+| 1 | 1 | 15 | 20 |
+| 2 | 4 | 20 | 12 |
+| 3 | 9 | 21 | 6 |
+| 4 | 16 | 18 | 2 |
+| 5 | 25 | 11 | 0 |
+
+Using $E_k = \frac{36 + p_1E_{k+1} + p_2E_{k+2}}{36 - p_0}$ (all $p$ in 36ths):
+$$\begin{aligned}
+E_5 &= \tfrac{36}{11}, \\
+E_4 &= \tfrac{36 + 18\cdot\frac{36}{11}}{20} = \tfrac{261}{55}, \\
+E_3 &= \tfrac{36 + 21\cdot\frac{261}{55} + 6\cdot\frac{36}{11}}{27} = \tfrac{949}{165}, \\
+E_2 &= \tfrac{36 + 20\cdot\frac{949}{165} + 12\cdot\frac{261}{55}}{32} = \tfrac{8579}{1320}, \\
+E_1 &= \tfrac{36 + 15\cdot\frac{8579}{1320} + 20\cdot\frac{949}{165}}{35} = \tfrac{65609}{9240}, \\
+E_0 &= 1 + \tfrac16E_1 + \tfrac56E_2 = \tfrac{70219}{9240} \approx 7.5995 .
+\end{aligned}$$
+SOLUTION: Inclusion–exclusion on the tail
+Let $R$ be the number of rounds. After $r \ge 1$ rounds (that is, $2r$ dice), a given set of $j$ faces is entirely missing with probability $\big(\frac{6-j}{6}\big)^{2r}$. By inclusion–exclusion, for $r \ge 1$, $\mathbb{P}(R > r) = \sum_{j=1}^{5}(-1)^{j+1}\binom6j\big(1-\frac j6\big)^{2r}$, while $\mathbb{P}(R>0) = 1$. The tail-sum formula gives
+$$\mathbb{E}R = 1 + \sum_{r\ge1}\mathbb{P}(R>r) = 1 + \sum_{j=1}^{5}(-1)^{j+1}\binom6j\frac{(1-j/6)^2}{1 - (1 - j/6)^2} = 1 + \sum_{j=1}^{5}(-1)^{j+1}\binom6j\frac{(6-j)^2}{j(12-j)} .$$
+Term by term: $\frac{6\cdot25}{11} - \frac{15\cdot16}{20} + \frac{20\cdot9}{27} - \frac{15\cdot4}{32} + \frac{6\cdot1}{35} = 13.636 - 12 + 6.667 - 1.875 + 0.171 = 6.5995$, so $\mathbb{E}R \approx 7.5995$, i.e. $\frac{70219}{9240}$.
+===END===
+
+===TEASER===
+SLUG: double-six-bet-break-even-loss
+IDS: Q-158
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Break-even loss on a double-six bet
+QUESTION:
+You roll two fair dice. If both show $6$ you win $100$. If exactly one shows a $6$ you lose $x$. Otherwise you roll both dice again, and keep going until one of these two outcomes occurs. What is the largest $x$ for which the game has non-negative expected value?
+HINT1:
+The rounds with no 6 just restart the game. What matters is the relative probability of the two ending outcomes.
+HINT2:
+Out of 36 outcomes, how many are double-six and how many have exactly one 6?
+ANSWER:
+$x = 10$
+EXPLANATION:
+Double-six is 1 outcome out of 36; exactly one 6 is 10 outcomes. Conditional on the game ending, you win with probability $1/11$ and lose with probability $10/11$. Break-even requires $100\cdot1 = x\cdot10$.
+SOLUTION: Condition on the ending round
+$\mathbb{P}(66) = \frac1{36}$ and $\mathbb{P}(\text{exactly one }6) = \frac{5 + 5}{36} = \frac{10}{36}$. The game ends at the first round in one of these, so the final outcome is 66 with probability $\frac{1}{11}$ and "one 6" with probability $\frac{10}{11}$:
+$$\mathbb{E} = \frac{100}{11} - \frac{10x}{11} \ge 0 \iff x \le 10 .$$
+===END===
+
+===TEASER===
+SLUG: second-die-with-six-plus-k-sides
+IDS: Q-162
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: A second die with 6 + k sides
+QUESTION:
+Ab rolls a fair six-sided die and gets $k$. He then rolls a fair die with $6 + k$ sides, numbered $1$ to $6 + k$. What is the expected value of his second roll?
+HINT1:
+Condition on the first roll.
+HINT2:
+A fair die with $N$ sides has mean $(N+1)/2$, which is linear in $N$.
+ANSWER:
+$21/4 = 5.25$
+REFRESH:
+Tower property: $\mathbb{E}[Y] = \mathbb{E}[\mathbb{E}[Y\mid K]]$.
+EXPLANATION:
+Given $k$, the second roll has mean $\frac{7 + k}{2}$. Because this is linear in $k$, averaging over $k$ just plugs in $\mathbb{E}K = 3.5$: $\frac{7 + 3.5}{2} = 5.25$.
+SOLUTION: Tower property
+$$\mathbb{E}[Y] = \mathbb{E}\Big[\frac{(6+K)+1}{2}\Big] = \frac{7 + \mathbb{E}K}{2} = \frac{7 + 3.5}{2} = \frac{21}{4}.$$
+===END===
+
+===TEASER===
+SLUG: median-of-three-dice
+IDS: Q-163
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: easy
+TITLE: Expected median of three dice
+QUESTION:
+Mike rolls three fair six-sided dice at once. What is the expected value of the median of the three numbers?
+HINT1:
+Look for a symmetry of the die that turns the median into something you know.
+HINT2:
+Replace every result $x$ by $7 - x$. What happens to the median?
+ANSWER:
+$7/2$
+REFRESH:
+If $M \overset{d}{=} c - M$ for a constant $c$, then $\mathbb{E}M = c/2$.
+EXPLANATION:
+The map $x \mapsto 7 - x$ sends a fair die to a fair die and reverses order, so it sends the median $M$ of the three dice to $7 - M$. Hence $M$ and $7 - M$ have the same distribution, forcing $\mathbb{E}M = 3.5$. No computation of the median's distribution is needed.
+SOLUTION: Reflection symmetry
+Let $X_1, X_2, X_3$ be the dice and $M$ their median. The variables $X_i' = 7 - X_i$ are again i.i.d. fair dice, and their median is $7 - M$ (reversing the order keeps the middle element in the middle). So $M \overset{d}{=} 7 - M$, and $\mathbb{E}M = 7 - \mathbb{E}M$, i.e. $\mathbb{E}M = \frac72$.
+SOLUTION: Direct computation
+$\mathbb{P}(M \le k)$ = probability that at least two dice are $\le k$ $= 3\big(\frac k6\big)^2\big(1 - \frac k6\big) + \big(\frac k6\big)^3 = \frac{k^2(18 - 2k)}{216}$. This gives $\mathbb{P}(M \ge k) = 1 - \mathbb{P}(M\le k-1)$ with values $1, \frac{200}{216}, \frac{160}{216}, \frac{108}{216}, \frac{56}{216}, \frac{16}{216}$ for $k = 1,\dots,6$, and
+$$\mathbb{E}M = \sum_{k=1}^6\mathbb{P}(M\ge k) = \frac{216 + 200 + 160 + 108 + 56 + 16}{216} = \frac{756}{216} = \frac72 .$$
+===END===
+
+===TEASER===
+SLUG: rank-die-moments-median-of-five
+IDS: Q-164
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: Ranking three dice moments
+QUESTION:
+Let $X_1, \dots, X_5$ be five independent rolls of a fair six-sided die, and let $X_{(3)}$ be their median. Rank from largest to smallest:
+
+a) $\mathbb{E}[X_1X_2]$, b) $\mathbb{E}[X_1^2]$, c) $\mathbb{E}[X_{(3)}^2]$.
+
+Encode $a = 1$, $b = 2$, $c = 3$ and answer with the three digits in decreasing order of value (for example $321$ if $c > b > a$).
+HINT1:
+All three are "mean squared plus something". Write each as $3.5^2$ plus a variance or covariance.
+HINT2:
+$X_1X_2$ has no variance term; $X_1^2$ carries the full variance $35/12$; the median of five also has mean $3.5$ by symmetry but is more concentrated than a single roll.
+ANSWER:
+$231$ (b > c > a)
+REFRESH:
+$\mathbb{E}[Y^2] = (\mathbb{E}Y)^2 + \operatorname{Var}Y$; for independent $X_1, X_2$, $\mathbb{E}[X_1X_2] = \mathbb{E}X_1\,\mathbb{E}X_2$.
+EXPLANATION:
+All three quantities have the form $3.5^2 + (\text{spread})$:
+- a) independence kills any spread: $\mathbb{E}[X_1X_2] = 3.5^2 = 12.25$;
+- b) $\mathbb{E}[X_1^2] = 12.25 + \frac{35}{12} = \frac{91}{6} \approx 15.17$;
+- c) the median is symmetric about $3.5$ (reflection $x \mapsto 7-x$), so $\mathbb{E}[X_{(3)}^2] = 12.25 + \operatorname{Var}X_{(3)}$, and the median of five is pulled towards the centre, so its variance is positive but smaller than $\frac{35}{12}$.
+
+Hence b > c > a. The exact value of c is $\frac{2207}{162} \approx 13.62$.
+SOLUTION: Exact distribution of the median
+$X_{(3)} \le k$ iff at least three of the five dice are $\le k$. In units of $6^5 = 7776$:
+$$7776\,\mathbb{P}(X_{(3)}\le k) = \sum_{j=3}^{5}\binom5j k^j(6-k)^{5-j}.$$
+For $k = 1, \dots, 6$ this gives $276,\ 1632,\ 3888,\ 6144,\ 7500,\ 7776$, so the probabilities of $X_{(3)} = 1,\dots,6$ are $\frac{1}{7776}(276,\ 1356,\ 2256,\ 2256,\ 1356,\ 276)$. Then
+$$\mathbb{E}[X_{(3)}^2] = \frac{276(1 + 36) + 1356(4 + 25) + 2256(9 + 16)}{7776} = \frac{10212 + 39324 + 56400}{7776} = \frac{105936}{7776} = \frac{2207}{162}\approx 13.62 .$$
+Comparing $12.25 < 13.62 < 15.17$: b > c > a, answer $231$.
+===END===
+
+===TEASER===
+SLUG: blank-die-uniform-sum-one-to-twelve
+IDS: Q-165
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: The unreadable die
+QUESTION:
+You have two fair six-sided dice: a standard one (faces $1$ to $6$) and one whose faces are unreadable and need not be $1$ to $6$. When both are rolled, the sum is equally likely to be each of the integers $1, 2, \dots, 12$. What is the sum of the six numbers on the unreadable die?
+HINT1:
+A sum of $1$ must be possible. What does that force on the unreadable die?
+HINT2:
+Each of the 12 sums must come from exactly 3 of the 36 face pairs. Count how the pairs for sum 1 can arise, then look at which faces can still be used without overfilling the sums $2$ to $6$.
+ANSWER:
+18 (the faces are $0,0,0,6,6,6$)
+EXPLANATION:
+Every sum lies in $1..12$, and each has probability $\frac1{12} = \frac3{36}$, so each sum is produced by exactly 3 of the 36 face pairs. A sum of $1$ can only be $1 + 0$, so the unreadable die needs exactly three $0$s. Those three zeros already produce each of the sums $1$ to $6$ three times, so the other three faces must not touch sums $1$ to $6$ and must fill $7$ to $12$ three times each: they are all $6$. Total $0\cdot3 + 6\cdot3 = 18$. In generating function terms: $(z + \dots + z^6)(3 + 3z^6)/36 = (z + \dots + z^{12})/12$.
+SOLUTION: Forced construction
+Let $a$ be any face of the unreadable die. Rolling it with the standard die gives sums $a+1, \dots, a+6$, all of which must be integers in $[1,12]$, so $a \in \{0,1,\dots,6\}$.
+
+Each sum $s\in\{1,\dots,12\}$ must occur for exactly $36\cdot\frac1{12} = 3$ face pairs. Sum $1$ needs standard face $1$ and unreadable face $0$, so exactly three faces are $0$. These give sums $1,\dots,6$ three times each, so those sums are now full. Any remaining face $a \le 5$ would produce the sum $a + 1 \le 6$ once more, which is impossible; hence the three remaining faces equal $6$, giving sums $7,\dots,12$ three times each. The die is $\{0,0,0,6,6,6\}$ and its total is $18$.
+===END===
+
+===TEASER===
+SLUG: die-single-equals-double-roll-sums
+IDS: Q-168
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: hard
+TITLE: One roll or the sum of two
+QUESTION:
+A six-sided die (faces $1$ to $6$) is loaded so that, for each $k \in \{2,3,4,5,6\}$, the probability of getting $k$ in a single roll equals the probability that the sum of two independent rolls equals $k$. Let $p_1$ be the probability of rolling a $1$. Then $p_1$ is the unique positive root of an equation $\sum_{k=1}^{6}c_kp_1^k = 1$ for some real coefficients $c_1, \dots, c_6$. Find $c_1 + \dots + c_6$.
+HINT1:
+Write $p_2, \dots, p_6$ in terms of $p_1$ one at a time: the sum of two rolls equal to $k$ only involves faces smaller than $k$.
+HINT2:
+$p_2 = p_1^2$, $p_3 = 2p_1p_2$, $p_4 = 2p_1p_3 + p_2^2$, ... Each $p_k$ is a multiple of $p_1^k$. Then impose $p_1 + \dots + p_6 = 1$. Do you recognise the multiples?
+ANSWER:
+$65$
+REFRESH:
+Convolution: $\mathbb{P}(X_1 + X_2 = k) = \sum_{i+j = k}p_ip_j$ for independent copies.
+Catalan numbers: $C_0, C_1, \dots = 1, 1, 2, 5, 14, 42, \dots$, with $C_{n+1} = \sum_{i=0}^{n}C_iC_{n-i}$.
+EXPLANATION:
+The sum of two rolls equals $k$ only through faces $i + j = k$ with $i, j < k$, so the condition determines each $p_k$ from the smaller ones. Writing $p_k = a_kp_1^k$, the equations become $a_k = \sum_{i+j=k}a_ia_j$ with $a_1 = 1$: exactly the Catalan recursion. So $a_k = 1, 1, 2, 5, 14, 42$ and the normalisation reads $p_1 + p_1^2 + 2p_1^3 + 5p_1^4 + 14p_1^5 + 42p_1^6 = 1$. The coefficients sum to $65$. (The left side is increasing in $p_1 > 0$, so the positive root is unique.)
+SOLUTION: Solve the triangular system
+Using $\mathbb{P}(\text{sum}=k) = \sum_{i+j=k}p_ip_j$:
+$$\begin{aligned}
+p_2 &= p_1^2,\\
+p_3 &= 2p_1p_2 = 2p_1^3,\\
+p_4 &= 2p_1p_3 + p_2^2 = 4p_1^4 + p_1^4 = 5p_1^4,\\
+p_5 &= 2p_1p_4 + 2p_2p_3 = 10p_1^5 + 4p_1^5 = 14p_1^5,\\
+p_6 &= 2p_1p_5 + 2p_2p_4 + p_3^2 = 28p_1^6 + 10p_1^6 + 4p_1^6 = 42p_1^6 .
+\end{aligned}$$
+Normalisation: $p_1 + p_1^2 + 2p_1^3 + 5p_1^4 + 14p_1^5 + 42p_1^6 = 1$. The left side is strictly increasing on $(0,\infty)$ from $0$ to $\infty$, so it has a unique positive root. Hence $(c_k) = (1,1,2,5,14,42)$ and $\sum c_k = 65$.
+===END===
+
+===TEASER===
+SLUG: roll-until-six-sum-parity
+IDS: Q-169
+FIRMS: Hudson River Trading
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Is the total even when the 6 arrives?
+QUESTION:
+A fair six-sided die is rolled repeatedly until the first $6$ appears (that roll included). What is the probability that the sum of all the rolls is even?
+HINT1:
+Only the parity of the running total matters, and the final 6 does not change it.
+HINT2:
+Let $p$ be the probability of ending even starting from an even total. One roll: a 6 ends it (even), a 2 or 4 keeps the parity, a 1, 3 or 5 flips it. Write one equation for $p$.
+ANSWER:
+$4/7$
+REFRESH:
+First-step analysis: condition on the first roll and use that the situation afterwards is a copy of the original (or its mirror image).
+EXPLANATION:
+Track only the parity. By symmetry, starting from an odd total you end even with probability $1 - p$. From an even total: with probability $\frac16$ you roll the 6 and stop at even; with probability $\frac26$ you roll 2 or 4 and are in the same situation; with probability $\frac36$ you roll an odd number and are in the mirrored situation. That gives $p = \frac16 + \frac26p + \frac36(1-p)$. The answer is above $\frac12$ because the game often stops early: with probability $\frac16$ the very first roll is the 6, and the total is then even.
+SOLUTION: First-step equation
+$$p = \frac16 + \frac26p + \frac36(1-p) = \frac46 - \frac16p \quad\Longrightarrow\quad \frac76p = \frac46 \quad\Longrightarrow\quad p = \frac47 .$$
+SOLUTION: Sign trick
+Let $G$ be the number of non-6 rolls: $\mathbb{P}(G = k) = \big(\frac56\big)^k\frac16$. Given they are not 6, those rolls are uniform on $\{1,\dots,5\}$, so each is odd with probability $\frac35$ and $\mathbb{E}[(-1)^{\text{roll}}] = \frac25 - \frac35 = -\frac15$. The total's parity is that of the non-6 rolls, so
+$$\mathbb{E}[(-1)^{\text{sum}}] = \sum_{k\ge0}\frac16\Big(\frac56\Big)^k\Big(-\frac15\Big)^k = \frac16\sum_{k\ge0}\Big(-\frac16\Big)^k = \frac{1/6}{7/6} = \frac17 .$$
+Since $\mathbb{E}[(-1)^{\text{sum}}] = \mathbb{P}(\text{even}) - \mathbb{P}(\text{odd}) = 2\mathbb{P}(\text{even}) - 1$, we get $\mathbb{P}(\text{even}) = \frac{1 + 1/7}{2} = \frac47$.
+===END===
+
+===TEASER===
+SLUG: nine-dice-product-multiple-of-four
+IDS: Q-172
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Nine dice, product divisible by 4
+QUESTION:
+Yungeun rolls $9$ fair six-sided dice at once. What is the probability that the product of the nine numbers is a multiple of $4$?
+HINT1:
+Go through the complement: when does the product fail to have two factors of 2?
+HINT2:
+Classify the faces by their power of 2: odd faces $\{1,3,5\}$ contribute none, $\{2,6\}$ contribute one, $4$ contributes two.
+ANSWER:
+$505/512$
+EXPLANATION:
+The product is not a multiple of 4 exactly when the dice contribute at most one factor of 2 in total: either all nine dice are odd, or exactly one die is a 2 or a 6 and the rest are odd. Both are rare, so the answer is close to 1:
+$$1 - \Big(\frac12\Big)^9 - 9\cdot\frac13\Big(\frac12\Big)^8 = 1 - \frac{1}{512} - \frac{6}{512} = \frac{505}{512}.$$
+SOLUTION: Complement
+Per die: odd with probability $\frac12$ (no factor 2), in $\{2,6\}$ with probability $\frac13$ (exactly one factor 2), equal to $4$ with probability $\frac16$ (two factors 2).
+
+The product has fewer than two factors of 2 iff
+- all nine dice are odd: $\big(\frac12\big)^9 = \frac1{512}$, or
+- exactly one die is in $\{2,6\}$ and the other eight are odd: $9\cdot\frac13\cdot\big(\frac12\big)^8 = \frac{3}{256} = \frac{6}{512}$.
+
+So $\mathbb{P}(4 \mid \text{product}) = 1 - \frac{7}{512} = \frac{505}{512} \approx 0.986$.
+===END===
+
+===TEASER===
+SLUG: red-blue-d10-earn-until-doubles
+IDS: Q-174
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Red and blue d10s until doubles
+QUESTION:
+A red and a blue fair ten-sided die (faces $1$ to $10$) are rolled together, repeatedly. If they show the same number, the game ends. If the blue die shows a number at least $3$ larger than the red die, you earn $1$ and the dice are rolled again. In every other case the dice are rolled again with no payment. What are your expected total earnings?
+HINT1:
+How many rounds are played on average, and what fraction of the non-final rounds pay?
+HINT2:
+Out of 100 outcomes, count those with equal dice and those with blue $\ge$ red $+ 3$. The final round never pays.
+ANSWER:
+$14/5 = 2.8$
+REFRESH:
+If rounds are i.i.d. and the game stops at the first round in event $E$, the number of rounds before the last one has mean $\frac{1-\mathbb{P}(E)}{\mathbb{P}(E)}$, and each of those rounds is distributed as a round conditioned on $E^c$.
+EXPLANATION:
+Doubles happen in $10$ of the $100$ outcomes, so the game lasts $10$ rounds on average, $9$ of which are non-final. A paying outcome (blue $-$ red $\ge 3$) occurs in $7 + 6 + \dots + 1 = 28$ of the $100$ outcomes, i.e. in $28$ of the $90$ non-doubles. Each non-final round pays with probability $28/90$, so the expected earnings are $9\cdot\frac{28}{90} = 2.8$. Equivalently, compare the two event rates directly: paying rounds occur at rate $28$ and ending rounds at rate $10$ per 100 rolls, so on average $28/10$ payments happen before the end.
+SOLUTION: Rate ratio
+Count ordered outcomes (red $r$, blue $b$): doubles $b = r$: $10$. Paying $b - r = d$ with $d \in\{3,\dots,9\}$: $10 - d$ each, total $7+6+5+4+3+2+1 = 28$.
+
+Let $V$ be the expected earnings. Conditioning on the first round:
+$$V = \frac{28}{100}(1 + V) + \frac{62}{100}V + \frac{10}{100}\cdot 0 \quad\Longrightarrow\quad \frac{10}{100}V = \frac{28}{100} \quad\Longrightarrow\quad V = \frac{28}{10} = \frac{14}{5}.$$
+SOLUTION: Wald's identity
+The number of rounds $N$ is geometric with success probability $\frac1{10}$, so $\mathbb{E}N = 10$. The payment in round $n$ is $\mathbf 1\{b_n - r_n \ge 3\}$, i.i.d. with mean $0.28$, and $N$ is a stopping time, so $\mathbb{E}[\text{earnings}] = \mathbb{E}N\cdot 0.28 = 2.8$ (the final round, a double, pays 0 automatically and is included harmlessly).
+===END===

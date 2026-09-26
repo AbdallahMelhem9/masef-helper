@@ -1,24 +1,37 @@
 <div class="page">
   <nav class="crumbs">
     <a routerLink="/teasers">Puzzles</a>
-    @if (section(); as s) {
-      <span class="crumb-sep">/</span>
-      <a [routerLink]="['/teasers', s]">{{ SECTION_INFO[s].title }}</a>
-    }
-    @if (category(); as c) {
-      <span class="crumb-sep">/</span>
-      <span>{{ c }}</span>
+    @switch (view()) {
+      @case ('topics') {
+        <span class="crumb-sep">/</span><span>By topic</span>
+      }
+      @case ('section') {
+        <span class="crumb-sep">/</span><a routerLink="/teasers/topics">By topic</a>
+        <span class="crumb-sep">/</span><span>{{ title() }}</span>
+      }
+      @case ('category') {
+        <span class="crumb-sep">/</span><a routerLink="/teasers/topics">By topic</a>
+        <span class="crumb-sep">/</span><a [routerLink]="['/teasers', section()]">{{ SECTION_INFO[section()!].title }}</a>
+        <span class="crumb-sep">/</span><span>{{ title() }}</span>
+      }
+      @case ('companies') {
+        <span class="crumb-sep">/</span><span>By company</span>
+      }
+      @case ('company') {
+        <span class="crumb-sep">/</span><a routerLink="/teasers/companies">By company</a>
+        <span class="crumb-sep">/</span><span>{{ title() }}</span>
+      }
     }
   </nav>
 
   <header class="page-head">
     <div>
       <p class="eyebrow">Interview preparation</p>
-      <h1>{{ category() || (section() ? SECTION_INFO[section()!].title : 'Brain teasers & probability') }}</h1>
+      <h1>{{ title() }}</h1>
     </div>
-    <div class="book-filter" role="group" aria-label="Books">
+    <div class="book-filter" role="group" aria-label="Sources">
       @for (b of BOOKS; track b.key) {
-        <button type="button" class="book-chip" [class]="'book-chip chip-' + b.key" [class.on]="books().includes(b.key)" [title]="b.full" (click)="toggleBook(b.key)">
+        <button type="button" [class]="'book-chip chip-' + b.key" [class.on]="books().includes(b.key)" [title]="b.full" (click)="toggleBook(b.key)">
           {{ b.label }}
         </button>
       }
@@ -29,68 +42,134 @@
     <p class="error-note">{{ error() }}</p>
   } @else if (!all()) {
     <p class="loading">Loading the puzzles&hellip;</p>
-  } @else if (!section()) {
-    <!-- Home: the two sections -->
-    <div class="section-grid">
-      @for (s of sections; track s) {
-        <a class="section-card" [class]="'section-card sec-' + s" [routerLink]="['/teasers', s]">
-          <span class="section-glyph" aria-hidden="true">{{ s === 'brainteaser' ? '?' : 'P' }}</span>
-          <h2>{{ SECTION_INFO[s].title }}</h2>
-          <p>{{ SECTION_INFO[s].blurb }}</p>
-          <div class="progress-line">
-            <div class="bar"><span [style.width.%]="pct(sectionStats()[s].done, sectionStats()[s].total)"></span></div>
-            <span class="count">{{ sectionStats()[s].done }} / {{ sectionStats()[s].total }} done</span>
-          </div>
-        </a>
-      }
-    </div>
-  } @else if (!category()) {
-    <!-- A section: its categories -->
-    @if (groups().length === 0) {
-      <p class="loading">No puzzles here for the selected books.</p>
-    }
-    <div class="cat-grid">
-      @for (g of groups(); track g.slug) {
-        <a class="cat-card" [routerLink]="['/teasers', section(), g.slug]" [class.all-done]="g.done === g.total">
-          <h2>{{ g.name }}</h2>
-          <div class="progress-line">
-            <div class="bar"><span [style.width.%]="pct(g.done, g.total)"></span></div>
-            <span class="count">{{ g.done }} / {{ g.total }}</span>
-          </div>
-        </a>
-      }
-    </div>
   } @else {
-    <!-- A category: its puzzles -->
-    <div class="list-tools">
-      <span class="count">{{ categoryTotals().done }} of {{ categoryTotals().total }} completed</span>
-      <button type="button" class="head-btn" [class.on]="hideDone()" (click)="toggleHideDone()">Hide completed</button>
-    </div>
-    <ol class="teaser-list">
-      @for (t of items(); track t.slug; let i = $index) {
-        <li>
-          <a class="teaser-row" [routerLink]="['/teaser', t.slug]" [class.done]="t.completed">
-            <span class="tick" [class.on]="t.completed" aria-hidden="true">
-              @if (t.completed) {
-                <svg viewBox="0 0 24 24" width="14" height="14"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.4-1.4z" fill="currentColor" /></svg>
-              }
-            </span>
-            @if (t.hasIllustration) {
-              <img class="row-ill" [src]="'/api/teasers/' + t.slug + '/illustration.svg'" alt="" loading="lazy" />
-            }
-            <span class="row-title">{{ t.title }}</span>
-            @if (t.hasBoard) {
-              <span class="row-board" title="You have written on this board">board</span>
-            }
-            @if (t.difficulty) {
-              <span class="diff" [class]="'diff diff-' + t.difficulty">{{ t.difficulty }}</span>
-            }
-            <app-book-tags [books]="t.books" />
+    @switch (view()) {
+      @case ('home') {
+        <div class="section-grid">
+          <a class="section-card" routerLink="/teasers/topics">
+            <span class="section-glyph" aria-hidden="true">&Sigma;</span>
+            <h2>By topic</h2>
+            <p>Brain teasers, probability, trading &mdash; then a category: counting, Bayes, market making&hellip;</p>
+            <div class="progress-line">
+              <div class="bar"><span [style.width.%]="pct(stats().done, stats().total)"></span></div>
+              <span class="count">{{ stats().done }} / {{ stats().total }} done</span>
+            </div>
           </a>
-        </li>
-      } @empty {
-        <p class="loading">Nothing left here &mdash; everything is completed.</p>
+          <a class="section-card sec-probability" routerLink="/teasers/companies">
+            <span class="section-glyph" aria-hidden="true">&#8962;</span>
+            <h2>By company</h2>
+            <p>Questions reported from {{ stats().firms }} firms: Jane Street, Citadel, SIG, Optiver, IMC&hellip;</p>
+            <div class="progress-line">
+              <div class="bar"><span [style.width.%]="pct(stats().firmDone, stats().firmTotal)"></span></div>
+              <span class="count">{{ stats().firmDone }} / {{ stats().firmTotal }} done</span>
+            </div>
+          </a>
+        </div>
       }
-    </ol>
+      @case ('topics') {
+        <div class="section-grid">
+          @for (s of sections; track s) {
+            @if (sectionStats()[s].total) {
+              <a [class]="'section-card sec-' + s" [routerLink]="['/teasers', s]">
+                <span class="section-glyph" aria-hidden="true">{{ SECTION_INFO[s].glyph }}</span>
+                <h2>{{ SECTION_INFO[s].title }}</h2>
+                <p>{{ SECTION_INFO[s].blurb }}</p>
+                <div class="progress-line">
+                  <div class="bar"><span [style.width.%]="pct(sectionStats()[s].done, sectionStats()[s].total)"></span></div>
+                  <span class="count">{{ sectionStats()[s].done }} / {{ sectionStats()[s].total }} done</span>
+                </div>
+              </a>
+            }
+          }
+        </div>
+      }
+      @case ('section') {
+        @if (groups().length === 0) {
+          <p class="loading">No puzzles here for the selected sources.</p>
+        }
+        <div class="cat-grid">
+          @for (g of groups(); track g.slug) {
+            <a class="cat-card" [routerLink]="['/teasers', section(), g.slug]" [class.all-done]="g.done === g.total">
+              <h2>{{ g.name }}</h2>
+              <div class="progress-line">
+                <div class="bar"><span [style.width.%]="pct(g.done, g.total)"></span></div>
+                <span class="count">{{ g.done }} / {{ g.total }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      }
+      @case ('category') {
+        <div class="list-tools">
+          <span class="count">{{ categoryTotals().done }} of {{ categoryTotals().total }} completed</span>
+          <button type="button" class="head-btn" [class.on]="hideDone()" (click)="toggleHideDone()">Hide completed</button>
+        </div>
+        <ol class="teaser-list">
+          @for (t of items(); track t.slug) {
+            <li><ng-container *ngTemplateOutlet="row; context: { $implicit: t, firm: null }" /></li>
+          } @empty {
+            <p class="loading">Nothing left here &mdash; everything is completed.</p>
+          }
+        </ol>
+      }
+      @case ('companies') {
+        <div class="cat-grid">
+          @for (g of firmGroups(); track g.slug) {
+            <a class="cat-card firm-card" [routerLink]="['/teasers/company', g.slug]" [class.all-done]="g.done === g.total">
+              <h2>{{ g.name }}</h2>
+              <div class="progress-line">
+                <div class="bar"><span [style.width.%]="pct(g.done, g.total)"></span></div>
+                <span class="count">{{ g.done }} / {{ g.total }}</span>
+              </div>
+            </a>
+          } @empty {
+            <p class="loading">No company-tagged questions for the selected sources.</p>
+          }
+        </div>
+      }
+      @case ('company') {
+        @if (firm(); as f) {
+          <div class="list-tools">
+            <span class="count">{{ firmTotals().done }} of {{ firmTotals().total }} completed</span>
+            <button type="button" class="head-btn" [class.on]="hideDone()" (click)="toggleHideDone()">Hide completed</button>
+          </div>
+          @for (h of firmHeadings(); track h.section + h.category) {
+            <h3 class="list-heading">
+              <span>{{ SECTION_INFO[h.section].title }}</span> &middot; {{ h.category }}
+            </h3>
+            <ol class="teaser-list">
+              @for (t of h.items; track t.slug) {
+                <li><ng-container *ngTemplateOutlet="row; context: { $implicit: t, firm: f }" /></li>
+              }
+            </ol>
+          } @empty {
+            <p class="loading">Nothing left here &mdash; everything is completed.</p>
+          }
+        } @else {
+          <p class="loading">No questions tagged with this company.</p>
+        }
+      }
+    }
   }
 </div>
+
+<ng-template #row let-t let-firm="firm">
+  <a class="teaser-row" [routerLink]="['/teaser', t.slug]" [queryParams]="firm ? { firm: firm } : null" [class.done]="t.completed">
+    <span class="tick" [class.on]="t.completed" aria-hidden="true">
+      @if (t.completed) {
+        <svg viewBox="0 0 24 24" width="14" height="14"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.4-1.4z" fill="currentColor" /></svg>
+      }
+    </span>
+    @if (t.hasIllustration) {
+      <img class="row-ill" [src]="'/api/teasers/' + t.slug + '/illustration.svg'" alt="" loading="lazy" />
+    }
+    <span class="row-title">{{ t.title }}</span>
+    @if (t.hasBoard) {
+      <span class="row-board" title="You have written on this board">board</span>
+    }
+    @if (t.difficulty) {
+      <span [class]="'diff diff-' + t.difficulty">{{ t.difficulty }}</span>
+    }
+    <app-book-tags [books]="t.books" [firms]="t.firms" />
+  </a>
+</ng-template>

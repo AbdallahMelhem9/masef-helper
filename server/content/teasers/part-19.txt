@@ -1,0 +1,913 @@
+===TEASER===
+SLUG: ordered-triples-nine-vs-eight
+IDS: Q-360
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Triples from 1–9 against triples from 1–8
+QUESTION:
+Player A picks $3$ distinct integers uniformly at random from $\{1,\dots,9\}$ and writes them in decreasing order, forming a three-digit number (e.g. $\{2,7,5\}\to 752$). Player B does the same with $3$ distinct integers from $\{1,\dots,8\}$.
+
+What is the probability that A's number is strictly larger than B's? Solve it by hand.
+HINT1:
+The two players are almost in the same situation. What is the one thing A can have that B can never have?
+HINT2:
+Split on whether A's triple contains a $9$. If it does, A wins for sure. If it does not, A's triple is a uniform $3$-subset of $\{1,\dots,8\}$, exactly like B's: use symmetry, but remember ties.
+ANSWER:
+$\dfrac{37}{56}$
+REFRESH:
+- **Lexicographic order**: two numbers written with digits in decreasing order compare like their largest digits first, then second largest, then smallest.
+- **Symmetry**: if $U$ and $V$ are i.i.d., then $P(U>V)=P(V>U)=\frac{1-P(U=V)}{2}$.
+EXPLANATION:
+A has one extra card in their deck: the $9$. Whenever A draws it, A's number starts with a $9$ while B's starts with at most an $8$, so A wins outright. Whenever A does not draw it, A is drawing from exactly the same pool as B, and the game is perfectly symmetric: A wins as often as B, and the only thing to subtract is the chance of an exact tie.
+
+The probability A draws the $9$ is $\frac{3}{9}=\frac13$ (the $9$ is one of $9$ equally likely numbers and A takes $3$ of them). Conditional on no $9$, A's triple is uniform among the $\binom83=56$ subsets of $\{1,\dots,8\}$, independent of B's, so a tie has probability $\frac1{56}$ and A wins with probability $\frac12\left(1-\frac1{56}\right)=\frac{55}{112}$.
+SOLUTION: Condition on the 9
+Let $N$ be the event that A's triple contains $9$. There are $\binom93=84$ triples for A, and $\binom82=28$ of them contain $9$, so $P(N)=\frac{28}{84}=\frac13$.
+
+On $N$, A's leading digit is $9$ and B's leading digit is at most $8$, so A wins: $P(\text{A wins}\mid N)=1$.
+
+On $N^c$, A's triple is uniform among the $\binom83=56$ triples from $\{1,\dots,8\}$, and so is B's, independently. Distinct triples give distinct numbers, so
+$$P(\text{tie}\mid N^c)=\frac{56}{56^2}=\frac1{56},\qquad P(\text{A wins}\mid N^c)=\frac{1-\frac1{56}}{2}=\frac{55}{112}.$$
+Therefore
+$$P(\text{A wins})=\frac13\cdot 1+\frac23\cdot\frac{55}{112}=\frac{56}{168}+\frac{55}{168}=\frac{111}{168}=\frac{37}{56}\approx 0.661.$$
+===END===
+===TEASER===
+SLUG: coin-sequence-htht-four-tosses
+IDS: Q-361
+FIRMS: Goldman Sachs
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Exactly HTHT in four tosses
+QUESTION:
+You toss a fair coin $4$ times. What is the probability that the results are exactly $H,T,H,T$ in that order?
+HINT1:
+How many different outcomes are possible for four tosses, and are they equally likely?
+HINT2:
+The tosses are independent, and each must land on one specific face.
+ANSWER:
+$\dfrac1{16}$
+REFRESH:
+- **Independence**: for independent events, $P(A_1\cap\dots\cap A_n)=P(A_1)\cdots P(A_n)$.
+EXPLANATION:
+Four tosses of a fair coin produce one of $2^4=16$ sequences, all equally likely. Asking for one specific sequence (order included) means asking for one of these $16$ outcomes. Any specific sequence, $HHHH$ included, has the same probability; the pattern $HTHT$ is not special.
+SOLUTION: Independence
+Each toss must show a prescribed face, which happens with probability $\frac12$, independently:
+$$P(HTHT)=\tfrac12\cdot\tfrac12\cdot\tfrac12\cdot\tfrac12=\tfrac1{16}.$$
+SOLUTION: Counting outcomes
+There are $2^4=16$ equally likely ordered outcomes and exactly one of them is $HTHT$, so the probability is $\frac1{16}$.
+===END===
+===TEASER===
+SLUG: mississippi-palindrome-arrangements
+IDS: Q-364
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Palindromes from MISSISSIPPI
+QUESTION:
+How many distinct rearrangements of the letters of $MISSISSIPPI$ are palindromes (read the same forwards and backwards)?
+HINT1:
+Count the letters. In a palindrome of odd length, which position is special, and what must be true of the letters that are not in it?
+HINT2:
+Every letter except the middle one appears in mirror pairs, so each letter with an odd count must sit in the middle. Once the middle is fixed, the palindrome is determined by its first half.
+ANSWER:
+$30$
+REFRESH:
+- **Multinomial coefficient**: the number of distinct arrangements of $n$ objects with $n_1,\dots,n_k$ identical copies of each type is $\dfrac{n!}{n_1!\cdots n_k!}$.
+EXPLANATION:
+The word has $11$ letters: $M\times1$, $I\times4$, $S\times4$, $P\times2$. A palindrome of length $11$ has a middle letter (position $6$) and five mirrored pairs (positions $1$–$11$, $2$–$10$, …, $5$–$7$). Letters in pairs are used an even number of times, so the only letter with an odd count, $M$, must be in the middle. The rest ($4$ I's, $4$ S's, $2$ P's) splits into halves of $2$ I's, $2$ S's and $1$ P, and the left half determines the right half by mirroring. So we just count arrangements of the word $IISSP$.
+SOLUTION: Fix the middle, count the half
+Letter counts: $M:1,\ I:4,\ S:4,\ P:2$. Only $M$ has odd multiplicity, so the middle (6th) letter is $M$.
+
+Positions $1$–$5$ are mirrored in positions $11$–$7$, so the first five positions contain half of each remaining letter: $2$ I's, $2$ S's, $1$ P. Every arrangement of these five letters gives exactly one palindrome, and different arrangements give different palindromes. Hence
+$$\#\text{palindromes}=\frac{5!}{2!\,2!\,1!}=\frac{120}{4}=30.$$
+===END===
+===TEASER===
+SLUG: hundred-statements-at-most-k-true
+IDS: Q-365
+FIRMS: Squarepoint Capital
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: One hundred "at most" statements
+QUESTION:
+A list contains $100$ statements. Statement $1$ says "at most $0$ of these statements are true", statement $2$ says "at most $1$ of these statements are true", and in general statement $k$ says "at most $k-1$ of these statements are true", up to statement $100$: "at most $99$ of these statements are true".
+
+Which statements are true, and how many are there?
+HINT1:
+Suppose exactly $T$ statements are true. For a given $k$, when is statement $k$ true?
+HINT2:
+Statement $k$ is true exactly when $T\le k-1$. Count how many $k$ satisfy this and require the count to equal $T$.
+ANSWER:
+Statements $51$ to $100$ are true (and $1$ to $50$ false): $50$ true statements.
+REFRESH:
+NONE
+EXPLANATION:
+The statements are nested: if statement $k$ is true then so is every later one, because "at most $k-1$" implies "at most $k$". So the true statements form a tail $k_0,k_0+1,\dots,100$. The number of true statements must then be consistent with what they claim: the tail has $101-k_0$ members, and the first true one says the number of true ones is at most $k_0-1$, while the last false one (statement $k_0-1$) says it is at most $k_0-2$, which must fail. Self-consistency pins down the split exactly in the middle.
+SOLUTION: Fixed-point equation
+Let $T$ be the number of true statements. Statement $k$ says $T\le k-1$, so it is true if and only if $k\ge T+1$. The true statements are therefore $T+1,T+2,\dots,100$, which is $100-T$ statements. Consistency requires
+$$100-T=T\quad\Longrightarrow\quad T=50.$$
+Check: with $T=50$, statement $k$ is true iff $k\ge51$. Statements $51,\dots,100$ (fifty of them) claim "at most $50,\dots,99$ true", all correct; statements $1,\dots,50$ claim "at most $0,\dots,49$ true", all false. The situation is consistent, and it is the only one.
+===END===
+===TEASER===
+SLUG: expected-peaks-in-permutation
+IDS: Q-370
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Expected number of peaks
+QUESTION:
+Fourteen cards labelled $1$ to $14$ are laid in a row in uniformly random order. Position $i$ is a **peak** if its number is larger than each of its neighbours (the two end positions have only one neighbour). For example, with $6$ cards, $513246$ has $3$ peaks: positions $1$, $3$ and $6$.
+
+What is the expected number of peaks?
+HINT1:
+Counting peaks directly over all $14!$ orders is hopeless. Write the count as a sum of simple indicators.
+HINT2:
+By linearity of expectation you only need, for each position, the probability that it is a peak. For an end position this involves $2$ cards, for an interior position $3$ cards.
+ANSWER:
+$5$
+REFRESH:
+- **Linearity of expectation**: $E[\sum_i I_i]=\sum_i P(I_i=1)$ for indicators, with no independence needed.
+- In a uniform random permutation, any fixed set of $m$ positions contains $m$ distinct values in uniformly random relative order.
+EXPLANATION:
+Whether a position is a peak depends only on the relative order of that card and its neighbours. For an end position, it is a peak if it beats its single neighbour, which happens half the time. For an interior position, it is a peak if it is the largest of three cards, which happens a third of the time. Linearity lets us add these up even though neighbouring peaks are strongly dependent (two adjacent positions can never both be peaks).
+SOLUTION: Indicators and linearity
+Let $I_i=1$ if position $i$ is a peak. Then the number of peaks is $P=\sum_{i=1}^{14}I_i$.
+
+- $i=1$ or $i=14$: the peak condition compares $2$ distinct values in random order, so $P(I_i=1)=\frac12$.
+- $2\le i\le 13$ (twelve positions): the card at $i$ must be the largest of $3$ values in random relative order, so $P(I_i=1)=\frac13$.
+
+Hence
+$$E[P]=2\cdot\frac12+12\cdot\frac13=1+4=5.$$
+In general, for $n\ge2$ cards, $E[P]=1+\frac{n-2}{3}=\frac{n+1}{3}$.
+===END===
+===TEASER===
+SLUG: fixed-points-variance-y-minus-x
+IDS: Q-373
+FIRMS: WorldQuant
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Variance of fixed minus moved
+QUESTION:
+A permutation of $(1,2,\dots,1000)$ is chosen uniformly at random. Let $Y$ be the number of elements that stay in their original position (fixed points) and $X$ the number of elements that move. Find $\operatorname{Var}(Y-X)$.
+HINT1:
+$X$ and $Y$ are not two separate random quantities: they are tied together by a simple identity.
+HINT2:
+Since $X+Y=1000$, write $Y-X$ as an affine function of $Y$ alone, then compute $\operatorname{Var}(Y)$ with indicators $I_i=\mathbf 1\{\sigma(i)=i\}$.
+ANSWER:
+$4$
+REFRESH:
+- $\operatorname{Var}(aY+b)=a^2\operatorname{Var}(Y)$.
+- $\operatorname{Var}\left(\sum_i I_i\right)=\sum_i\operatorname{Var}(I_i)+\sum_{i\ne j}\operatorname{Cov}(I_i,I_j)$.
+EXPLANATION:
+Every element either stays or moves, so $X=1000-Y$ and $Y-X=2Y-1000$: all the randomness is in the number of fixed points. The famous fact is that the number of fixed points of a random permutation has mean $1$ and variance $1$ for any $n\ge2$ (it is approximately Poisson$(1)$). Doubling a random variable multiplies its variance by $4$.
+SOLUTION: Indicators
+Let $n=1000$ and $I_i=\mathbf 1\{\sigma(i)=i\}$, so $Y=\sum_i I_i$ and $X=n-Y$, hence $Y-X=2Y-n$ and $\operatorname{Var}(Y-X)=4\operatorname{Var}(Y)$.
+
+$P(I_i=1)=\frac1n$, so $\operatorname{Var}(I_i)=\frac1n\left(1-\frac1n\right)$. For $i\ne j$, $P(I_i=I_j=1)=\frac{(n-2)!}{n!}=\frac1{n(n-1)}$, so
+$$\operatorname{Cov}(I_i,I_j)=\frac1{n(n-1)}-\frac1{n^2}=\frac1{n^2(n-1)}.$$
+Summing over the $n$ diagonal terms and the $n(n-1)$ ordered pairs:
+$$\operatorname{Var}(Y)=n\cdot\frac1n\left(1-\frac1n\right)+n(n-1)\cdot\frac1{n^2(n-1)}=1-\frac1n+\frac1n=1.$$
+Therefore $\operatorname{Var}(Y-X)=4\cdot1=4$.
+===END===
+===TEASER===
+SLUG: pipe-building-alice-bob-charlie
+IDS: Q-374
+FIRMS: Transmarket Group
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Charlie joins the pipe crew
+QUESTION:
+Working alone, Alice builds a pipe in $120$ minutes and Bob builds one in $100$ minutes. They start building a pipe together; after $40$ minutes Charlie joins them, and the three of them finish the pipe $10$ minutes later. How many minutes would Charlie need to build the pipe alone?
+HINT1:
+Measure work in "fractions of a pipe" and speeds in "pipe per minute".
+HINT2:
+Alice and Bob work for $50$ minutes in total. Whatever they have not built is Charlie's share, done in $10$ minutes.
+ANSWER:
+$120$ minutes
+REFRESH:
+- **Work rates add**: if workers take $t_1,t_2,\dots$ alone, their joint rate is $\frac1{t_1}+\frac1{t_2}+\dots$ jobs per unit time.
+EXPLANATION:
+Alice and Bob never stop working, so they contribute $50$ minutes of joint work. Charlie only contributes $10$ minutes. Compute what fraction of the pipe Alice and Bob built; the rest is what Charlie did in $10$ minutes, and scaling up gives his solo time.
+SOLUTION: Work rates
+Alice's rate is $\frac1{120}$ pipe/min and Bob's is $\frac1{100}$ pipe/min, together
+$$\frac1{120}+\frac1{100}=\frac{5+6}{600}=\frac{11}{600}\ \text{pipe/min}.$$
+In $50$ minutes they build $50\cdot\frac{11}{600}=\frac{550}{600}=\frac{11}{12}$ of the pipe. Charlie builds the remaining $\frac1{12}$ in $10$ minutes, so his rate is $\frac1{120}$ pipe/min and he would need $120$ minutes alone.
+===END===
+===TEASER===
+SLUG: pizza-makers-total-standard-deviation
+IDS: Q-376
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Standard deviation of 25 pizza makers
+QUESTION:
+A pizzeria has $25$ employees who work independently. The number of pizzas each employee makes in a day has standard deviation $60$. What is the standard deviation of the total number of pizzas the restaurant makes in a day?
+HINT1:
+Standard deviations do not add. What does add for independent quantities?
+HINT2:
+Variances of independent random variables add. Convert to variances, add, and take a square root.
+ANSWER:
+$300$
+REFRESH:
+- For independent $X_1,\dots,X_n$: $\operatorname{Var}(X_1+\dots+X_n)=\operatorname{Var}(X_1)+\dots+\operatorname{Var}(X_n)$.
+EXPLANATION:
+Independent fluctuations partly cancel: one worker having a good day and another a bad day offset each other. That is why the total's standard deviation grows like $\sqrt n$ and not like $n$. With $25$ workers it is $\sqrt{25}=5$ times one worker's standard deviation, not $25$ times.
+SOLUTION: Add variances
+Each worker's variance is $60^2=3600$. By independence,
+$$\operatorname{Var}(\text{total})=25\cdot3600=90000,\qquad \sigma_{\text{total}}=\sqrt{90000}=300.$$
+Equivalently $\sigma_{\text{total}}=\sqrt{25}\cdot60=5\cdot60=300$.
+===END===
+===TEASER===
+SLUG: poisoned-wine-eight-barrels-three-servants
+IDS: Q-378
+FIRMS: Five Rings, Goldman Sachs, Jane Street, Two Sigma
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: medium
+TITLE: Eight barrels, three tasters
+QUESTION:
+A king owns $8$ barrels of wine, exactly one of which is poisoned. Anyone who drinks any amount from the poisoned barrel dies exactly $1$ month later (and shows no sign before). Three servants volunteer to taste. What is the minimum number of months needed to identify the poisoned barrel for certain?
+HINT1:
+A servant can drink from several barrels at once. At the end of the month, what information does the group give you?
+HINT2:
+After one month, each servant is either dead or alive: that is $2^3$ possible outcomes. Try to give each barrel its own outcome pattern.
+ANSWER:
+$1$ month
+REFRESH:
+- **Binary representation**: every integer from $0$ to $7$ has a unique $3$-bit binary expansion $b_2b_1b_0$.
+EXPLANATION:
+Testing barrels one by one with each servant would take many rounds. The trick is to let every servant drink from many barrels simultaneously, so that the set of servants who die works as a code for the poisoned barrel. Three servants, each dead or alive, give $2^3=8$ possible results, exactly enough to distinguish $8$ barrels, and one month is obviously necessary since no one learns anything before a month has passed.
+SOLUTION: Binary coding
+Number the barrels $0,1,\dots,7$ and write each number in binary with $3$ bits. Servant $j$ ($j=0,1,2$) drinks from every barrel whose bit $j$ equals $1$:
+- servant $0$ drinks from barrels $1,3,5,7$;
+- servant $1$ drinks from barrels $2,3,6,7$;
+- servant $2$ drinks from barrels $4,5,6,7$.
+
+After one month, write $1$ for each servant who died and $0$ for each survivor. The resulting bit string $b_2b_1b_0$ is the binary number of the poisoned barrel: servant $j$ dies exactly when the poisoned barrel has bit $j$ equal to $1$. For example, if only servants $0$ and $2$ die, the barrel is $101_2=5$. (If nobody dies, it is barrel $0$.)
+
+Fewer than one month is impossible because no information arrives before then, so the minimum is $1$ month.
+===END===
+===TEASER===
+SLUG: kiddie-pool-two-hoses-and-drain
+IDS: Q-380
+FIRMS: SIG
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Two hoses and an open drain
+QUESTION:
+One hose fills an inflatable kiddie pool in $20$ minutes and a second hose fills it in $10$ minutes. With the drain open, a full pool empties in $15$ minutes. Starting from empty, how long does it take to fill the pool with both hoses running and the drain open?
+HINT1:
+Think in "pools per minute" for each hose and for the drain.
+HINT2:
+The drain contributes a negative rate. Add the three rates.
+ANSWER:
+$12$ minutes
+REFRESH:
+- **Rates add**: if devices fill a tank alone in $t_1,t_2$ and drain it in $t_3$, the net rate is $\frac1{t_1}+\frac1{t_2}-\frac1{t_3}$ tanks per unit time.
+EXPLANATION:
+Per minute the first hose adds $\frac1{20}$ of a pool, the second $\frac1{10}$, and the drain removes $\frac1{15}$. Assuming the drain flows at a constant rate, the net effect is a single "virtual hose" whose rate is the sum, and the filling time is its reciprocal.
+SOLUTION: Net rate
+Using $60$ as a common denominator:
+$$\frac1{20}+\frac1{10}-\frac1{15}=\frac{3}{60}+\frac{6}{60}-\frac{4}{60}=\frac5{60}=\frac1{12}\ \text{pool/min}.$$
+The pool therefore fills in $12$ minutes.
+===END===
+===TEASER===
+SLUG: interview-prep-offer-bayes
+IDS: Q-383
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Did the offer come from heavy prep?
+QUESTION:
+Among candidates, $45\%$ do not use a certain interview-prep platform, $30\%$ are light users and $25\%$ are heavy users. A heavy user is twice as likely to get an offer as a light user, and a light user is twice as likely to get an offer as a non-user. Given that a candidate received an offer, what is the probability that they were a heavy user?
+HINT1:
+You are not told any offer probability in absolute terms. Does that matter?
+HINT2:
+Let $p$ be a non-user's offer probability; then light users have $2p$ and heavy users $4p$. Apply Bayes' rule and watch $p$ cancel.
+ANSWER:
+$\dfrac{20}{41}$
+REFRESH:
+- **Bayes' rule**: $P(A_i\mid B)=\dfrac{P(B\mid A_i)P(A_i)}{\sum_j P(B\mid A_j)P(A_j)}$ for a partition $(A_j)$.
+EXPLANATION:
+Among people who got offers, each group is represented in proportion to (group size) × (group's offer rate). Heavy users are a small group ($25\%$) but with the highest rate ($4$ units), so their weight is $0.25\times4=1$, against $0.30\times2=0.6$ for light users and $0.45\times1=0.45$ for non-users. The heavy users' share of offers is their weight over the total weight; the unknown base rate $p$ is a common factor and cancels.
+SOLUTION: Bayes' rule
+Let $p$ be the offer probability of a non-user. Then
+$$P(\text{offer})=0.45p+0.30\cdot2p+0.25\cdot4p=(0.45+0.60+1.00)p=2.05p.$$
+Hence
+$$P(\text{heavy}\mid\text{offer})=\frac{0.25\cdot4p}{2.05p}=\frac{1}{2.05}=\frac{100}{205}=\frac{20}{41}\approx0.488.$$
+===END===
+===TEASER===
+SLUG: prime-faced-dice-prime-sum
+IDS: Q-384
+FIRMS: Jane Street, SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Dice with prime faces
+QUESTION:
+Two six-sided dice have their faces labelled with the first six primes, $2,3,5,7,11,13$. You roll both. What is the probability that the sum of the two top faces is a prime number?
+HINT1:
+Most of the faces are odd. What happens to the parity of the sum?
+HINT2:
+The sum of two odd numbers is even and larger than $2$, so not prime. A prime sum therefore needs exactly one die to show $2$; check which odd faces then work.
+ANSWER:
+$\dfrac16$
+REFRESH:
+- A prime greater than $2$ is odd; an even number greater than $2$ is never prime.
+EXPLANATION:
+Parity kills almost everything. If both dice show odd primes the sum is even and at least $6$, so composite; if both show $2$ the sum is $4$. The only hope is one $2$ and one odd prime $q$, and then $2+q$ must be prime. That leaves a short check over $q\in\{3,5,7,11,13\}$.
+SOLUTION: Parity then enumeration
+There are $36$ equally likely ordered outcomes.
+
+If both dice are odd, the sum is even and $\ge6$: not prime. If both are $2$, the sum is $4$: not prime. So exactly one die shows $2$ and the other shows an odd prime $q$:
+- $q=3$: $5$, prime;
+- $q=5$: $7$, prime;
+- $q=7$: $9$, not prime;
+- $q=11$: $13$, prime;
+- $q=13$: $15$, not prime.
+
+Three values of $q$ work, and the $2$ can be on either die, giving $3\cdot2=6$ favourable outcomes:
+$$P=\frac6{36}=\frac16.$$
+===END===
+===TEASER===
+SLUG: prime-win-composite-lose-half-game
+IDS: Q-386
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Win on primes, lose half otherwise
+QUESTION:
+An integer $n$ is drawn uniformly at random from $\{2,3,\dots,10\}$. If $n$ is prime you win $n$ dollars; if not, you lose $\frac n2$ dollars. How much would you pay to play this game? (Answer $0$ if you would not play.)
+HINT1:
+Compute the expected payoff; a rational risk-neutral player pays at most that.
+HINT2:
+List the primes and the non-primes between $2$ and $10$ and add up the gains and the losses separately.
+ANSWER:
+$0$: the game has negative expected value ($-\frac16$ dollar), so you should not play.
+REFRESH:
+- The fair price of a game for a risk-neutral player is its expected payoff; if that is negative you would need to be paid to play.
+EXPLANATION:
+Primes pay the full value but there are only four of them ($2,3,5,7$), and they are small; the five non-primes ($4,6,8,9,10$) are large, so even halved they cost more. Total gains $17$, total losses $18.5$, over $9$ equally likely numbers.
+SOLUTION: Expected value
+There are $9$ equally likely values.
+- Primes: $2,3,5,7$, gains summing to $17$.
+- Non-primes: $4,6,8,9,10$, sum $37$, so losses summing to $\frac{37}2=18.5$.
+
+$$E[\text{payoff}]=\frac{17-18.5}{9}=-\frac{1.5}{9}=-\frac16\ \text{dollar}.$$
+The expected value is negative, so you would pay nothing: you would not play (you would need about $17$ cents to take the game).
+===END===
+===TEASER===
+SLUG: ten-digit-prime-digits-product-100000
+IDS: Q-387
+FIRMS: Two Sigma
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Prime digits with product 100000
+QUESTION:
+How many $10$-digit numbers have every digit prime and digit product equal to $100000$?
+HINT1:
+Factor $100000$ into primes. Which prime digits can possibly appear?
+HINT2:
+$100000=2^5\cdot5^5$, and each prime digit contributes exactly one prime factor. So you know exactly how many $2$s and how many $5$s the number contains; it remains to place them.
+ANSWER:
+$252$
+REFRESH:
+- **Unique factorisation**: every integer $>1$ factors uniquely into primes.
+- $\binom{n}{k}$ counts the ways to choose $k$ positions among $n$.
+EXPLANATION:
+The prime digits are $2,3,5,7$, each a single prime. The product of the digits is then a product of ten primes, and it must equal $2^5\cdot5^5$, so the multiset of digits is forced: five $2$s and five $5$s (no $3$ or $7$ allowed). There is no leading-zero issue since $0$ is not prime. We only choose where the $2$s go.
+SOLUTION: Factor and place
+$100000=10^5=2^5\cdot5^5$. Every digit is one of $2,3,5,7$, and by unique factorisation the digits must be exactly five $2$s and five $5$s. Choosing the positions of the $2$s among $10$:
+$$\binom{10}{5}=252.$$
+===END===
+===TEASER===
+SLUG: six-rolls-exactly-three-primes
+IDS: Q-389
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Exactly three primes in six rolls
+QUESTION:
+A fair six-sided die is rolled $6$ times. A roll is a success if it shows a prime number. What is the probability of exactly $3$ successes?
+HINT1:
+First, what is the probability that a single roll is a success? Be careful about $1$.
+HINT2:
+The primes on a die are $2,3,5$, so each roll succeeds with probability $\frac12$ independently: the number of successes is binomial.
+ANSWER:
+$\dfrac5{16}$
+REFRESH:
+- **Binomial distribution**: with $n$ independent trials of success probability $p$, $P(K=k)=\binom nk p^k(1-p)^{n-k}$.
+- $1$ is not a prime number.
+EXPLANATION:
+Among $1,\dots,6$ exactly three faces ($2,3,5$) are prime, so each roll is a fair coin flip in disguise. Exactly $3$ heads in $6$ fair flips: pick which $3$ rolls succeed ($\binom63=20$ ways) out of $2^6=64$ equally likely success/failure patterns.
+SOLUTION: Binomial
+Success probability per roll $p=\frac36=\frac12$. The number of successes $K\sim\text{Bin}(6,\frac12)$, so
+$$P(K=3)=\binom63\left(\tfrac12\right)^6=\frac{20}{64}=\frac5{16}.$$
+===END===
+===TEASER===
+SLUG: three-dice-prime-product
+IDS: Q-391
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Prime product of three dice
+QUESTION:
+Three fair six-sided dice are rolled. What is the probability that the product of the three numbers shown is prime?
+HINT1:
+A prime has only two divisors. What does that force the individual dice to be?
+HINT2:
+If two dice show numbers bigger than $1$, the product has two nontrivial factors. So two dice must show $1$ and the third a prime.
+ANSWER:
+$\dfrac1{24}$
+REFRESH:
+- A prime $p$ has no factorisation $p=ab$ with $a,b>1$.
+EXPLANATION:
+A product of integers $\ge1$ is prime only if all but one factor equal $1$ and the remaining factor is itself prime. So the outcome must look like "one prime and two ones", with the prime being $2$, $3$ or $5$ and sitting on any of the three dice.
+SOLUTION: Counting
+There are $6^3=216$ equally likely outcomes. A prime product requires two dice showing $1$ and one die showing $2$, $3$ or $5$. Choosing which die shows the prime ($3$ ways) and which prime ($3$ ways) gives $9$ outcomes:
+$$P=\frac9{216}=\frac1{24}.$$
+===END===
+===TEASER===
+SLUG: normal-y-greater-than-4x
+IDS: Q-393
+FIRMS: Five Rings, Hudson River Trading, Squarepoint Capital
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: P(Y > 4X) for independent normals
+QUESTION:
+$X$ and $Y$ are independent standard normal random variables. Compute $P(Y>4X)$.
+HINT1:
+Draw the region $\{y>4x\}$ in the plane. What kind of set is it, and where is its boundary?
+HINT2:
+The joint density of $(X,Y)$ depends only on $x^2+y^2$. The region is a half-plane whose boundary passes through the origin. Alternatively, look at the distribution of $Y-4X$.
+ANSWER:
+$\dfrac12$
+REFRESH:
+- The joint density of two independent $N(0,1)$ variables is $\frac1{2\pi}e^{-(x^2+y^2)/2}$, invariant under rotations about the origin.
+- A linear combination of independent normals is normal: $aX+bY\sim N(0,a^2+b^2)$.
+- A continuous distribution symmetric about $0$ puts mass $\frac12$ on each side of $0$.
+EXPLANATION:
+The factor $4$ looks important but is a red herring. The set $\{y>4x\}$ is the half-plane above a line through the origin. The standard bivariate normal is rotationally symmetric, so every half-plane bounded by a line through the origin has probability exactly $\frac12$, whatever the slope. Put differently, $Y-4X$ is a centred normal, positive half the time.
+SOLUTION: Symmetry of a centred normal
+$Z=Y-4X$ is a linear combination of independent normals, so $Z\sim N(0,1+16)=N(0,17)$. It is continuous and symmetric about $0$, so
+$$P(Y>4X)=P(Z>0)=\frac12.$$
+SOLUTION: Rotational invariance
+The joint density $\frac1{2\pi}e^{-(x^2+y^2)/2}$ is invariant under rotations. The region $\{y>4x\}$ is a half-plane bounded by a line through the origin; rotating by $180^\circ$ maps it onto the complementary half-plane $\{y<4x\}$. The two regions have equal probability and the boundary line has probability $0$, so each has probability $\frac12$.
+===END===
+===TEASER===
+SLUG: two-coloring-cube-vertices
+IDS: Q-396
+FIRMS: IMC
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Two-colouring the corners of a cube
+QUESTION:
+Each of the $8$ corners of a cube is painted with one of two colours. In how many ways can this be done so that no two corners joined by an edge get the same colour?
+HINT1:
+Fix the colour of one corner. What does that force for its neighbours, and for their neighbours?
+HINT2:
+Give the corners coordinates in $\{0,1\}^3$. Moving along an edge changes exactly one coordinate, hence the parity of the coordinate sum.
+ANSWER:
+$2$
+REFRESH:
+- A graph is **bipartite** if its vertices split into two classes with every edge going between the classes; a connected bipartite graph has exactly $2$ proper $2$-colourings.
+EXPLANATION:
+Once one corner is coloured, the colouring rule propagates along the edges: every neighbour must take the other colour, every neighbour of a neighbour the first colour again, and so on. Since the cube is connected, the whole colouring is forced by the first choice. It never runs into a contradiction because the cube has no odd cycles: its corners split into "even" and "odd" corners (by the parity of the sum of the coordinates), and every edge joins an even corner to an odd one. So there are exactly two colourings: evens in colour 1 and odds in colour 2, or the reverse.
+SOLUTION: Parity classes
+Label the corners by $(x,y,z)\in\{0,1\}^3$. Two corners are joined by an edge iff they differ in exactly one coordinate, which flips the parity of $x+y+z$. So the $4$ even corners are pairwise non-adjacent, and so are the $4$ odd ones, and every edge joins an even corner to an odd corner.
+
+Colouring the even corners with one colour and the odd corners with the other is valid. Conversely, in any valid colouring, suppose $(0,0,0)$ gets colour $A$. Each corner is reached from $(0,0,0)$ by a path of edges whose length has the parity of $x+y+z$, and the colour alternates along the path, so the colour is $A$ on even corners and $B$ on odd ones. Hence the colouring is determined by the colour of $(0,0,0)$: exactly $2$ colourings.
+
+(If the two colours are interchangeable or rotations of the cube are considered the same, the two colourings coincide and there is only $1$ pattern; the intended answer counts labelled colours, giving $2$.)
+===END===
+===TEASER===
+SLUG: uniform-ten-dimensional-ball-coordinate-variance
+IDS: Q-400
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: hard
+TITLE: One coordinate of a point in a 10-D ball
+QUESTION:
+A point $(X_1,X_2,\dots,X_{10})$ is chosen uniformly at random inside the $10$-dimensional ball of radius $12$ centred at the origin. Find $\operatorname{Var}(X_1)$.
+HINT1:
+By symmetry $E[X_1]=0$, and all ten coordinates have the same second moment. Relate $E[X_1^2]$ to the squared distance from the origin.
+HINT2:
+$E[X_1^2]=\frac1{10}E[R^2]$ with $R^2=X_1^2+\dots+X_{10}^2$. Find the density of $R$: the volume of the ball of radius $r$ is proportional to $r^{10}$.
+ANSWER:
+$12$
+REFRESH:
+- The volume of the $n$-dimensional ball of radius $r$ is $c_n r^n$ for a constant $c_n$.
+- If $R$ is the distance to the centre of a uniform point in the $n$-ball of radius $a$, then $P(R\le r)=(r/a)^n$ for $0\le r\le a$.
+EXPLANATION:
+In high dimension, almost all the volume of a ball sits near its surface, so $R$ is typically close to the radius $12$: $E[R^2]=\frac{10}{12}\cdot144=120$. This squared length is shared evenly among the $10$ coordinates by symmetry, so each coordinate has second moment $12$. Since each coordinate has mean $0$, its variance is $12$. In general, for the $n$-ball of radius $a$, $\operatorname{Var}(X_1)=\dfrac{a^2}{n+2}$.
+SOLUTION: Radial distribution and symmetry
+Let $n=10$ and $a=12$. By the symmetry $x\mapsto -x$ of the ball, $E[X_1]=0$, and by the symmetry permuting coordinates, $E[X_1^2]=\dots=E[X_n^2]$. Hence
+$$\operatorname{Var}(X_1)=E[X_1^2]=\frac1n E[R^2],\qquad R^2=\sum_{i=1}^n X_i^2.$$
+The point is uniform, so $P(R\le r)=\frac{c_n r^n}{c_n a^n}=(r/a)^n$ and $R$ has density $f(r)=\frac{n r^{n-1}}{a^n}$ on $[0,a]$. Then
+$$E[R^2]=\int_0^a r^2\,\frac{n r^{n-1}}{a^n}\,dr=\frac{n}{a^n}\cdot\frac{a^{n+2}}{n+2}=\frac{n}{n+2}a^2.$$
+Therefore
+$$\operatorname{Var}(X_1)=\frac1n\cdot\frac{n}{n+2}a^2=\frac{a^2}{n+2}=\frac{144}{12}=12.$$
+===END===
+===TEASER===
+SLUG: three-uniform-sides-make-a-triangle
+IDS: Q-402
+FIRMS: Goldman Sachs
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Three uniform lengths form a triangle
+QUESTION:
+$X,Y,Z$ are i.i.d. $\text{Unif}(0,1)$. What is the probability that there is a triangle with side lengths $X$, $Y$ and $Z$?
+HINT1:
+Write down the triangle inequalities. When do they fail?
+HINT2:
+They fail exactly when one length is at least the sum of the other two, and at most one length can do so. Compute $P(Z\ge X+Y)$ as a volume in the unit cube.
+ANSWER:
+$\dfrac12$
+REFRESH:
+- **Triangle inequality**: positive lengths $a,b,c$ form a (non-degenerate) triangle iff each is smaller than the sum of the other two.
+- The region $\{x,y\ge0,\ x+y\le t\}$ has area $t^2/2$; the simplex $\{x,y,z\ge0,\ x+y+z\le1\}$ has volume $\frac16$.
+EXPLANATION:
+A triangle fails to exist only if one side is too long: $Z\ge X+Y$, or $Y\ge X+Z$, or $X\ge Y+Z$. These three bad events are disjoint (two of them together would force a length to be $\le0$), and by symmetry they have the same probability. So we only need $P(Z\ge X+Y)$, the volume of a pyramid in the unit cube, which is $\frac16$. Three bad events of $\frac16$ each leave $\frac12$.
+SOLUTION: Complement and volume
+By symmetry and disjointness,
+$$P(\text{no triangle})=3\,P(Z\ge X+Y).$$
+Condition on $Z=z$: the set $\{(x,y)\in[0,1]^2:\ x+y\le z\}$ is a right triangle of area $\frac{z^2}{2}$ (for $z\le1$). Hence
+$$P(Z\ge X+Y)=\int_0^1\frac{z^2}{2}\,dz=\frac16.$$
+Therefore
+$$P(\text{triangle})=1-3\cdot\frac16=\frac12.$$
+SOLUTION: Via the sum of two uniforms
+The density of $S=X+Y$ is $s$ on $[0,1]$ (and $2-s$ on $[1,2]$). Then $P(Z\ge S)=\int_0^1 (1-s)\,s\,ds=\frac12-\frac13=\frac16$, and the rest is as above: $1-3\cdot\frac16=\frac12$.
+===END===
+===TEASER===
+SLUG: regression-slope-with-zero-covariance
+IDS: Q-408
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: easy
+TITLE: Regression of Y on uncorrelated X
+QUESTION:
+Random variables $X$ and $Y$ satisfy $E[X]=6$, $\operatorname{Var}(X)=2$, $E[Y]=8$, $\operatorname{Var}(Y)=10$ and $\operatorname{Cov}(X,Y)=0$. In the (population) least-squares regression of $Y$ on $X$, $Y\approx aX+b$, compute $a+b$.
+HINT1:
+Recall the formula for the least-squares slope. Which of the given numbers does it use?
+HINT2:
+The slope is $a=\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}$ and the line passes through the point of means $(E[X],E[Y])$.
+ANSWER:
+$8$
+REFRESH:
+- **Least-squares line**: minimising $E[(Y-aX-b)^2]$ gives $a=\dfrac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}$ and $b=E[Y]-aE[X]$.
+EXPLANATION:
+If $X$ and $Y$ are uncorrelated, $X$ carries no linear information about $Y$: the best linear predictor of $Y$ ignores $X$ and is just the constant $E[Y]$. So the slope is $0$ and the intercept is $8$. The variances are distractors.
+SOLUTION: Normal equations
+Minimising $E[(Y-aX-b)^2]$: differentiating in $b$ gives $b=E[Y]-aE[X]$; substituting and differentiating in $a$ gives $a=\frac{\operatorname{Cov}(X,Y)}{\operatorname{Var}(X)}$. Here
+$$a=\frac{0}{2}=0,\qquad b=8-0\cdot6=8,\qquad a+b=8.$$
+===END===
+===TEASER===
+SLUG: reservoir-sampling-uniform-running-pick
+IDS: Q-411
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Keep a uniform pick from a stream
+QUESTION:
+The numbers $1$ to $100$ arrive one at a time, in some order. You see each number once and may store a single number in a variable $X$. You must ensure that for every $n$ from $1$ to $100$, after the first $n$ numbers have arrived, $X$ is equally likely to be any one of those $n$ numbers. Give an algorithm and prove that it works. In particular, what is the probability that a given number ends up in $X$ after all $100$?
+HINT1:
+You cannot remember the past, so the only decision at step $n$ is: keep $X$, or replace it with the new number. With what probability should the new number enter?
+HINT2:
+After step $n$ the new number must be in $X$ with probability exactly $\frac1n$. Replace with probability $\frac1n$ (using independent randomness) and prove uniformity by induction.
+ANSWER:
+At step $n$, replace $X$ by the $n$-th number with probability $\frac1n$ (otherwise keep $X$); then each of the first $n$ numbers is in $X$ with probability $\frac1n$, so $\frac1{100}$ at the end.
+REFRESH:
+- **Induction**: prove the claim for $n=1$ and show that the claim for $n-1$ implies it for $n$.
+- For independent events, $P(A\cap B)=P(A)P(B)$.
+EXPLANATION:
+The newest number must be selected with probability $\frac1n$, which dictates the replacement probability. The question is whether the older numbers stay balanced. Before step $n$, each old number is in $X$ with probability $\frac1{n-1}$; it survives step $n$ with probability $1-\frac1n=\frac{n-1}n$; the product is $\frac1{n-1}\cdot\frac{n-1}{n}=\frac1n$. The factor that the newcomer takes away is exactly the factor needed to rescale the old uniform distribution into the new one. This is reservoir sampling, used for streams whose length is unknown in advance.
+SOLUTION: Algorithm and induction
+**Algorithm.** When the $n$-th number $a_n$ arrives, draw an independent $U_n\sim\text{Unif}(0,1)$; if $U_n<\frac1n$, set $X\leftarrow a_n$, otherwise leave $X$ unchanged. (At $n=1$ this always stores $a_1$.)
+
+**Claim.** After step $n$, $P(X=a_k)=\frac1n$ for every $k\le n$.
+
+**Proof by induction.** For $n=1$, $X=a_1$ with probability $1$. Suppose the claim holds after step $n-1$. After step $n$:
+- $P(X=a_n)=P(U_n<\frac1n)=\frac1n$;
+- for $k\le n-1$, $X=a_k$ after step $n$ iff $X=a_k$ after step $n-1$ and no replacement happened at step $n$. These are independent, so
+$$P(X=a_k)=\frac1{n-1}\cdot\left(1-\frac1n\right)=\frac1{n-1}\cdot\frac{n-1}{n}=\frac1n.$$
+This completes the induction. The claim holds for any arrival order, random or not, because only the internal coins $U_n$ are used. After all $100$ numbers, each number is in $X$ with probability $\frac1{100}$.
+
+SOLUTION: Direct product
+For $k\le n$, $a_k$ is in $X$ after step $n$ iff it was selected at step $k$ and not replaced at steps $k+1,\dots,n$:
+$$P(X=a_k)=\frac1k\prod_{j=k+1}^{n}\left(1-\frac1j\right)=\frac1k\prod_{j=k+1}^{n}\frac{j-1}{j}=\frac1k\cdot\frac{k}{n}=\frac1n,$$
+the product telescoping.
+===END===
+===TEASER===
+SLUG: pond-ripple-area-growth-rate
+IDS: Q-413
+FIRMS: Goldman Sachs, SIG, Transmarket Group
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: How fast does the ripple's area grow?
+QUESTION:
+A stone dropped into a pond makes a circular ripple whose radius grows at $2$ feet per second. How fast is the area inside the ripple growing $10$ seconds later? The answer has the form $k\pi$ square feet per second; find $k$.
+HINT1:
+Write the area as a function of the radius, and the radius as a function of time.
+HINT2:
+Use the chain rule: $\frac{dA}{dt}=\frac{dA}{dr}\cdot\frac{dr}{dt}$, evaluated at the radius reached after $10$ seconds.
+ANSWER:
+$k=80$ (the area grows at $80\pi$ square feet per second)
+REFRESH:
+- **Chain rule**: $\frac{d}{dt}f(r(t))=f'(r(t))\,r'(t)$.
+- The area of a disc of radius $r$ is $\pi r^2$ and its circumference is $2\pi r$.
+EXPLANATION:
+When the radius grows by a thin amount $dr$, the disc gains a thin ring of length $2\pi r$ and width $dr$, so $dA\approx2\pi r\,dr$. The bigger the circle, the faster the area grows for the same radial speed. After $10$ seconds the radius is $20$ feet, so the ring has length $40\pi$ and it widens at $2$ feet per second.
+SOLUTION: Chain rule
+$r(t)=2t$, so $r(10)=20$ ft and $r'=2$ ft/s. With $A=\pi r^2$,
+$$\frac{dA}{dt}=2\pi r\,\frac{dr}{dt}=2\pi\cdot20\cdot2=80\pi\ \text{ft}^2/\text{s}.$$
+SOLUTION: Explicit formula
+$A(t)=\pi(2t)^2=4\pi t^2$, so $A'(t)=8\pi t$ and $A'(10)=80\pi$.
+===END===
+===TEASER===
+SLUG: four-cards-drawn-in-increasing-order
+IDS: Q-414
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Four draws in increasing order
+QUESTION:
+A deck has $100$ cards numbered $1$ to $100$. You draw $4$ cards one at a time without replacement. What is the probability that the numbers come out in increasing order?
+HINT1:
+Does the size of the deck actually matter?
+HINT2:
+Whatever $4$ distinct numbers are drawn, every ordering of them is equally likely. How many orderings are there, and how many are increasing?
+ANSWER:
+$\dfrac1{24}$
+REFRESH:
+- Drawing without replacement gives a uniformly random ordered sample: conditional on the set drawn, all $k!$ orders are equally likely.
+EXPLANATION:
+Condition on which $4$ cards you get. They are distinct, and by symmetry the order in which they come out is a uniformly random one of the $4!=24$ orders. Exactly one of these orders is increasing. So the answer is $\frac1{24}$, regardless of the $100$.
+SOLUTION: Symmetry of orderings
+Given the set $\{c_1<c_2<c_3<c_4\}$ drawn, each of the $4!=24$ orders is equally likely, and exactly one is increasing. So the conditional probability is $\frac1{24}$ for every set, hence
+$$P(\text{increasing})=\frac1{24}\approx0.0417.$$
+Note: the source states $20$; the correct value is $\frac1{24}$ because a probability cannot exceed $1$, and exactly one of the $24$ equally likely orderings of the four drawn cards is increasing.
+SOLUTION: Direct count
+Ordered draws: $100\cdot99\cdot98\cdot97$. Increasing draws correspond to $4$-subsets: $\binom{100}4=\frac{100\cdot99\cdot98\cdot97}{24}$. The ratio is $\frac1{24}$.
+===END===
+===TEASER===
+SLUG: swimmer-river-width-with-current
+IDS: Q-416
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: How wide is the river?
+QUESTION:
+You are in a river whose width and current speed are unknown. The current pushes you in the direction you need to go to reach the other side. If you just float without swimming, you reach the other side in $6$ seconds. If you swim along with the current at $3$ feet per second (relative to the water), you get there in $4$ seconds. How wide is the river, in feet?
+HINT1:
+Introduce two unknowns: the width and the current's speed. What is your ground speed in each scenario?
+HINT2:
+Floating, your speed is the current $v$; swimming, it is $v+3$. The distance is the same both times.
+ANSWER:
+$36$ feet
+REFRESH:
+- **Relative velocity**: your speed relative to the ground is your speed relative to the water plus the water's speed (when they point the same way).
+- distance $=$ speed $\times$ time.
+EXPLANATION:
+Swimming adds $3$ ft/s to whatever the current gives you, and it saves $2$ seconds. Over the $4$ seconds of the swim, your own effort covers $3\times4=12$ feet; the current covers the rest. Floating, the current alone needs $2$ extra seconds to cover those same $12$ feet, so the current runs at $6$ ft/s, and $6$ seconds of it is $36$ feet.
+SOLUTION: Two equations
+Let $W$ be the width and $v$ the current's speed (ft/s). Then
+$$W=6v,\qquad W=4(v+3).$$
+So $6v=4v+12$, giving $v=6$ ft/s and $W=36$ ft. Check: $4\cdot(6+3)=36$.
+===END===
+===TEASER===
+SLUG: poisson-cars-exactly-one-in-five-minutes
+IDS: Q-417
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Exactly one car in five minutes
+QUESTION:
+Sitting by a road, you observe that cars pass at an average rate of $1$ every $20$ minutes, independently and at a steady rate. What is the probability that exactly one car passes during a given $5$-minute window?
+HINT1:
+"Independent arrivals at a constant average rate" is the textbook description of a well-known process.
+HINT2:
+Model the arrivals as a Poisson process. The count in a window of length $t$ is Poisson with mean (rate) $\times\,t$.
+ANSWER:
+$\frac14e^{-1/4}\approx0.1947$
+REFRESH:
+- **Poisson process** with rate $\lambda$: the number of events $N$ in an interval of length $t$ satisfies $P(N=k)=e^{-\lambda t}\frac{(\lambda t)^k}{k!}$.
+- $e^{-x}\approx1-x+\frac{x^2}2-\frac{x^3}{6}$ for small $x$.
+EXPLANATION:
+A $5$-minute window is a quarter of the typical gap, so on average $0.25$ cars pass. The probability of exactly one event is the mean times the probability of "no other event", roughly $0.25\times e^{-0.25}\approx0.25\times0.78$. It is a bit less than $0.25$ because some windows contain two or more cars and many contain none.
+SOLUTION: Poisson count
+Rate $\lambda=\frac1{20}$ per minute, window $t=5$ minutes, so $N\sim\text{Poisson}(\lambda t)=\text{Poisson}(\frac14)$ and
+$$P(N=1)=e^{-1/4}\cdot\frac14.$$
+Mentally: $e^{-0.25}\approx1-0.25+0.03125-0.0026\approx0.7788$, so $P(N=1)\approx0.25\times0.7788\approx0.1947$.
+===END===
+===TEASER===
+SLUG: dice-product-reroll-for-four-dollars
+IDS: Q-419
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Keep the product or pay 4 to reroll
+QUESTION:
+You roll two fair six-sided dice and are offered the product of the two numbers, in dollars. You may either keep it, or pay \$4 to roll both dice once more, in which case you receive the new product (minus the \$4 paid). With an optimal strategy, what are your expected winnings?
+HINT1:
+Start from the end: if you reroll, what do you expect to get, net of the fee?
+HINT2:
+$E[\text{product}]=E[D_1]E[D_2]=3.5^2$. Keep the first product exactly when it beats the net value of rerolling, then average $\max(\text{product},\ \text{reroll value})$ over the $36$ outcomes.
+ANSWER:
+$\dfrac{125}{9}\approx\$13.89$
+REFRESH:
+- For independent $X,Y$: $E[XY]=E[X]E[Y]$.
+- **Backward induction**: in a stopping problem, compare the value of stopping now with the expected value of continuing optimally, and take the larger.
+EXPLANATION:
+Rerolling is worth $12.25-4=8.25$ dollars on average, whatever you saw. So you keep any product of $9$ or more and reroll anything of $8$ or less. The value is the average of $\max(P,8.25)$ over the $36$ equally likely first rolls: the small products are "upgraded" to $8.25$. Since the product has a skewed distribution (many small values, a few big ones), this option to reroll is worth quite a lot: about $1.64$ more than the plain $12.25$.
+SOLUTION: One-step backward induction
+Rerolling yields $E[D_1D_2]-4=3.5^2-4=12.25-4=8.25$. Hence keep the product $P$ iff $P>8.25$, i.e. $P\ge9$.
+
+Outcomes with $P\le8$ (count and sum): $P=1$ (1 outcome), $2$ (2), $3$ (2), $4$ (3), $5$ (2), $6$ (4), $8$ (2): $16$ outcomes with product sum $1+4+6+12+10+24+16=73$.
+
+The sum of all $36$ products is $(1+\dots+6)^2=21^2=441$, so the $20$ outcomes with $P\ge9$ have product sum $441-73=368$.
+
+Therefore
+$$E[\text{winnings}]=\frac{368+16\cdot8.25}{36}=\frac{368+132}{36}=\frac{500}{36}=\frac{125}{9}\approx13.89.$$
+
+Remark: if you could pay \$4 to reroll as many times as you like, the value $V$ would solve $V=E[\max(P,V-4)]$; keeping products $\ge12$ gives $36V=339+19(V-4)$, so $V=\frac{263}{17}\approx15.47$.
+===END===
+===TEASER===
+SLUG: four-dice-sum-to-twenty
+IDS: Q-420
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Four dice summing to 20
+QUESTION:
+Four fair six-sided dice are rolled. What is the probability that their sum is $20$?
+HINT1:
+$20$ is close to the maximum $24$. Can you count the shortfall instead of the sum?
+HINT2:
+Set $y_i=6-x_i\in\{0,\dots,5\}$. Then $y_1+y_2+y_3+y_4=4$: count non-negative solutions with stars and bars.
+ANSWER:
+$\dfrac{35}{1296}$
+REFRESH:
+- **Stars and bars**: the number of solutions of $y_1+\dots+y_k=m$ in non-negative integers is $\binom{m+k-1}{k-1}$.
+- Sum symmetry for dice: the distribution of the sum of $n$ dice is symmetric about $3.5n$.
+EXPLANATION:
+Counting sums near the top of the range is easy if you look down from the maximum. Each die "misses" $6$ by some amount $y_i$, and the four misses must total $24-20=4$. Since no miss can exceed $5$, the cap never bites, and the count is a plain stars-and-bars number. Equivalently, by the symmetry $x\mapsto7-x$, $P(\text{sum}=20)=P(\text{sum}=8)$.
+SOLUTION: Stars and bars
+With $y_i=6-x_i\ge0$: $\sum y_i=24-20=4$. Each $y_i\le4<6$ automatically, so the number of solutions is
+$$\binom{4+3}{3}=\binom73=35.$$
+Out of $6^4=1296$ equally likely outcomes:
+$$P=\frac{35}{1296}\approx0.027.$$
+SOLUTION: Listing multisets
+Four faces summing to $20$ (as multisets) and their numbers of orderings: $\{6,6,6,2\}$: $4$; $\{6,6,5,3\}$: $12$; $\{6,6,4,4\}$: $6$; $\{6,5,5,4\}$: $12$; $\{5,5,5,5\}$: $1$. Total $4+12+6+12+1=35$, giving $\frac{35}{1296}$.
+===END===
+===TEASER===
+SLUG: last-queen-before-last-king-bet
+IDS: Q-423
+FIRMS: Citadel, SIG
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Last queen before last king
+QUESTION:
+Eve shuffles a standard $52$-card deck thoroughly. She wins \$100 if the last queen in the deck appears before the last king. Her friend Jenny looks at the order of the cards and tells Eve that exactly two queens come before the first king. Given this information, what are Eve's expected winnings?
+HINT1:
+Only the relative order of the $4$ queens and $4$ kings matters. What does Jenny's statement tell you about the first few of those $8$ cards?
+HINT2:
+Among the $8$ court cards, the order starts $Q,Q,K$. The remaining $2$ queens and $3$ kings are in uniformly random order. Eve wins exactly when the last of the $8$ is a king.
+ANSWER:
+\$60
+REFRESH:
+- The relative order of any fixed subset of cards in a uniform shuffle is uniformly random; conditioning on the first few positions leaves the rest uniformly random.
+EXPLANATION:
+Strip the deck down to its $8$ queens and kings. "The last queen comes before the last king" just means "the very last of these $8$ cards is a king". Jenny tells you the pattern starts $Q,Q,K$. That uses up $2$ queens and $1$ king; the $5$ remaining cards ($2$ queens and $3$ kings) are in random order, so the last one is a king with probability $\frac35$. Without Jenny's information the chance would be $\frac12$; her news helps because it shows queens were "spent" early.
+SOLUTION: Reduce to the court cards
+Look only at the sequence of the $4$ queens and $4$ kings; in a uniform shuffle all $\binom84=70$ patterns are equally likely. Eve wins iff the last card of this sequence is a king.
+
+Jenny's information: the pattern starts $QQK$. Conditioned on this, the last $5$ positions hold $2$ Q's and $3$ K's in uniformly random order (all $\binom52=10$ patterns equally likely). The last position is a king with probability $\frac35$. Hence
+$$E[\text{winnings}]=100\cdot\frac35=\$60.$$
+===END===
+===TEASER===
+SLUG: safe-passcode-even-no-six-repeat
+IDS: Q-424
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: A three-digit safe code
+QUESTION:
+An electronic safe opens with a three-digit code ($000$ to $999$, leading zeros allowed). You know that: the code is not odd; it does not contain the digit $6$; and at least one digit is repeated. How many codes satisfy all three conditions?
+HINT1:
+"At least one repeat" is awkward to count directly. What is its complement?
+HINT2:
+Count codes that are even with no $6$, then subtract those whose three digits are all distinct.
+ANSWER:
+$100$
+REFRESH:
+- **Complementary counting**: $\#(\text{at least one repeat})=\#(\text{all})-\#(\text{all distinct})$.
+- **Multiplication principle**: fill positions one by one, multiplying the number of choices.
+EXPLANATION:
+Nine digits are allowed ($0$–$9$ without $6$), and the last digit must be even, i.e. one of $0,2,4,8$. Counting "some repeat" directly means juggling which positions repeat; it is much easier to count all admissible codes and remove the ones with three distinct digits. For the distinct ones, pick the constrained position (the last digit) first.
+SOLUTION: Complement
+All codes that are even and avoid $6$: first digit $9$ choices, middle $9$, last $4$ ($0,2,4,8$): $9\cdot9\cdot4=324$.
+
+All-distinct such codes: last digit $4$ choices, then first digit $8$ remaining choices, then middle $7$: $4\cdot8\cdot7=224$.
+
+Codes with at least one repeated digit:
+$$324-224=100.$$
+(If the code had to be a genuine three-digit number with no leading zero, the same method gives $288-203=85$.)
+===END===
+===TEASER===
+SLUG: rock-paper-scissors-opponent-cannot-play-rock
+IDS: Q-427
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Rock-paper-scissors without rock
+QUESTION:
+You play rock-paper-scissors against an opponent who is not allowed to play rock. A win pays you $1$, a loss costs you $1$, a tie pays $0$. Both of you play optimally (the opponent tries to minimise your gain). What is your expected gain per round?
+HINT1:
+Write the $3\times2$ payoff table (your three moves against paper or scissors). Is one of your moves now dominated?
+HINT2:
+Paper never beats anything the opponent can play, so you mix rock and scissors. Choose the mix that makes you indifferent to whether the opponent plays paper or scissors.
+ANSWER:
+$\dfrac13$ per round (play rock with probability $\frac13$, scissors with probability $\frac23$)
+REFRESH:
+- **Mixed-strategy equilibrium** of a zero-sum game: each player randomises so that the other is indifferent between the moves they use; the resulting common payoff is the value of the game (minimax theorem).
+EXPLANATION:
+The opponent only has paper and scissors. Scissors beats paper and ties with scissors, so it never loses: it is a safe move for you. Rock wins against their scissors but loses to their paper. Paper is useless (tie or loss). If you played scissors always, the opponent would play scissors and you would get $0$; so you add some rock to punish their scissors. The right amount of rock makes their choice irrelevant, and that locks in a positive edge of $\frac13$ per round.
+SOLUTION: Indifference
+Your payoff (rows: you; columns: opponent):
+
+| | Paper | Scissors |
+|---|---|---|
+| Rock | $-1$ | $+1$ |
+| Paper | $0$ | $-1$ |
+| Scissors | $+1$ | $0$ |
+
+Paper is dominated by scissors (scissors is at least as good against both columns), so mix rock with probability $r$ and scissors with probability $1-r$:
+- against paper: $-r+(1-r)=1-2r$;
+- against scissors: $r$.
+
+Setting them equal: $1-2r=r$, so $r=\frac13$ and you guarantee $\frac13$ whatever the opponent does.
+
+The opponent cannot hold you below that: if they play paper with probability $q$, your three moves earn $1-2q$ (rock), $q-1$ (paper), $q$ (scissors). The opponent minimises the best of these; $1-2q=q$ at $q=\frac13$ gives $\max=\frac13$. Both bounds agree, so the value is $\frac13$.
+===END===
+===TEASER===
+SLUG: three-consecutive-ones-in-five-rolls
+IDS: Q-429
+FIRMS: Transmarket Group
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Three ones in a row in five rolls
+QUESTION:
+A fair die is rolled $5$ times. What is the probability that the sequence contains at least $3$ consecutive $1$s?
+HINT1:
+A run of three $1$s can start at roll $1$, $2$ or $3$. These events overlap, so do not just add their probabilities.
+HINT2:
+Classify by the position of the first run of three: starting at roll $1$; starting at roll $2$ with roll $1$ not a $1$; starting at roll $3$ with roll $2$ not a $1$. These are disjoint.
+ANSWER:
+$\dfrac1{81}$
+REFRESH:
+- To avoid double counting overlapping events, split by the first occurrence: disjoint cases whose probabilities add.
+- **Inclusion–exclusion**: $P(A\cup B\cup C)=\sum P(A)-\sum P(A\cap B)+P(A\cap B\cap C)$.
+EXPLANATION:
+Each window of three rolls is all $1$s with probability $\frac1{216}$, but windows overlap (a run of four $1$s lies in two windows), so we identify each good sequence by where its first run of three starts. A run starting at roll $2$ or $3$ is the "first" one only if the roll just before it is not a $1$, which costs a factor $\frac56$.
+SOLUTION: First run of three
+Let $p=\frac16$.
+- First run starts at roll $1$: rolls $1$–$3$ are $1$s: $p^3$.
+- First run starts at roll $2$: roll $1$ is not a $1$, rolls $2$–$4$ are $1$s: $(1-p)p^3$.
+- First run starts at roll $3$: roll $2$ is not a $1$, rolls $3$–$5$ are $1$s (roll $1$ arbitrary): $(1-p)p^3$. (Roll $1$ being a $1$ cannot create an earlier run since roll $2$ is not a $1$.)
+
+These cases are disjoint and exhaustive, so
+$$P=p^3\left(1+2\cdot\tfrac56\right)=\frac1{216}\cdot\frac{8}{3}=\frac{8}{648}=\frac1{81}.$$
+SOLUTION: Inclusion–exclusion
+Let $A_k$ = rolls $k,k+1,k+2$ are all $1$ ($k=1,2,3$). $P(A_k)=\frac1{216}$. $A_1\cap A_2$ and $A_2\cap A_3$ need four $1$s: $\frac1{1296}$ each; $A_1\cap A_3$ and $A_1\cap A_2\cap A_3$ need five $1$s: $\frac1{7776}$ each. So
+$$P=\frac3{216}-\frac2{1296}-\frac1{7776}+\frac1{7776}=\frac{108-12}{7776}=\frac{96}{7776}=\frac1{81}.$$
+===END===

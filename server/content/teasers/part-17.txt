@@ -1,0 +1,999 @@
+===TEASER===
+SLUG: infinite-nested-square-root-two
+IDS: Q-230
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Endless square roots of 2
+QUESTION:
+Find the value of the infinitely nested radical
+$$\sqrt{2+\sqrt{2+\sqrt{2+\cdots}}}.$$
+HINT1:
+The expression contains a copy of itself.
+HINT2:
+Call the value $x$. What is the expression under the outermost square root? Turn that into an equation for $x$, and remember that $x$ must be positive.
+ANSWER:
+$2$
+REFRESH:
+**Monotone convergence**: an increasing sequence of reals that is bounded above converges to a finite limit.
+EXPLANATION:
+Under the first root sits exactly the same infinite expression again, so the value $x$ satisfies $x=\sqrt{2+x}$. Squaring gives $x^2-x-2=0$, i.e. $(x-2)(x+1)=0$, and since a square root is positive, $x=2$. To be rigorous, the "infinite expression" means the limit of the finite truncations $a_1=\sqrt2$, $a_{n+1}=\sqrt{2+a_n}$, and we should check this limit exists before solving for it.
+SOLUTION: Self-similarity plus a convergence check
+Define $a_1=\sqrt2$ and $a_{n+1}=\sqrt{2+a_n}$; the nested radical is $\lim a_n$.
+
+**Bounded by 2.** $a_1=\sqrt2<2$, and if $a_n<2$ then $a_{n+1}=\sqrt{2+a_n}<\sqrt4=2$.
+
+**Increasing.** $a_{n+1}^2-a_n^2=2+a_n-a_n^2=(2-a_n)(1+a_n)>0$ since $0<a_n<2$, so $a_{n+1}>a_n$.
+
+By monotone convergence $a_n\to x$ with $0<x\le2$. Passing to the limit in $a_{n+1}=\sqrt{2+a_n}$ (the square root is continuous):
+$$x=\sqrt{2+x}\ \Longrightarrow\ x^2-x-2=0\ \Longrightarrow\ (x-2)(x+1)=0.$$
+The root $-1$ is excluded because $x>0$. Hence the value is $2$.
+SOLUTION: Trigonometric closed form
+Use $2\cos\theta=\sqrt{2+2\cos2\theta}$ (from $\cos2\theta=2\cos^2\theta-1$, valid for $\theta\in[0,\pi/2]$). Then $a_1=\sqrt2=2\cos\frac{\pi}{4}$, and if $a_n=2\cos\frac{\pi}{2^{n+1}}$,
+$$a_{n+1}=\sqrt{2+2\cos\tfrac{\pi}{2^{n+1}}}=2\cos\tfrac{\pi}{2^{n+2}}.$$
+So $a_n=2\cos\frac{\pi}{2^{n+1}}\to2\cos0=2$.
+===END===
+===TEASER===
+SLUG: circle-circumference-area-equal-rates
+IDS: Q-233
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Circle growing: when do area and circumference grow equally fast?
+QUESTION:
+The radius of a circle starts at $0$ and increases at a constant positive rate. At what radius is the rate of change of the circumference equal to the rate of change of the area?
+HINT1:
+Write circumference and area as functions of $r$, and $r$ as a function of time.
+HINT2:
+Differentiate both with respect to time using the chain rule; the common factor $\frac{dr}{dt}$ is nonzero.
+ANSWER:
+$r=1$
+REFRESH:
+**Chain rule**: if $f$ depends on $r$ and $r$ on $t$, then $\frac{df}{dt}=f'(r)\,\frac{dr}{dt}$.
+EXPLANATION:
+Both quantities change only because $r$ changes, so each rate is (derivative with respect to $r$) $\times\,\frac{dr}{dt}$. The circumference $2\pi r$ always grows at $2\pi$ per unit of radius, while the area $\pi r^2$ grows at $2\pi r$ per unit of radius, which is the length of the boundary being pushed outward. The two coincide exactly when $r=1$. Before that the circumference grows faster, after that the area does.
+SOLUTION: Differentiate in time
+Let $v=\frac{dr}{dt}>0$ be the constant rate. With $C=2\pi r$ and $A=\pi r^2$:
+$$\frac{dC}{dt}=2\pi v,\qquad \frac{dA}{dt}=2\pi r\,v.$$
+Setting them equal: $2\pi v=2\pi r v$, and dividing by $2\pi v\neq0$ gives $r=1$ (in whatever unit of length is used).
+===END===
+===TEASER===
+SLUG: coin-tosses-until-heads-equal-tails
+IDS: Q-234
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Toss until heads equal tails
+QUESTION:
+Jacob tosses a fair coin repeatedly and stops as soon as the number of heads equals the number of tails (for example, $HHTHTT$ stops after $6$ tosses). Let $T$ be the number of tosses. What is $1/\mathbb{E}[T]$?
+HINT1:
+Track the difference (heads minus tails). What kind of process is it, and what does stopping mean for it?
+HINT2:
+After the first toss the difference is $\pm1$. Let $h$ be the expected time to get from $1$ back to $0$. Getting from $2$ to $0$ means going from $2$ to $1$ and then from $1$ to $0$. Write a first-step equation for $h$.
+ANSWER:
+$0$, because $\mathbb{E}[T]=\infty$ (Jacob stops with probability 1, but the expected number of tosses is infinite).
+REFRESH:
+**Simple symmetric random walk**: $S_n=\sum_{i\le n}\xi_i$ with i.i.d. $\xi_i=\pm1$ with probability $\tfrac12$ each. It is recurrent: it returns to $0$ with probability 1.
+**First-step analysis**: condition on the first move and use the Markov property to write equations for expected hitting times.
+EXPLANATION:
+Heads minus tails is a simple symmetric random walk started at $0$, and $T$ is its first return time to $0$. The walk does come back with probability 1, but the return time has a very heavy tail: $\mathbb{P}(T>2n)\approx\frac{1}{\sqrt{\pi n}}$, which decays so slowly that $\sum\mathbb{P}(T>k)$ diverges. The slick way to see it: if $h$ = expected time from $1$ to $0$ were finite, then from $1$ you either reach $0$ in one step or go to $2$, and from $2$ you need on average $h$ to come down to $1$ and another $h$ to reach $0$. That gives $h=1+\tfrac12\cdot2h=1+h$, which is impossible for a finite number. So $\mathbb{E}[T]=\infty$ and its inverse is $0$.
+SOLUTION: First-step analysis
+Let $S_n$ = (heads $-$ tails) after $n$ tosses. $T=\min\{n\ge1:S_n=0\}$. After the first toss $|S_1|=1$; by symmetry $\mathbb{E}[T]=1+h$ where $h$ is the expected hitting time of $0$ from $1$.
+
+Suppose $h<\infty$. To go from $2$ to $0$ the walk must first reach $1$ (expected time $h$, by translation invariance), then reach $0$ from $1$ (expected time $h$, Markov property). So the expected time from $2$ is $2h$. First-step from $1$:
+$$h=1+\tfrac12\cdot0+\tfrac12\cdot2h=1+h,$$
+a contradiction. Hence $h=\infty$, $\mathbb{E}[T]=\infty$ and $1/\mathbb{E}[T]=0$.
+
+(And $T<\infty$ almost surely: the probability $p$ of ever reaching $0$ from $1$ satisfies $p=\tfrac12+\tfrac12p^2$, i.e. $(p-1)^2=0$, so $p=1$.)
+SOLUTION: Exact distribution of the return time
+$T=2n$ requires $n$ heads and $n$ tails with the partial differences never $0$ before. Such a path stays strictly positive (or strictly negative) on times $1,\dots,2n-1$; a positive one is an up-step, then a path from $1$ to $1$ in $2n-2$ steps that never touches $0$, then a down-step. By the reflection principle the number of those middle paths is $\binom{2n-2}{n-1}-\binom{2n-2}{n}=\frac{1}{n}\binom{2n-2}{n-1}$ (a Catalan number). Doubling for the negative side,
+$$\mathbb{P}(T=2n)=\frac{2}{n}\binom{2n-2}{n-1}2^{-2n}=\frac{1}{2n-1}\binom{2n}{n}2^{-2n}.$$
+With Stirling, $\binom{2n}{n}2^{-2n}\sim\frac{1}{\sqrt{\pi n}}$, so $\mathbb{P}(T=2n)\sim\frac{1}{2\sqrt\pi}\,n^{-3/2}$ and
+$$\mathbb{E}[T]=\sum_{n\ge1}2n\,\mathbb{P}(T=2n)\sim\sum_n\frac{1}{\sqrt\pi}\,n^{-1/2}=\infty.$$
+(Check the formula on small cases: $\mathbb{P}(T=2)=\frac11\cdot2\cdot\frac14=\frac12$ and $\mathbb{P}(T=4)=\frac13\cdot6\cdot\frac1{16}=\frac18$, matching $HT,TH$ and $HHTT,TTHH$.) So $1/\mathbb{E}[T]=0$.
+===END===
+===TEASER===
+SLUG: football-betting-odds-arbitrage
+IDS: Q-235
+FIRMS: Optiver, SIG
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: Locking in a profit on a football match
+QUESTION:
+A bookmaker offers the following odds on a football match:
+- Team Alpha wins: $2:1$ (a winning \$1 stake returns \$3, i.e. a net gain of \$2),
+- Team Beta wins: $3:1$,
+- Draw: $10:1$.
+
+You place whole-dollar stakes $A$ on Alpha, $B$ on Beta and $C$ on the draw, chosen as small as possible so that your profit is exactly the same whatever the result. What is that profit? (If no such bet is worth making, answer $0$.)
+HINT1:
+Turn each set of odds into the probability the bookmaker is implicitly charging you. Do they add up to 1?
+HINT2:
+If the total payout must be the same in all three outcomes, then $3A=4B=11C$. Find the smallest whole numbers that do this, and compare the payout with the total stake.
+ANSWER:
+\$43 (stakes $A=44$, $B=33$, $C=12$: you pay \$89 and receive \$132 whatever happens).
+REFRESH:
+**Odds and implied probability**: odds of $k:1$ return $k+1$ per unit staked, so the break-even probability is $\frac{1}{k+1}$. A fair (or bookmaker-favourable) book has implied probabilities summing to at least $1$; a sum below $1$ means a guaranteed profit (a "Dutch book").
+EXPLANATION:
+The implied probabilities are $\frac13$, $\frac14$ and $\frac1{11}$, and they sum to $\frac{89}{132}<1$: the bookmaker is effectively selling you a claim that pays \$132 for sure for only \$89. To collect the same amount in every outcome, bet on each result in proportion to its implied probability, i.e. make $3A=4B=11C$. The smallest integer solution uses $\operatorname{lcm}(3,4,11)=132$.
+SOLUTION: Equalising the payout
+If Alpha wins you receive $3A$, if Beta wins $4B$, if it's a draw $11C$. Your total stake is $A+B+C$ whichever happens, so the profit is the same in every outcome iff
+$$3A=4B=11C=:L.$$
+Since $3,4,11$ are pairwise coprime, $L$ must be a multiple of $3\cdot4\cdot11=132$. The smallest choice $L=132$ gives
+$$A=44,\quad B=33,\quad C=12,\quad A+B+C=89.$$
+Profit in every outcome: $132-89=43$ dollars. The bet is clearly worth making (it is riskless), so the answer is \$43.
+
+Equivalently, profit per dollar paid out is $1-\left(\frac13+\frac14+\frac1{11}\right)=1-\frac{89}{132}=\frac{43}{132}$.
+===END===
+===TEASER===
+SLUG: dice-even-sum-vs-seven
+IDS: Q-239
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Even total versus seven
+QUESTION:
+We repeatedly roll two fair dice. If the total is even, you win immediately. If the total is $7$, I win immediately. Any other total (odd and not $7$) means we roll again. What is the probability that you win?
+HINT1:
+Rolls that decide nothing can be ignored.
+HINT2:
+Compute $\mathbb{P}(\text{even total})$ and $\mathbb{P}(\text{total}=7)$ for one roll, then condition on the roll being decisive.
+ANSWER:
+$\dfrac34$
+REFRESH:
+**Race between two events**: if each independent trial ends with event $E$ (prob. $p$), event $F$ (prob. $q$), or nothing, then $\mathbb{P}(E\text{ first})=\frac{p}{p+q}$.
+EXPLANATION:
+Only the first decisive roll matters, and conditioned on being decisive a roll is "even" or "7" in proportion to their probabilities. An even total has probability $\frac12$ (the two dice have the same parity), a $7$ has probability $\frac16$, so you win with probability $\frac{1/2}{1/2+1/6}=\frac34$.
+SOLUTION: Condition on the decisive roll
+Per roll: the sum is even iff both dice have the same parity, probability $\frac12\cdot\frac12+\frac12\cdot\frac12=\frac12$. The sum is $7$ for $(1,6),(2,5),\dots,(6,1)$: $6$ out of $36$, probability $\frac16$. Otherwise (probability $\frac13$) we roll again.
+
+Let $p$ be your winning probability. First-step analysis:
+$$p=\tfrac12+\tfrac13\,p\ \Longrightarrow\ \tfrac23p=\tfrac12\ \Longrightarrow\ p=\tfrac34.$$
+===END===
+===TEASER===
+SLUG: roll-until-six-all-even
+IDS: Q-240
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: hard
+TITLE: Roll until a six, given all rolls were even
+QUESTION:
+You roll a fair six-sided die until you get a $6$. Given that every roll you made was even, what is the expected number of rolls (counting the final $6$)?
+HINT1:
+The tempting answer is to pretend the die only has faces $2,4,6$. Test that idea carefully: does conditioning on "all even" really leave the rolls uniform on $\{2,4,6\}$?
+HINT2:
+Look at the first roll that is not a $2$ or a $4$. When does it happen, and what is its value? Is the time independent of the value?
+ANSWER:
+$\dfrac32$
+REFRESH:
+**Conditional expectation given an event**: $\mathbb{E}[N\mid A]=\mathbb{E}[N\mathbf 1_A]/\mathbb{P}(A)$.
+**Geometric distribution**: if each trial succeeds with probability $p$, the index of the first success has mean $1/p$.
+EXPLANATION:
+The event "all rolls even until the first 6" says the first roll outside $\{2,4\}$ is a $6$ rather than a $1,3,5$. Let $N$ be the time of the first roll in $\{1,3,5,6\}$: it is geometric with success probability $\frac46$, and the value shown at that time is uniform on $\{1,3,5,6\}$ **independently of $N$**. So conditioning on that value being $6$ does not change $N$ at all: $\mathbb{E}[N\mid\text{it's a }6]=\mathbb{E}[N]=\frac{1}{4/6}=\frac32$.
+
+Conditioning on "all even" is much stronger than it looks: long sequences are very unlikely to stay even, so the condition favours short games. Pretending the die has faces $\{2,4,6\}$ gives $3$, which is wrong.
+SOLUTION: Direct computation
+The game ends at roll $n$ with all rolls even iff rolls $1,\dots,n-1$ are in $\{2,4\}$ and roll $n$ is $6$:
+$$\mathbb{P}(N=n,\ A)=\left(\tfrac13\right)^{n-1}\tfrac16.$$
+Summing, $\mathbb{P}(A)=\frac16\cdot\frac{1}{1-1/3}=\frac14$. Then, using $\sum_{n\ge1}n x^{n-1}=\frac1{(1-x)^2}$,
+$$\mathbb{E}[N\mid A]=\frac{1}{1/4}\sum_{n\ge1}n\left(\tfrac13\right)^{n-1}\tfrac16=4\cdot\tfrac16\cdot\frac{1}{(2/3)^2}=\tfrac23\cdot\tfrac94=\tfrac32.$$
+Note: the source states $3$; the correct value is $\frac32$, because the rolls conditioned on "all even" are not uniform on $\{2,4,6\}$ (a quick simulation also gives $\approx1.50$).
+SOLUTION: Independence of the stopping time and the stopping value
+Let $N$ be the first roll showing a value in $\{1,3,5,6\}$. Each roll lands there with probability $\frac46$ independently, so $N\sim\text{Geom}(2/3)$. Given $N=n$, the value of roll $n$ is uniform on $\{1,3,5,6\}$ whatever $n$ is, so $N$ and $V=$ (value at time $N$) are independent. The conditioning event is exactly $\{V=6\}$, and on it the game length is $N$. Hence
+$$\mathbb{E}[N\mid V=6]=\mathbb{E}[N]=\frac{1}{2/3}=\frac32.$$
+===END===
+===TEASER===
+SLUG: three-dice-two-even-sum-at-most-7
+IDS: Q-241
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Three dice, at least two even, small total
+QUESTION:
+Three fair six-sided dice are rolled. Given that at least two of them show an even number, what is the probability that their total is at most $7$?
+HINT1:
+First find how many of the $216$ outcomes satisfy the condition; there is a symmetry shortcut.
+HINT2:
+Split the favourable outcomes into "three even dice" and "exactly two even dice and one odd die", and list the few value combinations with total $\le7$, then count their orderings.
+ANSWER:
+$\dfrac{13}{108}$
+REFRESH:
+**Conditional probability on a finite uniform space**: $\mathbb{P}(A\mid B)=\frac{|A\cap B|}{|B|}$.
+EXPLANATION:
+Each die is even or odd with probability $\frac12$, so "at least 2 of 3 even" has probability exactly $\frac12$ (it is the complement of "at least 2 of 3 odd"). That is $108$ outcomes. Among them, a small total is hard to reach because the even faces are $2,4,6$: only $(2,2,2)$, $(2,2,1)$, $(2,2,3)$ and $(2,4,1)$ in some order work, giving $13$ outcomes.
+SOLUTION: Direct count
+**Condition.** The number of even dice is $\text{Bin}(3,\frac12)$; $\mathbb{P}(\ge2\text{ even})=\frac{3+1}{8}=\frac12$, i.e. $108$ outcomes out of $216$.
+
+**Three even, total $\le7$.** The smallest total is $2+2+2=6$; anything else is at least $8$. So $1$ outcome.
+
+**Exactly two even $e_1,e_2$ and one odd $o$, total $\le7$.**
+- $e_1+e_2=4$ (both $2$): $o\le3$, so $o\in\{1,3\}$. Multisets $\{2,2,1\}$ and $\{2,2,3\}$, each with $3$ orderings: $6$ outcomes.
+- $e_1+e_2=6$ ($\{2,4\}$): $o\le1$, so $o=1$. Multiset $\{1,2,4\}$ with $3!=6$ orderings: $6$ outcomes.
+- $e_1+e_2\ge8$: would need $o\le-1$, impossible.
+
+Total favourable: $1+6+6=13$. Hence
+$$\mathbb{P}=\frac{13}{108}.$$
+===END===
+===TEASER===
+SLUG: normal-mean-50-exceeds-54
+IDS: Q-242
+FIRMS: DRW
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Normal tail beyond two sigma
+QUESTION:
+$X$ is normally distributed with mean $50$ and variance $4$. What is $\mathbb{P}(X>54)$?
+HINT1:
+Be careful: $4$ is the variance, not the standard deviation.
+HINT2:
+Standardise: how many standard deviations above the mean is $54$? Then use a known value of the standard normal CDF.
+ANSWER:
+$1-\Phi(2)\approx0.0228$
+REFRESH:
+**Standardisation**: if $X\sim N(\mu,\sigma^2)$ then $Z=(X-\mu)/\sigma\sim N(0,1)$.
+**68–95–99.7 rule**: $\mathbb{P}(|Z|\le1)\approx0.683$, $\mathbb{P}(|Z|\le2)\approx0.954$, $\mathbb{P}(|Z|\le3)\approx0.997$.
+EXPLANATION:
+The standard deviation is $\sqrt4=2$, so $54$ is exactly two standard deviations above the mean. About $95.4\%$ of the mass lies within two standard deviations, leaving $4.6\%$ outside, split equally between the two tails: about $2.3\%$ above.
+SOLUTION: Standardise
+$\sigma=\sqrt4=2$, so
+$$\mathbb{P}(X>54)=\mathbb{P}\!\left(Z>\frac{54-50}{2}\right)=\mathbb{P}(Z>2)=1-\Phi(2)=1-0.97725\approx0.0228.$$
+Mental version: $\mathbb{P}(|Z|>2)\approx1-0.9545=0.0455$, half of it is $\approx0.0228$.
+===END===
+===TEASER===
+SLUG: four-integers-pairwise-products
+IDS: Q-243
+FIRMS: Belvedere Trading
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Four integers from three products
+QUESTION:
+The integers $a,b,c,d$ are all greater than $1$ and satisfy
+$$ab=21,\qquad bc=15,\qquad cd=45.$$
+Find $a^2+b^2+c^2+d^2$.
+HINT1:
+One of the four numbers appears in two of the products.
+HINT2:
+$b$ divides both $21$ and $15$. What are the common divisors of $21$ and $15$ that are greater than $1$?
+ANSWER:
+$164$
+REFRESH:
+NONE
+EXPLANATION:
+$b$ divides both $21$ and $15$, hence divides $\gcd(21,15)=3$; since $b>1$, $b=3$. Everything else follows by division: $a=7$, $c=5$, $d=9$.
+SOLUTION: Use the common factor
+From $ab=21$ and $bc=15$, $b\mid\gcd(21,15)=3$, and $b>1$ forces $b=3$. Then
+$$a=\tfrac{21}{3}=7,\qquad c=\tfrac{15}{3}=5,\qquad d=\tfrac{45}{5}=9,$$
+all greater than $1$ as required. Therefore
+$$a^2+b^2+c^2+d^2=49+9+25+81=164.$$
+===END===
+===TEASER===
+SLUG: four-lightbulbs-last-failure
+IDS: Q-249
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: When does the last of four bulbs die?
+QUESTION:
+Four light bulbs have lifetimes $X_1,X_2,X_3,X_4$, i.i.d. $\text{Exp}(1)$. What is the expected time until all four bulbs have failed, i.e. $\mathbb{E}[\max(X_1,X_2,X_3,X_4)]$?
+HINT1:
+Instead of looking at the last failure directly, look at the successive failures: the waiting time until the first bulb dies, then until the second, and so on.
+HINT2:
+The minimum of $k$ independent $\text{Exp}(1)$ variables is $\text{Exp}(k)$, and by memorylessness the surviving bulbs are "as good as new" after each failure.
+ANSWER:
+$\dfrac{25}{12}\approx2.083$
+REFRESH:
+**Minimum of exponentials**: if $Y_1,\dots,Y_k$ are independent $\text{Exp}(1)$, then $\min Y_i\sim\text{Exp}(k)$, with mean $1/k$.
+**Memorylessness**: $\mathbb{P}(Y>s+t\mid Y>s)=\mathbb{P}(Y>t)$ for $Y$ exponential.
+EXPLANATION:
+While $k$ bulbs are alive, the time to the next failure is the minimum of $k$ fresh $\text{Exp}(1)$ clocks, so it has mean $\frac1k$. The last failure happens after four such stages, with $4,3,2,1$ bulbs alive, so the expected time is $\frac14+\frac13+\frac12+1=\frac{25}{12}$. Note that the maximum is much larger than the mean lifetime $1$ of a single bulb.
+SOLUTION: Spacings and memorylessness
+Order the failure times $X_{(1)}<X_{(2)}<X_{(3)}<X_{(4)}$ and write
+$$X_{(4)}=X_{(1)}+(X_{(2)}-X_{(1)})+(X_{(3)}-X_{(2)})+(X_{(4)}-X_{(3)}).$$
+- $X_{(1)}=\min$ of $4$ independent $\text{Exp}(1)$: $\text{Exp}(4)$, mean $\frac14$.
+- At time $X_{(1)}$ the three survivors have fresh $\text{Exp}(1)$ residual lifetimes (memorylessness), so $X_{(2)}-X_{(1)}\sim\text{Exp}(3)$, mean $\frac13$.
+- Similarly $X_{(3)}-X_{(2)}\sim\text{Exp}(2)$ and $X_{(4)}-X_{(3)}\sim\text{Exp}(1)$.
+
+Hence
+$$\mathbb{E}[X_{(4)}]=\frac14+\frac13+\frac12+1=\frac{3+4+6+12}{12}=\frac{25}{12}.$$
+SOLUTION: Integrate the tail
+$\mathbb{P}(\max\le t)=(1-e^{-t})^4$, so
+$$\mathbb{E}[\max]=\int_0^\infty\big(1-(1-e^{-t})^4\big)\,dt=\int_0^\infty\big(4e^{-t}-6e^{-2t}+4e^{-3t}-e^{-4t}\big)dt=4-3+\tfrac43-\tfrac14=\tfrac{25}{12}.$$
+===END===
+===TEASER===
+SLUG: capture-recapture-fish-pond
+IDS: Q-250
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: easy
+TITLE: Tagged fish in a pond
+QUESTION:
+You catch $50$ fish in a pond, tag them and release them. The next day you catch $40$ fish and $10$ of them carry a tag. Estimate the number of fish in the pond.
+HINT1:
+The second catch is a sample of the pond. What fraction of it is tagged, and what fraction of the whole pond is tagged?
+HINT2:
+Set the tagged proportion in the sample equal to the tagged proportion in the pond, $50/N$.
+ANSWER:
+About $200$ fish.
+REFRESH:
+**Hypergeometric distribution**: drawing $n$ items without replacement from $N$ items of which $K$ are marked, the number of marked items drawn has mean $nK/N$.
+EXPLANATION:
+If the tagged fish mixed well, the second catch is a random sample, so about the same fraction of it is tagged as in the whole pond. Here $\frac{10}{40}=\frac14$ of the sample is tagged, so the $50$ tagged fish should be about a quarter of the pond: $N\approx200$. This is the Lincoln–Petersen estimator $\hat N=\frac{Kn}{k}$.
+SOLUTION: Method of moments
+Let $N$ be the population, $K=50$ tagged fish, sample size $n=40$, observed tagged $k=10$. The number of tagged fish in the sample is hypergeometric with mean $n\frac{K}{N}$. Equating the mean with the observation:
+$$40\cdot\frac{50}{N}=10\ \Longrightarrow\ N=\frac{40\cdot50}{10}=200.$$
+SOLUTION: Maximum likelihood
+The likelihood is $L(N)=\binom{50}{10}\binom{N-50}{30}\big/\binom{N}{40}$. Its ratio
+$$\frac{L(N)}{L(N-1)}=\frac{(N-50)(N-40)}{N(N-80)}\ \ge1\iff 2000\ge 10N\iff N\le200.$$
+So $L$ increases up to $N=200$ and then decreases ($L(200)=L(199)$, a tie), and the MLE is $\hat N=199$ or $200$, i.e. about $200$ fish.
+===END===
+===TEASER===
+SLUG: three-fishermen-leftover-fish
+IDS: Q-251
+FIRMS: IMC
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Three fishermen share a bucket
+QUESTION:
+Three fishermen come to a bucket of fish one after another. Each one finds that when he tries to split the fish currently in the bucket into three equal groups, exactly one fish is left over. He takes that extra fish plus one third of the rest, and leaves. What is the smallest initial number of fish for which this can happen for all three fishermen?
+HINT1:
+Write the number of fish left after one fisherman as a function of the number he found. Can you make that map look like a pure multiplication by shifting the count by a constant?
+HINT2:
+If a fisherman finds $n=3m+1$ fish he leaves $2m$. Check that $n+2$ is multiplied by $\tfrac23$. What must divide $N+2$ for three rounds to work?
+ANSWER:
+$25$
+REFRESH:
+NONE
+EXPLANATION:
+A fisherman who finds $n\equiv1\pmod3$ fish takes $1+\frac{n-1}{3}$ and leaves $\frac{2(n-1)}{3}$. Adding $2$ turns this into a clean scaling: $\frac{2(n-1)}{3}+2=\frac23(n+2)$. So each round multiplies $n+2$ by $\frac23$, and "$n\equiv1\pmod 3$" means "$3\mid n+2$". Three successful rounds need $3\mid N+2$, $3\mid\frac23(N+2)$ and $3\mid\frac49(N+2)$, i.e. $27\mid N+2$. The smallest is $N=25$: $25\to16\to10\to6$.
+SOLUTION: Shift by 2
+Let $n_1=N$ and $n_{k+1}=\frac{2(n_k-1)}{3}$ when $n_k\equiv1\pmod3$. Setting $m_k=n_k+2$:
+$$m_{k+1}=\frac{2(n_k-1)}{3}+2=\frac{2n_k+4}{3}=\frac23m_k,$$
+and $n_k\equiv1\pmod3\iff3\mid m_k$. We need $3\mid m_1$, $3\mid m_2=\frac23m_1$, $3\mid m_3=\frac49m_1$. Since $\gcd(2,3)=1$ this is $27\mid m_1=N+2$. The smallest positive $N$ is $27-2=25$.
+
+Check: $25=3\cdot8+1$, first takes $1+8=9$, leaves $16$; $16=3\cdot5+1$, second takes $6$, leaves $10$; $10=3\cdot3+1$, third takes $4$, leaves $6$.
+SOLUTION: Brute force from small values
+$N$ must be $\equiv1\pmod3$: try $4,7,10,\dots$
+- $4\to2$ (fails), $7\to4\to2$ (fails), $10\to6$ (fails), $13\to8$ (fails), $16\to10\to6$ (fails), $19\to12$ (fails), $22\to14$ (fails),
+- $25\to16\to10\to6$: all three found $\equiv1\pmod3$.
+
+So the smallest is $25$.
+===END===
+===TEASER===
+SLUG: five-sided-die-sum-reaches-5
+IDS: Q-253
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Five-sided die until the total reaches 5
+QUESTION:
+A fair die with $5$ faces numbered $1$ to $5$ is rolled repeatedly until the running total is at least $5$. What is the expected number of rolls?
+HINT1:
+Either set up a recursion on "how much is still needed", or use $\mathbb{E}[N]=\sum_{k\ge0}\mathbb{P}(N>k)$.
+HINT2:
+$N>k$ means the first $k$ rolls total at most $4$. Because the faces go up to $5$, no roll can be "too big" to count here, so you just need the number of ways to write a number $\le4$ as an ordered sum of $k$ positive integers.
+ANSWER:
+$\left(\dfrac65\right)^4=\dfrac{1296}{625}\approx2.074$
+REFRESH:
+**Tail-sum formula**: for $N\ge0$ integer-valued, $\mathbb{E}[N]=\sum_{k\ge0}\mathbb{P}(N>k)$.
+**Compositions**: the number of ways to write $m$ as an ordered sum of $k$ positive integers is $\binom{m-1}{k-1}$, and $\sum_{m=k}^{n}\binom{m-1}{k-1}=\binom{n}{k}$.
+EXPLANATION:
+You need more than $k$ rolls exactly when the first $k$ rolls add to $4$ or less. Every such sequence of $k$ rolls is a composition of some $m\le4$, and there are $\binom4k$ of them; each has probability $5^{-k}$. So $\mathbb{P}(N>k)=\binom4k5^{-k}$ and the tail sum is the binomial expansion of $(1+\frac15)^4$. In general, with faces $1..n$ and target $n$, the answer is $(1+\frac1n)^{n-1}$, which tends to $e$.
+SOLUTION: Tail sum and compositions
+$N>k\iff S_k=X_1+\dots+X_k\le4$. For $k\le4$ every value $1..4$ of a roll is allowed, so the number of favourable sequences is
+$$\#\{(x_1,\dots,x_k):x_i\ge1,\ \textstyle\sum x_i\le4\}=\sum_{m=k}^{4}\binom{m-1}{k-1}=\binom4k,$$
+each with probability $5^{-k}$ (and $\mathbb{P}(N>k)=0$ for $k\ge5$). Hence
+$$\mathbb{E}[N]=\sum_{k=0}^{4}\binom4k\left(\tfrac15\right)^k=\left(1+\tfrac15\right)^4=\frac{1296}{625}\approx2.074.$$
+SOLUTION: Recursion on the amount still needed
+Let $m(r)$ be the expected number of rolls to accumulate at least $r$ ($1\le r\le5$). A roll of $j\ge r$ finishes; otherwise $r-j$ is still needed:
+$$m(r)=1+\tfrac15\sum_{j=1}^{r-1}m(r-j).$$
+- $m(1)=1$
+- $m(2)=1+\frac15=\frac65$
+- $m(3)=1+\frac15\left(\frac65+1\right)=\frac{36}{25}$
+- $m(4)=1+\frac15\left(\frac{36}{25}+\frac65+1\right)=1+\frac{91}{125}=\frac{216}{125}$
+- $m(5)=1+\frac15\left(\frac{216}{125}+\frac{36}{25}+\frac65+1\right)=1+\frac{671}{625}=\frac{1296}{625}$.
+
+(The pattern $m(r)=(6/5)^{r-1}$ follows from $m(r+1)-m(r)=\frac15m(r)$.)
+===END===
+===TEASER===
+SLUG: heads-plus-one-tails-reciprocal
+IDS: Q-256
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: Heads adds a dollar, tails flips your wealth
+QUESTION:
+You start with \$100. A fair coin is tossed $10$ times. Each head adds \$1 to your current amount; each tail replaces your current amount $x$ by $\frac1x$. What is your expected amount after the ten tosses?
+HINT1:
+What happens to your wealth after two tails in a row? After a tail, a head, and a tail?
+HINT2:
+Split the $2^{10}$ sequences into those where you end up near \$100 and those where you end up with a few dollars at most. The first kind are exactly the sequences in which every block of consecutive tails has even length; count them by their number of $TT$ blocks.
+ANSWER:
+About \$10.81 (exactly $\approx10.8127$; about $9.10$ of it comes from the paths that end near \$100)
+REFRESH:
+**Tilings by squares and dominoes**: the number of ways to tile a row of length $n$ with $j$ dominoes and $n-2j$ squares is $\binom{n-j}{j}$.
+EXPLANATION:
+Taking the reciprocal twice gives back the same number, so a block $TT$ does nothing. Hence if every run of tails has even length, the tails cancel and you end with $100+(\#\text{heads})$. As soon as a run of tails has odd length, your wealth becomes about $\frac1{100}$, and after that it can never get big again: to become large you would need to take the reciprocal of something tiny, and only the reciprocal of a large number is tiny. Those paths end with a few dollars at most. So the expectation is dominated by the "all tails paired" paths: there are $89$ of them out of $1024$, worth about \$100 each, which already gives \$9.10; the other $935$ paths add about \$1.71.
+SOLUTION: Split into large and small paths
+**Large paths.** $\frac{1}{1/x}=x$, so a $TT$ block leaves the wealth unchanged. If all tail runs have even length, the sequence is a tiling of length $10$ by $H$ (length 1) and $TT$ (length 2), and the final wealth is $100+h$ where $h$ is the number of heads. With $j$ blocks $TT$ there are $h=10-2j$ heads and $\binom{10-j}{j}$ sequences:
+
+| $j$ | sequences | final wealth | contribution |
+|---|---|---|---|
+| 0 | 1 | 110 | 110 |
+| 1 | 9 | 108 | 972 |
+| 2 | 28 | 106 | 2968 |
+| 3 | 35 | 104 | 3640 |
+| 4 | 15 | 102 | 1530 |
+| 5 | 1 | 100 | 100 |
+
+Total: $89$ sequences, sum $9320$, contributing $\frac{9320}{1024}\approx9.102$.
+
+**Small paths.** In every other sequence some run of tails has odd length, so at the end of that run the wealth is $\frac{1}{100+h}<0.01$. From then on the wealth stays below about $11$: heads add at most $10$ in total, the reciprocal of a number $\ge1$ is $\le1$, and the reciprocal of a number in $(0,1)$ can only undo a previous reciprocal of a small number. Roughly, the final value is the number of heads after the last tail plus something at most $1$. Enumerating these $935$ sequences exactly (a few lines of code) gives a contribution of $\approx1.711$.
+
+**Total.**
+$$\mathbb{E}\approx9.102+1.711=10.813.$$
+Note: the source states $8.69$; the correct value is $\approx10.81$ (exact enumeration of all $2^{10}$ paths, and the $9.10$ from the large paths alone is already above $8.69$).
+SOLUTION: Exact dynamic programming
+Keep the full distribution of wealth: start with $\{100:1\}$, and at each toss send the probability mass $p$ sitting on a value $x$ half to $x+1$ and half to $1/x$. After $10$ steps there are at most $1024$ values; averaging them with their weights gives $\mathbb{E}=10.8127$. (For comparison, $9$ tosses give $12.79$ and $11$ give $9.21$: the answer falls as $n$ grows because fewer paths keep all their tails paired.)
+===END===
+===TEASER===
+SLUG: two-coins-win-2-lose-7
+IDS: Q-257
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Two coins: win on one head, lose on two
+QUESTION:
+Two fair coins are tossed. You win \$2 if exactly one shows heads and lose \$7 if both show heads (nothing happens with two tails). What is your expected gain per play?
+HINT1:
+List the four equally likely outcomes.
+HINT2:
+Exactly one head has probability $\frac12$, two heads $\frac14$.
+ANSWER:
+$-\dfrac34$ dollar (you lose 75 cents per play on average).
+REFRESH:
+NONE
+EXPLANATION:
+Half the time you win \$2 (worth \$1 on average), a quarter of the time you lose \$7 (worth $-$\$1.75 on average), and the rest pays nothing: $1-1.75=-0.75$.
+SOLUTION: Direct expectation
+Outcomes $HH,HT,TH,TT$ each have probability $\frac14$.
+$$\mathbb{E}[G]=\tfrac24\cdot2+\tfrac14\cdot(-7)+\tfrac14\cdot0=1-\tfrac74=-\tfrac34.$$
+===END===
+===TEASER===
+SLUG: ten-coins-five-biased-even-heads
+IDS: Q-258
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Even number of heads with some biased coins
+QUESTION:
+You have $10$ coins: $5$ are fair and $5$ are biased (each biased coin lands heads with some unknown probability different from $\frac12$). You toss all $10$ coins once. What is the probability that the total number of heads is even?
+HINT1:
+The biases are unknown, so the answer cannot depend on them. What does a single fair coin do to the parity of a total?
+HINT2:
+Condition on the outcome of all the coins except one fair coin.
+ANSWER:
+$\dfrac12$
+REFRESH:
+**Independence and conditioning**: if $F$ is independent of $R$, then $\mathbb{P}(F+R\text{ even})=\sum_r\mathbb{P}(R=r)\,\mathbb{P}(F+r\text{ even})$.
+EXPLANATION:
+Set one fair coin aside and toss the other nine first. Whatever their number of heads $r$, the last fair coin makes the total even with probability exactly $\frac12$ (heads if $r$ is odd, tails if $r$ is even). So a single fair coin independent of everything else already makes the parity a fair coin flip; the biased coins are irrelevant.
+SOLUTION: Condition on the other nine coins
+Let $F\in\{0,1\}$ be the result of one fair coin and $R$ the number of heads among the other $9$ coins, independent of $F$. For every value $r$,
+$$\mathbb{P}(F+r\text{ even})=\mathbb{P}(F\equiv r\pmod 2)=\tfrac12.$$
+So $\mathbb{P}(F+R\text{ even})=\sum_r\mathbb{P}(R=r)\cdot\frac12=\frac12$.
+SOLUTION: Product formula for parity
+For independent coins with head probabilities $p_i$,
+$$\mathbb{P}(\text{even})-\mathbb{P}(\text{odd})=\mathbb{E}\left[\prod_i(-1)^{X_i}\right]=\prod_i(1-2p_i).$$
+A fair coin has $1-2p_i=0$, so the product is $0$ and $\mathbb{P}(\text{even})=\frac12$.
+===END===
+===TEASER===
+SLUG: flip-until-two-in-a-row-even-length
+IDS: Q-261
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Flip until a repeat: even number of flips?
+QUESTION:
+Ahmed tosses a fair coin until, for the first time, two consecutive tosses show the same face ($HH$ or $TT$). What is the probability that the total number of tosses is even?
+HINT1:
+After the first toss, what is the probability that each new toss ends the game?
+HINT2:
+Show that the number of tosses $N$ satisfies $\mathbb{P}(N=n)=(\frac12)^{n-1}$ for $n\ge2$, then sum over even $n$.
+ANSWER:
+$\dfrac23$
+REFRESH:
+**Geometric series**: $\sum_{k\ge0}r^k=\frac{1}{1-r}$ for $|r|<1$.
+EXPLANATION:
+Each toss after the first matches the previous one with probability $\frac12$, independently of the past. So the game ends at toss $2$ with probability $\frac12$, at toss $3$ with probability $\frac14$, and so on. The even times get the "first" and larger share of each pair $(2,3),(4,5),\dots$, exactly twice the odd share, so $\mathbb{P}(\text{even})=\frac23$.
+SOLUTION: Distribution of the stopping time
+For $k\ge2$, toss $k$ equals toss $k-1$ with probability $\frac12$, independently of earlier tosses. So $N-1\sim\text{Geom}(\frac12)$ and $\mathbb{P}(N=n)=(\frac12)^{n-1}$ for $n\ge2$. Hence
+$$\mathbb{P}(N\text{ even})=\sum_{m\ge1}\left(\tfrac12\right)^{2m-1}=\tfrac12\left(1+\tfrac14+\tfrac1{16}+\cdots\right)=\tfrac12\cdot\tfrac{1}{1-1/4}=\tfrac23.$$
+SOLUTION: Pairing argument
+Write $e=\mathbb{P}(N\text{ even})$ and $o=\mathbb{P}(N\text{ odd})$. Since $\mathbb{P}(N=2m)=2\,\mathbb{P}(N=2m+1)$ for all $m\ge1$, $e=2o$, and $e+o=1$ gives $e=\frac23$.
+===END===
+===TEASER===
+SLUG: poker-four-of-a-kind-given-three
+IDS: Q-263
+FIRMS: Goldman Sachs
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Four of a kind given at least three of a kind
+QUESTION:
+You are dealt $5$ cards from a standard $52$-card deck. You are told that at least $3$ of your cards share the same rank. What is the probability that your hand contains all $4$ cards of some rank?
+HINT1:
+Count hands, not probabilities: how many hands have at least three cards of one rank, and how many of those have four?
+HINT2:
+Five cards can hold at most one rank appearing three or more times. Count "exactly three of rank $r$" and "four of rank $r$" separately (the other cards being anything of other ranks).
+ANSWER:
+$\dfrac{1}{95}$
+REFRESH:
+**Conditional probability with equally likely outcomes**: $\mathbb{P}(A\mid B)=\frac{|A|}{|B|}$ when $A\subseteq B$.
+EXPLANATION:
+Every hand in the conditioning event has exactly one "big" rank (appearing 3 or 4 times). For a hand with exactly three of a rank, the other two cards can be any two of the $48$ cards of other ranks: $13\cdot4\cdot\binom{48}{2}=58\,656$ hands. For four of a kind, the fifth card is any of $48$: $13\cdot48=624$ hands. Four of a kind is therefore $\frac{624}{59\,280}=\frac1{95}$ of the conditioning event. Intuitively: given the triple, the chance that one of the two other cards is the missing fourth card is small, about $2/49$, but there are many more ways to be a plain triple.
+SOLUTION: Count the hands
+With $5$ cards, two different ranks cannot both appear at least $3$ times. So the event $B=\{\text{some rank appears}\ge3\text{ times}\}$ splits by the big rank $r$ and whether it appears $3$ or $4$ times:
+- exactly $3$ of rank $r$: $13$ choices of $r$, $\binom43=4$ choices of suits, and $\binom{48}{2}=1128$ choices for the other two cards (any cards not of rank $r$, pairs allowed): $13\cdot4\cdot1128=58\,656$;
+- all $4$ of rank $r$: $13\cdot48=624$.
+
+So $|B|=58\,656+624=59\,280$ and
+$$\mathbb{P}(\text{four of a kind}\mid B)=\frac{624}{59\,280}=\frac{1}{95}.$$
+(Check: $95\cdot624=59\,280$.)
+===END===
+===TEASER===
+SLUG: iid-normals-x-minus-y-exceeds-z
+IDS: Q-267
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Three normals: is X minus Y above Z?
+QUESTION:
+$X,Y,Z$ are i.i.d. $N(12,12)$ (mean $12$, variance $12$). Compute $\mathbb{P}(X-Y>Z)$.
+HINT1:
+Move everything to one side and study a single random variable.
+HINT2:
+$X-Y-Z$ is a linear combination of independent normals. Find its mean and variance, then standardise.
+ANSWER:
+$\Phi(-2)=1-\Phi(2)\approx0.0228$
+REFRESH:
+**Sums of independent normals**: if $X_i\sim N(\mu_i,\sigma_i^2)$ are independent, then $\sum a_iX_i\sim N\left(\sum a_i\mu_i,\ \sum a_i^2\sigma_i^2\right)$.
+EXPLANATION:
+$W=X-Y-Z$ is normal. Its mean is $12-12-12=-12$ and its variance is $12+12+12=36$ (variances add, even for the subtracted terms). So $W\sim N(-12,6^2)$ and $W>0$ requires $W$ to be $2$ standard deviations above its mean.
+SOLUTION: Reduce to one normal
+Let $W=X-Y-Z$. Then
+$$\mathbb{E}[W]=12-12-12=-12,\qquad \operatorname{Var}(W)=12+12+12=36,$$
+so $W\sim N(-12,36)$ and
+$$\mathbb{P}(X-Y>Z)=\mathbb{P}(W>0)=\mathbb{P}\left(\frac{W+12}{6}>2\right)=1-\Phi(2)=\Phi(-2)\approx0.0228.$$
+Note: the source lists the answer as $-2$, which should be read as $\Phi(-2)$; the probability itself is $\approx0.0228$.
+===END===
+===TEASER===
+SLUG: glove-pairs-numbers-differ-by-one
+IDS: Q-269
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: hard
+TITLE: Pairing ten numbered gloves
+QUESTION:
+There are $5$ pairs of gloves, the two gloves of pair $i$ both carry the number $i$ ($i=1,\dots,5$). The $10$ gloves are split uniformly at random into $5$ pairs. What is the probability that in every pair the two numbers differ by at most $1$?
+HINT1:
+First count all the ways to split $10$ distinct objects into $5$ unordered pairs. Then think about which gloves a "1" can be paired with.
+HINT2:
+Let $x_i$ be the number of pairs made of an $i$ and an $i+1$. Looking at the two gloves numbered $1$, then $2$, and so on, show that each $x_i$ is $0$ or $2$ and that two consecutive $x_i$ cannot both be $2$. Then count the pairings for each such pattern.
+ANSWER:
+$\dfrac{1}{45}$ (i.e. $21$ good pairings out of $945$)
+REFRESH:
+**Number of perfect matchings**: $2n$ distinct objects can be split into $n$ unordered pairs in $(2n-1)!!=(2n-1)(2n-3)\cdots3\cdot1$ ways.
+EXPLANATION:
+A glove numbered $1$ can only go with a $1$ or a $2$. If one $1$ goes with a $2$, the other $1$ has no partner left among $\{1\}$, so it must also go with a $2$: the two $1$s and the two $2$s are "fully crossed". The same parity argument works at every level, so a good pairing is determined by choosing some non-adjacent levels $(i,i+1)$ to cross (all other gloves are paired with their twin). A crossed block can be formed in $2$ ways. There are $4$ single crossings and $3$ ways to choose two non-adjacent crossings, so there are $1+4\cdot2+3\cdot4=21$ good pairings out of $9!!=945$.
+SOLUTION: Structure of the good pairings
+**Total.** Splitting $10$ labelled gloves into pairs: $9\cdot7\cdot5\cdot3\cdot1=945$ equally likely pairings.
+
+**Good pairings.** Each pair is $(i,i)$ or $(i,i+1)$. Let $x_i\ge0$ be the number of $(i,i+1)$ pairs, $i=1,\dots,4$. The two gloves numbered $i$ are used by $x_{i-1}$ pairs with $i-1$, $x_i$ pairs with $i+1$, and the rest pair with each other, so $2-x_{i-1}-x_i$ must be even and $\ge0$ (with $x_0=x_5=0$).
+- $i=1$: $2-x_1$ even, so $x_1\in\{0,2\}$.
+- Then inductively each $x_i$ is even, hence in $\{0,2\}$, and $x_{i-1}+x_i\le2$ forbids two consecutive $2$s.
+
+So a good pairing corresponds to a set of non-adjacent "edges" among the four edges $\{1,2\},\{2,3\},\{3,4\},\{4,5\}$ of a path. For a chosen edge, pairing the two $i$s with the two $(i+1)$s can be done in $2$ ways; unchosen levels pair the twins in $1$ way.
+- $0$ edges: $1$ set, $1$ pairing.
+- $1$ edge: $4$ sets, $2$ pairings each: $8$.
+- $2$ non-adjacent edges: $\{12,34\},\{12,45\},\{23,45\}$: $3$ sets, $2^2=4$ pairings each: $12$.
+- $3$ or more non-adjacent edges among $4$ is impossible.
+
+Total good $=1+8+12=21$, so
+$$\mathbb{P}=\frac{21}{945}=\frac1{45}.$$
+SOLUTION: Sequential pairing
+Take a glove numbered $1$ and pair it at random ($9$ equally likely partners).
+- With probability $\frac19$ it gets the other $1$; the remaining problem is the same one for numbers $2..5$.
+- With probability $\frac29$ it gets a $2$; then the other $1$ must get the remaining $2$ (probability $\frac17$), leaving numbers $3..5$.
+- Otherwise it fails.
+
+Let $q_k$ be the success probability with $k$ consecutive numbers ($2k$ gloves). Then $q_0=1$, $q_1=1$, and in general
+$$q_k=\frac{1}{2k-1}q_{k-1}+\frac{2}{2k-1}\cdot\frac{1}{2k-3}\,q_{k-2}.$$
+- $q_2=\frac13\cdot1+\frac23\cdot1\cdot1=1$ (with $2$ numbers everything is good),
+- $q_3=\frac15\cdot1+\frac25\cdot\frac13\cdot1=\frac{5}{15}=\frac13$,
+- $q_4=\frac17\cdot\frac13+\frac27\cdot\frac15\cdot1=\frac1{21}+\frac2{35}=\frac{5+6}{105}=\frac{11}{105}$,
+- $q_5=\frac19\cdot\frac{11}{105}+\frac29\cdot\frac17\cdot\frac13=\frac{11}{945}+\frac{10}{945}=\frac{21}{945}=\frac1{45}$.
+===END===
+===TEASER===
+SLUG: complete-graph-random-walk-cover-time
+IDS: Q-271
+FIRMS: Goldman Sachs
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Random walk covering ten vertices
+QUESTION:
+A token starts on one of $10$ vertices. At each move it jumps to one of the $10$ vertices chosen uniformly at random (it may stay where it is, each vertex has probability $\frac1{10}$). What is the expected number of moves until every vertex has been visited at least once (the starting vertex counts as visited)? Round to the nearest whole number.
+HINT1:
+This is a collector problem in disguise.
+HINT2:
+When $k$ vertices have been visited, each move finds a new one with probability $\frac{10-k}{10}$. How long does that stage take on average?
+ANSWER:
+$10\left(1+\frac12+\cdots+\frac19\right)\approx28.3$, so about $28$ moves.
+REFRESH:
+**Geometric waiting time**: if each trial succeeds with probability $p$, the expected number of trials until the first success is $\frac1p$.
+**Linearity of expectation**: $\mathbb{E}\left[\sum T_k\right]=\sum\mathbb{E}[T_k]$, no independence needed.
+EXPLANATION:
+Every move lands on a uniformly random vertex regardless of where the token is, so this is exactly the coupon collector problem with $10$ coupons, except that the first coupon is free (the starting vertex). Going from $k$ visited vertices to $k+1$ takes on average $\frac{10}{10-k}$ moves; summing for $k=1,\dots,9$ gives $10H_9\approx28.3$.
+SOLUTION: Coupon collector stages
+Let $T_k$ be the number of moves spent while exactly $k$ vertices have been visited ($k=1,\dots,9$). Each move finds a new vertex with probability $\frac{10-k}{10}$, independently of the past, so $\mathbb{E}[T_k]=\frac{10}{10-k}$. The total is
+$$\mathbb{E}[T]=\sum_{k=1}^{9}\frac{10}{10-k}=10\left(1+\tfrac12+\tfrac13+\cdots+\tfrac19\right)=10\cdot\frac{7129}{2520}\approx28.29.$$
+Rounded: $28$.
+
+Note: the source states $29$, which is $10H_{10}\approx29.29$: that counts the placement on the starting vertex as a move. With the start already visited, the correct value is $10H_9\approx28.29\to28$.
+===END===
+===TEASER===
+SLUG: cups-grid-row-column-elimination
+IDS: Q-272
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Clearing a 4 by 4 grid of cups in four throws
+QUESTION:
+Sixteen cups are arranged in a $4\times4$ grid. When a ball lands in a cup, that cup's whole row and whole column are removed from play. Each throw lands in one of the $16$ original positions uniformly at random, even if that position has already been removed (such a throw is wasted). What is the probability that all cups are eliminated in just $4$ throws, the minimum possible?
+HINT1:
+Each useful throw removes one row and one column. What must every one of the four throws do?
+HINT2:
+After $k$ useful throws, how many of the $16$ positions are still in play?
+ANSWER:
+$\dfrac{9}{1024}$
+REFRESH:
+NONE
+EXPLANATION:
+A throw removes one row and one column, and there are $4$ rows, so $4$ throws clear the grid only if every throw hits a cup still in play. After $k$ successful throws, a $(4-k)\times(4-k)$ sub-grid remains, i.e. $(4-k)^2$ live positions out of $16$. Multiply: $\frac{16}{16}\cdot\frac{9}{16}\cdot\frac{4}{16}\cdot\frac{1}{16}$.
+SOLUTION: Multiply the step probabilities
+With $4$ throws we need $4$ distinct rows and $4$ distinct columns removed, so every throw must land on a live cup. Live positions before throws $1,2,3,4$: $16,9,4,1$. Hence
+$$\mathbb{P}=\frac{16}{16}\cdot\frac{9}{16}\cdot\frac{4}{16}\cdot\frac{1}{16}=\frac{576}{65\,536}=\frac{9}{1024}\approx0.0088.$$
+SOLUTION: Count permutations
+A successful sequence of $4$ throws is an ordered list of $4$ cells with distinct rows and distinct columns: choose the order of rows ($4!$) and assign distinct columns ($4!$), so $4!\cdot4!=576$ sequences out of $16^4=65\,536$, giving $\frac{576}{65\,536}=\frac{9}{1024}$.
+===END===
+===TEASER===
+SLUG: hat-draw-pay-per-turn-stopping
+IDS: Q-280
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Paying a dollar per draw from a hat
+QUESTION:
+A hat contains the numbers $1$ to $100$. Each turn, AJ pays \$1, draws a number uniformly at random, writes it down and puts it back. He may stop whenever he likes, and is then paid, in dollars, the last number he drew. He must play at least one turn. With optimal play, what is the fair value of the game?
+HINT1:
+The situation after every draw looks the same as at the start, so the optimal rule should be a threshold: stop as soon as the number is at least some $t$.
+HINT2:
+If you stop at the first draw $\ge t$, the number of draws is geometric and the final number is uniform on $\{t,\dots,100\}$. Write the net value as a function of $t$ and maximise over integers.
+ANSWER:
+$\dfrac{1209}{14}\approx\$86.36$ (stop at the first draw of $87$ or more)
+REFRESH:
+**Optimal stopping with i.i.d. offers and a cost per draw**: the value $V$ satisfies $V=\mathbb{E}[\max(X,V)]-c$, and the optimal rule is to stop as soon as $X\ge V$.
+**Geometric distribution**: if each draw succeeds with probability $p$, the expected number of draws is $1/p$.
+EXPLANATION:
+Because draws are with replacement, continuing always puts you back in the same situation, worth some $V$. So you keep a draw $x$ iff $x\ge V$. For the rule "stop at the first $x\ge t$", the payoff is the average of $t,\dots,100$, i.e. $\frac{100+t}{2}$, and you pay on average $\frac{100}{101-t}$ draws. Raising $t$ improves the payoff by $\frac12$ per step but makes the expected cost grow faster and faster; the best balance is $t=87$, worth $93.5-\frac{100}{14}=\frac{1209}{14}$. Consistency check: $V\approx86.4$, so indeed you should stop exactly on $87$ or more.
+SOLUTION: Optimise over thresholds
+Rule "stop at the first draw $\ge t$": each draw succeeds with probability $\frac{101-t}{100}$, so the expected number of draws (and dollars paid) is $\frac{100}{101-t}$, and the final number is uniform on $\{t,\dots,100\}$, with mean $\frac{100+t}{2}$. Net value:
+$$g(t)=\frac{100+t}{2}-\frac{100}{101-t}.$$
+- $g(85)=92.5-\frac{100}{16}=86.25$
+- $g(86)=93-\frac{100}{15}\approx86.33$
+- $g(87)=93.5-\frac{100}{14}\approx86.357$
+- $g(88)=94-\frac{100}{13}\approx86.31$
+
+Since $g(t+1)-g(t)=\frac12-\frac{100}{(101-t)(100-t)}$ changes sign once (it is positive iff $(101-t)(100-t)>200$, i.e. $t\le86$), the maximum is at $t=87$:
+$$V=g(87)=\frac{187}{2}-\frac{100}{14}=\frac{1309-100}{14}=\frac{1209}{14}\approx86.36.$$
+SOLUTION: Bellman equation
+Let $V$ be the value just before paying for a draw. After drawing $x$ you get $\max(x,V)$, so
+$$V=\frac1{100}\sum_{x=1}^{100}\max(x,V)-1.$$
+Guess that $V\in[86,87)$, so values $x\ge87$ are kept and $x\le86$ are replaced by $V$:
+$$V=\frac{86V+\sum_{x=87}^{100}x}{100}-1=\frac{86V+1309}{100}-1\ \Longrightarrow\ 14V=1209\ \Longrightarrow\ V=\frac{1209}{14}\approx86.36,$$
+which is indeed in $[86,87)$, confirming the guess.
+===END===
+===TEASER===
+SLUG: ten-flips-at-most-four-heads
+IDS: Q-281
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: At most four heads in ten flips
+QUESTION:
+A fair coin is tossed $10$ times. What is the probability of getting at most $4$ heads?
+HINT1:
+Count the sequences with $0,1,2,3,4$ heads.
+HINT2:
+Use $\binom{10}{k}$ for $k=0,\dots,4$; or use symmetry: $\mathbb{P}(\le4)=\mathbb{P}(\ge6)$.
+ANSWER:
+$\dfrac{193}{512}\approx0.377$
+REFRESH:
+**Binomial distribution**: $\mathbb{P}(\text{Bin}(n,\tfrac12)=k)=\binom nk2^{-n}$.
+EXPLANATION:
+By symmetry "at most 4" and "at least 6" have the same probability, and together with "exactly 5" they cover everything. $\mathbb{P}(\text{exactly }5)=\frac{252}{1024}$, so $\mathbb{P}(\le4)=\frac12\left(1-\frac{252}{1024}\right)=\frac{386}{1024}$.
+SOLUTION: Direct sum
+$$\binom{10}{0}+\binom{10}{1}+\binom{10}{2}+\binom{10}{3}+\binom{10}{4}=1+10+45+120+210=386,$$
+so $\mathbb{P}=\frac{386}{1024}=\frac{193}{512}\approx0.377$.
+SOLUTION: Symmetry
+$\mathbb{P}(\le4)=\mathbb{P}(\ge6)$ and $\mathbb{P}(=5)=\frac{\binom{10}{5}}{1024}=\frac{252}{1024}$, so
+$$\mathbb{P}(\le4)=\frac{1-\frac{252}{1024}}{2}=\frac{772}{2048}=\frac{193}{512}.$$
+===END===
+===TEASER===
+SLUG: longest-heads-run-30-people
+IDS: Q-283
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: Longest run of heads among 30 people
+QUESTION:
+Thirty people each flip their own fair coin $162$ times. Let $M$ be the longest run of consecutive heads achieved by anyone (the maximum over all $30$ people of each person's longest run of heads). Estimate $\mathbb{E}[M]$.
+HINT1:
+How many "places" are there where a run of $k$ heads could start, in total over all $30$ sequences? How likely is a run of length at least $k$ to start at a given place?
+HINT2:
+A run of $\ge k$ heads starts at position $i$ if flip $i-1$ is a tail (or $i=1$) and flips $i,\dots,i+k-1$ are heads. The number of such starts is roughly Poisson with mean $\lambda_k\approx30\cdot\frac{162}{2^{k+1}}$. Then $\mathbb{P}(M\ge k)\approx1-e^{-\lambda_k}$ and $\mathbb{E}[M]=\sum_{k\ge1}\mathbb{P}(M\ge k)$.
+ANSWER:
+$\mathbb{E}[M]\approx11.5$ (exactly $11.49$)
+REFRESH:
+**Tail-sum formula**: for $M\ge0$ integer-valued, $\mathbb{E}[M]=\sum_{k\ge1}\mathbb{P}(M\ge k)$.
+**Poisson approximation**: a count of many rare, weakly dependent events is approximately Poisson with the same mean; $\mathbb{P}(\text{count}\ge1)\approx1-e^{-\lambda}$.
+EXPLANATION:
+In total there are $30\times162=4860$ flips. A run of heads of length $\ge k$ begins right after a tail, so a given position starts one with probability about $\frac1{2^{k+1}}$. The expected number of such runs is then about $\lambda_k\approx\frac{4860}{2^{k+1}}$ (plus a small boundary term for runs starting at flip $1$). The longest run is $\ge k$ iff there is at least one of them, so $\mathbb{P}(M\ge k)\approx1-e^{-\lambda_k}$: essentially $1$ while $\lambda_k$ is large, then dropping fast once $2^{k+1}$ passes $4860$, i.e. around $k\approx11$. Summing these probabilities gives $\approx11.5$. The rule of thumb "longest run $\approx\log_2(\text{number of flips})$" gives $\log_2 4860-1\approx11.2$, in the right range.
+SOLUTION: Poisson clumping and the tail sum
+For one person, a run of $\ge k$ heads starts at position $1$ with probability $2^{-k}$ and at each position $i=2,\dots,163-k$ with probability $2^{-(k+1)}$ (a tail then $k$ heads). Over $30$ people:
+$$\lambda_k=30\left(\frac{1}{2^k}+\frac{162-k}{2^{k+1}}\right)=\frac{30(164-k)}{2^{k+1}}.$$
+Approximating $\mathbb{P}(M\ge k)\approx1-e^{-\lambda_k}$:
+
+| $k$ | $\lambda_k$ | $\mathbb{P}(M\ge k)$ |
+|---|---|---|
+| $\le8$ | $\ge9.1$ | $\approx1$ |
+| 9 | 4.54 | 0.989 |
+| 10 | 2.26 | 0.895 |
+| 11 | 1.12 | 0.674 |
+| 12 | 0.557 | 0.427 |
+| 13 | 0.276 | 0.242 |
+| 14 | 0.137 | 0.128 |
+| 15 | 0.068 | 0.066 |
+| 16 | 0.034 | 0.033 |
+| $\ge17$ | | $\approx0.033$ in total |
+
+Summing: $8+0.989+0.895+0.674+0.427+0.242+0.128+0.066+0.033+0.033\approx11.49$.
+SOLUTION: Exact computation by a small recursion
+For one sequence of length $n$ let $q_k(n)=\mathbb{P}(\text{no run of }k\text{ heads})$. Track the current run length $j\in\{0,\dots,k-1\}$: each flip sends $j\to0$ (tail) or $j\to j+1$ (head, forbidden if it reaches $k$), each with probability $\frac12$. Then, by independence of the $30$ people,
+$$\mathbb{P}(M\ge k)=1-q_k(162)^{30},\qquad \mathbb{E}[M]=\sum_{k\ge1}\left(1-q_k(162)^{30}\right)\approx11.49.$$
+The exact values agree with the table above to three decimals.
+
+Note: the source states $12.5$; that is (to rounding, $12.48$) the expected longest run of **either** face (heads or tails). For runs of heads only, as asked, the correct value is $\approx11.5$: a run of either face of length $k$ corresponds to $k-1$ consecutive "same as previous" events, which shifts the answer up by about $1$.
+===END===
+===TEASER===
+SLUG: gamblers-ruin-one-vs-two-dollars
+IDS: Q-287
+FIRMS: Citadel, Old Mission, Optiver, SIG, Squarepoint Capital
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Biased coin duel: 1 dollar against 2
+QUESTION:
+Player 1 has \$1 and Player 2 has \$2. A coin that lands heads with probability $\frac23$ is tossed repeatedly. On heads Player 2 pays \$1 to Player 1; on tails Player 1 pays \$1 to Player 2. The game ends when someone has no money left. What is the probability that Player 2 is ruined first (Player 1 wins)?
+HINT1:
+Only Player 1's fortune matters: it moves between $0$ and $3$.
+HINT2:
+Let $p_i$ be the probability Player 1 wins when he holds $i$ dollars. Write first-step equations for $p_1$ and $p_2$ with $p_0=0$, $p_3=1$.
+ANSWER:
+$\dfrac47$
+REFRESH:
+**Gambler's ruin**: for a walk moving $+1$ with probability $p$ and $-1$ with probability $q=1-p\ne p$, the probability of reaching $N$ before $0$ from $i$ is $\dfrac{1-(q/p)^i}{1-(q/p)^N}$.
+EXPLANATION:
+Player 1's fortune is a biased random walk on $\{0,1,2,3\}$ with up-probability $\frac23$. Starting at $1$, he must avoid dropping to $0$ and climb to $3$. The favourable bias almost compensates for starting with half as much money: he wins with probability $\frac47\approx57\%$.
+SOLUTION: First-step analysis
+Let $p_i$ = P(Player 1 wins | he holds $i$), $p_0=0$, $p_3=1$:
+$$p_1=\tfrac23p_2+\tfrac13\cdot0,\qquad p_2=\tfrac23\cdot1+\tfrac13p_1.$$
+Substituting: $p_1=\frac23\left(\frac23+\frac13p_1\right)=\frac49+\frac29p_1$, so $\frac79p_1=\frac49$ and
+$$p_1=\frac47.$$
+SOLUTION: Gambler's ruin formula
+With $p=\frac23$, $q=\frac13$, $q/p=\frac12$, $i=1$, $N=3$:
+$$\mathbb{P}=\frac{1-\frac12}{1-\frac18}=\frac{1/2}{7/8}=\frac47.$$
+SOLUTION: Summing over paths
+Player 1 wins only via paths of the form $(HT)^m HH$ from state $1$: each $HT$ loop goes $1\to2\to1$ with probability $\frac23\cdot\frac13=\frac29$, and $HH$ finishes with probability $\frac49$ (any $T$ from state $1$ ruins him). So
+$$\mathbb{P}=\frac49\sum_{m\ge0}\left(\tfrac29\right)^m=\frac49\cdot\frac97=\frac47.$$
+===END===
+===TEASER===
+SLUG: card-value-hearts-doubled
+IDS: Q-288
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Card value with hearts doubled
+QUESTION:
+Each card of a standard $52$-card deck is worth its rank ($A=1$, $2,\dots,10$, $J=11$, $Q=12$, $K=13$), except that hearts are worth double (e.g. the ace of hearts is worth $2$). What is the expected value of a card drawn at random?
+HINT1:
+Rank and suit of a random card are independent.
+HINT2:
+Value $=$ rank $\times$ (2 if heart, 1 otherwise). Take expectations of the two factors separately.
+ANSWER:
+$\dfrac{35}{4}=8.75$
+REFRESH:
+**Expectation of a product of independent variables**: $\mathbb{E}[UV]=\mathbb{E}[U]\,\mathbb{E}[V]$.
+EXPLANATION:
+The average rank is $7$. The suit multiplier is $2$ with probability $\frac14$ and $1$ otherwise, so it averages $1.25$. Since rank and suit are independent, the expected value is $7\times1.25=8.75$.
+SOLUTION: Independence of rank and suit
+$\mathbb{E}[\text{rank}]=\frac{1+2+\cdots+13}{13}=\frac{91}{13}=7$ and $\mathbb{E}[\text{multiplier}]=\frac14\cdot2+\frac34\cdot1=\frac54$. Hence
+$$\mathbb{E}[\text{value}]=7\cdot\frac54=\frac{35}{4}=8.75.$$
+SOLUTION: Direct sum over the deck
+The total value of the deck is $4\cdot91$ (every card at face value) plus an extra $91$ for the hearts: $455$. Dividing by $52$: $\frac{455}{52}=\frac{35}{4}$.
+===END===
+===TEASER===
+SLUG: photo-line-tallest-in-middle
+IDS: Q-291
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Class photo: tallest in the middle
+QUESTION:
+Ten students, all of different heights, line up in a row for a photo. The two tallest must occupy the two middle positions, and going outward from the middle in either direction, heights must decrease. How many arrangements are possible?
+HINT1:
+Once you know which students stand on the left side, is their order forced?
+HINT2:
+Choose the order of the two tallest in the middle, then choose which of the remaining $8$ students go to the left half.
+ANSWER:
+$140$
+REFRESH:
+**Choosing a subset**: a set of $n$ elements has $\binom nk$ subsets of size $k$.
+EXPLANATION:
+The row has $4$ spots on each side of the middle pair. Any group of $4$ students on the left can only stand in one order (decreasing outward), and the same for the right. So an arrangement is: an order for the two tallest in the middle ($2$ ways) times a choice of which $4$ of the other $8$ go left ($\binom84=70$ ways).
+SOLUTION: Count choices
+Positions $1,\dots,10$; the middle ones are $5$ and $6$.
+- The two tallest fill positions $5,6$ in $2$ orders.
+- Choose the $4$ students for positions $1$–$4$: $\binom84=70$ ways; the other $4$ go to positions $7$–$10$.
+- On each side the order is forced: heights decrease from the middle outward.
+
+Total: $2\cdot70=140$.
+===END===
+===TEASER===
+SLUG: three-tosses-exactly-two-heads-given-one
+IDS: Q-294
+FIRMS: Akuna Capital
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Exactly two heads given at least one
+QUESTION:
+A fair coin is tossed three times. Given that at least one toss is heads, what is the probability that exactly two tosses are heads?
+HINT1:
+Which of the $8$ equally likely outcomes survive the condition?
+HINT2:
+Only $TTT$ is excluded. Count the outcomes with exactly two heads.
+ANSWER:
+$\dfrac37$
+REFRESH:
+**Conditional probability**: $\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}$.
+EXPLANATION:
+The condition removes only $TTT$, leaving $7$ equally likely outcomes. Exactly two heads happens in $HHT,HTH,THH$: $3$ of them.
+SOLUTION: Count outcomes
+$\mathbb{P}(\ge1\text{ head})=1-\frac18=\frac78$, $\mathbb{P}(\text{exactly }2)=\frac{\binom32}{8}=\frac38$, and "exactly 2" is inside "at least 1", so
+$$\mathbb{P}=\frac{3/8}{7/8}=\frac37.$$
+===END===
+===TEASER===
+SLUG: normal-x-given-x-greater-than-y
+IDS: Q-295
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Expected X given X beats Y
+QUESTION:
+$X$ and $Y$ are independent standard normal random variables. Compute $\mathbb{E}[X\mid X>Y]$.
+HINT1:
+Given $X>Y$, $X$ is the larger of the two. Can you relate $\mathbb{E}[X\mid X>Y]$ to $\mathbb{E}[\max(X,Y)]$?
+HINT2:
+Write $\max(X,Y)=\frac{X+Y}{2}+\frac{|X-Y|}{2}$, and recall $X-Y\sim N(0,2)$.
+ANSWER:
+$\dfrac{1}{\sqrt\pi}\approx0.564$
+REFRESH:
+**Half-normal mean**: if $Z\sim N(0,\sigma^2)$ then $\mathbb{E}|Z|=\sigma\sqrt{2/\pi}$.
+**Independence of $X+Y$ and $X-Y$**: for i.i.d. normal $X,Y$, $X+Y$ and $X-Y$ are uncorrelated jointly normal, hence independent.
+EXPLANATION:
+Decompose $X=\frac{X+Y}{2}+\frac{X-Y}{2}$. The event $X>Y$ only involves $D=X-Y$, which is independent of $X+Y$. So conditioning leaves the first term with mean $0$, and the second term becomes $\frac12\mathbb{E}[D\mid D>0]=\frac12\mathbb{E}|D|$. With $D\sim N(0,2)$, $\mathbb{E}|D|=\sqrt2\sqrt{2/\pi}=\frac{2}{\sqrt\pi}$, giving $\frac1{\sqrt\pi}$. For general i.i.d. $N(\mu,\sigma^2)$ the answer is $\mu+\frac{\sigma}{\sqrt\pi}$.
+SOLUTION: Sum and difference decomposition
+Let $S=X+Y$, $D=X-Y$. They are jointly normal with $\operatorname{Cov}(S,D)=\operatorname{Var}X-\operatorname{Var}Y=0$, hence independent, and $D\sim N(0,2)$. Since $X=\frac{S+D}{2}$ and $\{X>Y\}=\{D>0\}$,
+$$\mathbb{E}[X\mid D>0]=\tfrac12\mathbb{E}[S\mid D>0]+\tfrac12\mathbb{E}[D\mid D>0]=0+\tfrac12\mathbb{E}|D|,$$
+using independence and the symmetry of $D$. With $\mathbb{E}|D|=\sqrt2\cdot\sqrt{2/\pi}=\frac{2}{\sqrt\pi}$:
+$$\mathbb{E}[X\mid X>Y]=\frac{1}{\sqrt\pi}\approx0.564.$$
+SOLUTION: Via the maximum
+On $\{X>Y\}$, $X=\max(X,Y)$. By symmetry, $\mathbb{E}[\max\mid X>Y]=\mathbb{E}[\max\mid Y>X]$, so $\mathbb{E}[X\mid X>Y]=\mathbb{E}[\max(X,Y)]$. And
+$$\mathbb{E}[\max(X,Y)]=\mathbb{E}\left[\frac{X+Y}{2}+\frac{|X-Y|}{2}\right]=0+\frac12\cdot\frac{2}{\sqrt\pi}=\frac1{\sqrt\pi}.$$
+===END===
+===TEASER===
+SLUG: put-call-parity-arbitrage-strike-4
+IDS: Q-298
+FIRMS: Goldman Sachs
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Spot the arbitrage: stock 10, call 4, put 3
+QUESTION:
+A stock trades at $S_0=10$. A European call and a European put on it, both with strike $K=4$ and maturity $T$, trade at $C_0=4$ and $P_0=3$. Zero-coupon bonds paying $1$ at $T$ are available, and the interest rate is $0$ (so a bond costs $1$). You can go long or short any of these assets. Find an arbitrage, written as (number of stocks, calls, puts, bonds), and the riskless profit it locks in.
+HINT1:
+Which relation must hold between a call, a put, the stock and bonds with the same strike and maturity?
+HINT2:
+Put–call parity says $C_0-P_0=S_0-K$ here. Compare both sides: which one is cheap? Buy the cheap side and sell the expensive one.
+ANSWER:
+Short $1$ stock, buy $1$ call, sell $1$ put, buy $4$ bonds, i.e. $-1$ Stock $+1$ Call $-1$ Put $+4$ Bonds: you collect \$5 today and owe nothing at $T$.
+REFRESH:
+**Put–call parity** (European, no dividends, rate $r$): $C_0-P_0=S_0-Ke^{-rT}$, because long call + short put pays $S_T-K$ in every state, like a forward.
+**Arbitrage**: a portfolio costing $\le0$ today with payoff $\ge0$ in every state, strictly better somewhere.
+EXPLANATION:
+Long call plus short put pays $\max(S_T-4,0)-\max(4-S_T,0)=S_T-4$ in every state: a synthetic forward. The same payoff is obtained with one share minus $4$ bonds, which costs $10-4=6$. But the synthetic costs only $C_0-P_0=1$. So buy the cheap synthetic forward for $1$ and sell the expensive real one for $6$ (short the stock, buy $4$ bonds): you pocket $5$ today and the two legs cancel at maturity. Another symptom: a call with strike $4$ on a \$10 stock should be worth at least $10-4=6$, yet it trades at $4$.
+SOLUTION: Put–call parity
+Parity with $r=0$: $C_0-P_0$ should equal $S_0-K=10-4=6$; it is $4-3=1$. Portfolio: $+1$ call, $-1$ put, $-1$ stock, $+4$ bonds.
+
+**Today's cash flow:** $-4$ (buy call) $+3$ (sell put) $+10$ (short stock) $-4$ (buy bonds) $=+5$.
+
+**At $T$:**
+$$\max(S_T-4,0)-\max(4-S_T,0)-S_T+4=(S_T-4)-S_T+4=0\quad\text{for every }S_T.$$
+So you lock in \$5 with no risk. (Any positive multiple works too; in the requested format the basic portfolio is $-1$ Stock $+1$ Call $-1$ Put $+4$ Bonds, and its profit is the $5$ that the source reports as the answer.)
+SOLUTION: Call below intrinsic value
+Since $C_T=\max(S_T-4,0)\ge S_T-4$, a no-arbitrage call must satisfy $C_0\ge S_0-K=6$, but $C_0=4$. Buy $1$ call, short $1$ stock, buy $4$ bonds: today you receive $-4+10-4=+2$; at $T$ you hold $\max(S_T-4,0)-S_T+4=\max(4-S_T,0)\ge0$. This is also an arbitrage (profit $\ge2$), but it leaves you long a free put rather than a fixed amount. Adding the put sale from the first method turns that free put into $3$ extra dollars today, which gives the clean \$5.
+===END===
+===TEASER===
+SLUG: baby-added-boy-picked
+IDS: Q-299
+FIRMS: Goldman Sachs, IMC
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: A new baby joins the nursery
+QUESTION:
+A room holds $5$ babies: $2$ boys and $3$ girls. A sixth baby, of unknown sex (boy or girl with probability $\frac12$ each), is added. Then one of the $6$ babies is picked at random and turns out to be a boy. What is the probability that the added baby is a boy?
+HINT1:
+Two hypotheses about the new baby, and one piece of evidence. Which tool combines them?
+HINT2:
+Compute the probability of picking a boy under each hypothesis: with $3$ boys out of $6$, or $2$ boys out of $6$.
+ANSWER:
+$\dfrac35$
+REFRESH:
+**Bayes' rule**: $\mathbb{P}(H\mid E)=\dfrac{\mathbb{P}(E\mid H)\mathbb{P}(H)}{\sum_{H'}\mathbb{P}(E\mid H')\mathbb{P}(H')}$.
+EXPLANATION:
+Picking a boy is more likely if the new baby is a boy ($\frac36$) than if it is a girl ($\frac26$). The priors are equal, so the posterior odds are the likelihood ratio $3:2$, i.e. probability $\frac35$.
+SOLUTION: Bayes' rule
+Let $B$ = "new baby is a boy", $E$ = "a boy is picked".
+$$\mathbb{P}(E\mid B)=\tfrac36,\qquad \mathbb{P}(E\mid B^c)=\tfrac26.$$
+$$\mathbb{P}(B\mid E)=\frac{\frac12\cdot\frac36}{\frac12\cdot\frac36+\frac12\cdot\frac26}=\frac{3}{3+2}=\frac35.$$
+SOLUTION: Count equally likely scenarios
+Label the babies. Each of the $2\times6=12$ (sex of new baby, picked baby) combinations is equally likely. Picked baby is a boy: if the newcomer is a boy, $3$ combinations; if a girl, $2$. Among these $5$, the newcomer is a boy in $3$: probability $\frac35$.
+===END===

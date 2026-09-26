@@ -2,22 +2,29 @@
   @if (teaser(); as t) {
     <nav class="crumbs">
       <a routerLink="/teasers">Puzzles</a>
-      <span class="crumb-sep">/</span>
-      <a [routerLink]="['/teasers', t.section]">{{ SECTION_INFO[t.section].title }}</a>
-      <span class="crumb-sep">/</span>
-      <a [routerLink]="['/teasers', t.section, categorySlug(t.category)]">{{ t.category }}</a>
+      @if (viaFirm() && t.firms.includes(viaFirm()!)) {
+        <span class="crumb-sep">/</span>
+        <a routerLink="/teasers/companies">By company</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/teasers/company', firmSlug(viaFirm()!)]">{{ viaFirm() }}</a>
+      } @else {
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/teasers', t.section]">{{ SECTION_INFO[t.section].title }}</a>
+        <span class="crumb-sep">/</span>
+        <a [routerLink]="['/teasers', t.section, categorySlug(t.category)]">{{ t.category }}</a>
+      }
     </nav>
 
     <header class="tz-head">
       <div class="tz-title">
         <h1>{{ t.title }}</h1>
         <div class="tz-meta">
-          <app-book-tags [books]="t.books" />
+          <app-book-tags [books]="t.books" [firms]="t.firms" />
           @if (t.difficulty) {
             <span class="diff" [class]="'diff diff-' + t.difficulty">{{ t.difficulty }}</span>
           }
           @if (position().total > 1) {
-            <span class="count">{{ position().index + 1 }} / {{ position().total }} in {{ t.category }}</span>
+            <span class="count">{{ position().index + 1 }} / {{ position().total }} in {{ viaFirm() && t.firms.includes(viaFirm()!) ? viaFirm() : t.category }}</span>
           }
         </div>
       </div>

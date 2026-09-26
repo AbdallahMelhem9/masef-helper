@@ -70,7 +70,7 @@ Differentiating: $h(u)=\tfrac12$ on $[0,1]$ and $h(u)=\frac{1}{2u^2}$ for $u>1$.
 
 ===TEASER===
 SLUG: central-limit-theorem
-IDS: R3B-53, R3B-54, R3B-55, R3B-56
+IDS: R3B-53, R3B-54, R3B-55, R3B-56, W-105
 SECTION: probability
 CATEGORY: Distributions
 DIFFICULTY: medium
@@ -520,7 +520,8 @@ Two ways to see it. (1) **The drift:** as $R_t\downarrow0$ the drift $1/R_t$ blo
 
 ===TEASER===
 SLUG: sde-for-log-of-gbm
-IDS: R3S-16, R3S-17, R3S-18
+IDS: R3S-16, R3S-17, R3S-18, Q-462
+FIRMS: Two Sigma
 SECTION: probability
 CATEGORY: Brownian motion
 DIFFICULTY: easy

@@ -1,0 +1,835 @@
+===TEASER===
+SLUG: maker-taker-rebate-tighter-quotes
+IDS: W-051
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Why a maker rebate tightens quotes
+QUESTION:
+On a maker-taker exchange, whoever posts a resting limit order that gets filled (the *maker*) receives a small rebate per share, while whoever crosses the spread (the *taker*) pays a fee. Why might a market maker on such an exchange be willing to quote a tighter bid-ask spread than the "natural" spread they would need without the rebate? What are the limits of this?
+HINT1:
+Write down what a market maker earns, per share, on a round trip (buy on the bid, later sell on the offer). Which terms does the exchange change?
+HINT2:
+A market maker's quoted half-spread has to cover adverse selection and inventory risk. If each passive fill also pays a rebate $r$, how much of that cost is already covered before the spread itself contributes anything?
+ANSWER:
+Each passive fill earns the rebate $r$, so the maker's effective half-spread is $h + r$; to earn the same compensation for adverse selection and inventory risk it can quote a half-spread $r$ narrower, and competition between makers pushes quotes to do exactly that (until quotes hit the tick size).
+REFRESH:
+Half-spread: if the market is bid $B$, offered $A$, the half-spread is $h = (A-B)/2$; a maker who buys on the bid and sells on the offer earns $2h$ per share on a round trip before costs.
+Adverse selection: the expected loss per fill to better-informed takers — after you are filled on the bid, the price tends to move down.
+EXPLANATION:
+A market maker does not quote a spread because it likes spreads; the spread is the price of the risks it takes. Per share filled passively, the maker must earn at least $c$ = (expected adverse-selection loss) + (inventory/holding cost). Without rebates it needs a half-spread $h \ge c$. With a rebate $r$ per passive fill, the total take per fill is $h + r$, so the break-even condition becomes $h + r \ge c$, i.e. $h \ge c - r$. The rebate *subsidises* the quote: the maker can post a narrower market and still be compensated. And because several makers compete, the one who passes the rebate on to the takers (by quoting tighter) gets priority, so in equilibrium quoted spreads narrow by roughly the rebate. The takers pay a fee $f \ge r$ (the exchange keeps $f - r$), so the *all-in* cost for a taker — quoted half-spread plus fee — hardly changes; it is just repackaged.
+SOLUTION: Break-even accounting
+1. Per share bought on the bid, the maker's P&L relative to fair value $V$ is $(V - B) + r - L$, where $L$ is the expected adverse move against it after the fill (adverse selection) plus inventory cost.
+2. Without rebate ($r = 0$) the maker needs $V - B = h \ge L$.
+3. With rebate $r$, it needs only $h \ge L - r$. So the same maker is indifferent between quoting half-spread $L$ with no rebate and half-spread $L - r$ with the rebate.
+4. Competition: if one maker quotes at $h = L$, a rival can quote one tick better, still break even thanks to the rebate, and take the queue priority. Iterating, quoted half-spreads fall toward $L - r$.
+5. Limits:
+ - The tick size: once the spread is one tick wide it cannot tighten further; the rebate then shows up as longer queues (more makers competing for fills at the same price) instead of tighter prices.
+ - Adverse selection is unchanged: quoting tighter against informed flow still loses; the rebate only offsets it by $r$.
+ - The taker's all-in cost is $h + f$ with $f \ge r$, so tighter *displayed* quotes are partly cosmetic — this is why brokers routing on displayed price alone can be misled, and why inverted (taker-maker) venues exist.
+6. Conclusion: the rebate is a per-fill income that covers part of the maker's cost of liquidity provision, so it can quote up to $r$ tighter per side and still break even.
+===END===
+===TEASER===
+SLUG: slippage-large-order-sqrt-impact
+IDS: W-052
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: Slippage on a 100,000-share buy
+QUESTION:
+You must buy 100,000 shares of a stock that trades on average 10,000 shares per minute. Roughly how much slippage relative to the current price should you expect? State your assumptions.
+HINT1:
+First turn "per minute" into a daily volume, and ask what fraction of the day's volume your order is.
+HINT2:
+A widely used empirical rule says that impact scales like the stock's daily volatility times the *square root* of (order size / daily volume). Plug in a typical daily volatility for a liquid stock.
+ANSWER:
+About 30 basis points (order ≈ 2.6% of daily volume, $\sqrt{0.026} \approx 0.16$, times ~2% daily vol ≈ 0.3%) — an order of magnitude more than the bid-ask spread.
+REFRESH:
+Square-root impact law: expected price impact of a metaorder of size $Q$ is $\Delta P / P \approx Y\,\sigma_{\text{daily}}\sqrt{Q / V_{\text{daily}}}$ with $Y$ of order 1 and $V_{\text{daily}}$ the average daily volume.
+1 basis point (bp) = 0.01% = $10^{-4}$.
+EXPLANATION:
+A small order just pays half the spread. A large order eats through the book and, more importantly, keeps pushing the price as other participants notice the persistent buying. Empirically the cost does not grow linearly with size but like its square root, measured in units of daily volatility and daily volume. Here the order is a few percent of a day's volume, so the square root is about 0.16, and with a typical 2% daily vol the expected impact is about 0.3%, i.e. 30 bp — much more than the 1–5 bp spread of a liquid stock.
+SOLUTION: Square-root impact estimate
+1. Daily volume: a US session is 6.5 h = 390 minutes, so $V \approx 10{,}000 \times 390 = 3.9$ million shares.
+2. Participation: $Q/V = 100{,}000 / 3{,}900{,}000 \approx 0.026$, about 2.6% of the day's volume.
+3. $\sqrt{0.026} \approx 0.16$.
+4. Assume a daily volatility $\sigma \approx 2\%$ (typical large-cap stock) and $Y \approx 1$.
+5. Impact $\approx 1 \times 0.02 \times 0.16 = 0.0032 = 32$ bp, i.e. roughly 30 bp.
+6. Sanity checks: the spread cost is only a few bp, so impact dominates. Executed all at once (10 minutes of the whole market's volume in one go) it would be far worse; spread over the day with a VWAP/POV algorithm at ~10% participation it takes about 100 minutes and you pay roughly the square-root figure.
+SOLUTION: Book-walking intuition
+1. If you send the whole order as a market order you consume every resting offer until 100,000 shares are filled. Displayed depth at the touch in a liquid stock is typically a few thousand shares, so you would walk many ticks up — easily 50–100+ bp. That is the worst case.
+2. If you slice it into child orders of, say, 1,000 shares over about 100 minutes (10% of volume), each child pays roughly half the spread, but the persistent buying drifts the price up; the empirical size of that drift is the square-root figure above, about 30 bp.
+3. So expect "tens of basis points", with ~30 bp as a reasonable central estimate, and much more if you rush.
+===END===
+===TEASER===
+SLUG: fixed-vs-trailing-stop-loss
+IDS: W-054
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: easy
+TITLE: Fixed stop or trailing stop?
+QUESTION:
+You are long a stock bought at 100. You can protect the position either with a fixed stop-loss at 90, or with a 10% trailing stop. How do the two differ, and which would you choose?
+HINT1:
+Follow the stock along a path: up to 130, then back down to 100. What happens to each stop?
+HINT2:
+A trailing stop sits at 90% of the highest price seen since entry. Compare where each stop is when the stock is at its peak.
+ANSWER:
+Both start at 90, but the trailing stop ratchets up to 90% of the running maximum (locking in gains), while the fixed stop stays at 90; the trailing stop gives up at most 10% from the peak but is stopped out more often by noise — choose by volatility and whether you want to ride a trend.
+EXPLANATION:
+At entry they are identical: the trailing stop is $0.9 \times \max(100) = 90$. The difference appears once the stock rises. The trailing stop's level is $0.9 M_t$ where $M_t$ is the running maximum, so it only ever moves up. On the way up it converts paper gains into protected gains; the fixed stop protects only against losses below 90. The price is whipsaw: any 10% pullback from any peak sells you, even in a strong uptrend, and a 10% band is tight for a volatile stock.
+SOLUTION: Walk through scenarios
+1. Stock falls straight to 85: both stops trigger at about 90 (with gap risk: a gap open below 90 fills lower for both). Same loss of about 10.
+2. Stock rises to 130 then falls to 100: the trailing stop is at $0.9 \times 130 = 117$ and sells at about 117, a gain of 17. The fixed stop stays at 90 and you are still long at 100, having given back the whole 30.
+3. Stock chops: 100 → 112 → 100 → 125. The trailing stop sits at $0.9\times 112 = 100.8$ after the first rise and sells you at about 100.8 on the pullback; you miss the move to 125. The fixed stop keeps you in.
+4. Choice:
+ - Trend-following / want to protect gains: trailing stop.
+ - Longer-term thesis on a volatile name, stop is only there to cap a disaster: fixed stop (or a wider trailing stop, e.g. a multiple of the stock's volatility rather than a flat 10%).
+ - A good answer sizes the stop relative to volatility: with 30% annual vol ($\approx 1.9\%$ daily), a 10% move is about 5 daily standard deviations over a day but only about 1.2 standard deviations over a quarter, so a 10% trailing stop will very likely trigger within months even with no change in fundamentals.
+5. Both are stop orders: they become market orders when touched, so neither guarantees the execution price.
+===END===
+===TEASER===
+SLUG: fair-value-inside-the-spread
+IDS: W-057
+FIRMS:
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: Fair value 10.4, market 10 at 11
+QUESTION:
+The market is 10 bid, 11 offered. You believe the fair value is 10.4. Do you buy at 11 or sell at 10?
+HINT1:
+Compute the expected profit of each trade against your fair value.
+HINT2:
+Hitting the bid gives you $10 - 10.4$; lifting the offer gives you $10.4 - 11$. What else could you do instead of crossing the spread?
+ANSWER:
+Neither: selling at 10 loses 0.4 in expectation and buying at 11 loses 0.6; stand aside, or post your own quote inside the spread (e.g. 10.2 bid / 10.6 offer).
+EXPLANATION:
+Your fair value lies strictly inside the market, so both crossing trades are against you: you would buy above value or sell below value. Being closer to the bid does not make selling attractive — it only makes it the lesser loss. The profitable move is to become a liquidity provider yourself: improve the market on both sides around 10.4 and let others trade with you.
+SOLUTION: Expected value of each trade
+1. Sell at 10 (hit the bid): expected P&L $= 10 - 10.4 = -0.4$ per unit.
+2. Buy at 11 (lift the offer): expected P&L $= 10.4 - 11 = -0.6$ per unit.
+3. Both negative, so do neither.
+4. Better: quote your own market inside, e.g. 10.2 bid, 10.6 offered. A fill on the bid earns $10.4 - 10.2 = 0.2$ in expectation and a fill on the offer earns $10.6 - 10.4 = 0.2$ — before adverse selection. Because your fair value is below the midpoint 10.5, you would skew: your quote centred at 10.4 is more aggressive on the offer side (10.6 vs 11) than on the bid side (10.2 vs 10), so you are more likely to end up short, consistent with your view that the market is slightly rich.
+5. Only trade aggressively if your edge exceeds the half-spread you would pay; here the mid is 10.5 and your edge versus the mid is only 0.1, much less than the 0.5 half-spread.
+===END===
+===TEASER===
+SLUG: red-marbles-urn-market
+IDS: W-058
+FIRMS: IMC
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Make a market on the red marbles
+QUESTION:
+An urn holds 100 marbles, each red or blue, in an unknown proportion. At the end I will pay you one dollar per red marble. Make me a two-sided market on this payout.
+HINT1:
+With no information, what is a sensible prior on the number of red marbles, and what are its mean and spread?
+HINT2:
+Under a uniform prior on $0,1,\dots,100$ reds, the mean is 50 and the standard deviation is close to $100/\sqrt{12}$. Your quote should be centred on the mean with a width reflecting your uncertainty and the risk that the interviewer knows more than you.
+ANSWER:
+Fair value 50 (uniform prior, SD ≈ 29); quote something like 45 at 55, then move the quote in the direction the interviewer trades and widen if they keep hitting one side.
+REFRESH:
+Discrete uniform on $\{0,\dots,n\}$: mean $n/2$, variance $\frac{n(n+2)}{12}$.
+EXPLANATION:
+Symmetry between red and blue gives a fair value of 50. But you are extremely uncertain — anything from 0 to 100 is possible — and the interviewer may know the answer. A market maker's width reflects uncertainty and adverse selection: here the standard deviation is about 29, so a 10-wide market (45–55) is already tight and signals you will learn from the flow. The key skill being tested is the update: every trade tells you something, so shift your quote towards the side being hit.
+SOLUTION: Prior, fair value and quoting
+1. Prior: with no information, take the number of reds $R$ uniform on $\{0,1,\dots,100\}$ (or any prior symmetric in red/blue).
+2. Fair value: $E[R] = 50$ by symmetry. Payout is 1 dollar per red, so fair value is 50 dollars.
+3. Spread of outcomes: $\operatorname{Var}(R) = \frac{100 \times 102}{12} = 850$, so $\operatorname{SD} \approx 29.2$. The outcome is very uncertain.
+4. Quote: centred at 50, e.g. **45 bid, 55 offered** (\$45 at \$55). Width is a judgement call: you want to trade (a 0–100 market is useless) but you must survive trading against someone who might know the contents.
+5. Updating:
+ - If they buy at 55, they think there are more than 55 reds. Raise the quote, e.g. to 52–60.
+ - If they buy again, raise again and widen (e.g. 58–70): repeated one-way flow suggests they know, and your inventory (short) is growing.
+ - If they alternate sides, keep the quote roughly centred and tighten.
+6. Also ask questions: can I see a sample? How were the marbles chosen? Any draw you are allowed to observe updates the prior sharply (e.g. with $k$ reds in $n$ draws the posterior mean under a uniform prior is about $100\frac{k+1}{n+2}$).
+===END===
+===TEASER===
+SLUG: dice-sum-seven-given-a-four
+IDS: W-063
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Sum of 7 given at least one 4
+QUESTION:
+Two fair six-sided dice are rolled. Given that at least one of them shows a 4, what is the probability that the two dice sum to 7?
+HINT1:
+List the outcomes (as ordered pairs) in which at least one die shows a 4. Be careful not to count $(4,4)$ twice.
+HINT2:
+There are $36 - 25$ outcomes with at least one 4. Among them, which ones sum to 7?
+ANSWER:
+$2/11$
+REFRESH:
+Conditional probability on equally likely outcomes: $P(A \mid B) = |A \cap B| / |B|$.
+EXPLANATION:
+Condition means "shrink the sample space". Of the 36 equally likely ordered outcomes, 11 contain a 4 (all 36 minus the 25 with no 4). A sum of 7 with a 4 requires the other die to be 3, which happens in two ordered ways, $(4,3)$ and $(3,4)$. So $2/11$ — a bit more than the unconditional $1/6$, since knowing there is a 4 rules out many outcomes but keeps two of the six ways to make 7.
+SOLUTION: Counting ordered outcomes
+1. Outcomes with no 4: $5 \times 5 = 25$. So outcomes with at least one 4: $36 - 25 = 11$, namely $(4,1),\dots,(4,6)$ (6 outcomes) and $(1,4),(2,4),(3,4),(5,4),(6,4)$ (5 more).
+2. Among these, sum 7: $(4,3)$ and $(3,4)$. That is 2 outcomes.
+3. $P = 2/11$.
+SOLUTION: Bayes' formula
+1. $P(\text{sum } 7) = 6/36$. Given the sum is 7, the pairs are $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$, and 2 of the 6 contain a 4, so $P(\text{a } 4 \mid \text{sum } 7) = 2/6$.
+2. $P(\text{at least one } 4) = 11/36$.
+3. $P(\text{sum } 7 \mid \text{a } 4) = \dfrac{(2/6)(6/36)}{11/36} = \dfrac{2/36}{11/36} = \dfrac{2}{11}$.
+===END===
+===TEASER===
+SLUG: who-needs-more-coin-flips
+IDS: W-064
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Who needs more flips to see a head?
+QUESTION:
+You and I each flip our own fair coin repeatedly until we get a head. Let $X$ be the number of flips you need and $Y$ the number I need. What is the probability that I need strictly more flips than you, $P(Y > X)$?
+HINT1:
+By symmetry, $P(Y > X) = P(X > Y)$. So it is enough to know $P(X = Y)$.
+HINT2:
+Both of us need exactly $k$ flips with probability $(1/2)^k \cdot (1/2)^k$. Sum over $k$.
+ANSWER:
+$1/3$
+REFRESH:
+Geometric distribution: flips until first head with a fair coin, $P(X = k) = (1/2)^k$ for $k \ge 1$, and $P(X > k) = (1/2)^k$.
+Geometric series: $\sum_{k\ge1} q^k = \frac{q}{1-q}$ for $|q|<1$.
+EXPLANATION:
+The three events "you need more", "I need more", "tie" partition everything, and the first two have equal probability by symmetry. A tie at $k$ flips means both sequences are $T\dots TH$ of length $k$, probability $4^{-k}$; summing gives $1/3$. So the remaining $2/3$ splits equally: $1/3$ each. A slicker view: flip both coins together each round. Each round is one of four equally likely outcomes; the first round that is not TT decides everything, and among HH, HT, TH each is equally likely, giving $1/3$ for "you got your head and I didn't".
+SOLUTION: Symmetry and the tie probability
+1. $P(X = Y) = \sum_{k\ge1} P(X=k)P(Y=k) = \sum_{k \ge 1} (1/2)^k (1/2)^k = \sum_{k\ge1} (1/4)^k = \dfrac{1/4}{3/4} = \dfrac13$.
+2. By symmetry $P(Y > X) = P(X > Y)$, and the three probabilities sum to 1, so $P(Y > X) = \dfrac{1 - 1/3}{2} = \dfrac13$.
+SOLUTION: Simultaneous rounds
+1. Flip both coins at the same time, round after round. Each round gives HH, HT, TH, TT with probability $1/4$ each.
+2. While the round is TT, nobody is done; the game restarts identically.
+3. The first round that is not TT is uniformly one of HH, HT, TH (conditioning on "not TT"). "I need strictly more flips than you" means you get a head and I don't in that round: outcome (you H, me T), one of three.
+4. $P(Y > X) = 1/3$.
+SOLUTION: Direct sum
+$P(Y > X) = \sum_{k\ge1} P(X = k)\,P(Y > k) = \sum_{k \ge 1} (1/2)^k (1/2)^k = \dfrac13.$
+FOLLOWUP: Biased coins
+You flip a coin with head probability $p$, I flip one with head probability $q$. What is $P(Y > X)$?
+FOLLOWUP_ANSWER:
+Each simultaneous round ends the comparison unless both show tails. $P(Y > X) = \sum_{k\ge1} (1-p)^{k-1}p\,(1-q)^k = \dfrac{p(1-q)}{1-(1-p)(1-q)} = \dfrac{p(1-q)}{p+q-pq}$. For $p = q = 1/2$: $\frac{1/4}{3/4} = 1/3$.
+===END===
+===TEASER===
+SLUG: fifteen-percent-of-840
+IDS: W-066
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: 15% of 840
+QUESTION:
+Compute 15% of 840 in your head.
+HINT1:
+15% is 10% plus half of 10%.
+HINT2:
+10% of 840 is 84. Half of that is 5%.
+ANSWER:
+126
+EXPLANATION:
+Percentages that are sums of "easy" percentages (10%, 5%, 1%) are fastest when split: 15% = 10% + 5%, and 5% is half of 10%. Each piece is a one-step operation.
+SOLUTION: 10% plus 5%
+1. 10% of 840: move the decimal point, 84.
+2. 5% is half of that: 42.
+3. 15% = 84 + 42 = 126.
+SOLUTION: Swap the percentage
+$x\%$ of $y$ equals $y\%$ of $x$, and 15% of 840 = $840 \times 15/100 = 8.4 \times 15 = 8 \times 15 + 0.4 \times 15 = 120 + 6 = 126$.
+===END===
+===TEASER===
+SLUG: football-goals-market-making
+IDS: W-067
+FIRMS: Jane Street
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Market on goals in a football match
+QUESTION:
+You are asked to make a two-sided market on the total number of goals scored in a Premier League match. Historically the average is 2.7 goals per match. Where do you put your bid and your offer?
+HINT1:
+What distribution is a natural model for the number of goals? What is its standard deviation?
+HINT2:
+Goals are roughly Poisson with mean 2.7, so the SD is $\sqrt{2.7}$. Centre the quote on the fair value and choose a width that reflects that SD, the edge you want, and what you might not know about this particular match.
+ANSWER:
+Fair value 2.7 (Poisson, SD ≈ 1.6); quote around it, e.g. 2.5 bid / 2.9 offered, skewed for any match-specific information and moved with the flow.
+REFRESH:
+Poisson($\lambda$): $P(N=k) = e^{-\lambda}\lambda^k/k!$, mean $\lambda$, variance $\lambda$.
+EXPLANATION:
+The contract pays the number of goals, so its fair value is the expected number of goals, 2.7 — not the median or the most likely value. The Poisson model tells you how uncertain one match is: SD $\sqrt{2.7} \approx 1.64$, so a single result is very noisy. But you are quoting an *expectation*, and the relevant uncertainty is about the mean for *this* match (which teams, injuries, weather), perhaps ±0.3 goals. That drives the width. Then, as always, the flow updates you.
+SOLUTION: Fair value, width, updating
+1. Model: $N \sim \text{Poisson}(\lambda)$ with $\lambda \approx 2.7$. Then $E[N] = 2.7$, $\operatorname{SD}(N) = \sqrt{2.7} \approx 1.64$.
+2. Useful facts: $P(N \le 2) = e^{-2.7}(1 + 2.7 + 3.645) \approx 0.494$, so the median is 3 and "over 2.5 goals" is roughly a coin flip (about 51%).
+3. Fair value of a contract paying $N$: 2.7.
+4. Width: the per-match mean is uncertain (a strong attacking side against a weak defence might be 3.3; a cagey derby 2.2). A width of about 0.4 (e.g. **2.5 at 2.9**) gives you an edge of 0.2 per side and is sensible if you know nothing about the fixture. Widen if the counterparty may know team news you do not.
+5. Skew for information: if the two teams are high-scoring, recentre upward (e.g. 2.9 at 3.3).
+6. Updating: if they buy at 2.9, lift your quote (e.g. 2.8 at 3.2); repeated buying suggests information, so keep moving up and widen.
+7. Risk: your P&L per unit is $\pm(N - \text{trade price})$, SD about 1.6 goals per match, so size positions so that a 6-goal thriller does not hurt.
+===END===
+===TEASER===
+SLUG: coin-game-150-vs-100
+IDS: W-068
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Heads win 150, tails lose 100
+QUESTION:
+A fair coin is flipped. Heads: I pay you 150. Tails: you pay me 100. Would you play once? What if you could play 100 independent rounds?
+HINT1:
+Compute the expected gain per round, then think about how the variability of the total grows with the number of rounds.
+HINT2:
+Per round the outcome is $25 \pm 125$ with equal probabilities. Over $n$ rounds the mean grows like $n$ but the SD like $\sqrt n$.
+ANSWER:
+Yes: EV is +25 per round; over 100 rounds EV = 2,500 with SD = 1,250, and the probability of ending with a loss is only about 1.8%.
+REFRESH:
+For i.i.d. rounds $X_i$: $E[\sum X_i] = nE[X]$ and $\operatorname{SD}(\sum X_i) = \sqrt n\,\operatorname{SD}(X)$.
+Normal approximation: $P(Z < -2) \approx 2.3\%$.
+EXPLANATION:
+The game has positive expectation, $0.5 \times 150 - 0.5 \times 100 = 25$. Played once, it is still a good bet if you can afford losing 100, but the result is dominated by luck (SD 125, far more than 25). Played 100 times, the mean scales by 100 while the SD scales only by 10: you expect +2,500 with SD 1,250, so a loss needs a 2-SD bad run. Repetition turns a risky positive-EV bet into a near-sure profit — the same logic that lets a market maker take many small positive-edge trades.
+SOLUTION: Mean, SD and probability of loss
+1. One round: $X = +150$ or $-100$ with probability $1/2$ each. $E[X] = 75 - 50 = 25$.
+2. $X - 25 = \pm 125$, so $\operatorname{Var}(X) = 125^2 = 15{,}625$ and $\operatorname{SD}(X) = 125$.
+3. Once: positive EV, so play, provided a loss of 100 is affordable relative to your wealth (if 100 is all you have, a risk-averse player might decline).
+4. 100 rounds: $E = 2{,}500$, $\operatorname{SD} = \sqrt{100} \times 125 = 1{,}250$.
+5. Probability of an overall loss: with $H$ heads, total $= 150H - 100(100 - H) = 250H - 10{,}000$, negative iff $H < 40$. For $H \sim \text{Bin}(100, 1/2)$, $P(H \le 39) \approx 1.76\%$ (normal approximation with continuity correction: $z = (39.5 - 50)/5 = -2.1$, about 1.8%).
+6. So 100 rounds is an excellent deal: mean +2,500, loss probability under 2%.
+===END===
+===TEASER===
+SLUG: rain-contract-informed-buyer
+IDS: W-069
+FIRMS: Jane Street
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Rain contract and the meteorologist
+QUESTION:
+You make a market in a binary contract that pays 1 if it rains tomorrow and 0 otherwise. The official forecast gives a 40% chance of rain. A well-known meteorologist then sends a large buy order. How do you adjust your market?
+HINT1:
+Before the order, where would you quote? Then ask: what does this particular buyer's order tell you about the probability of rain?
+HINT2:
+Treat the order as a signal from a better-informed trader. Update your fair value upward, widen your market, and think about how much you want to sell to them.
+ANSWER:
+Start around 0.40 (e.g. 0.37 at 0.43); after an informed large buy, raise fair value substantially (e.g. to 0.50–0.60), widen the quote, show less size, and avoid building a big short.
+REFRESH:
+Binary contract: pays 1 if the event happens, 0 otherwise; its fair value equals the probability of the event.
+Adverse selection: trading against a counterparty who knows more loses on average, however the quote is set.
+EXPLANATION:
+The fair value of a binary is the probability of the event. Without information you centre on 40% with a small spread. The meteorologist is exactly the counterparty an informed-trading model worries about: a large buy from them is strong evidence that their private estimate is well above 43%. Continuing to sell at 0.43 is giving away money. You move your quote up (your new fair value blends 40% with what you infer they believe), widen to protect yourself, and reduce size. If you are already short from their first fill, you lean towards buying back.
+SOLUTION: Quote, then update on informed flow
+1. Initial market: fair value 0.40. Quote e.g. **0.37 bid, 0.43 offered**, with modest size.
+2. The order: large and from someone with a better forecast model. Its information content is high: their probability of rain is likely well above 0.43, perhaps 0.6 or more.
+3. Bayesian-style update: your new fair value is a weighted average of your forecast and the one implied by their behaviour, weighted by how much you trust each. With a highly credible buyer, move a lot: say fair value 0.55.
+4. New quote: widen, because uncertainty about the true probability is now larger and you fear being picked off, e.g. **0.50 bid, 0.62 offered**, with smaller size.
+5. Inventory: if you already sold to them at 0.43, you are short a contract you now value at 0.55. Skew the quote upward (more aggressive bid) to buy back rather than sell more.
+6. Caveat worth saying: large size could also be hedging (an outdoor-event organiser buying rain insurance) rather than information; ask whether they trade on views. But the prudent default against a known expert is: move up, widen, shrink.
+===END===
+===TEASER===
+SLUG: coin-win-two-lose-one
+IDS: W-075
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Heads win 2, tails lose 1
+QUESTION:
+A fair coin is flipped repeatedly. Each head wins you 2 and each tail loses you 1. What is your expected gain per flip, and would you play?
+HINT1:
+Weight each outcome by its probability.
+HINT2:
+Average the two payoffs with weights one half each, then think about the risk of a bad run.
+ANSWER:
++0.50 per flip; yes, play (and play many flips — the edge accumulates faster than the noise).
+EXPLANATION:
+Per flip the expectation is $0.5 \times 2 - 0.5 \times 1 = 0.5$. The SD per flip is 1.5, so a single flip is mostly noise, but after $n$ flips the mean is $0.5n$ and the SD $1.5\sqrt n$; the edge dominates after a few dozen flips. Unless the stakes are large relative to your bankroll, play as many times as allowed.
+SOLUTION: Expected value and risk
+1. $E[X] = \tfrac12(2) + \tfrac12(-1) = 0.5$.
+2. $X - 0.5 = \pm 1.5$, so $\operatorname{SD}(X) = 1.5$.
+3. After $n$ flips: mean $0.5n$, SD $1.5\sqrt n$. At $n = 36$: mean 18, SD 9, so a loss requires a 2-SD bad run (about 2%).
+4. Answer: +0.5 per flip, yes. If the coin might be biased with head probability $p$, the EV is $2p - (1 - p) = 3p - 1$, still positive as long as $p > 1/3$.
+===END===
+===TEASER===
+SLUG: marble-jar-500-to-1500-market
+IDS: W-076
+FIRMS: Optiver
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: easy
+TITLE: Market on a jar of 500–1500 marbles
+QUESTION:
+A jar contains somewhere between 500 and 1500 marbles. Make me a two-sided market on the number of marbles.
+HINT1:
+With only a range, what is your fair value, and how uncertain are you?
+HINT2:
+A uniform prior on $[500, 1500]$ has mean at the midpoint and SD $1000/\sqrt{12}$. Quote around the mean with a width you are comfortable with, and plan how you will move it.
+ANSWER:
+Fair value 1000 (uniform, SD ≈ 290); quote something like 900 at 1100 (or wider, e.g. 800 at 1200) and shift it in the direction the interviewer trades.
+REFRESH:
+Continuous uniform on $[a,b]$: mean $\frac{a+b}{2}$, SD $\frac{b-a}{\sqrt{12}}$.
+EXPLANATION:
+The only information is the range, so the natural prior is uniform and the fair value is the midpoint, 1000. The SD is about 290, so this is a very uncertain quantity; a market that is too tight is exploitable if the interviewer knows the count, and one that is too wide will not trade. Show a reasonable width, explain why, and update on each trade. If you can look at the jar, estimate the count (jar volume / marble volume × packing fraction of about 0.64) and tighten.
+SOLUTION: Prior, quote, update
+1. Prior: count $N$ uniform on $[500, 1500]$.
+2. Fair value $E[N] = 1000$; $\operatorname{SD} = 1000 / \sqrt{12} \approx 289$.
+3. Quote: **900 at 1100** (or 800 at 1200 if you suspect the interviewer knows the answer), i.e. about $\pm 0.35$ to $\pm 0.7$ SD.
+4. Update: if they buy at 1100, move up (e.g. 1050 at 1250); if they sell at 900, move down. Repeated trading on one side means they know; move further and widen.
+5. Add information if allowed: jar volume, marble size. E.g. a 2-litre jar of 1.6 cm marbles: marble volume $\frac{4}{3}\pi(0.8)^3 \approx 2.1$ cm³, so about $2000 \times 0.64 / 2.1 \approx 610$ marbles — you would recentre far below 1000.
+===END===
+===TEASER===
+SLUG: market-before-binary-news
+IDS: W-077
+FIRMS: Optiver
+SECTION: trading
+CATEGORY: Market making
+DIFFICULTY: medium
+TITLE: Quoting a stock before binary news
+QUESTION:
+A stock trades at 50. A news event is due: with probability 60% it is positive and the stock goes to 55; with probability 40% it is negative and the stock goes to 42. Where do you put your bid and your offer before the news?
+HINT1:
+Compute the expected post-news price. Is it above or below 50?
+HINT2:
+Fair value is the probability-weighted average of 55 and 42. The outcome is a two-point distribution, so its SD is $\sqrt{p(1-p)}$ times the gap — this should drive how wide you quote.
+ANSWER:
+Fair value 49.8 (not 50), SD ≈ 6.4; quote around 49.8 and wider than usual because the risk is a binary jump, e.g. 48.8 at 50.8, in small size.
+REFRESH:
+Two-point variable: value $a$ with probability $p$, $b$ with probability $1-p$: mean $pa + (1-p)b$, SD $|a-b|\sqrt{p(1-p)}$.
+EXPLANATION:
+The positive scenario is more likely but its move is smaller (+5) than the negative one (−8), so the expectation is $33 + 16.8 = 49.8$ — slightly below the current price. The bigger issue is risk: after the news the stock will be at 55 or 42, a 13-point jump. Any inventory you hold into the event is exposed to an SD of about 6.4, so you quote wider than usual and small, and you care a lot about who might be informed about the news.
+SOLUTION: Fair value, risk, quote
+1. $E[S] = 0.6 \times 55 + 0.4 \times 42 = 33 + 16.8 = 49.8$.
+2. $\operatorname{SD}(S) = 13\sqrt{0.6 \times 0.4} = 13\sqrt{0.24} \approx 6.37$.
+3. Quote centred at 49.8, not at the last traded 50: e.g. **48.8 bid / 50.8 offered**. It is wider than normal because (a) one fill leaves you carrying a position through a jump with SD above 6, (b) people trading right before the news may have a better estimate of the 60/40.
+4. Size: small; a market maker cannot hedge a binary jump with the stock itself.
+5. Updating: aggressive buying suggests the good outcome is more likely than 60%; each 10 percentage points of probability moves fair value by $0.1 \times 13 = 1.3$. Move quotes accordingly.
+6. Alternative hedge: if options are listed, the event risk shows up in implied volatility, and buying options hedges the gap risk that a stock position cannot.
+===END===
+===TEASER===
+SLUG: aaa-batteries-sold-uk
+IDS: W-079
+FIRMS: SIG
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: medium
+TITLE: AAA batteries sold in the UK
+QUESTION:
+Estimate how many AAA batteries are sold in the United Kingdom each year.
+HINT1:
+Start from households: what devices in a home use AAA batteries?
+HINT2:
+Estimate the number of AAA-powered devices per household, how many batteries each takes, and how often they are replaced per year. Then add a share for businesses and institutions.
+ANSWER:
+About 300–400 million per year (order of magnitude: a few hundred million); any well-structured estimate between 100 million and 1 billion is reasonable.
+EXPLANATION:
+Fermi estimates are graded on structure and sanity, not on the exact number. Split the UK into households, count typical AAA devices (remotes, wireless mice and keyboards, toys, small torches, thermometers), estimate batteries per device and replacement frequency, then scale up and add a margin for businesses. Finish with a sanity check against total battery sales.
+SOLUTION: Household build-up
+1. UK population about 67 million, about 28 million households.
+2. AAA devices per household: TV/streaming remotes 2 (2 batteries each), wireless mouse/keyboard 1 (2), toys/games 1 (3), other (thermometer, small torch, kitchen scale, doorbell) 1 (2). Total about 5 devices and about 11 battery slots.
+3. Replacement rate: remotes about once a year, mouse/keyboard twice a year, toys several times a year, others once a year. Weighted, roughly 1.2 replacements per slot per year, so about $11 \times 1.2 \approx 13$ AAA batteries per household per year.
+4. Households: $28 \text{ million} \times 13 \approx 360$ million.
+5. Businesses, schools, hospitals: add about 10%, giving about 400 million; rechargeables reduce disposable sales, so shade down to about 350 million.
+6. Sanity check: the UK buys on the order of 600–700 million portable batteries a year; AA is the most common size and AAA second, so a few hundred million AAA is consistent.
+7. Answer: roughly 300–400 million per year.
+===END===
+===TEASER===
+SLUG: ev-ten-with-probability-point-four
+IDS: W-082
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: A game paying 10 with probability 0.4
+QUESTION:
+A game pays 10 with probability 0.4 and 0 otherwise. What is its expected value? What is the most you should pay to play it, and what else would you want to know?
+HINT1:
+Multiply each payoff by its probability and add.
+HINT2:
+The zero outcome contributes nothing. For the price question, compare the entry price to the expectation and think about variance.
+ANSWER:
+Expected value 4 (so a risk-neutral player pays at most 4); the SD is about 4.9.
+REFRESH:
+$E[X] = \sum_x x\,P(X=x)$. For a Bernoulli payoff $c\cdot\mathbf 1_A$: mean $c\,p$, variance $c^2 p(1-p)$.
+EXPLANATION:
+The payoff is $10 \times \mathbf 1_{\text{win}}$, so its expectation is 10 times the win probability, 4. A risk-neutral player breaks even paying 4; at any lower price the game has positive EV. With SD $10\sqrt{0.24} \approx 4.9$, a single play is very risky relative to its mean, so a risk-averse player (or one with a small bankroll) would pay less, while someone who can play many times can pay close to 4.
+SOLUTION: Direct computation
+1. $E = 0.4 \times 10 + 0.6 \times 0 = 4$.
+2. $\operatorname{Var} = 10^2 \times 0.4 \times 0.6 = 24$, $\operatorname{SD} = \sqrt{24} \approx 4.9$.
+3. Fair price for a risk-neutral player: 4. Pay less than 4 for positive edge; how much less depends on your risk appetite and how many times you can play (over $n$ plays the edge grows like $n$ and the noise like $\sqrt n$).
+4. Questions to ask: is the 0.4 known or estimated? Can I play repeatedly? What is the price?
+===END===
+===TEASER===
+SLUG: eighty-five-squared
+IDS: W-094
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: 85 squared in your head
+QUESTION:
+Compute $85^2$ mentally.
+HINT1:
+There is a special trick for squaring numbers that end in 5.
+HINT2:
+For $n5$ (tens digit $n$), the square is $n(n+1)$ followed by 25.
+ANSWER:
+7225
+REFRESH:
+$(10n + 5)^2 = 100n^2 + 100n + 25 = 100\,n(n+1) + 25$.
+EXPLANATION:
+Any number ending in 5 is $10n + 5$. Its square is $100\,n(n+1) + 25$: multiply the tens part by its successor and write 25 after it. For 85: $8 \times 9 = 72$, then append 25.
+SOLUTION: Ends-in-5 rule
+1. $85 = 10 \times 8 + 5$, so $n = 8$.
+2. $n(n+1) = 8 \times 9 = 72$.
+3. Append 25: $85^2 = 7225$.
+SOLUTION: Difference of squares
+1. $85^2 = (85 - 15)(85 + 15) + 15^2 = 70 \times 100 + 225$.
+2. $= 7000 + 225 = 7225$.
+SOLUTION: Expand around 80
+$85^2 = (80 + 5)^2 = 6400 + 2 \times 80 \times 5 + 25 = 6400 + 800 + 25 = 7225$.
+===END===
+===TEASER===
+SLUG: option-greeks-overview
+IDS: W-097
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: What are the Greeks?
+QUESTION:
+What are the option Greeks, what does each measure, and why do traders care about them?
+HINT1:
+An option price depends on several inputs: spot, time, volatility, interest rate. Each Greek is a sensitivity to one of them.
+HINT2:
+Think partial derivatives of the option value $V(S, t, \sigma, r)$: first derivative in $S$, second derivative in $S$, derivative in $t$, in $\sigma$, in $r$.
+ANSWER:
+Delta $\partial V/\partial S$, Gamma $\partial^2 V/\partial S^2$, Theta $\partial V/\partial t$, Vega $\partial V/\partial \sigma$, Rho $\partial V/\partial r$: the sensitivities of the option value to its inputs, used to hedge, to decompose P&L and to set risk limits.
+REFRESH:
+Taylor expansion: $\Delta V \approx V_S\,\Delta S + \tfrac12 V_{SS}(\Delta S)^2 + V_t\,\Delta t + V_\sigma\,\Delta\sigma + V_r\,\Delta r$.
+Black-Scholes call delta: $N(d_1)$, with $N$ the standard normal CDF.
+EXPLANATION:
+An option book's value moves when the stock moves, when time passes, when implied volatility changes, and when rates change. The Greeks are the partial derivatives that tell you how much. They matter because they let you (1) hedge — e.g. hold $-\Delta$ shares per option to neutralise small stock moves; (2) explain P&L after the fact ("we made money on gamma, lost on theta"); (3) set limits (max vega per desk). The key trade-off for a delta-hedged option is gamma against theta: a long option position gains from large moves (positive gamma) but loses value every day (negative theta), and in Black-Scholes these two exactly offset when realised volatility equals implied.
+SOLUTION: The five main Greeks
+1. **Delta** $\Delta = \partial V / \partial S$: change in option value per unit move in the underlying. Call: between 0 and 1 (Black-Scholes: $N(d_1)$); put: between −1 and 0. Hedge ratio: short $\Delta$ shares per long call.
+2. **Gamma** $\Gamma = \partial^2 V/\partial S^2$: how fast delta changes. Largest for at-the-money options near expiry. Long options have positive gamma: a delta-hedged long option gains $\tfrac12\Gamma(\Delta S)^2$ on any move.
+3. **Theta** $\Theta = \partial V/\partial t$: time decay; usually negative for long options (you pay for gamma through theta).
+4. **Vega** $\nu = \partial V/\partial \sigma$: sensitivity to implied volatility; positive for long calls and puts, largest at the money and for long maturities.
+5. **Rho** $\rho = \partial V/\partial r$: sensitivity to interest rates; positive for calls, negative for puts; usually minor for short-dated equity options.
+6. Why they matter:
+ - Hedging: neutralise delta with the underlying, gamma and vega with other options.
+ - P&L attribution: $\Delta V \approx \Delta\,\delta S + \tfrac12\Gamma(\delta S)^2 + \Theta\,\delta t + \nu\,\delta\sigma$.
+ - Gamma–theta link: for a delta-hedged option in Black-Scholes, $\Theta + \tfrac12\sigma^2S^2\Gamma = rV - rS\Delta$, so with $r \approx 0$, theta pays for gamma exactly at the implied volatility.
+ - Risk limits and scenario analysis for the whole book.
+7. Second-order Greeks traders also watch: vanna ($\partial^2 V/\partial S\partial\sigma$), volga ($\partial^2 V/\partial\sigma^2$), charm (delta decay).
+===END===
+===TEASER===
+SLUG: hedging-a-call-option-book
+IDS: W-098
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Hedging a portfolio of calls
+QUESTION:
+You hold a portfolio of call options on a stock. How would you hedge it? What risks remain after your hedge?
+HINT1:
+Start with the risk that is easiest to remove: the first-order sensitivity to the stock price.
+HINT2:
+Delta-hedge with the underlying, then ask which Greeks the underlying cannot hedge (it has zero gamma and zero vega) and what instruments can.
+ANSWER:
+Short $\sum_i n_i\Delta_i$ shares to be delta-neutral and rebalance as delta moves; hedge gamma and vega with other options (the stock cannot); residual risks are rebalancing/gap risk, vol-of-vol and skew, rates, and model risk.
+REFRESH:
+Portfolio Greeks add: $\Delta_P = \sum_i n_i \Delta_i$, same for $\Gamma$, $\nu$.
+The underlying has $\Delta = 1$, $\Gamma = 0$, $\nu = 0$.
+EXPLANATION:
+A long call book gains when the stock rises, so the first hedge is to short the stock in the amount of the total delta. That hedge is only valid locally: delta changes when the stock moves (gamma) and when volatility or time change, so the hedge must be rebalanced. Rebalancing a long-gamma position means buying low and selling high, which earns money if the stock moves more than implied volatility predicted, and costs theta otherwise. To neutralise gamma and vega you need instruments that have them — other options — which is why a full hedge uses the stock plus a couple of options.
+SOLUTION: Layered hedge
+1. **Delta.** Compute $\Delta_P = \sum_i n_i \Delta_i$ (for Black-Scholes calls, $\Delta_i = N(d_{1,i})$). Short $\Delta_P$ shares (or futures). The book is now insensitive to small stock moves.
+2. **Dynamic rebalancing.** After a move $\delta S$, delta changes by $\Gamma_P\,\delta S$; re-trade the stock periodically or when delta drifts past a band. The residual P&L over a short period is approximately $\tfrac12\Gamma_P S^2(\sigma_{\text{realised}}^2 - \sigma_{\text{implied}}^2)\,\delta t$: long gamma wins if the stock moves more than implied.
+3. **Gamma and vega.** The stock cannot hedge them. Sell other options (e.g. listed calls/puts at nearby strikes and maturities). With two hedge options $A$ and $B$, solve
+$$\begin{aligned} n_A \Gamma_A + n_B \Gamma_B &= -\Gamma_P, \\ n_A \nu_A + n_B \nu_B &= -\nu_P, \end{aligned}$$
+then re-delta-hedge the whole thing with stock.
+4. **Remaining risks.** Discrete rebalancing and jumps/gaps; changes in skew and term structure (vega at one strike is not vega at another); rates (rho) and dividends; liquidity and transaction costs (tighter hedging bands cost more); model risk in the deltas themselves.
+5. Practical summary: delta-hedge with the stock daily or on bands, keep gamma/vega within limits using liquid listed options, and monitor theta.
+===END===
+===TEASER===
+SLUG: correlation-versus-causation
+IDS: W-101
+FIRMS:
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: easy
+TITLE: Correlation is not causation
+QUESTION:
+What is the difference between correlation and causation? Give an example from finance.
+HINT1:
+Correlation is a property of the joint distribution. Causation is about what would happen if you intervened on one variable.
+HINT2:
+Think of the three ways $X$ and $Y$ can be correlated without $X$ causing $Y$: a common driver, reverse causality, and chance.
+ANSWER:
+Correlation measures linear co-movement ($\rho = \operatorname{Cov}(X,Y)/(\sigma_X\sigma_Y)$); causation means changing $X$ would change $Y$. Correlation can come from a common factor (two stocks both driven by the market), reverse causality (flows chasing returns) or chance (data mining), so it does not imply causation.
+REFRESH:
+$\rho_{XY} = \dfrac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y} \in [-1,1]$; it is symmetric in $X$ and $Y$ and measures only linear dependence.
+EXPLANATION:
+Correlation is symmetric and observational: it says two quantities tend to move together in the data. Causation is directional and interventional: if we forced $X$ up, $Y$ would move. The same correlation is produced by $X \to Y$, by $Y \to X$, by $Z \to X$ and $Z \to Y$, or by coincidence in a finite sample. In trading this matters because a correlation-based signal only works as long as the hidden mechanism behind it persists, and because hedges built on spurious correlation fail when you need them.
+SOLUTION: Definitions and examples
+1. **Correlation:** $\rho = \operatorname{Cov}(X,Y)/(\sigma_X\sigma_Y)$, a number in $[-1,1]$ describing linear co-movement in the data.
+2. **Causation:** an intervention on $X$ changes the distribution of $Y$.
+3. Why they differ, with finance examples:
+ - **Common factor (confounder):** two airline stocks are highly correlated not because one drives the other but because oil prices and the overall market drive both. Buying one does not raise the other.
+ - **Reverse causality:** fund inflows and past returns are correlated; is it inflows pushing prices up, or good returns attracting inflows? Mostly the latter.
+ - **Spurious correlation / data mining:** test thousands of signals (e.g. butter production in Bangladesh vs the S&P 500) and some will correlate strongly by chance; two trending random walks often show large sample correlation.
+4. How to get closer to causation: randomised or natural experiments (e.g. index inclusion events as exogenous demand shocks), controlling for confounders in regressions, out-of-sample and cross-market tests, and an economic mechanism that predicts the sign.
+===END===
+===TEASER===
+SLUG: bias-variance-trade-off
+IDS: W-103
+FIRMS:
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: The bias-variance trade-off
+QUESTION:
+What is the bias-variance trade-off? Derive the decomposition of the mean squared error and explain what it means for choosing a model.
+HINT1:
+Write the error of an estimator as (estimator − its own mean) + (its mean − the truth).
+HINT2:
+Expand the square; the cross term has zero expectation. For prediction, also keep track of the irreducible noise in $Y$.
+ANSWER:
+$E[(\hat\theta - \theta)^2] = \operatorname{Bias}(\hat\theta)^2 + \operatorname{Var}(\hat\theta)$ (plus noise variance $\sigma^2$ for prediction error); flexible models reduce bias but increase variance, simple ones do the reverse, and the best model balances the two (chosen e.g. by cross-validation).
+REFRESH:
+$E[(Z - c)^2] = \operatorname{Var}(Z) + (E[Z] - c)^2$ for any constant $c$.
+EXPLANATION:
+An estimator can be wrong in two ways: it can be systematically off (bias) or it can jump around from sample to sample (variance). Mean squared error adds the two. Complex models (many parameters, deep trees, high-degree polynomials) can fit any pattern, so their bias is small, but they also fit the noise of the particular sample, so their variance is large (overfitting). Simple models are stable but miss real structure (underfitting). Regularisation (ridge, lasso, shrinkage) deliberately adds a little bias to remove a lot of variance. In finance, with noisy and short data, variance usually dominates — which is why shrunk covariance matrices and simple signals often beat complex fits out of sample.
+SOLUTION: Derivation
+1. Let $\hat\theta$ be an estimator of $\theta$, $m = E[\hat\theta]$. Then $\hat\theta - \theta = (\hat\theta - m) + (m - \theta)$.
+2. $E[(\hat\theta - \theta)^2] = E[(\hat\theta - m)^2] + 2(m - \theta)E[\hat\theta - m] + (m - \theta)^2$.
+3. The middle term vanishes since $E[\hat\theta - m] = 0$. So $\operatorname{MSE} = \operatorname{Var}(\hat\theta) + \operatorname{Bias}^2$.
+4. Prediction version: $Y = f(x) + \varepsilon$, $E\varepsilon = 0$, $\operatorname{Var}\varepsilon = \sigma^2$, $\varepsilon$ independent of the fitted $\hat f$. Then
+$$E[(Y - \hat f(x))^2] = \sigma^2 + \big(E\hat f(x) - f(x)\big)^2 + \operatorname{Var}(\hat f(x)).$$
+5. Trade-off: as model complexity grows, bias² falls and variance rises, so test error is U-shaped; training error keeps falling, which is why it cannot be used to choose complexity.
+6. Example: estimating a mean $\mu$ from $n$ observations with variance $s^2$. The sample mean has bias 0 and variance $s^2/n$. The shrunk estimator $c\bar X$ ($0<c<1$) has bias $(c-1)\mu$ and variance $c^2 s^2/n$; its MSE $(1-c)^2\mu^2 + c^2 s^2/n$ is minimised at $c = \dfrac{\mu^2}{\mu^2 + s^2/n} < 1$, so a little shrinkage always lowers the MSE, and the gain is large when $\mu^2$ is small compared with the noise $s^2/n$ — exactly the situation for expected stock returns (in practice $c$ must itself be estimated, as in James-Stein shrinkage).
+===END===
+===TEASER===
+SLUG: testing-time-series-stationarity
+IDS: W-104
+FIRMS:
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: How to test for stationarity
+QUESTION:
+How would you test whether a time series is stationary?
+HINT1:
+Start informally: what would a plot, rolling statistics and the autocorrelation function look like for a stationary versus a non-stationary series?
+HINT2:
+Formally, the classic tests ask whether there is a unit root: fit $\Delta y_t = \alpha + \beta t + \gamma y_{t-1} + \sum_i \phi_i\Delta y_{t-i} + \varepsilon_t$ and test $\gamma = 0$. There is also a test with the opposite null.
+ANSWER:
+Look at the plot, rolling mean/variance and ACF, then use unit-root tests (augmented Dickey-Fuller, Phillips-Perron: null = unit root) together with KPSS (null = stationary); if non-stationary, difference or detrend and test again.
+REFRESH:
+Weak stationarity: $E[y_t]$ constant, $\operatorname{Var}(y_t)$ constant and finite, $\operatorname{Cov}(y_t, y_{t+h})$ depends only on $h$.
+AR(1) $y_t = \phi y_{t-1} + \varepsilon_t$ is stationary iff $|\phi| < 1$; $\phi = 1$ is a random walk (unit root).
+EXPLANATION:
+A stationary series has a fixed mean and variance and a correlation structure that depends only on the lag, so it keeps coming back to its mean. The canonical non-stationary example is a random walk: its variance grows linearly in time and shocks never die out. Testing stationarity is therefore mostly testing for a unit root: in the AR(1) $y_t = \phi y_{t-1} + \varepsilon_t$, rewrite as $\Delta y_t = (\phi - 1)y_{t-1} + \varepsilon_t$ and test whether the coefficient $\gamma = \phi - 1$ is zero. Because under the null the regressor is itself non-stationary, the t-statistic does not have a Student distribution — it has the Dickey-Fuller distribution with more negative critical values (about −2.86 at 5% with a constant). Unit-root tests have low power, so pairing them with KPSS (whose null is stationarity) gives a more reliable verdict. In practice (pairs trading, mean reversion) this is how you check whether a spread is tradeable.
+SOLUTION: Workflow
+1. **Plot** the series; look for trends, changing variance, structural breaks.
+2. **Rolling statistics:** rolling mean and rolling SD should be roughly flat if stationary.
+3. **ACF:** for a stationary series the autocorrelation decays quickly; for a unit-root series it stays near 1 and decays very slowly.
+4. **Augmented Dickey-Fuller:** regress $\Delta y_t = \alpha + \beta t + \gamma y_{t-1} + \sum_{i=1}^p \phi_i \Delta y_{t-i} + \varepsilon_t$ (lags $p$ chosen by AIC/BIC to whiten residuals; include $\alpha$, $\beta t$ as appropriate). $H_0: \gamma = 0$ (unit root), $H_1: \gamma < 0$ (stationary). Compare the t-statistic of $\hat\gamma$ with Dickey-Fuller critical values (not normal ones).
+5. **Phillips-Perron:** same null, corrects for autocorrelation/heteroskedasticity non-parametrically.
+6. **KPSS:** $H_0$: (trend-)stationary, $H_1$: unit root. Combine: ADF rejects and KPSS does not reject → stationary; ADF does not reject and KPSS rejects → unit root; both reject or neither → inconclusive (maybe long memory or breaks).
+7. **Remedies:** if non-stationary, take differences (prices → returns) or log-differences, or remove a deterministic trend, and re-test. Watch structural breaks (Zivot-Andrews test) which can fool ADF into accepting a unit root.
+8. For a pair of assets: regress one price on the other and run ADF on the residual spread (Engle-Granger cointegration test, with its own critical values).
+===END===
+===TEASER===
+SLUG: black-scholes-pde-derivation
+IDS: W-106
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: hard
+TITLE: Derive the Black-Scholes PDE
+QUESTION:
+Derive the Black-Scholes partial differential equation for the price $V(S,t)$ of a European option from first principles. State your assumptions.
+HINT1:
+Assume the stock follows geometric Brownian motion and build a portfolio of the option and some shares whose value has no random part over a short time step.
+HINT2:
+Hold one option and $-\Delta$ shares. Use Itô's lemma for $dV$, choose $\Delta = \partial V/\partial S$ to cancel the $dW$ terms, and then argue that a riskless portfolio must earn the risk-free rate $r$.
+ANSWER:
+$\dfrac{\partial V}{\partial t} + \tfrac12\sigma^2 S^2 \dfrac{\partial^2 V}{\partial S^2} + rS\dfrac{\partial V}{\partial S} - rV = 0$ with terminal condition $V(S,T) = \text{payoff}(S)$; the drift $\mu$ does not appear.
+REFRESH:
+Geometric Brownian motion: $dS_t = \mu S_t\,dt + \sigma S_t\,dW_t$, $W$ a standard Brownian motion ($W_{t+h} - W_t \sim N(0,h)$, independent increments).
+Itô's lemma (heuristic): for smooth $f(S,t)$, $df = f_t\,dt + f_S\,dS + \tfrac12 f_{SS}(dS)^2$, with the rules $(dW)^2 = dt$, $dt\,dW = 0$, $(dt)^2 = 0$; so $(dS)^2 = \sigma^2S^2\,dt$.
+No arbitrage: a portfolio with no risk over $[t, t+dt]$ must earn exactly $r$.
+EXPLANATION:
+The key insight is that the option and the stock are driven by the same single source of randomness $dW$. So over an instant you can hold the right number of shares, $\Delta = \partial V/\partial S$, to cancel the option's randomness exactly. The resulting portfolio is riskless, and no arbitrage forces it to grow at the risk-free rate. Writing that down gives a PDE in which the stock's expected return $\mu$ has vanished — the option price does not depend on anyone's view of the stock's drift, only on its volatility. The second-derivative term comes from Itô's lemma: because $(dW)^2 = dt$ is not negligible, the convexity of $V$ in $S$ (its gamma) contributes a deterministic drift $\tfrac12\sigma^2S^2V_{SS}\,dt$.
+SOLUTION: Delta-hedged portfolio
+1. **Assumptions.** $dS = \mu S\,dt + \sigma S\,dW$ with constant $\mu, \sigma$; constant risk-free rate $r$; continuous trading, no transaction costs, shares divisible, short selling allowed; no dividends; no arbitrage; $V(S,t)$ smooth.
+2. **Itô's lemma for the option.** Since $(dS)^2 = \sigma^2S^2\,dt$,
+$$dV = V_t\,dt + V_S\,dS + \tfrac12\sigma^2S^2V_{SS}\,dt = \big(V_t + \mu S V_S + \tfrac12\sigma^2S^2V_{SS}\big)dt + \sigma S V_S\,dW.$$
+3. **Portfolio.** $\Pi = V - \Delta S$, held with $\Delta$ fixed over $[t, t+dt]$ (self-financing). Then
+$$d\Pi = dV - \Delta\,dS = \big(V_t + \mu S V_S + \tfrac12\sigma^2S^2V_{SS} - \Delta\mu S\big)dt + \sigma S(V_S - \Delta)\,dW.$$
+4. **Remove the risk.** Choose $\Delta = V_S$. The $dW$ term vanishes and so does the $\mu$ term:
+$$d\Pi = \big(V_t + \tfrac12\sigma^2S^2V_{SS}\big)dt.$$
+5. **No arbitrage.** $\Pi$ is riskless over $dt$, so it must earn the risk-free rate: $d\Pi = r\Pi\,dt = r(V - S V_S)\,dt$. (If it earned more, borrow at $r$ and buy it; if less, short it and lend.)
+6. **Equate.** $V_t + \tfrac12\sigma^2S^2V_{SS} = rV - rSV_S$, i.e.
+$$V_t + \tfrac12\sigma^2S^2V_{SS} + rSV_S - rV = 0.$$
+7. **Boundary condition.** $V(S,T) = (S - K)^+$ for a call, $(K - S)^+$ for a put. Solving gives the Black-Scholes formula $C = S N(d_1) - Ke^{-r(T-t)}N(d_2)$, $d_{1,2} = \dfrac{\ln(S/K) + (r \pm \sigma^2/2)(T-t)}{\sigma\sqrt{T-t}}$.
+SOLUTION: Replication (stock plus bond)
+1. Try to replicate the option with $a_t$ shares and $b_t$ in a bank account $B$ with $dB = rB\,dt$: $X = aS + bB$, self-financing so $dX = a\,dS + b\,rB\,dt$.
+2. Write $dX = \big(a\mu S + r(X - aS)\big)dt + a\sigma S\,dW$.
+3. Match $dX$ with $dV$ from Itô's lemma: the $dW$ terms give $a = V_S$; the $dt$ terms with $X = V$ give $V_t + \mu S V_S + \tfrac12\sigma^2 S^2 V_{SS} = \mu S V_S + r(V - S V_S)$.
+4. The $\mu S V_S$ terms cancel, leaving the same PDE $V_t + \tfrac12\sigma^2S^2V_{SS} + rSV_S - rV = 0$. If the option traded at any price other than $X_0$, buying the cheaper of (option, replicating portfolio) and selling the other would be an arbitrage.
+===END===
+===TEASER===
+SLUG: modelling-volatility-smile
+IDS: W-107
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: hard
+TITLE: How to model the volatility smile
+QUESTION:
+Implied volatilities of listed options vary with strike (a smile or skew) and with maturity. How would you model the volatility smile? Compare the main approaches.
+HINT1:
+Black-Scholes assumes one constant volatility, so it can produce only a flat implied-vol surface. What assumption would you relax to create a smile?
+HINT2:
+Three families: make volatility a deterministic function of spot and time; make volatility itself random (possibly correlated with the stock); add jumps. There are also purely descriptive parametrisations of the surface.
+ANSWER:
+Local volatility (Dupire: $\sigma(S,t)$ calibrated exactly to the surface), stochastic volatility (Heston, SABR: random vol correlated with spot, gives skew via correlation and smile via vol-of-vol), jump-diffusion (Merton, Bates: short-dated skew), or a parametric fit (SVI) for interpolation; choice depends on the product and on the dynamics you need.
+REFRESH:
+Implied volatility: the $\sigma$ that makes the Black-Scholes price equal the market price of an option.
+Risk-neutral density from calls: $q(K) = e^{rT}\,\dfrac{\partial^2 C}{\partial K^2}$ (Breeden-Litzenberger).
+EXPLANATION:
+The smile is the market saying the risk-neutral distribution of the stock is not lognormal: fatter tails and, for equities, a heavier left tail (crashes). Any model that generates those features produces a smile. Local vol puts the whole effect into a deterministic volatility $\sigma(S,t)$: it can fit every quoted option exactly, but it predicts that the smile flattens and moves unrealistically as spot moves. Stochastic vol makes volatility random: negative correlation between stock and vol creates the equity skew (vol goes up when the stock falls), and the vol-of-vol creates curvature; its forward smile dynamics are more realistic but it cannot fit very short maturities well. Jumps fix the short end, because a diffusion cannot move far in a short time. Practitioners often combine them (stochastic local vol, SVJ) and use parametric fits like SVI to interpolate the surface without arbitrage.
+SOLUTION: The main approaches
+1. **Why a smile exists.** Black-Scholes with constant $\sigma$ gives a lognormal terminal distribution and a flat implied-vol surface. Equity markets show downside skew (fear of crashes, leverage effect); FX shows more symmetric smiles.
+2. **Parametric surface fits** (descriptive): SVI (stochastic volatility inspired) total variance $w(k) = a + b\big(\rho(k - m) + \sqrt{(k-m)^2 + s^2}\big)$ in log-moneyness $k$, fitted per maturity with no-arbitrage constraints. Good for interpolation and risk, not a dynamic model.
+3. **Local volatility** (Dupire 1994): $dS = rS\,dt + \sigma(S,t) S\,dW$. Given a continuum of call prices $C(K,T)$ (zero dividends),
+$$\sigma^2(K,T) = \frac{\partial_T C + rK\,\partial_K C}{\tfrac12 K^2\,\partial_{KK} C}.$$
+Pros: fits the whole surface exactly; complete market, so hedging is simple. Cons: unrealistic smile dynamics (forward smiles flatten, wrong delta for skew), sensitive to noisy prices.
+4. **Stochastic volatility.** Heston: $dS = rS\,dt + \sqrt{v}S\,dW_1$, $dv = \kappa(\theta - v)dt + \xi\sqrt v\,dW_2$, $d\langle W_1,W_2\rangle = \rho\,dt$. $\rho < 0$ gives skew, $\xi$ gives curvature, $\kappa, \theta$ the term structure; semi-closed-form prices via Fourier. SABR: $dF = \alpha F^\beta dW_1$, $d\alpha = \nu\alpha\,dW_2$, with Hagan's closed-form implied-vol approximation; the standard for rates smiles per expiry. Cons: struggles with steep short-dated skew; market incomplete (vol risk must be hedged with options).
+5. **Jumps.** Merton jump-diffusion, Bates (Heston + jumps), or pure-jump Lévy (variance gamma). Jumps produce steep short-maturity skew that diffusions cannot.
+6. **Hybrids.** Stochastic local volatility: $\sigma = L(S,t)\sqrt{v_t}$ with leverage function $L$ calibrated to the surface exactly, while $v_t$ gives realistic dynamics — the industry standard for exotic pricing.
+7. **How to choose:** vanilla interpolation and risk → SVI; path-dependent exotics sensitive to forward skew (cliquets, barriers) → stochastic or stochastic-local vol; short-dated or event-driven → include jumps; rates → SABR per expiry.
+===END===
+===TEASER===
+SLUG: risk-neutral-vs-real-world-measure
+IDS: W-108
+FIRMS:
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Risk-neutral versus real-world probabilities
+QUESTION:
+Explain the difference between the risk-neutral probability measure $\mathbb Q$ and the real-world (physical) probability measure $\mathbb P$. When do you use each?
+HINT1:
+Start with a one-period model: a stock at 100 goes to 120 or 90, and a bond pays interest $r$. Can you price a call without knowing the real probability of going up?
+HINT2:
+Find the unique probability $q$ that makes the discounted stock price a fair game, $100 = \frac{1}{1+r}\big(q \cdot 120 + (1-q)\cdot 90\big)$, and show that pricing the option with $q$ gives the replication price.
+ANSWER:
+$\mathbb P$ describes how likely outcomes really are (used for forecasting, risk, VaR, strategy); $\mathbb Q$ is an equivalent measure under which all discounted traded prices are martingales (every asset drifts at $r$) — it is a pricing device implied by no-arbitrage and replication, with the risk premium absorbed into the probabilities.
+REFRESH:
+Equivalent measures: $\mathbb P$ and $\mathbb Q$ agree on which events have probability zero.
+Martingale: $E[X_{t+s}\mid\mathcal F_t] = X_t$.
+Fundamental theorem of asset pricing: no arbitrage iff there exists an equivalent measure under which discounted prices are martingales; it is unique iff the market is complete.
+EXPLANATION:
+Under $\mathbb P$ a risky stock is expected to grow at $\mu > r$ because investors demand a risk premium. If you priced a derivative as the $\mathbb P$-expected discounted payoff, you would need to know that premium and the right discount rate for this particular risk — hard. Replication avoids this: a derivative that can be copied by trading the stock and the bond must cost what the copy costs, whatever the real probabilities. The risk-neutral measure is just the bookkeeping that makes this automatic: it tilts the probabilities so that every traded asset has expected return $r$, and then price = discounted $\mathbb Q$-expectation of the payoff. The two measures agree on what is possible, but not on how likely it is — in Black-Scholes they share the same volatility $\sigma$ and differ only in the drift ($\mu$ under $\mathbb P$, $r$ under $\mathbb Q$).
+SOLUTION: One-period binomial illustration
+1. Stock 100 today, 120 (up) or 90 (down) next period; bond rate $r = 5\%$. Call with strike 100 pays 20 or 0. Real probability of up: $p$ (say 0.8).
+2. **Replication:** hold $a$ shares and $b$ in bonds with $120a + 1.05b = 20$ and $90a + 1.05b = 0$. Subtract: $30a = 20$, $a = 2/3$; $b = -60/1.05 \approx -57.14$. Cost: $100 \cdot \tfrac23 - 57.14 \approx 9.52$. This is the no-arbitrage price, and $p$ never appeared.
+3. **Risk-neutral probability:** solve $100 = \tfrac{1}{1.05}\big(120q + 90(1-q)\big)$: $105 = 90 + 30q$, $q = 0.5$. Then $\tfrac{1}{1.05}(0.5 \cdot 20) = 9.52$, the same price.
+4. **Real-world expectation:** $\tfrac{1}{1.05}(0.8 \cdot 20) = 15.24 \ne 9.52$ — discounting at $r$ under $\mathbb P$ is wrong, because the call is riskier than the bond and should be discounted at a higher rate that we do not know a priori.
+5. **Continuous time:** under $\mathbb P$, $dS = \mu S\,dt + \sigma S\,dW^{\mathbb P}$; under $\mathbb Q$, $dS = rS\,dt + \sigma S\,dW^{\mathbb Q}$ with $W^{\mathbb Q}_t = W^{\mathbb P}_t + \frac{\mu - r}{\sigma}t$ (Girsanov); $\frac{\mu - r}{\sigma}$ is the market price of risk. Price $= e^{-rT}E^{\mathbb Q}[\text{payoff}]$.
+6. **When to use which:** $\mathbb Q$ for pricing and hedging derivatives relative to traded instruments (it is what implied vols and option prices encode). $\mathbb P$ for forecasting returns, risk management (VaR, stress tests), portfolio construction and judging whether an option is cheap relative to your view of realised volatility. Implied (risk-neutral) default probabilities from CDS, for example, are typically much larger than historical default rates because they include a risk premium.
+===END===
+===TEASER===
+SLUG: pairs-trading-strategy
+IDS: W-109
+FIRMS:
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: medium
+TITLE: Building a pairs trade
+QUESTION:
+How would you build a pairs trading strategy, from choosing the pair to entry, exit and risk management?
+HINT1:
+You want two assets whose prices individually wander but whose combination tends to come back to a stable level.
+HINT2:
+Estimate a hedge ratio $\beta$ from $\log P^A_t = \alpha + \beta\log P^B_t + \varepsilon_t$, test whether the spread $\varepsilon_t$ is stationary (cointegration), and trade its z-score.
+ANSWER:
+Choose economically linked assets, estimate a hedge ratio, test that the spread is stationary (Engle-Granger or Johansen cointegration), then short the spread when its z-score is high and buy it when low (e.g. enter at ±2, exit near 0, stop at ±4 or on a time limit), with out-of-sample validation, costs and a break-down stop.
+REFRESH:
+Cointegration: two non-stationary (unit-root) series $X, Y$ are cointegrated if some combination $Y - \beta X$ is stationary.
+Ornstein-Uhlenbeck / AR(1) spread: $s_{t+1} - \mu = \phi(s_t - \mu) + \varepsilon$, half-life of mean reversion $= \ln 2 / (-\ln\phi)$.
+EXPLANATION:
+Two related stocks (Coca-Cola and Pepsi, two share classes of the same company, a stock and its ETF) are exposed to the same economic forces, so although each price is a random walk, the difference (suitably weighted) should be tethered. When the spread is unusually wide, bet on it narrowing: short the rich leg and buy the cheap leg in the ratio $\beta$, which also makes the position roughly market-neutral. The statistics check that the tether exists (cointegration, not mere correlation — two correlated random walks can drift apart forever), and the half-life tells you how long a trade should take. The main risk is that the relationship breaks (a merger, a lawsuit, a change of business), so you need stops.
+SOLUTION: Step-by-step recipe
+1. **Universe and economics:** candidates from the same sector, same supply chain, dual listings, or stock vs index/ETF. Require a reason for the link.
+2. **Screen:** on a formation window (e.g. 1–2 years of daily log prices), compute distances or correlations of returns to shortlist.
+3. **Hedge ratio:** regress $\log P^A_t = \alpha + \beta\log P^B_t + \varepsilon_t$ (OLS, or total least squares, or a Kalman filter for a time-varying $\beta$).
+4. **Cointegration test:** ADF on the residuals $\hat\varepsilon_t$ with Engle-Granger critical values (or Johansen for more than two assets). Reject the unit root → tradeable spread. Also estimate the half-life from an AR(1) fit; discard pairs with half-lives too long for your horizon.
+5. **Signal:** $z_t = (s_t - \bar s)/\hat\sigma_s$ with rolling mean and SD. Enter short spread (short A, long $\beta$ of B) when $z > 2$; long spread when $z < -2$; exit when $z$ crosses 0 (or ±0.5).
+6. **Risk management:** stop loss at $|z| > 4$ or after 2–3 half-lives without reversion (relationship may have broken); position size by spread volatility; diversify across many pairs; dollar- or beta-neutral legs.
+7. **Validation:** test out of sample (walk-forward), include transaction costs, borrow fees and slippage, beware of data-snooping when screening thousands of pairs (many will look cointegrated by chance).
+8. **Monitoring:** re-estimate $\beta$ and re-test cointegration periodically; corporate events can break the pair overnight.
+===END===
+===TEASER===
+SLUG: three-dice-all-different
+IDS: W-110
+FIRMS:
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Three dice, all different
+QUESTION:
+Three fair six-sided dice are rolled. What is the probability that all three show different numbers?
+HINT1:
+Roll the dice one at a time.
+HINT2:
+The second die must avoid one value, the third must avoid two.
+ANSWER:
+$5/9$
+REFRESH:
+Number of ordered selections of $k$ distinct items from $n$: $n(n-1)\cdots(n-k+1)$.
+EXPLANATION:
+The first die can be anything. The second must differ from it (probability $5/6$), and the third must differ from both (probability $4/6$). Multiply: $\frac56 \cdot \frac46 = \frac{20}{36} = \frac59$.
+SOLUTION: Sequential
+$P = 1 \times \dfrac56 \times \dfrac46 = \dfrac{20}{36} = \dfrac59$.
+SOLUTION: Counting
+Ordered outcomes: $6^3 = 216$. All different: $6 \times 5 \times 4 = 120$. $P = 120/216 = 5/9$.
+SOLUTION: Complement
+Exactly three the same: 6 outcomes. Exactly two the same: choose the repeated value (6), the other value (5), and the position of the odd die (3): 90 outcomes. So $216 - 6 - 90 = 120$ all different, $P = 120/216 = 5/9$.
+FOLLOWUP: Four dice
+What is the probability that four dice all show different numbers?
+FOLLOWUP_ANSWER:
+$\dfrac{6 \cdot 5 \cdot 4 \cdot 3}{6^4} = \dfrac{360}{1296} = \dfrac{5}{18} \approx 0.278$.
+===END===
+===TEASER===
+SLUG: up-ten-down-ten-percent
+IDS: W-112
+FIRMS:
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Up 10% then down 10%
+QUESTION:
+A stock at 100 rises 10% and then falls 10%. Where does it end?
+HINT1:
+The 10% fall is taken from a different base than the 10% rise.
+HINT2:
+Multiply the two factors: $1.1 \times 0.9$.
+ANSWER:
+99
+REFRESH:
+Successive percentage changes multiply: $P_2 = P_0(1 + a)(1 + b)$.
+EXPLANATION:
+The rise is 10% of 100 = 10, taking the price to 110. The fall is 10% of 110 = 11, larger than the rise. In general $(1+x)(1-x) = 1 - x^2 < 1$, so an equal percentage up and down always loses $x^2$ — here $0.01$, i.e. 1%. This is the reason arithmetic average returns overstate compounded returns (volatility drag, roughly $\sigma^2/2$).
+SOLUTION: Step by step
+1. After the rise: $100 \times 1.1 = 110$.
+2. After the fall: $110 \times 0.9 = 99$.
+SOLUTION: Difference of squares
+$100(1 + 0.1)(1 - 0.1) = 100(1 - 0.01) = 99$. The order does not matter: down 10% then up 10% also gives 99.
+FOLLOWUP: Get back to 100
+After falling from 100 to 90, what percentage rise brings the stock back to 100?
+FOLLOWUP_ANSWER:
+It needs $100/90 - 1 = 1/9 \approx 11.1\%$. In general a fall of $x$ requires a rise of $\frac{x}{1-x}$ to recover (e.g. a 50% loss needs a 100% gain).
+===END===

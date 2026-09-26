@@ -1,0 +1,980 @@
+===TEASER===
+SLUG: two-asset-max-sharpe-weights
+IDS: Q-431
+FIRMS: WorldQuant
+SECTION: trading
+CATEGORY: Markets & risk
+DIFFICULTY: hard
+TITLE: Maximum-Sharpe mix of two assets
+QUESTION:
+Two assets $A$ and $B$ have expected excess returns $\mu_A = 7\%$ and $\mu_B = 4\%$, and the covariance matrix of their excess returns is
+$$\Sigma = \begin{pmatrix} 1 & 1 \\ 1 & 2 \end{pmatrix}.$$
+You hold $a$ units of $A$ and $b$ units of $B$ with $a + b = 1$ (short positions allowed). How many units $a$ of asset $A$ maximise the expected Sharpe ratio of the portfolio?
+HINT1:
+The Sharpe ratio does not change if you scale the whole portfolio by a positive constant. So first find the best *direction* of the weight vector, then rescale so the weights add up to 1.
+HINT2:
+Maximising $\dfrac{w^\top\mu}{\sqrt{w^\top\Sigma w}}$ over all $w$ gives $w \propto \Sigma^{-1}\mu$ (the tangency portfolio). Invert the $2\times 2$ matrix and normalise.
+ANSWER:
+$a = 10/7$ (and $b = -3/7$: short some $B$).
+REFRESH:
+**Inverse of a $2\times2$ matrix.** $\begin{pmatrix} p & q \\ r & s\end{pmatrix}^{-1} = \dfrac{1}{ps-qr}\begin{pmatrix} s & -q \\ -r & p\end{pmatrix}$.
+
+**Portfolio moments.** With weights $w$, the expected excess return is $w^\top\mu$ and the variance is $w^\top \Sigma w$.
+
+**Cauchy–Schwarz.** For a positive definite $\Sigma$, $(w^\top\mu)^2 \le (w^\top\Sigma w)(\mu^\top\Sigma^{-1}\mu)$, with equality iff $w \propto \Sigma^{-1}\mu$.
+EXPLANATION:
+The Sharpe ratio $S(w) = w^\top\mu / \sqrt{w^\top\Sigma w}$ is homogeneous of degree 0: doubling every position doubles both the numerator and the standard deviation. So the constraint $a+b=1$ only fixes the scale; the real question is the direction of $w$, and the answer to that is the classic tangency portfolio $w \propto \Sigma^{-1}\mu$.
+
+The interesting feature is that $B$ gets a negative weight even though its expected return is positive. $A$ and $B$ are strongly correlated ($\rho = 1/\sqrt2 \approx 0.71$), and $B$ pays relatively little per unit of risk, so the optimal portfolio uses $B$ as a hedge: shorting a bit of $B$ removes some of $A$'s risk while giving up only a small amount of return.
+SOLUTION: Tangency portfolio $\Sigma^{-1}\mu$
+Scale-invariance: $S(cw) = S(w)$ for $c>0$. By Cauchy–Schwarz in the inner product defined by $\Sigma$,
+$$w^\top\mu = (\Sigma^{1/2}w)^\top(\Sigma^{-1/2}\mu) \le \sqrt{w^\top\Sigma w}\,\sqrt{\mu^\top\Sigma^{-1}\mu},$$
+with equality iff $w \propto \Sigma^{-1}\mu$. So the maximum Sharpe ratio is attained at $w \propto \Sigma^{-1}\mu$.
+
+$\det\Sigma = 1\cdot 2 - 1\cdot 1 = 1$, so
+$$\Sigma^{-1} = \begin{pmatrix} 2 & -1 \\ -1 & 1\end{pmatrix}, \qquad \Sigma^{-1}\mu = \begin{pmatrix} 2\cdot 7 - 4 \\ -7 + 4\end{pmatrix} = \begin{pmatrix} 10 \\ -3\end{pmatrix}$$
+(working with returns in percent; the scale does not matter). Normalising so the weights sum to 1: the sum is $10 - 3 = 7$, hence
+$$a = \frac{10}{7}, \qquad b = -\frac{3}{7}.$$
+Check: expected return $\frac{70 - 12}{7} = \frac{58}{7}$, variance $a^2 + 2ab + 2b^2 = \frac{100 - 60 + 18}{49} = \frac{58}{49}$, so $S = \frac{58/7}{\sqrt{58}/7} = \sqrt{58} \approx 7.62$, which equals $\sqrt{\mu^\top\Sigma^{-1}\mu} = \sqrt{7\cdot10 + 4\cdot(-3)} = \sqrt{58}$, as it must.
+SOLUTION: One-variable calculus on the budget line
+Set $b = 1-a$. Then
+$$m(a) = 7a + 4(1-a) = 4 + 3a, \qquad v(a) = a^2 + 2a(1-a) + 2(1-a)^2 = a^2 - 2a + 2.$$
+Maximise $S(a) = m/\sqrt v$, equivalently set the derivative of $\ln S = \ln m - \tfrac12\ln v$ to zero:
+$$\frac{m'}{m} = \frac{v'}{2v} \iff 3(a^2 - 2a + 2) = (4 + 3a)(a - 1).$$
+Left: $3a^2 - 6a + 6$. Right: $3a^2 + a - 4$. So $-6a + 6 = a - 4$, i.e. $7a = 10$, $a = 10/7$. At this point $m = 58/7 > 0$, and $S(a) \to \pm 3$ as $a\to\pm\infty$ while $S(10/7) = \sqrt{58} > 3$, so it is the maximum.
+===END===
+===TEASER===
+SLUG: three-shooters-first-hit
+IDS: Q-432
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Three marksmen taking turns
+QUESTION:
+Three marksmen $X$, $Y$ and $Z$ shoot at a target in the order $X, Y, Z, X, Y, Z, \dots$ until someone hits it. Each shot hits with probability $1/2$, independently of all other shots. What is the probability that $X$ is the first to hit the target?
+HINT1:
+Think about what happens if the first full round ($X$, $Y$, $Z$) produces no hit at all. What does the game look like afterwards?
+HINT2:
+Let $p$ be the answer. Either $X$ hits immediately, or all three miss and the game restarts from scratch: $p = \tfrac12 + \tfrac18\,p$.
+ANSWER:
+$4/7$
+REFRESH:
+**Geometric series.** For $|r|<1$, $\sum_{k\ge0} r^k = \frac{1}{1-r}$.
+EXPLANATION:
+The game is memoryless: after a round of three misses nothing has changed, so the situation is exactly the starting one. That gives a one-line equation. Equivalently, the three players' chances of being first are in the ratio $\tfrac12 : \tfrac14 : \tfrac18 = 4:2:1$ (Y needs X to miss first, Z needs both to miss), and they add up to 1, so X gets $4/7$, Y $2/7$, Z $1/7$. Going first is a big advantage when the hit probability is high.
+SOLUTION: First-step (renewal) equation
+Let $p = P(X \text{ hits first})$. On the first shot, $X$ hits with probability $1/2$ and wins. Otherwise $Y$ and $Z$ must both miss too (probability $\tfrac12\cdot\tfrac12\cdot\tfrac12 = \tfrac18$ for the whole round), after which the game starts afresh. If $Y$ or $Z$ hits in the first round, $X$ loses. Hence
+$$p = \frac12 + \frac18 p \quad\Longrightarrow\quad \frac78 p = \frac12 \quad\Longrightarrow\quad p = \frac47.$$
+SOLUTION: Sum over rounds
+$X$ is first to hit on his $k$-th shot ($k = 1,2,\dots$) iff the first $k-1$ rounds are all misses (probability $(1/8)^{k-1}$) and then $X$ hits ($1/2$):
+$$p = \sum_{k\ge1}\frac12\Big(\frac18\Big)^{k-1} = \frac{1/2}{1 - 1/8} = \frac{1/2}{7/8} = \frac47.$$
+SOLUTION: Ratio argument
+Within any round that is reached, $X$ ends the game with probability $\tfrac12$, $Y$ with $\tfrac12\cdot\tfrac12 = \tfrac14$, $Z$ with $\tfrac18$. Since each round is a fresh copy, the probabilities of eventually being first are proportional to these: $4:2:1$. The game ends almost surely, so they sum to 1, giving $P(X) = \frac{4}{7}$.
+===END===
+===TEASER===
+SLUG: conditional-normal-given-sum
+IDS: Q-434
+FIRMS: Citadel, Two Sigma
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: One normal given the sum
+QUESTION:
+Let $X_1 \sim N(0, 9)$ and $X_2 \sim N(0, 16)$ be independent (the second parameter is the variance). Compute $\mathbb{E}[X_1 \mid X_1 + X_2 = 5]$.
+HINT1:
+The pair $(X_1, X_1+X_2)$ is jointly Gaussian. For jointly Gaussian variables, the conditional expectation is linear in the conditioning variable.
+HINT2:
+Write $\mathbb{E}[X_1\mid S] = \beta S$ with $S = X_1 + X_2$ and $\beta = \mathrm{Cov}(X_1,S)/\mathrm{Var}(S)$.
+ANSWER:
+$9/5 = 1.8$
+REFRESH:
+**Gaussian conditioning.** If $(U,V)$ is bivariate normal, then $\mathbb{E}[U\mid V=v] = \mathbb{E}U + \frac{\mathrm{Cov}(U,V)}{\mathrm{Var}(V)}(v - \mathbb{E}V)$.
+
+**Covariance of independent sums.** If $X_1, X_2$ are independent, $\mathrm{Cov}(X_1, X_1+X_2) = \mathrm{Var}(X_1)$ and $\mathrm{Var}(X_1+X_2) = \mathrm{Var}X_1 + \mathrm{Var}X_2$.
+EXPLANATION:
+Knowing the total is 5, you have to decide how much of that 5 came from $X_1$ and how much from $X_2$. The natural answer is to split it in proportion to how much each one varies: $X_1$ carries variance 9 and $X_2$ variance 16, out of a total 25. So $X_1$ gets $9/25$ of the sum, i.e. $\frac{9}{25}\cdot 5 = \frac95$, and $X_2$ gets $\frac{16}{25}\cdot 5 = \frac{16}{5}$. The two conditional means add back up to 5, as they must. This is the same formula as a regression coefficient, and the same idea as the Kalman filter's gain.
+SOLUTION: Regression coefficient
+$S = X_1 + X_2 \sim N(0, 25)$ and $(X_1, S)$ is jointly Gaussian (a linear image of the Gaussian vector $(X_1,X_2)$). By independence,
+$$\mathrm{Cov}(X_1, S) = \mathrm{Var}(X_1) + \mathrm{Cov}(X_1,X_2) = 9, \qquad \mathrm{Var}(S) = 9 + 16 = 25.$$
+By the Gaussian conditioning formula (both means are 0),
+$$\mathbb{E}[X_1\mid S = 5] = \frac{9}{25}\cdot 5 = \frac95.$$
+SOLUTION: Decomposition into independent parts
+Write $X_1 = \frac{9}{25} S + R$ where $R = X_1 - \frac{9}{25}S$. Then $\mathrm{Cov}(R, S) = 9 - \frac{9}{25}\cdot 25 = 0$; since $(R,S)$ is jointly Gaussian, zero covariance means $R$ is independent of $S$, and $\mathbb{E}R = 0$. Therefore
+$$\mathbb{E}[X_1 \mid S = 5] = \frac{9}{25}\cdot 5 + \mathbb{E}[R] = \frac95.$$
+SOLUTION: Direct density computation
+The conditional density of $X_1$ given $S = 5$ is proportional to $f_{X_1}(x) f_{X_2}(5-x) \propto \exp\!\Big(-\frac{x^2}{18} - \frac{(5-x)^2}{32}\Big)$. The exponent is a concave quadratic in $x$, so this is a normal density whose mean is the maximiser. Setting the derivative to zero: $-\frac{x}{9} + \frac{5-x}{16} = 0 \iff 16x = 45 - 9x \iff x = \frac{45}{25} = \frac95$.
+===END===
+===TEASER===
+SLUG: nine-couples-random-pairing
+IDS: Q-435
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Nine couples re-paired at random
+QUESTION:
+Nine married couples (18 people) are split into 9 pairs uniformly at random, among all possible ways of splitting 18 people into pairs (same-sex pairs are allowed). What is the expected number of married couples that end up paired together?
+HINT1:
+Don't try to find the distribution of the number of reunited couples. Write it as a sum of indicators, one per couple.
+HINT2:
+For one particular couple, look at the husband: his partner is equally likely to be any of the other 17 people.
+ANSWER:
+$9/17 \approx 0.53$
+REFRESH:
+**Linearity of expectation.** $\mathbb{E}[\sum_i I_i] = \sum_i \mathbb{E}[I_i] = \sum_i P(A_i)$ for indicators $I_i = \mathbf 1_{A_i}$, whether or not the events are independent.
+
+**Number of perfect matchings.** $2n$ people can be split into pairs in $(2n-1)!! = (2n-1)(2n-3)\cdots 3\cdot 1$ ways.
+EXPLANATION:
+Each couple contributes 1 if reunited and 0 otherwise, so the expected number is just the sum of the nine reunion probabilities. By symmetry, a given person's partner is uniform over the 17 others, and exactly one of them is the spouse, so each couple is reunited with probability $1/17$. Nine couples give $9/17$. The events are dependent (if eight couples are reunited, the ninth is too), but linearity of expectation does not care.
+SOLUTION: Indicators
+Let $I_k = 1$ if couple $k$ is paired together, $k = 1,\dots,9$, and $N = \sum_k I_k$. In a uniformly random pairing, the partner of the husband of couple $k$ is uniform over the other 17 people, so $P(I_k = 1) = 1/17$. By linearity,
+$$\mathbb{E}N = \sum_{k=1}^{9} P(I_k=1) = 9\cdot\frac1{17} = \frac{9}{17}.$$
+SOLUTION: Counting matchings
+There are $17!!$ pairings of 18 people. Those in which couple $k$ is together: fix that pair and pair the remaining 16 people in $15!!$ ways. So $P(I_k=1) = \frac{15!!}{17!!} = \frac{1}{17}$, and again $\mathbb{E}N = \frac{9}{17}$.
+FOLLOWUP: General $n$
+With $n$ couples, what is the expected number reunited, and what happens as $n\to\infty$?
+FOLLOWUP_ANSWER:
+Each couple is together with probability $\frac{1}{2n-1}$, so $\mathbb{E}N = \frac{n}{2n-1} \to \frac12$. (In fact $N$ converges in distribution to a Poisson$(1/2)$ variable.)
+===END===
+===TEASER===
+SLUG: top-to-random-bottom-card-rise
+IDS: Q-436
+FIRMS: DRW
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: How long until the bottom card reaches the top?
+QUESTION:
+A standard 52-card deck is shuffled by repeating the following move: take the top card and reinsert it at a uniformly random one of the 52 possible positions in the deck (it may go back on top, or to the very bottom, or anywhere in between). A particular card $B$ starts at the bottom of the deck. What is the expected number of moves until $B$ is at the top of the deck for the first time?
+HINT1:
+Track only the position of $B$, counted from the top ($1$ = top, $52$ = bottom). $B$ is never the card being moved until it reaches the top. How can its position change in one move?
+HINT2:
+When the top card is reinserted, $B$ moves up by one exactly when the card lands below $B$; otherwise $B$ stays put. Work out that probability as a function of $B$'s position, and add up the expected waiting times at each level.
+ANSWER:
+$52\,H_{51} = 52\left(1 + \tfrac12 + \cdots + \tfrac1{51}\right) \approx 235$ moves (234.98).
+REFRESH:
+**Geometric waiting time.** If each trial succeeds independently with probability $q$, the expected number of trials until the first success is $1/q$.
+
+**Harmonic numbers.** $H_n = \sum_{j=1}^n \frac1j \approx \ln n + 0.5772 + \frac{1}{2n}$.
+EXPLANATION:
+Card $B$ can only ever move up, by one place, and only when the card taken off the top is slipped in underneath it. When $B$ is near the bottom this is rare: at the very bottom there is only one slot below it out of 52, so you wait 52 moves on average for the first step up. As more cards pile up below $B$, the chance increases: with $j$ slots below $B$, the chance is $j/52$ and the wait is $52/j$. Adding the waits for $j = 1, 2, \dots, 51$ gives $52 H_{51}$. This is the same structure as the coupon collector problem, and it is the key step in showing that about $n\ln n$ top-to-random shuffles mix a deck.
+SOLUTION: Sum of geometric waiting times
+Let $i$ be $B$'s position from the top. A move removes the top card (not $B$, as long as $i\ge 2$): $B$ is now at position $i-1$ in a 51-card deck, with $51-(i-1) = 52-i$ cards below it. The removed card is inserted into one of 52 slots (above the first card, between two consecutive cards, or below the last). $B$ ends at position $i-1$ iff the card goes into one of the slots below $B$, of which there are $52 - i + 1 = 53 - i$; otherwise it ends at position $i$. So
+$$P(i \to i-1) = \frac{53-i}{52}, \qquad P(i\to i) = \frac{i-1}{52}.$$
+The time spent at level $i$ is geometric with mean $\frac{52}{53-i}$, and the levels are visited in order $52, 51, \dots, 2$. Hence
+$$\mathbb{E}T = \sum_{i=2}^{52}\frac{52}{53-i} = 52\sum_{j=1}^{51}\frac1j = 52\,H_{51}.$$
+Numerically $H_{51} \approx 4.51881$, so $\mathbb{E}T \approx 234.98 \approx 235$.
+
+Note: the source quotes 234, which is this value truncated; the exact expectation is $52H_{51}\approx 234.98$.
+SOLUTION: Recurrence on the expected time to go up
+Let $e_i$ be the expected number of moves to reach the top from position $i$, with $e_1 = 0$. First-step analysis:
+$$e_i = 1 + \frac{53-i}{52}e_{i-1} + \frac{i-1}{52}e_i \;\Longrightarrow\; \frac{53-i}{52}e_i = 1 + \frac{53-i}{52}e_{i-1} \;\Longrightarrow\; e_i = e_{i-1} + \frac{52}{53-i}.$$
+Telescoping from $e_1 = 0$: $e_{52} = \sum_{i=2}^{52}\frac{52}{53-i} = 52 H_{51}\approx 234.98$. A quick simulation (20 000 runs) gives about 235, confirming it.
+FOLLOWUP: One more move
+Once $B$ is on top, one further move puts it at a uniformly random position. Why does that make the whole deck exactly uniformly shuffled?
+FOLLOWUP_ANSWER:
+By induction, the cards that have been inserted below $B$ are in a uniformly random order at all times: each new card inserted below $B$ goes to a uniformly random one of the slots among them. When $B$ reaches the top, all 51 other cards are below it in uniform random order; reinserting $B$ uniformly then gives a uniform permutation of all 52. So $T+1$ is a strong uniform time, with mean $52H_{51}+1 \approx 236$.
+===END===
+===TEASER===
+SLUG: sine-plus-x-root
+IDS: Q-437
+FIRMS: Wells Fargo
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Solve sin x + x = 1
+QUESTION:
+Does the equation $\sin x + x - 1 = 0$ have a real solution? Justify your answer, say how many solutions there are, and approximate the solution(s) by hand to two decimal places.
+HINT1:
+Evaluate $f(x) = \sin x + x - 1$ at two simple points and look at the signs. Then look at $f'$.
+HINT2:
+$f(0) = -1 < 0$ and $f(\pi/2) > 0$, so the intermediate value theorem gives a root; $f'(x) = 1 + \cos x \ge 0$ gives uniqueness. For the value, use $\sin x \approx x - x^3/6$ or Newton's method from $x_0 = 0.5$.
+ANSWER:
+Exactly one real solution, $x \approx 0.511$.
+REFRESH:
+**Intermediate value theorem.** A continuous $f$ on $[a,b]$ with $f(a)<0<f(b)$ has a zero in $(a,b)$.
+
+**Newton's method.** $x_{n+1} = x_n - f(x_n)/f'(x_n)$; near a simple root the number of correct digits roughly doubles each step.
+
+**Small-angle values.** $\sin(0.5) \approx 0.4794$, $\cos(0.5) \approx 0.8776$.
+EXPLANATION:
+Existence comes from a sign change, uniqueness from monotonicity: $f'(x) = 1 + \cos x$ is never negative, and it is zero only at isolated points ($x = \pi + 2k\pi$), so $f$ is strictly increasing and can cross zero only once. For the value, the root is a bit above $1/2$, because at $x = 1/2$ we have $\sin x + x < 1$ (sine is slightly below $x$). One Newton step from $0.5$ already gives three correct decimals.
+SOLUTION: IVT, monotonicity and Newton
+Let $f(x) = \sin x + x - 1$, continuous on $\mathbb{R}$.
+
+**Existence.** $f(0) = -1 < 0$ and $f(1) = \sin 1 \approx 0.841 > 0$. By the intermediate value theorem there is a root in $(0,1)$.
+
+**Uniqueness.** $f'(x) = 1 + \cos x \ge 0$, with equality only at the isolated points $x = \pi + 2k\pi$. So $f$ is strictly increasing on $\mathbb{R}$ and has exactly one root.
+
+**Approximation.** Start at $x_0 = 0.5$: $f(0.5) = 0.4794 + 0.5 - 1 = -0.0206$, $f'(0.5) = 1 + 0.8776 = 1.8776$. Newton:
+$$x_1 = 0.5 + \frac{0.0206}{1.8776} \approx 0.5 + 0.0110 = 0.5110.$$
+Check: $\sin(0.511)\approx 0.4890$, and $0.4890 + 0.511 - 1 \approx 0.0000$. The root is $x \approx 0.511$.
+SOLUTION: Taylor polynomial
+Replace $\sin x$ by $x - x^3/6$ (error below $x^5/120 < 0.0003$ for $x<0.6$): $2x - x^3/6 = 1$. Try $x = 0.5$: $1 - 0.0208 = 0.979$, too small; the left side has derivative about $2 - x^2/2 \approx 1.87$, so add $0.021/1.87 \approx 0.011$: $x \approx 0.511$. Check $2(0.511) - 0.511^3/6 = 1.022 - 0.0222 = 0.9998$. So $x \approx 0.51$.
+===END===
+===TEASER===
+SLUG: pizza-slice-uniform-remaining
+IDS: Q-439
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Finishing the pizza slice
+QUESTION:
+The time Garrett needs to eat a slice of pizza is uniformly distributed between 1 and 5 minutes. He has been eating for 2 minutes and has not finished yet. What is the probability that he finishes during the next minute?
+HINT1:
+You are told the eating time $T$ exceeds 2. What is the distribution of $T$ once you know that?
+HINT2:
+Conditioning a uniform variable on an interval gives a uniform variable on the smaller interval: $T \mid T > 2$ is uniform on $[2,5]$.
+ANSWER:
+$1/3$
+REFRESH:
+**Conditional probability.** $P(A\mid B) = P(A\cap B)/P(B)$.
+EXPLANATION:
+Knowing he has not finished after 2 minutes just cuts off the part $[1,2]$ of the range. What remains, $[2,5]$, is still flat, so each of the three remaining minutes is equally likely to contain the finishing time: the next minute gets $1/3$. Note the contrast with an exponential time, which is memoryless: here the hazard rate increases, so the chance of finishing in the next minute goes up the longer he has been eating (it was $1/4$ at the start).
+SOLUTION: Conditional probability
+$T \sim U[1,5]$ has density $1/4$ on $[1,5]$.
+$$P(2 < T \le 3 \mid T > 2) = \frac{P(2 < T\le 3)}{P(T > 2)} = \frac{1/4}{3/4} = \frac13.$$
+===END===
+===TEASER===
+SLUG: reverse-regression-slope
+IDS: Q-442
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: medium
+TITLE: Regress the other way round
+QUESTION:
+For two datasets $X$ and $Y$, $\mathrm{Var}(X) = 10$ and $\mathrm{Var}(Y) = 20$. The least-squares regression $y = \alpha_x + \beta_x x$ gives slope $\beta_x = 1$. What is the slope $\beta_y$ of the reverse regression $x = \alpha_y + \beta_y y$? (If it cannot be determined, say so.)
+HINT1:
+Both OLS slopes are built from the same covariance, just divided by different variances.
+HINT2:
+$\beta_x = \mathrm{Cov}(X,Y)/\mathrm{Var}(X)$ and $\beta_y = \mathrm{Cov}(X,Y)/\mathrm{Var}(Y)$. Recover the covariance from the first.
+ANSWER:
+$\beta_y = 1/2$
+REFRESH:
+**OLS slope.** Regressing $y$ on $x$ with an intercept gives $\hat\beta = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(X)}$ (sample moments).
+
+**Product of the two slopes.** $\beta_x\beta_y = \frac{\mathrm{Cov}^2}{\mathrm{Var}X\,\mathrm{Var}Y} = \rho^2$.
+EXPLANATION:
+A common trap is to answer $1/\beta_x = 1$, as if the second regression line were the first one solved for $x$. It is not: each regression minimises errors in a different direction, and both slopes are shrunk towards zero by the correlation. The clean identity is $\beta_x\beta_y = \rho^2$. Here $\rho^2 = \frac{100}{10\cdot 20} = \frac12$, so the two lines differ; they would coincide only if $|\rho| = 1$.
+SOLUTION: Through the covariance
+From $\beta_x = \mathrm{Cov}(X,Y)/\mathrm{Var}(X) = 1$ we get $\mathrm{Cov}(X,Y) = 10$. Then
+$$\beta_y = \frac{\mathrm{Cov}(X,Y)}{\mathrm{Var}(Y)} = \frac{10}{20} = \frac12.$$
+SOLUTION: Via $\rho^2$
+$\rho = \frac{10}{\sqrt{10\cdot 20}} = \frac{1}{\sqrt2}$, so $\beta_x\beta_y = \rho^2 = \frac12$ and $\beta_y = \frac{1/2}{\beta_x} = \frac12$.
+===END===
+===TEASER===
+SLUG: red-socks-find-n
+IDS: Q-443
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: How many blue socks?
+QUESTION:
+A drawer contains 3 red socks and $n$ blue socks. If you draw two socks one after the other without replacement, the probability that both are red is $1/2$. Find $n$.
+HINT1:
+Write the probability of two reds as a product of two fractions, one for each draw.
+HINT2:
+$\frac{3}{n+3}\cdot\frac{2}{n+2} = \frac12$ gives a quadratic in $n$; keep the root that makes sense.
+ANSWER:
+$n = 1$
+REFRESH:
+**Sequential draws without replacement.** $P(A_1\cap A_2) = P(A_1)\,P(A_2\mid A_1)$; after removing one red sock, 2 reds remain among $n+2$ socks.
+EXPLANATION:
+The probability of two reds falls quickly as blue socks are added: with no blue sock it is 1, with one blue sock it is $\frac34\cdot\frac23 = \frac12$. So one blue sock is exactly right, and the equation confirms it is the only non-negative solution.
+SOLUTION: Solve the quadratic
+$$P(\text{two reds}) = \frac{3}{n+3}\cdot\frac{2}{n+2} = \frac{6}{(n+2)(n+3)} = \frac12 \iff (n+2)(n+3) = 12 \iff n^2 + 5n - 6 = 0.$$
+This factors as $(n+6)(n-1) = 0$, so $n = 1$ (the root $-6$ is impossible).
+SOLUTION: Counting pairs
+The number of unordered pairs of red socks is $\binom32 = 3$; the number of all pairs is $\binom{n+3}{2}$. We need $\binom{n+3}{2} = 6$, i.e. $n+3 = 4$, so $n=1$.
+===END===
+===TEASER===
+SLUG: hundred-cars-slow-fast-blocks
+IDS: Q-447
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Fast cars stuck behind slow ones
+QUESTION:
+One hundred cars are given independent speeds, uniformly distributed on $[0,1]$, and lined up in a random order in a single lane. Call a *block* any place where a faster car sits directly behind a slower car. What is the expected number of blocks?
+HINT1:
+Count blocks one adjacent pair of cars at a time.
+HINT2:
+There are 99 adjacent pairs. For each one, what is the probability that the rear car is the faster of the two?
+ANSWER:
+$99/2 = 49.5$
+REFRESH:
+**Linearity of expectation.** The expected number of events that occur is the sum of their probabilities, with no independence needed.
+
+**Ties have probability zero.** Two independent continuous random variables are equal with probability 0.
+EXPLANATION:
+Each of the 99 adjacent pairs is a block with probability exactly $1/2$: the two speeds are i.i.d. and continuous, so by symmetry either car is equally likely to be the faster one. Adding the indicators gives $99/2$. The distribution of the speeds (uniform or anything continuous) does not matter.
+SOLUTION: Indicators over adjacent pairs
+Number the positions $1,\dots,100$ from front to back and let $I_k = 1$ if the car in position $k+1$ is faster than the car in position $k$, for $k = 1,\dots,99$. The two speeds are i.i.d. continuous, so $P(I_k = 1) = \frac12$ by symmetry. Hence
+$$\mathbb{E}\Big[\sum_{k=1}^{99} I_k\Big] = 99\cdot\frac12 = \frac{99}{2} = 49.5.$$
+FOLLOWUP: Platoons on an open road
+Now the cars drive for a long time on a one-lane road with no overtaking, so faster cars get stuck and the traffic forms platoons, each led by a car that is slower than every car ahead of it. What is the expected number of platoons?
+FOLLOWUP_ANSWER:
+Number the cars from the front. Car $k$ leads a platoon iff it is the slowest of the first $k$ cars; by symmetry this has probability $1/k$. So the expected number of platoons is $H_{100} = \sum_{k=1}^{100}\frac1k \approx 5.19$.
+===END===
+===TEASER===
+SLUG: sphere-tetrahedron-contains-center
+IDS: Q-450
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: hard
+TITLE: Does the random tetrahedron contain the centre?
+QUESTION:
+Four points are chosen independently and uniformly at random on the surface of a unit sphere. What is the probability that the tetrahedron with these four vertices contains the centre of the sphere?
+HINT1:
+Solve the 2D version first: three random points on a circle, when does the triangle contain the centre? Look for an argument that pairs each point with its antipode.
+HINT2:
+Choose the points in two steps: for each of $P_1, P_2, P_3$ first pick a random diameter, then pick which end of it to use. Given the diameters and $P_4$, how many of the $2^3$ choices of ends put the centre inside the tetrahedron?
+ANSWER:
+$1/8$
+REFRESH:
+**Uniform point via symmetric choice.** A uniform point on the sphere has the same law as: pick a uniform diameter, then pick one of its two ends with probability $1/2$ each.
+
+**Coordinates in a basis.** For three linearly independent vectors $u_1,u_2,u_3$, every vector $v$ can be written uniquely as $v = \sum c_i u_i$; it lies in the cone they span iff all $c_i \ge 0$.
+EXPLANATION:
+The centre $O$ lies inside the tetrahedron iff $O$ is a convex combination of the four vertices with positive weights, which is the same as saying $-P_4$ is a positive combination of $P_1, P_2, P_3$. Now flip ends: replacing $P_i$ by $-P_i$ flips the sign of the coefficient $c_i$ in $-P_4 = \sum c_i P_i$. Among the 8 ways to choose the ends $\pm P_1, \pm P_2, \pm P_3$, exactly one makes all three coefficients positive. All 8 choices are equally likely, so the probability is $1/8$. In the plane, the same argument with two diameters gives $1/4$ for a triangle.
+SOLUTION: Antipodal sign-flip argument
+With probability 1 any three of the points are linearly independent and no coefficient below vanishes. The centre $O$ is inside the tetrahedron $P_1P_2P_3P_4$ iff there are weights $\lambda_i > 0$ with $\sum_{i=1}^4 \lambda_iP_i = 0$, i.e. iff
+$$-P_4 = c_1P_1 + c_2P_2 + c_3P_3 \quad\text{with } c_1,c_2,c_3 > 0 \qquad (c_i = \lambda_i/\lambda_4).$$
+Generate $P_i = \varepsilon_i D_i$ ($i=1,2,3$), where $D_i$ is uniform on the sphere and $\varepsilon_i = \pm1$ an independent fair sign; each $P_i$ is still uniform and all four points are independent. Write $-P_4 = \sum_i d_i D_i$ uniquely; then $c_i = \varepsilon_i d_i$. Conditional on $D_1,D_2,D_3,P_4$, the sign pattern of $(c_1,c_2,c_3)$ runs over all 8 patterns as $(\varepsilon_1,\varepsilon_2,\varepsilon_3)$ runs over its 8 equally likely values, and exactly one of them is $(+,+,+)$. Therefore
+$$P(O \in \text{tetrahedron}) = \frac18.$$
+SOLUTION: Wendel's theorem
+Wendel's theorem: for $n$ i.i.d. points with a distribution symmetric about the origin in $\mathbb{R}^d$ (in general position a.s.), the probability that they all lie in some half-space through $O$ is $2^{-(n-1)}\sum_{k=0}^{d-1}\binom{n-1}{k}$. The tetrahedron contains $O$ exactly when the four points are *not* all in one hemisphere. With $n=4$, $d=3$:
+$$1 - \frac{1}{8}\left(\binom30+\binom31+\binom32\right) = 1 - \frac{1+3+3}{8} = \frac18.$$
+FOLLOWUP: The planar version
+Three points are chosen uniformly on a circle. What is the probability that the triangle contains the centre?
+FOLLOWUP_ANSWER:
+Same argument in 2D: $-P_3 = c_1P_1 + c_2P_2$, and the 4 equally likely choices of ends for $P_1, P_2$ realise each sign pattern of $(c_1,c_2)$ once, so the answer is $1/4$. (Wendel: $1 - \frac14(1+2) = \frac14$.)
+===END===
+===TEASER===
+SLUG: normalized-gaussian-sphere-variance
+IDS: Q-451
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Gaussian trick for a uniform point on the sphere
+QUESTION:
+To sample a random point on the unit sphere in $\mathbb{R}^3$, take independent standard normals $X_1, X_2, X_3$, let $r = \sqrt{X_1^2 + X_2^2 + X_3^2}$, and output $(X_1/r,\; X_2/r,\; X_3/r)$. Show that this point is uniformly distributed on the sphere, and find the variance of each coordinate.
+HINT1:
+Look at the joint density of $(X_1,X_2,X_3)$: what does it depend on? What happens to it under a rotation?
+HINT2:
+For the variance: the three squared coordinates always add up to 1, and they all have the same distribution.
+ANSWER:
+It is uniform because the Gaussian vector is rotation-invariant; each coordinate has mean $0$ and variance $1/3$.
+REFRESH:
+**Rotation invariance.** The density of $X = (X_1,X_2,X_3)$ is $(2\pi)^{-3/2}e^{-\|x\|^2/2}$; if $R$ is orthogonal then $RX$ has the same density since $\|Rx\| = \|x\|$ and $|\det R| = 1$.
+
+**Uniqueness of the uniform law.** The uniform (surface-area) distribution is the only probability distribution on the sphere invariant under all rotations.
+EXPLANATION:
+The standard Gaussian in 3D looks the same from every direction: its density only depends on the distance to the origin. So the direction $X/r$ has a distribution that no rotation can change, and the only such distribution on the sphere is the uniform one.
+
+The variance needs no integration. Each coordinate $U_i = X_i/r$ has mean 0 (flip the sign of $X_i$). And $U_1^2 + U_2^2 + U_3^2 = 1$ always, while the three $U_i^2$ have the same distribution, so each has mean $1/3$. Hence $\mathrm{Var}(U_i) = 1/3$. In $d$ dimensions it would be $1/d$.
+SOLUTION: Symmetry
+**Uniformity.** Let $U = X/\|X\|$ (defined with probability 1). For any rotation $R$, $RU = RX/\|RX\|$ and $RX \overset{d}{=} X$, so $RU \overset{d}{=} U$. The law of $U$ is a rotation-invariant probability on the sphere, hence the uniform law.
+
+**Mean.** $(-X_1, X_2, X_3) \overset{d}{=} (X_1,X_2,X_3)$ and $r$ is unchanged, so $U_1 \overset{d}{=} -U_1$ and $\mathbb{E}U_1 = 0$ (it is bounded, so the mean exists).
+
+**Second moment.** $U_1^2 + U_2^2 + U_3^2 = 1$ and, by permuting coordinates, $U_1^2, U_2^2, U_3^2$ are identically distributed. Taking expectations, $3\,\mathbb{E}[U_1^2] = 1$. Therefore
+$$\mathrm{Var}(U_i) = \mathbb{E}[U_i^2] - 0 = \frac13.$$
+SOLUTION: Archimedes' hat-box theorem
+On the unit sphere in $\mathbb{R}^3$, the $z$-coordinate of a uniform point is uniform on $[-1,1]$ (the area of a band between two horizontal planes is proportional to its height). So $U_3 \sim U[-1,1]$ and $\mathrm{Var}(U_3) = \frac{(1-(-1))^2}{12} = \frac{4}{12} = \frac13$.
+===END===
+===TEASER===
+SLUG: brussels-sprouts-die-game
+IDS: Q-453
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Brussels sprouts by the die
+QUESTION:
+You roll a fair six-sided die and eat as many Brussels sprouts as the number shown. If the roll is 3 or more, the game ends there. If it is 1 or 2, you eat that many sprouts and roll again, under the same rules. What is the expected total number of sprouts you eat?
+HINT1:
+After a roll of 1 or 2 you are in exactly the same situation as at the start, plus the sprouts already eaten.
+HINT2:
+Let $E$ be the answer and condition on the first roll: $E = \mathbb{E}[\text{first roll}] + P(\text{roll} \le 2)\cdot E$.
+ANSWER:
+$21/4 = 5.25$ sprouts
+REFRESH:
+**Law of total expectation.** $\mathbb{E}[T] = \sum_k P(D = k)\,\mathbb{E}[T\mid D=k]$.
+
+**Wald's identity.** If $N$ is a stopping time with $\mathbb{E}N<\infty$ for i.i.d. $D_1,D_2,\dots$ with finite mean, then $\mathbb{E}\big[\sum_{i=1}^N D_i\big] = \mathbb{E}N\cdot\mathbb{E}D_1$.
+EXPLANATION:
+Every roll is eaten, whatever its value, so the total is the sum of all rolls made. The game restarts after a 1 or 2, so it satisfies a renewal equation: $E = 3.5 + \frac13E$, giving $E = 5.25$. Another view: the number of rolls is geometric with success probability $2/3$, so on average you roll $3/2$ times, and each roll averages $3.5$; Wald's identity says you may simply multiply, $\frac32\cdot 3.5 = 5.25$, even though the number of rolls depends on the values rolled.
+SOLUTION: First-step analysis
+Let $D$ be the first roll and $T$ the total. If $D\ge3$, $T = D$; if $D\le2$, $T = D + T'$ where $T'$ is a fresh copy of the game. So
+$$E = \mathbb{E}[D] + P(D\le2)\,E = \frac72 + \frac13E \;\Longrightarrow\; \frac23 E = \frac72 \;\Longrightarrow\; E = \frac{21}{4}.$$
+SOLUTION: Wald's identity
+Let $N$ be the number of rolls. Each roll ends the game with probability $4/6 = 2/3$, independently, so $N$ is geometric and $\mathbb{E}N = \frac{1}{2/3} = \frac32$. $N$ is a stopping time for the i.i.d. rolls $D_1,D_2,\dots$ and $T = \sum_{i=1}^N D_i$, so by Wald
+$$\mathbb{E}T = \mathbb{E}N\cdot\mathbb{E}D_1 = \frac32\cdot\frac72 = \frac{21}{4}.$$
+SOLUTION: Split into the final roll and the earlier ones
+The number of 1s and 2s before the final roll has mean $\frac{1/3}{2/3} = \frac12$, and each is worth on average $\frac{1+2}{2} = 1.5$. The final roll is uniform on $\{3,4,5,6\}$, average $4.5$. Total: $\frac12\cdot 1.5 + 4.5 = 0.75 + 4.5 = 5.25$.
+===END===
+===TEASER===
+SLUG: second-moment-from-variance
+IDS: Q-455
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Second moment from mean and variance
+QUESTION:
+A random variable $X$ has $\mathbb{E}[X] = 3$ and $\mathrm{Var}(X) = 25$. Find $\mathbb{E}[X^2]$.
+HINT1:
+Recall the shortcut formula for the variance in terms of moments.
+HINT2:
+$\mathrm{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}X)^2$.
+ANSWER:
+$34$
+REFRESH:
+**Variance.** $\mathrm{Var}(X) = \mathbb{E}[(X-\mathbb{E}X)^2] = \mathbb{E}[X^2] - (\mathbb{E}X)^2$.
+EXPLANATION:
+The second moment splits into a "spread" part and a "location" part: $\mathbb{E}[X^2] = \mathrm{Var}(X) + (\mathbb{E}X)^2$. This is the same decomposition as mean squared error $=$ variance $+$ bias$^2$.
+SOLUTION: Direct
+Expanding, $\mathbb{E}[(X-\mu)^2] = \mathbb{E}[X^2] - 2\mu\,\mathbb{E}X + \mu^2 = \mathbb{E}[X^2] - \mu^2$, so
+$$\mathbb{E}[X^2] = \mathrm{Var}(X) + (\mathbb{E}X)^2 = 25 + 3^2 = 34.$$
+===END===
+===TEASER===
+SLUG: k-to-the-k-perfect-squares
+IDS: Q-457
+FIRMS: WorldQuant
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: When is k^k a perfect square?
+QUESTION:
+For how many integers $k$ with $100 \le k \le 400$ is $k^k$ a perfect square?
+HINT1:
+Split into two cases according to the parity of $k$.
+HINT2:
+If $k$ is even, $k^k = (k^{k/2})^2$. If $k$ is odd, every prime exponent of $k^k$ is $k$ times the corresponding exponent of $k$; when is that even?
+ANSWER:
+$156$
+REFRESH:
+**Perfect squares and prime factorisation.** A positive integer is a perfect square iff every prime appears in its factorisation with an even exponent.
+EXPLANATION:
+For even $k$ the exponent $k$ is even, so $k^k$ is automatically a square: that is already half the range. For odd $k$, multiplying all exponents of $k$ by the odd number $k$ keeps odd exponents odd, so $k^k$ is a square only when $k$ itself is a square. So we count all even numbers in the range, plus the odd perfect squares.
+SOLUTION: Parity case split
+**Even $k$.** $k^k = \big(k^{k/2}\big)^2$ is a square. The even numbers from 100 to 400 are $100, 102, \dots, 400$: there are $\frac{400-100}{2} + 1 = 151$ of them.
+
+**Odd $k$.** Write $k = \prod p^{a_p}$; then $k^k = \prod p^{k a_p}$. Since $k$ is odd, $k a_p$ is even iff $a_p$ is even. So $k^k$ is a square iff $k$ is a square. Odd squares in $[100, 400]$: $11^2 = 121$, $13^2 = 169$, $15^2 = 225$, $17^2 = 289$, $19^2 = 361$, that is 5 numbers.
+
+**Total:** $151 + 5 = 156$.
+
+Note: the source states 20; the correct value is 156, because every even $k$ already makes $k^k$ a square, which gives 151 values on its own.
+===END===
+===TEASER===
+SLUG: stamps-5-and-21-frobenius
+IDS: Q-459
+FIRMS: Goldman Sachs, Jane Street
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Postage with 5 and 21 stamps
+QUESTION:
+You have an unlimited supply of stamps worth 5 and 21. What is the largest total postage that cannot be made exactly with these stamps?
+HINT1:
+Any amount you can make is $5a + 21b$ with $a, b \ge 0$. Sort amounts by their remainder mod 5.
+HINT2:
+Since $21 \equiv 1 \pmod 5$, using $b$ stamps of 21 reaches the residue class $b \bmod 5$. For each residue, find the smallest reachable amount; everything above it in that class is reachable by adding 5s.
+ANSWER:
+$79$
+REFRESH:
+**Frobenius (Chicken McNugget) theorem.** For coprime positive integers $m,n$, the largest integer not of the form $am + bn$ with $a,b\ge0$ is $mn - m - n$.
+EXPLANATION:
+Because 5-stamps can pad any amount by 5, only the remainder mod 5 matters, and 21-stamps are the only way to change the remainder. Each 21 adds 1 to the remainder, so to get remainder 4 you need four 21-stamps, i.e. at least 84. The worst class is therefore remainder 4, whose largest unreachable member is $84 - 5 = 79$. This is exactly $5\cdot21 - 5 - 21$.
+SOLUTION: Residues mod 5
+The smallest amount that can be made in each residue class mod 5:
+- residue 0: $0$ (no stamps),
+- residue 1: $21$,
+- residue 2: $42$,
+- residue 3: $63$,
+- residue 4: $84$.
+
+Using at most four 21-stamps is enough (five of them make $105 = 21\cdot 5$, which 5-stamps can make too). Once the minimal amount of a class is reached, all larger amounts in the class follow by adding 5s. So the non-representable amounts are exactly those below their class minimum; the largest is in class 4, namely $84 - 5 = 79$.
+
+Check that 79 is impossible: $79 - 21b$ for $b = 0,1,2,3$ gives $79, 58, 37, 16$, none divisible by 5. And $80 = 16\cdot5$, $81 = 21 + 60$, $82 = 42 + 40$, $83 = 63 + 20$, $84 = 4\cdot21$: five consecutive amounts, after which adding 5s reaches everything.
+SOLUTION: Frobenius formula
+5 and 21 are coprime, so the Frobenius number is $5\cdot21 - 5 - 21 = 105 - 26 = 79$.
+FOLLOWUP: How many amounts are impossible?
+How many positive totals cannot be made?
+FOLLOWUP_ANSWER:
+For coprime $m,n$ the count is $\frac{(m-1)(n-1)}{2} = \frac{4\cdot20}{2} = 40$. Check with the residue classes: class 1 misses $1,6,11,16$ (4 values), class 2 misses $2,7,\dots,37$ (8 values), class 3 misses $3,\dots,58$ (12 values), class 4 misses $4,\dots,79$ (16 values): $4+8+12+16 = 40$.
+===END===
+===TEASER===
+SLUG: stick-handout-neighbour-comparison
+IDS: Q-460
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: hard
+TITLE: Handing out pieces of a stick
+QUESTION:
+You have a stick of length 1 and a line of $n$ people. At the first person you break the stick at a uniformly random point and give that person one of the two pieces, chosen at random (each with probability $1/2$); you keep the other piece. You walk to the next person and repeat with the piece you kept, and so on down the line. Pick a person at random who is not last in line. What is the probability that the piece they received is longer than the piece received by the person right behind them? Do it by hand.
+HINT1:
+Everything scales: if you hold a piece of length $L$, the piece you hand over is $L$ times a random fraction. What is the distribution of that fraction, given the break is uniform and the piece is chosen by a coin flip?
+HINT2:
+The given fraction $V$ is uniform on $[0,1]$ and you keep $1 - V$. So a person gets $LV$ and the next one gets $L(1-V)W$ with $W$ uniform and independent. Compute $P\big(V > (1-V)W\big)$ by conditioning on $V$.
+ANSWER:
+$\ln 2 \approx 0.693$
+REFRESH:
+**Random piece of a uniform break.** If $U\sim U[0,1]$ and you take $U$ or $1-U$ with probability $1/2$ each (independently), the result is again $U[0,1]$.
+
+**Integral.** $\int_0^{1/2}\frac{v}{1-v}\,dv = \big[-v - \ln(1-v)\big]_0^{1/2} = -\frac12 + \ln 2$.
+EXPLANATION:
+The length you are holding when you reach a person is a common factor for that person and the next one, so it cancels: only two independent uniforms matter. The current person gets a uniform fraction $V$; the next person gets a uniform fraction $W$ of what is left, $1-V$. If $V \ge 1/2$ the current person automatically wins, because what is left is shorter than what they got. If $V < 1/2$ they win with probability $\frac{V}{1-V}$. Averaging gives $\frac12 + (\ln 2 - \frac12) = \ln 2$, the same for every position, so it does not matter which person you pick.
+SOLUTION: Condition on the fraction given away
+Suppose you arrive at person $k$ (not last) holding a piece of length $L > 0$. The break point is $U \sim U[0,1]$ (as a fraction of $L$) and you hand over $U$ or $1-U$ with probability $1/2$; the fraction handed over, $V$, is uniform on $[0,1]$, and you keep $L(1-V)$. Person $k+1$ then receives $L(1-V)W$, where $W \sim U[0,1]$ is independent of $V$. So
+$$P(\text{person } k \text{ beats } k+1) = P\big(V > (1-V)W\big) = \mathbb{E}\Big[\min\Big(1, \tfrac{V}{1-V}\Big)\Big].$$
+For $v \ge \frac12$, $\frac{v}{1-v} \ge 1$; for $v<\frac12$ it is below 1. Hence
+$$P = \int_{1/2}^1 1\,dv + \int_0^{1/2}\frac{v}{1-v}\,dv = \frac12 + \Big[-v - \ln(1-v)\Big]_0^{1/2} = \frac12 - \frac12 + \ln 2 = \ln 2.$$
+This does not depend on $k$ or $L$, so picking the person at random gives the same value, $\ln 2 \approx 0.693$.
+SOLUTION: Integrate over the unit square
+In the $(v,w)$ unit square, the event is $w < \frac{v}{1-v}$. Its complement $\{w \ge \frac{v}{1-v}\}$ is the region above the curve $w = \frac{v}{1-v}$, i.e. $v \le \frac{w}{1+w}$. Its area is
+$$\int_0^1 \frac{w}{1+w}\,dw = \int_0^1\Big(1 - \frac{1}{1+w}\Big)dw = 1 - \ln 2,$$
+so the event has probability $1 - (1-\ln 2) = \ln 2$.
+===END===
+===TEASER===
+SLUG: straddle-normal-expected-payoff
+IDS: Q-465
+FIRMS: Goldman Sachs
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: A straddle on a normal price
+QUESTION:
+A straddle (one call plus one put) has strike $K = 0$ on an underlying whose terminal value $S$ is standard normal, $S \sim N(0,1)$. Let $v$ be the expected payoff of the straddle. Then $v^2 = a/\pi$ for a rational number $a$. Find $a$.
+HINT1:
+Write the straddle payoff as a single function of $S$.
+HINT2:
+The payoff is $(S-K)^+ + (K-S)^+ = |S - K| = |S|$. Compute $\mathbb{E}|S|$ for a standard normal by integrating over the positive half-line and doubling.
+ANSWER:
+$a = 2$ (since $v = \sqrt{2/\pi} \approx 0.798$)
+REFRESH:
+**Straddle payoff.** $(S-K)^+ + (K-S)^+ = |S-K|$.
+
+**Gaussian integral.** $\int_0^\infty x e^{-x^2/2}\,dx = \big[-e^{-x^2/2}\big]_0^\infty = 1$.
+EXPLANATION:
+The straddle pays the absolute distance of the underlying from the strike, so its value is the mean absolute deviation of $S$. For a normal variable this is $\sigma\sqrt{2/\pi} \approx 0.8\,\sigma$. This is the source of the traders' rule of thumb: an at-the-money straddle is worth about $0.8\,\sigma_{\text{price}}$, i.e. about $0.8\, S_0\sigma\sqrt{T}$, and an ATM call or put about half that, $0.4\,S_0\sigma\sqrt T$.
+SOLUTION: Direct integration
+The payoff is $|S|$. By symmetry of the normal density $\varphi$,
+$$v = \mathbb{E}|S| = 2\int_0^\infty x\,\frac{1}{\sqrt{2\pi}}e^{-x^2/2}\,dx = \frac{2}{\sqrt{2\pi}}\Big[-e^{-x^2/2}\Big]_0^\infty = \frac{2}{\sqrt{2\pi}} = \sqrt{\frac{2}{\pi}}.$$
+So $v^2 = \frac{2}{\pi}$ and $a = 2$.
+SOLUTION: Half-normal / chi distribution
+$S^2 \sim \chi^2_1$ and $|S|$ has the half-normal law. Using $\mathbb{E}|S| = \sqrt2\,\frac{\Gamma(1)}{\Gamma(1/2)} = \frac{\sqrt2}{\sqrt\pi}$ (the chi-distribution mean with 1 degree of freedom), $v^2 = \frac{2}{\pi}$, $a = 2$.
+===END===
+===TEASER===
+SLUG: four-tosses-same-side
+IDS: Q-466
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Four tosses, all alike
+QUESTION:
+A fair coin is tossed 4 times. What is the probability that all four tosses show the same side?
+HINT1:
+There are two ways for the tosses to be all alike.
+HINT2:
+Count: out of $2^4$ equally likely sequences, how many are constant? Or: the first toss can be anything; what must the other three do?
+ANSWER:
+$1/8$
+REFRESH:
+NONE
+EXPLANATION:
+The first toss just sets the target side; each of the other three must match it, each with probability $1/2$. So the answer is $(1/2)^3 = 1/8$. The common mistake is $(1/2)^4 = 1/16$, which is the probability of four heads only.
+SOLUTION: Counting sequences
+There are $2^4 = 16$ equally likely sequences, of which exactly 2 (HHHH and TTTT) are constant: $\frac{2}{16} = \frac18$.
+SOLUTION: Match the first toss
+Whatever the first toss is, the next three must equal it: $\big(\frac12\big)^3 = \frac18$.
+===END===
+===TEASER===
+SLUG: five-numbers-from-pair-sums
+IDS: Q-467
+FIRMS: Five Rings
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Recover five numbers from their pairwise sums
+QUESTION:
+Five real numbers $a, b, c, d, e$ (repeats allowed) have the ten pairwise sums
+$$5,\ 11,\ 11,\ 13,\ 13,\ 14,\ 16,\ 19,\ 22,\ 22.$$
+Find $a^2 + b^2 + c^2 + d^2 + e^2$.
+HINT1:
+Each number appears in exactly four of the ten sums. What does that tell you about the total?
+HINT2:
+Order the numbers $a\le b\le c\le d\le e$. Then the smallest sum is $a+b$, the next is $a+c$, the largest is $d+e$ and the next largest is $c+e$. Combined with the total, this pins down $c$.
+ANSWER:
+$1405/4 = 351.25$ (the numbers are $1.5,\ 3.5,\ 9.5,\ 9.5,\ 12.5$)
+REFRESH:
+**Double counting.** Summing all $\binom52 = 10$ pairwise sums counts each number $4$ times.
+EXPLANATION:
+The total of all pair sums gives the total of the five numbers. Sorting tells you which sums are the extreme ones: the two smallest numbers make the smallest sum, the two largest make the largest one. The two smallest sums share $a$, the two largest share $e$, so together with the grand total they isolate the middle number $c$, and then everything unravels. Finally, check that the recovered numbers really produce the given list.
+SOLUTION: Sort and peel off
+Sum of the ten given sums: $5+11+11+13+13+14+16+19+22+22 = 146$. Each number appears in 4 pairs, so
+$$a+b+c+d+e = \frac{146}{4} = 36.5.$$
+With $a\le b\le c\le d\le e$: the smallest sum is $a+b = 5$, the second smallest is $a+c = 11$ (any other sum except $a+b$ is at least $a+c$), the largest is $d+e = 22$, the second largest is $c+e = 22$.
+
+Then $c = 36.5 - (a+b) - (d+e) = 36.5 - 5 - 22 = 9.5$. Hence $a = 11 - 9.5 = 1.5$, $b = 5 - 1.5 = 3.5$, $e = 22 - 9.5 = 12.5$, $d = 22 - 12.5 = 9.5$.
+
+Check all ten sums: $a+b=5$, $a+c=11$, $a+d=11$, $a+e=14$, $b+c=13$, $b+d=13$, $b+e=16$, $c+d=19$, $c+e=22$, $d+e=22$. This is exactly the given list.
+
+Therefore
+$$a^2+b^2+c^2+d^2+e^2 = 2.25 + 12.25 + 90.25 + 90.25 + 156.25 = 351.25 = \frac{1405}{4}.$$
+SOLUTION: Sum of squares of the pair sums
+Let $s_1 = \sum a$ and $s_2 = \sum a^2$. Summing the squares of the pair sums: $\sum_{i<j}(x_i+x_j)^2 = 4s_2 + 2\sum_{i<j}x_ix_j = 4s_2 + (s_1^2 - s_2) = 3s_2 + s_1^2$. The squares of the given sums add to $25+121+121+169+169+196+256+361+484+484 = 2386$. With $s_1 = 36.5$, $s_1^2 = 1332.25$, so $3s_2 = 2386 - 1332.25 = 1053.75$ and $s_2 = 351.25 = \frac{1405}{4}$. (This gets the answer without finding the numbers, but it assumes the list is consistent; the first method shows that it is.)
+===END===
+===TEASER===
+SLUG: nonneg-solutions-sum-6-to-10
+IDS: Q-468
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Integer solutions with a bounded sum
+QUESTION:
+How many solutions in non-negative integers $(x_1, \dots, x_5)$ satisfy $6 \le x_1 + x_2 + x_3 + x_4 + x_5 \le 10$?
+HINT1:
+First count the solutions of $x_1 + \dots + x_5 = s$ for a fixed $s$ (stars and bars).
+HINT2:
+There are $\binom{s+4}{4}$ solutions with sum exactly $s$. Either add these for $s = 6,\dots,10$, or count "sum at most $s$" with a slack variable $x_6$.
+ANSWER:
+$2751$
+REFRESH:
+**Stars and bars.** The number of non-negative integer solutions of $x_1 + \dots + x_k = s$ is $\binom{s+k-1}{k-1}$.
+
+**Hockey-stick identity.** $\sum_{s=0}^{m}\binom{s+r}{r} = \binom{m+r+1}{r+1}$.
+EXPLANATION:
+An inequality $x_1+\dots+x_5 \le m$ becomes an equation by adding a slack variable $x_6 = m - (x_1+\dots+x_5) \ge 0$, which gives $\binom{m+5}{5}$ solutions. The range $6 \le \text{sum}\le 10$ is "at most 10" minus "at most 5": $\binom{15}{5} - \binom{10}{5} = 3003 - 252$.
+SOLUTION: Slack variable
+Solutions with sum $\le m$ correspond to solutions of $x_1+\dots+x_6 = m$ in non-negative integers, of which there are $\binom{m+5}{5}$. So
+$$\#\{6\le \text{sum}\le 10\} = \binom{15}{5} - \binom{10}{5} = 3003 - 252 = 2751.$$
+SOLUTION: Sum over each exact total
+$$\sum_{s=6}^{10}\binom{s+4}{4} = \binom{10}{4}+\binom{11}{4}+\binom{12}{4}+\binom{13}{4}+\binom{14}{4} = 210 + 330 + 495 + 715 + 1001 = 2751.$$
+===END===
+===TEASER===
+SLUG: x4-plus-y4-from-sum-product
+IDS: Q-471
+FIRMS: Belvedere Trading
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Fourth powers from sum and product
+QUESTION:
+The numbers $x$ and $y$ satisfy $x + y = 10$ and $xy = 20$. Compute $x^4 + y^4$.
+HINT1:
+Don't solve for $x$ and $y$. Build up symmetric expressions from $x+y$ and $xy$.
+HINT2:
+First $x^2 + y^2 = (x+y)^2 - 2xy$, then $x^4 + y^4 = (x^2+y^2)^2 - 2(xy)^2$.
+ANSWER:
+$2800$
+REFRESH:
+**Symmetric identities.** $x^2+y^2 = (x+y)^2 - 2xy$ and $x^4 + y^4 = (x^2+y^2)^2 - 2x^2y^2$.
+EXPLANATION:
+Any symmetric polynomial in $x, y$ is a polynomial in $x+y$ and $xy$, so you can reach the answer by squaring twice, each time subtracting the cross term. The actual roots, $5 \pm\sqrt5$, are never needed.
+SOLUTION: Square twice
+$x^2 + y^2 = 10^2 - 2\cdot 20 = 100 - 40 = 60$.
+
+$x^4 + y^4 = 60^2 - 2\cdot 20^2 = 3600 - 800 = 2800$.
+SOLUTION: Solve explicitly (check)
+$x,y$ are the roots of $t^2 - 10t + 20 = 0$, i.e. $5\pm\sqrt5$. Then $(5\pm\sqrt5)^2 = 30 \pm 10\sqrt5$, and $x^4 + y^4 = (30+10\sqrt5)^2 + (30-10\sqrt5)^2 = 2(900 + 500) = 2800$.
+===END===
+===TEASER===
+SLUG: exactly-two-late
+IDS: Q-474
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Exactly two of three are late
+QUESTION:
+A and B are each late with probability $1/2$, and C is late with probability $1/3$, all independently. What is the probability that exactly two of the three are late?
+HINT1:
+List which pair is late; the third person must then be on time.
+HINT2:
+There are three disjoint cases: (A, B late, C on time), (A, C late, B on time), (B, C late, A on time). Multiply within each case, then add.
+ANSWER:
+$1/3$
+REFRESH:
+**Independence.** For independent events, $P(A\cap B\cap C^c) = P(A)P(B)(1-P(C))$.
+EXPLANATION:
+"Exactly two" splits into three disjoint cases, one for each person who is on time. Each case is a product of three probabilities by independence. The two cases with C late are small because C is rarely late.
+SOLUTION: Three disjoint cases
+- A and B late, C on time: $\frac12\cdot\frac12\cdot\frac23 = \frac16$.
+- A and C late, B on time: $\frac12\cdot\frac12\cdot\frac13 = \frac1{12}$.
+- B and C late, A on time: $\frac12\cdot\frac12\cdot\frac13 = \frac1{12}$.
+
+Total: $\frac16 + \frac1{12} + \frac1{12} = \frac{2+1+1}{12} = \frac13$.
+SOLUTION: Condition on C
+The number of late people among A and B is Binomial$(2,\frac12)$: 0, 1, 2 with probabilities $\frac14, \frac12, \frac14$. Exactly two late overall means (C on time and both A, B late) or (C late and exactly one of A, B late): $\frac23\cdot\frac14 + \frac13\cdot\frac12 = \frac16 + \frac16 = \frac13$.
+===END===
+===TEASER===
+SLUG: archer-target-columns
+IDS: Q-475
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Shooting down stacked targets
+QUESTION:
+Targets hang in 4 vertical columns containing 2, 3, 3 and 4 targets. At each shot the archer chooses a column that still has targets and must hit the lowest remaining target in it. Every shot hits. In how many different orders can the archer knock down all 12 targets?
+HINT1:
+Within a column the order is forced (bottom to top). So an order of shots is determined by which column is chosen at each of the 12 shots.
+HINT2:
+A shooting order is a word of length 12 using the letters A, B, C, D with A appearing 2 times, B 3, C 3 and D 4. Count such words.
+ANSWER:
+$\dfrac{12!}{2!\,3!\,3!\,4!} = 277\,200$
+REFRESH:
+**Multinomial coefficient.** The number of arrangements of $n$ objects with $n_1$ of type 1, ..., $n_k$ of type $k$ ($\sum n_i = n$) is $\frac{n!}{n_1!\cdots n_k!}$.
+EXPLANATION:
+Since the targets inside one column always fall bottom-first, the only freedom is the sequence of columns. Conversely, any sequence of column labels with the right counts is a valid shooting order. So the answer is the number of rearrangements of the word AABBBCCCDDDD.
+SOLUTION: Words in four letters
+Label the columns A (2 targets), B (3), C (3), D (4). Map a shooting order to the word of the columns chosen at shots $1,\dots,12$; this is a bijection onto words with two A's, three B's, three C's and four D's (within a column the targets must go in the fixed order). Hence
+$$\frac{12!}{2!\,3!\,3!\,4!} = \frac{479\,001\,600}{2\cdot6\cdot6\cdot24} = \frac{479\,001\,600}{1728} = 277\,200.$$
+SOLUTION: Choose the slots column by column
+Choose which 2 of the 12 shots go to A, then which 3 of the remaining 10 go to B, then 3 of the remaining 7 to C; D takes the last 4:
+$$\binom{12}{2}\binom{10}{3}\binom{7}{3}\binom44 = 66\cdot120\cdot35\cdot1 = 277\,200.$$
+===END===
+===TEASER===
+SLUG: nested-dice-rolls-expectation
+IDS: Q-476
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Dice that decide how many dice
+QUESTION:
+Roll a fair six-sided die; call the result $N$. Roll $N$ fair dice and let $M$ be their total. Then roll $M$ fair dice and let $S$ be their total. Find $\mathbb{E}[S]$.
+HINT1:
+Work from the inside out: what is the expected sum of $k$ dice for a fixed $k$?
+HINT2:
+Condition on the number of dice: $\mathbb{E}[S\mid M] = 3.5M$ and $\mathbb{E}[M\mid N] = 3.5N$. Now use the tower property.
+ANSWER:
+$\mathbb{E}[S] = 3.5^3 = 343/8 = 42.875$
+REFRESH:
+**Tower property.** $\mathbb{E}[S] = \mathbb{E}\big[\mathbb{E}[S\mid M]\big]$.
+
+**Random sums.** If $K$ is independent of i.i.d. $X_1,X_2,\dots$, then $\mathbb{E}\big[\sum_{i=1}^K X_i\big] = \mathbb{E}K\cdot\mathbb{E}X_1$.
+EXPLANATION:
+Each stage multiplies the expected count by $3.5$: one die gives $3.5$ on average, so $N$ dice give $3.5N$, and $M$ dice give $3.5M$. The expectations chain multiplicatively, so three stages give $3.5^3$. This is the mean of a branching (Galton–Watson) process after three generations, with offspring mean $3.5$.
+SOLUTION: Tower property
+Given $M = m$, $S$ is a sum of $m$ independent dice, so $\mathbb{E}[S\mid M] = 3.5M$. Similarly $\mathbb{E}[M\mid N] = 3.5N$, and $\mathbb{E}N = 3.5$. Therefore
+$$\mathbb{E}S = 3.5\,\mathbb{E}M = 3.5\cdot 3.5\,\mathbb{E}N = 3.5^3 = \Big(\frac72\Big)^3 = \frac{343}{8} = 42.875.$$
+FOLLOWUP: Variance of $M$
+What is $\mathrm{Var}(M)$, the variance of the middle stage?
+FOLLOWUP_ANSWER:
+One die has mean $\mu = 3.5$ and variance $\sigma^2 = \frac{35}{12}$. By the law of total variance, $\mathrm{Var}(M) = \mathbb{E}[\mathrm{Var}(M\mid N)] + \mathrm{Var}(\mathbb{E}[M\mid N]) = \mathbb{E}N\,\sigma^2 + \mu^2\mathrm{Var}N = 3.5\cdot\frac{35}{12} + 12.25\cdot\frac{35}{12} = \frac{35}{12}\cdot 15.75 = \frac{35\cdot 63}{48} = \frac{2205}{48} \approx 45.94$.
+===END===
+===TEASER===
+SLUG: thousand-year-atm-call
+IDS: Q-479
+FIRMS: Akuna Capital
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: A call that expires in 1000 years
+QUESTION:
+A stock trades at $190$. What is the Black–Scholes value today of an at-the-money call on it (strike $190$) expiring in $T = 1000$ years? Answer without a calculator.
+HINT1:
+What are the trivial upper and lower bounds on a call's price? Then think about what happens to $d_1$ and $d_2$ in the Black–Scholes formula when $T$ is huge.
+HINT2:
+$d_{1,2} = \frac{\ln(S/K) + (r \pm \sigma^2/2)T}{\sigma\sqrt T}$. With $S = K$, $d_1 \to +\infty$ as $T\to\infty$, and the discounted strike term $Ke^{-rT}N(d_2)$ vanishes.
+ANSWER:
+Essentially the stock price: about $190$ (slightly less).
+REFRESH:
+**Black–Scholes call.** $C = S\,N(d_1) - Ke^{-rT}N(d_2)$, with $d_1 = \frac{\ln(S/K) + (r+\sigma^2/2)T}{\sigma\sqrt T}$ and $d_2 = d_1 - \sigma\sqrt T$.
+
+**No-arbitrage bounds.** $\max(S - Ke^{-rT}, 0) \le C \le S$ for a call on a non-dividend-paying stock.
+EXPLANATION:
+A call can never be worth more than the stock itself (the stock always pays at least as much). Over a thousand years, two effects make the strike irrelevant. With positive rates the present value of the strike, $Ke^{-rT}$, is essentially zero, so the lower bound $S - Ke^{-rT}$ is essentially $S$. Even with zero rates, write the payoff as $(S_T-K)^+ = S_T - \min(S_T,K)$. Under the pricing measure $\ln S_T$ drifts like $-\sigma^2T/2$, so $S_T\to0$ almost surely and $\mathbb{E}[\min(S_T,K)]\to0$, while $\mathbb{E}[S_T] = S_0$: the value tends to $S_0$ (the mean is carried by rare, enormous outcomes). Either way the call is worth almost exactly the underlying: $190$. (A real stock paying dividends would change this: then the call tends to 0.)
+SOLUTION: Limits of $d_1$ and $d_2$
+With $S = K = 190$,
+$$d_1 = \frac{(r+\sigma^2/2)T}{\sigma\sqrt T} = \frac{(r+\sigma^2/2)\sqrt T}{\sigma}\xrightarrow[T\to\infty]{} +\infty \quad (r\ge0,\ \sigma>0),$$
+so $S\,N(d_1) \to 190$. For the second term: if $r>0$, $Ke^{-rT}N(d_2)\le Ke^{-rT}\to 0$; if $r = 0$, $d_2 = -\frac{\sigma\sqrt T}{2}\to-\infty$ and $N(d_2)\to 0$. In every case
+$$C = 190\,N(d_1) - 190\,e^{-rT}N(d_2) \longrightarrow 190.$$
+For $T = 1000$ years and any realistic $\sigma$ (say 20%, so $\sigma\sqrt T \approx 6.3$), the value is within a fraction of a cent of $190$, i.e. $C\approx 190$.
+SOLUTION: Bounds
+On a non-dividend-paying stock, $S - Ke^{-rT} \le C \le S$. With any positive rate, e.g. $r = 3\%$, $e^{-rT} = e^{-30}\approx 10^{-13}$, so $190 - 190\cdot 10^{-13} \le C \le 190$. The call is worth $190$.
+===END===
+===TEASER===
+SLUG: arithmetic-triple-prime-product
+IDS: Q-483
+FIRMS: Belvedere Trading
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Three terms whose product is prime
+QUESTION:
+The integers $a$, $a+k$, $a+2k$ (with $k > 0$, so they are listed in increasing order) have a product that is a prime number. Recall that primes are positive. Find $a^2 + k^2$.
+HINT1:
+A prime has very few factorisations into three integers. What must the absolute values of the three factors be?
+HINT2:
+Two of the factors must be $\pm1$ and the third $\pm p$. Two distinct terms equal to $1$ and $-1$ differ by 2; decide whether they are neighbours in the progression.
+ANSWER:
+$13$ (from $a = -3$, $k = 2$: the terms $-3, -1, 1$ with product $3$)
+REFRESH:
+**Factorisations of a prime.** If $xyz = p$ with $x,y,z$ integers and $p$ prime, then two of $|x|,|y|,|z|$ equal $1$ and the third equals $p$.
+EXPLANATION:
+Since $k \neq 0$ (otherwise the product is a cube, never prime), the three terms are distinct, so the two factors of absolute value 1 must be $-1$ and $1$. They differ by 2. If they were the outer terms, the middle term would be 0 and the product 0. So they are adjacent, $k = 2$, and the triple is either $-1, 1, 3$ (product $-3$, not prime) or $-3, -1, 1$ (product $3$, prime). So $a = -3$, $k = 2$.
+SOLUTION: Case analysis on the unit factors
+$k = 0$ would give $a^3$, never prime; so $k>0$ and the three terms are distinct integers. Their product is a prime $p$, so two terms have absolute value 1 and one has absolute value $p\ge2$. Being distinct, the two unit terms are $-1$ and $1$.
+
+- If $-1$ and $1$ are the first and third terms, the middle term is $0$ and the product is $0$: impossible.
+- So they are consecutive terms and $k = 1 - (-1) = 2$. The third term is either $3$ (triple $-1, 1, 3$, product $-3$: not a prime) or $-3$ (triple $-3,-1,1$, product $3$: prime).
+
+Hence $a = -3$, $k = 2$ and $a^2 + k^2 = 9 + 4 = 13$.
+
+Note: the original wording does not say $k>0$. If $k$ may be negative, the same triple written in decreasing order, $a = 1$, $k = -2$, also works and gives $a^2+k^2 = 5$; the intended answer 13 corresponds to the increasing order.
+===END===
+===TEASER===
+SLUG: largest-square-in-right-triangle
+IDS: Q-486
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Biggest square inside a right triangle
+QUESTION:
+A right triangle has legs of length 15 and 10. What is the largest possible area of a square that fits entirely inside the triangle?
+HINT1:
+There are two natural ways to place a large square: nestled into the right-angle corner, or standing on the hypotenuse. Compute both.
+HINT2:
+Corner placement: put the right angle at the origin, legs on the axes; the square's far vertex $(s,s)$ must lie on the hypotenuse $\frac{x}{15} + \frac{y}{10} = 1$. For the hypotenuse placement, use the height $h$ onto the hypotenuse and similar triangles: $s = \frac{ch}{c+h}$.
+ANSWER:
+$36$ (a $6\times6$ square in the right-angle corner)
+REFRESH:
+**Square on the base of a triangle.** A square with one side on a triangle's base $c$, with height $h$ over that base, and its top corners on the other two sides has side $s = \frac{ch}{c+h}$ (similar triangles: $\frac{s}{c} = \frac{h - s}{h}$).
+
+**Largest inscribed square.** A largest square inside a triangle can be taken with one side lying along a side of the triangle.
+EXPLANATION:
+The biggest square touches the triangle as much as possible, and one can show it has a side along one of the triangle's sides. For a right triangle, placing it on a leg is the same as nestling it into the right angle, which gives side $\frac{ab}{a+b}$. Placing it on the hypotenuse gives $\frac{ch}{c+h}$ with $h = ab/c$. The corner always wins, because the difference comes down to $(c-a)(c-b) > 0$. Here the corner square has side $\frac{150}{25} = 6$.
+SOLUTION: Compare the two placements
+**Corner square.** Legs on the axes, hypotenuse $\frac{x}{15}+\frac{y}{10} = 1$. The square $[0,s]^2$ fits iff $(s,s)$ is on or below it: $\frac{s}{15}+\frac{s}{10}\le 1 \iff s\cdot\frac{2+3}{30}\le1 \iff s\le 6$. So $s = 6$, area $36$.
+
+**Square on the hypotenuse.** $c = \sqrt{15^2+10^2} = \sqrt{325}\approx 18.03$ and the height onto it is $h = \frac{15\cdot10}{c}\approx 8.32$. Then $s = \frac{ch}{c+h} = \frac{150}{18.03 + 8.32}\approx 5.69$, area $\approx 32.4$.
+
+**Why the corner always wins.** With $h = ab/c$, the hypotenuse square has side $\frac{ab}{c + ab/c} = \frac{abc}{c^2+ab}$, and
+$$\frac{ab}{a+b} > \frac{abc}{c^2+ab} \iff c^2 + ab > c(a+b) \iff (c-a)(c-b) > 0,$$
+true since the hypotenuse is longer than each leg. Squares on a leg are the corner square (sliding it along the leg away from the corner only shrinks the room). So the maximum area is $6^2 = 36$.
+===END===
+===TEASER===
+SLUG: independence-of-intersection
+IDS: Q-490
+FIRMS:
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Independent of B and of C, but of both?
+QUESTION:
+Suppose an event $A$ is independent of $B$ and also independent of $C$. Does it follow that $A$ is independent of $B \cap C$? Prove it or give a counterexample.
+HINT1:
+Pairwise independence is weaker than mutual independence. Look for a small example with two fair coins.
+HINT2:
+Let $B$ = "first coin is heads", $C$ = "second coin is heads", and choose $A$ to depend on both coins jointly, although on neither coin alone.
+ANSWER:
+No. Counterexample: two fair coins, $B$ = first is H, $C$ = second is H, $A$ = the coins match; then $P(A\mid B\cap C) = 1 \ne \frac12 = P(A)$.
+REFRESH:
+**Independence.** $A$ and $B$ are independent iff $P(A\cap B) = P(A)P(B)$.
+
+**Mutual vs pairwise independence.** $A, B, C$ are mutually independent iff they are pairwise independent *and* $P(A\cap B\cap C) = P(A)P(B)P(C)$; the last condition does not follow from the others.
+EXPLANATION:
+Knowing $B$ alone tells you nothing about $A$, and neither does $C$ alone, but knowing both together can tell you everything. The classic example is a parity/matching event: whether two fair coins match is independent of the first coin, and of the second coin, but completely determined by the pair. Independence of $A$ from $B\cap C$ would need the extra triple-product condition.
+SOLUTION: Two-coin counterexample
+Toss two fair coins. Let $B = \{\text{coin 1} = H\}$, $C = \{\text{coin 2} = H\}$, $A = \{\text{the coins show the same face}\} = \{HH, TT\}$. Then $P(A) = P(B) = P(C) = \frac12$ and
+$$P(A\cap B) = P(HH) = \tfrac14 = P(A)P(B), \qquad P(A\cap C) = P(HH) = \tfrac14 = P(A)P(C),$$
+so $A$ is independent of $B$ and of $C$. But $B\cap C = \{HH\}\subset A$, so
+$$P(A\cap B\cap C) = \tfrac14 \neq P(A)P(B\cap C) = \tfrac12\cdot\tfrac14 = \tfrac18.$$
+$A$ is not independent of $B\cap C$. The answer is no.
+FOLLOWUP: A case where it does hold
+Give a simple extra condition under which $A$ is independent of $B\cap C$.
+FOLLOWUP_ANSWER:
+It holds if $A$ is independent of the pair $(B,C)$ jointly, i.e. of the $\sigma$-algebra $\sigma(B,C)$: since $B\cap C\in\sigma(B,C)$, directly $P(A\cap B\cap C) = P(A)P(B\cap C)$. A common special case is $A, B, C$ mutually independent: then $P(A\cap B\cap C) = P(A)P(B)P(C) = P(A)P(B\cap C)$.
+===END===
+===TEASER===
+SLUG: roulette-die-card-same-number
+IDS: Q-493
+FIRMS: Belvedere Trading
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Roulette, die and card all agree
+QUESTION:
+At a casino you spin an American roulette wheel (38 slots: $0$, $00$ and $1$ to $36$), roll a fair six-sided die, and draw a card from a standard 52-card deck, counting an ace as $1$ (jacks, queens and kings have no number). What is the probability that all three show the same number?
+HINT1:
+Which numbers can all three devices possibly show?
+HINT2:
+Only $1$ to $6$ are possible. For a fixed number $n$ in that range, multiply the three independent probabilities, then add over $n$.
+ANSWER:
+$1/494$
+REFRESH:
+**Independent events.** $P(A\cap B\cap C) = P(A)P(B)P(C)$ for independent devices.
+EXPLANATION:
+The die restricts everything to $1,\dots,6$. The die then always shows *something* in that range, so the question is really: do the wheel and the card both match the die? The wheel matches with probability $1/38$ and the card with probability $4/52 = 1/13$, whatever the die shows. So the answer is $\frac1{38}\cdot\frac1{13} = \frac1{494}$.
+SOLUTION: Sum over the common value
+For $n\in\{1,\dots,6\}$: $P(\text{die}=n) = \frac16$, $P(\text{wheel}=n) = \frac1{38}$, $P(\text{card}=n) = \frac{4}{52} = \frac1{13}$. By independence,
+$$P = \sum_{n=1}^6 \frac16\cdot\frac1{38}\cdot\frac1{13} = \frac{1}{38\cdot13} = \frac1{494}.$$
+===END===
+===TEASER===
+SLUG: exactly-three-sixes-in-five
+IDS: Q-495
+FIRMS:
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Exactly three sixes in five rolls
+QUESTION:
+A fair die is rolled five times. What is the probability that exactly three of the rolls show a six?
+HINT1:
+The number of sixes is a count of successes in independent trials with the same success probability.
+HINT2:
+Use the binomial distribution with $n=5$, $p = 1/6$: choose which 3 rolls are sixes, then multiply the probabilities.
+ANSWER:
+$\binom53\left(\frac16\right)^3\left(\frac56\right)^2 = \frac{125}{3888} \approx 0.032$
+REFRESH:
+**Binomial distribution.** If $X\sim\mathrm{Bin}(n,p)$, $P(X=k) = \binom nk p^k(1-p)^{n-k}$.
+EXPLANATION:
+Any particular pattern with three sixes and two non-sixes (e.g. 6,6,6,x,x) has probability $(1/6)^3(5/6)^2$, and there are $\binom53 = 10$ positions for the sixes.
+SOLUTION: Binomial formula
+$$P(X = 3) = \binom53\Big(\frac16\Big)^3\Big(\frac56\Big)^2 = 10\cdot\frac{1}{216}\cdot\frac{25}{36} = \frac{250}{7776} = \frac{125}{3888}\approx 0.0322.$$
+SOLUTION: Direct count of outcomes
+Of the $6^5 = 7776$ equally likely outcomes, those with exactly three sixes: choose the positions of the sixes ($\binom53 = 10$ ways) and a non-six value for each of the other two rolls ($5^2 = 25$ ways): $250$ outcomes. $\frac{250}{7776} = \frac{125}{3888}$.
+===END===
+===TEASER===
+SLUG: three-dice-sum-ten
+IDS: Q-497
+FIRMS: Citadel, Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Rolling a total of 10 with three dice
+QUESTION:
+Three fair six-sided dice are rolled. What is the probability that their total is 10?
+HINT1:
+Count the ordered triples $(a,b,c)$ with $1\le a,b,c\le 6$ and $a+b+c = 10$, out of $216$.
+HINT2:
+Shift to $a' = a-1$ etc., so $a'+b'+c' = 7$ with each at most 5. Use stars and bars, then remove the solutions where some variable exceeds 5. Or use the symmetry of the distribution around 10.5.
+ANSWER:
+$27/216 = 1/8$
+REFRESH:
+**Stars and bars.** Non-negative solutions of $x_1+x_2+x_3 = m$: $\binom{m+2}{2}$.
+
+**Symmetry of dice sums.** Replacing each die $a$ by $7-a$ maps a total $t$ to $21-t$, so $P(\text{sum}=t) = P(\text{sum}=21-t)$.
+EXPLANATION:
+10 and 11 are the two most likely totals of three dice, being the two middle values of the symmetric range 3–18, and each occurs in 27 of the 216 outcomes, i.e. exactly $1/8$ of the time.
+SOLUTION: Stars and bars with a cap
+Set $a' = a - 1$, etc.: $a'+b'+c' = 7$ with $0\le a',b',c'\le5$. Without the cap there are $\binom{9}{2} = 36$ solutions. If, say, $a'\ge 6$, write $a' = 6 + a''$: then $a''+b'+c' = 1$, which has $\binom32 = 3$ solutions; two variables cannot both be $\ge6$. So the capped count is $36 - 3\cdot3 = 27$ and
+$$P = \frac{27}{216} = \frac18.$$
+SOLUTION: List by unordered triples
+The multisets of three faces summing to 10, with the number of orderings: $\{6,3,1\}$: 6, $\{6,2,2\}$: 3, $\{5,4,1\}$: 6, $\{5,3,2\}$: 6, $\{4,4,2\}$: 3, $\{4,3,3\}$: 3. Total $6+3+6+6+3+3 = 27$, so $P = \frac{27}{216} = \frac18$.
+===END===

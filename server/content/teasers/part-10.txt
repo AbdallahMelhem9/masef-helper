@@ -1,6 +1,7 @@
 ===TEASER===
 SLUG: die-game-up-to-three-rolls
-IDS: H4A-04, H4A-05, R3A-05, R3A-06, R3A-07, R3A-08, R3A-09
+IDS: H4A-04, H4A-05, R3A-05, R3A-06, R3A-07, R3A-08, R3A-09, Q-131, Q-188, Q-132, Q-157, Q-214, W-060, Q-139
+FIRMS: Akuna Capital, Belvedere Trading, DRW, Goldman Sachs, Hudson River Trading, Optiver, SIG, Transmarket Group, Citadel, Jane Street, Two Sigma, IMC
 SECTION: probability
 CATEGORY: Games & optimal stopping
 DIFFICULTY: medium
@@ -75,6 +76,20 @@ $$V_2 = \frac{3+4+5+6}{6} + \frac26\cdot 2.5 = 3 + \frac56 = \frac{23}{6}\approx
 At the first roll, continuing is worth $\frac{23}{6}-1 = \frac{17}{6}\approx 2.83$, so again keep $x\ge 3$:
 $$V_3 = \frac{18}{6} + \frac{2}{6}\cdot\frac{17}{6} = 3 + \frac{17}{18} = \frac{71}{18}\approx \$3.94 \text{ (net of fees)}.$$
 The fee makes you much less picky (accept 3 or more at both stages instead of 5+ then 4+) and cuts the game's value from \$4.67 to about \$3.94.
+FOLLOWUP: Optiver variant: one optional reroll, then two
+You roll a fair die and are paid its value, but you may instead reroll once, in which case you must take the second roll. What is this game worth? What if you may reroll up to two times?
+FOLLOWUP_ANSWER:
+One optional reroll: \$4.25; up to two rerolls: $\frac{14}{3}\approx$ \$4.67.
+
+**One reroll.** Rerolling is worth $\mathbb{E}[X] = 3.5$, so keep the first roll iff it is $4$, $5$ or $6$:
+$$V_2 = \frac{4+5+6}{6} + \frac36\cdot 3.5 = 2.5 + 1.75 = 4.25.$$
+**Two rerolls.** This is exactly the three-roll game of the main problem: on the first roll the continuation is worth $4.25$, so keep only $5$ or $6$:
+$$V_3 = \frac{5+6}{6} + \frac46\cdot 4.25 = \frac{11}{6} + \frac{17}{6} = \frac{28}{6} = \frac{14}{3}.$$
+FOLLOWUP: Jane Street variant: a 100-sided die and a \$1 reroll fee
+A fair die has faces $1$ to $100$. You roll it and may keep the result in dollars, or pay \$1 to discard it and roll again, in which case you must keep the second result. What is the fair price of this game under optimal play?
+FOLLOWUP_ANSWER:
+\$62.505. Rerolling is worth $\mathbb{E}[X] - 1 = 50.5 - 1 = 49.5$, so keep the first roll iff it is at least $50$. Then
+$$V = \frac{1}{100}\sum_{x=50}^{100}x + \frac{49}{100}\cdot 49.5 = \frac{51\cdot 75}{100} + 24.255 = 38.25 + 24.255 = 62.505.$$
 ===END===
 
 ===TEASER===
@@ -270,7 +285,8 @@ FOLLOWUP_ANSWER:
 
 ===TEASER===
 SLUG: roll-until-not-a-one
-IDS: H4A-12
+IDS: H4A-12, Q-161
+FIRMS: Two Sigma
 SECTION: probability
 CATEGORY: Expected value
 DIFFICULTY: easy
@@ -714,7 +730,8 @@ Same mean, a thousand times less volatility (by the CLT, Game Two pays within ab
 
 ===TEASER===
 SLUG: expected-tosses-heads-in-a-row
-IDS: H4B-09, R3A-26, R3A-27, R3A-28, R3A-29, R3A-30, R3A-31, R3A-32, R3A-33
+IDS: H4B-09, R3A-26, R3A-27, R3A-28, R3A-29, R3A-30, R3A-31, R3A-32, R3A-33, Q-208, Q-438, Q-285, Q-286, Q-488, Q-496, W-002, W-084
+FIRMS: Citadel, Belvedere Trading, Akuna Capital, Goldman Sachs, JP Morgan, IMC, WorldQuant, Jane Street
 SECTION: probability
 CATEGORY: Markov chains & random walks
 DIFFICULTY: medium
@@ -801,6 +818,16 @@ $$h = \tfrac12 + \tfrac12 h^2 \iff (h-1)^2 = 0 \iff h = 1.$$
 **Winnings when it ends: exactly $+1$**, since it only ends at $+1$; so $\mathbb{E}[\text{winnings}] = 1$.
 
 **Why no contradiction.** Your fortune $S_n$ is a martingale with $S_0=0$, and yet $\mathbb{E}S_T = 1\neq0$. Optional stopping fails because its conditions fail: $T$ is finite almost surely but $\mathbb{E}T = \infty$, and $S_n$ is unbounded below before $T$. Indeed, if $m = \mathbb{E}T$ were finite, first-step analysis would give $m = 1 + \tfrac12\cdot0 + \tfrac12\cdot 2m = 1 + m$, which is impossible. In practice the strategy needs unlimited credit and unlimited time: with any finite credit limit (you are forced out at $-L$) optional stopping applies, you reach $+1$ with probability $\frac{L}{L+1}$ and lose $L$ otherwise, and the expected winnings are $\frac{L}{L+1}-\frac{L}{L+1} = 0$. This is the doubling/"martingale" betting system in disguise.
+FOLLOWUP: Citadel variant: two sixes in a row
+What is the expected number of rolls of a fair six-sided die until two consecutive $6$s appear?
+FOLLOWUP_ANSWER:
+$42$. Let $E_0$ be the expected number of further rolls when the last roll was not a $6$ (or at the start), and $E_1$ when the last roll was a $6$. Then
+$$E_0 = 1 + \tfrac16E_1 + \tfrac56E_0,\qquad E_1 = 1 + \tfrac16\cdot0 + \tfrac56E_0.$$
+The first gives $E_0 = 6 + E_1$; substituting, $E_1 = 1 + \frac56(6+E_1)$, so $\frac16E_1 = 6$, $E_1 = 36$ and $E_0 = 42$. In general, $k$ consecutive successes of probability $p$ take $\sum_{i=1}^k p^{-i}$ trials on average: $6 + 36 = 42$.
+FOLLOWUP: Goldman Sachs variant: five heads in a row
+A fair coin is flipped until five consecutive heads appear. What is the expected number of flips?
+FOLLOWUP_ANSWER:
+$62$. By the $n$-heads formula, $\mathbb{E} = 2^{n+1} - 2$, which for $n=5$ is $64 - 2 = 62$. Derivation: with $E_n$ the expected flips to reach $n$ heads in a row, from a run of $n-1$ heads you need one more flip, which with probability $\frac12$ finishes and with probability $\frac12$ sends you back to zero, so $E_n = E_{n-1} + 1 + \frac12E_n$, i.e. $E_n = 2E_{n-1} + 2$. From $E_0 = 0$: $E_1 = 2$, $E_2 = 6$, $E_3 = 14$, $E_4 = 30$, $E_5 = 62$.
 ===END===
 
 ===TEASER===
@@ -973,7 +1000,8 @@ using $\sum_{n\ge1}n x^n = \frac{x}{(1-x)^2}$, which equals 2 at $x=\frac12$.
 
 ===TEASER===
 SLUG: broken-stick-longest-piece
-IDS: H4B-17, H4B-18
+IDS: H4B-17, H4B-18, Q-422
+FIRMS: Akuna Capital, Five Rings
 SECTION: probability
 CATEGORY: Order statistics
 DIFFICULTY: hard

@@ -7,7 +7,7 @@ import { Teaser, TeaserSummary } from '../../core/models';
 import { InkLayer, PenTool } from '../../shared/ink-layer';
 import { MathContent } from '../../shared/math-content';
 import { PenPalette, defaultFingerDraws, loadPenTool } from '../../shared/pen-tools';
-import { BookTags, SECTION_INFO, categorySlug } from './teaser-meta';
+import { BookTags, SECTION_INFO, categorySlug, firmSlug } from './teaser-meta';
 
 const PAGE_HEIGHT = 900;
 
@@ -29,9 +29,12 @@ export class TeaserPage implements OnInit, OnDestroy {
 
   readonly SECTION_INFO = SECTION_INFO;
   readonly categorySlug = categorySlug;
+  readonly firmSlug = firmSlug;
 
   teaser = signal<Teaser | null>(null);
   siblings = signal<TeaserSummary[]>([]);
+  // Set when opened from a company's list: prev/next then walk that list.
+  viaFirm = signal<string | null>(null);
   error = signal('');
   // 0 = nothing shown, 1 = hint 1, 2 = hints 1-2; the solution is separate so
   // it can be opened straight away.
@@ -69,7 +72,10 @@ export class TeaserPage implements OnInit, OnDestroy {
   ngOnInit() {
     document.addEventListener('visibilitychange', this.flushOnHide);
     window.addEventListener('pagehide', this.flushOnHide);
-    this.route.paramMap.subscribe((p) => this.open(p.get('slug') || ''));
+    this.route.paramMap.subscribe((p) => {
+      this.viaFirm.set(this.route.snapshot.queryParamMap.get('firm'));
+      this.open(p.get('slug') || '');
+    });
   }
 
   ngOnDestroy() {
@@ -98,7 +104,13 @@ export class TeaserPage implements OnInit, OnDestroy {
       this.teaser.set(t);
       window.scrollTo({ top: 0 });
       this.api.getTeasers().then((all) => {
-        if (this.slug === slug) this.siblings.set(all.filter((x) => x.section === t.section && x.category === t.category));
+        if (this.slug !== slug) return;
+        const firm = this.viaFirm();
+        this.siblings.set(
+          firm && t.firms.includes(firm)
+            ? all.filter((x) => x.firms.includes(firm))
+            : all.filter((x) => x.section === t.section && x.category === t.category)
+        );
       });
     } catch (err: any) {
       this.error.set(err?.error?.error || 'Could not load this puzzle');
@@ -142,7 +154,7 @@ export class TeaserPage implements OnInit, OnDestroy {
   }
 
   go(t: TeaserSummary | null) {
-    if (t) this.router.navigate(['/teaser', t.slug]);
+    if (t) this.router.navigate(['/teaser', t.slug], { queryParams: this.viaFirm() ? { firm: this.viaFirm() } : {} });
   }
 
   // ---- board ----

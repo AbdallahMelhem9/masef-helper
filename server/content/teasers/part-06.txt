@@ -105,7 +105,8 @@ By AM–GM, $\frac{x+y}{2}\ge\sqrt{xy}$, so $xy\ge1$ implies $x+y\ge2$ (strictly
 ===END===
 ===TEASER===
 SLUG: tosses-until-first-head
-IDS: R3A-19, R3A-20, R3A-21, R3A-22
+IDS: R3A-19, R3A-20, R3A-21, R3A-22, W-003, W-062, Q-349, Q-353, Q-082
+FIRMS: Jane Street, IMC, Chicago Trading Company
 SECTION: probability
 CATEGORY: Distributions
 DIFFICULTY: easy
@@ -171,6 +172,12 @@ FOLLOWUP_ANSWER:
 $M=N-1$, where $N$ is the number of tosses including the head. Shifting by a constant lowers the mean by $1$ and leaves the variance unchanged:
 $$\mathbb{E}M=2-1=1,\qquad \mathrm{Var}M=\mathrm{Var}N=2.$$
 Direct check: $\mathbb{P}(M=m)=2^{-(m+1)}$, $m\ge0$, and $\mathbb{E}M=\sum_m m2^{-(m+1)}=\tfrac12\sum_m m2^{-m}=\tfrac12\cdot 2=1$.
+FOLLOWUP: CTC variant: tosses until two heads
+A fair coin is tossed until a total of two heads (not necessarily consecutive) have appeared. What is the expected number of tosses?
+FOLLOWUP_ANSWER:
+$4$. The tosses up to the first head form a geometric waiting time $N_1$ with $\mathbb{E}N_1 = 2$ (the main result). After that the coin starts afresh, and the additional tosses until the second head, $N_2$, have the same distribution. So the total is $N_1+N_2$ and
+$$\mathbb{E}[N_1+N_2] = 2 + 2 = 4.$$
+In general, waiting for $r$ heads with $P(H)=p$ takes $r/p$ tosses on average (negative binomial).
 ===END===
 ===TEASER===
 SLUG: two-consecutive-identical-tosses
@@ -510,7 +517,8 @@ $$\frac14\cdot\frac{6}{51}+\frac34\cdot\frac{19}{51}=\frac{6+57}{204}=\frac{63}{
 ===END===
 ===TEASER===
 SLUG: matching-socks
-IDS: R3B-01, R3B-02, R3B-03, R3B-04
+IDS: R3B-01, R3B-02, R3B-03, R3B-04, Q-445
+FIRMS: Citadel
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: easy
@@ -546,6 +554,10 @@ FOLLOWUP: Guaranteed matching pair
 A drawer contains 20 red socks and 20 black socks. How many must you pull out to be sure of having a matching pair?
 FOLLOWUP_ANSWER:
 Three. With two colours, any three socks contain two of the same colour (pigeonhole), whereas two socks can be one red and one black. (21 would be the answer to "sure of two red socks" or of "a pair of a given colour".)
+FOLLOWUP: Citadel variant: ten pairs of socks
+A drawer holds $10$ pairs of socks, each pair a different colour. You pick $2$ socks at random. What is the probability they are the same colour?
+FOLLOWUP_ANSWER:
+$\frac{1}{19}$. Whatever the first sock is, $19$ socks remain and exactly one of them matches it, so $P = \frac1{19}$. (This is the "$n$ colours, two socks" formula $\frac{1}{2n-1}$ with $n=10$; by counting, $\frac{10}{\binom{20}{2}} = \frac{10}{190}$.)
 ===END===
 ===TEASER===
 SLUG: two-aces-with-without-replacement
@@ -592,7 +604,8 @@ Equivalently $\frac{4\cdot4}{\binom{52}2}=\frac{16}{1326}$.
 ===END===
 ===TEASER===
 SLUG: ant-on-a-cube-return-time
-IDS: R3B-09, R3B-10, R3B-11
+IDS: R3B-09, R3B-10, R3B-11, Q-398, Q-513
+FIRMS: WorldQuant
 SECTION: probability
 CATEGORY: Markov chains & random walks
 DIFFICULTY: medium

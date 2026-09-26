@@ -1,6 +1,7 @@
 ===TEASER===
 SLUG: matching-socks-pigeonhole
-IDS: G2-25, H1A-16
+IDS: G2-25, H1A-16, Q-444
+FIRMS: Jane Street, Transmarket Group
 SECTION: brainteaser
 CATEGORY: Invariants, parity & pigeonhole
 DIFFICULTY: easy
@@ -60,7 +61,8 @@ Forget that everyone shook your hand. For $n \ge 2$ people, each count lies in $
 
 ===TEASER===
 SLUG: party-of-six-ramsey
-IDS: G2-27
+IDS: G2-27, Q-484
+FIRMS: Akuna Capital
 SECTION: brainteaser
 CATEGORY: Invariants, parity & pigeonhole
 DIFFICULTY: medium
@@ -367,7 +369,8 @@ A Toblerone is a Swiss chocolate bar shaped as a long triangular prism, made of 
 
 ===TEASER===
 SLUG: race-track-gas-cans
-IDS: G2-36
+IDS: G2-36, Q-266
+FIRMS: WorldQuant
 SECTION: brainteaser
 CATEGORY: Induction & recursion
 DIFFICULTY: hard
@@ -478,7 +481,8 @@ With the same guesses $g_i$, suppose every prisoner is wrong: $g_i \ne x_i$ for 
 
 ===TEASER===
 SLUG: coin-toss-n-plus-one-vs-n
-IDS: G4A-01
+IDS: G4A-01, Q-071, Q-076, W-017, Q-390
+FIRMS: Citadel, Goldman Sachs, Hudson River Trading, Jane Street, SIG, WorldQuant
 SECTION: probability
 CATEGORY: Conditional probability & Bayes
 DIFFICULTY: medium
@@ -514,6 +518,10 @@ SOLUTION: Heads-tails symmetry
 Let $H_A$ and $T_A = n + 1 - H_A$ be $A$'s heads and tails, and $H_B$, $T_B = n - H_B$ be $B$'s. Then
 $$H_A > H_B \iff H_A \ge H_B + 1 \iff n + 1 - T_A \ge n - T_B + 1 \iff T_A \le T_B \iff \text{not}(T_A > T_B).$$
 So the events $\{H_A > H_B\}$ and $\{T_A > T_B\}$ are complements. Because the coins are fair, swapping heads and tails on every coin maps one event onto the other and preserves probabilities, so they have the same probability. Two complementary events of equal probability each have probability $\tfrac12$.
+FOLLOWUP: Citadel variant: counting primes on dice
+Player 1 rolls a fair six-sided die $10000$ times and player 2 rolls it $10001$ times. What is the probability that player 2 rolls strictly more prime numbers than player 1?
+FOLLOWUP_ANSWER:
+$\tfrac12$. The primes on a die are $2, 3, 5$, so each roll is "prime" with probability exactly $\tfrac12$, independently: each roll is a fair coin (prime = heads). This is the main problem with $n = 10000$: player 2 has $n+1$ fair "coins", player 1 has $n$. Player 2 has more primes than player 1 iff player 2 has *at most as many* non-primes, i.e. the events "more primes" and "more non-primes" for player 2 are complements; since prime and non-prime are equally likely on each roll, they have equal probability, so each is $\tfrac12$. (The argument needs the success probability to be exactly $\tfrac12$; it would fail for, say, "rolls a 6".)
 ===END===
 
 ===TEASER===
@@ -549,7 +557,8 @@ $$P(\text{win}) = \frac1{13}\sum_{k=1}^{13}\frac{4(k-1)}{51} = \frac{4}{13\cdot 
 
 ===TEASER===
 SLUG: drunk-passenger-airplane-seat
-IDS: G4A-03, R3B-19, R3B-20, R3B-21, R3B-22
+IDS: G4A-03, R3B-19, R3B-20, R3B-21, R3B-22, Q-218, W-015
+FIRMS: IMC
 SECTION: probability
 CATEGORY: Conditional probability & Bayes
 DIFFICULTY: medium
@@ -611,7 +620,8 @@ $\frac13$. For $3 \le k \le 99$, seat $k$ is always occupied once passenger $k$ 
 
 ===TEASER===
 SLUG: n-points-on-circle-semicircle
-IDS: G4A-04
+IDS: G4A-04, Q-062, Q-428, W-009, Q-499
+FIRMS: Citadel, Squarepoint Capital, Jane Street
 SECTION: probability
 CATEGORY: Continuous & geometric probability
 DIFFICULTY: medium
@@ -645,11 +655,17 @@ Hence
 $$P\left(\bigcup_{i=1}^N E_i\right) = \sum_{i=1}^N P(E_i) = \frac{N}{2^{N-1}} .$$
 
 **Extension.** For an arc covering a fraction $x \le \frac12$ of the circle, the same argument gives $P(\text{all points fit in such an arc}) = N x^{N-1}$. (The restriction $x \le \frac12$ is needed for disjointness.)
+FOLLOWUP: Citadel variant: a three-legged table
+A table is built from a circular disc and three legs, each attached at a uniformly random point on the edge of the disc, independently. The table stands (is stable) if and only if the centre of the disc lies inside the triangle formed by the three legs. What is the probability that the table is stable?
+FOLLOWUP_ANSWER:
+$\tfrac14$. The centre lies inside the triangle formed by three points on the circle exactly when the three points do **not** all lie in a common semicircle (if they fit in a semicircle, the triangle sits on one side of a diameter and misses the centre; otherwise every side leaves the centre on the same side as the opposite vertex). By the main result with $N=3$,
+$$P(\text{all in a semicircle}) = \frac{3}{2^{2}} = \frac34,$$
+so $P(\text{stable}) = 1 - \frac34 = \frac14$.
 ===END===
 
 ===TEASER===
 SLUG: poker-hands-four-kind-full-house-two-pairs
-IDS: G4A-05
+IDS: G4A-05, W-117
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: easy
@@ -682,11 +698,16 @@ $$P = \frac{3744}{2{,}598{,}960} = \frac{6}{4165} \approx 0.00144 .$$
 
 **Two pairs.** The two pair values (unordered): $\binom{13}2 = 78$; suits of each pair: $\binom42\cdot\binom42 = 36$; the fifth card must have one of the 11 other values: $11 \cdot 4 = 44$ cards. Count: $78\cdot36\cdot44 = 123{,}552$.
 $$P = \frac{123{,}552}{2{,}598{,}960} = \frac{198}{4165} \approx 0.0475 .$$
+FOLLOWUP: Number of flushes
+How many $5$-card poker hands are flushes (all five cards of the same suit)?
+FOLLOWUP_ANSWER:
+$5{,}148$ hands have all five cards in one suit: choose the suit ($4$ ways) and $5$ of its $13$ values ($\binom{13}{5} = 1287$ ways), so $4\cdot 1287 = 5{,}148$, a probability of $5148/2{,}598{,}960\approx 0.198\%$. In poker rankings a "flush" usually excludes straight flushes (including royal flushes): per suit there are $10$ straights ($A2345$ up to $10JQKA$), so $40$ straight flushes in total, leaving $5{,}148 - 40 = 5{,}108$ plain flushes ($\approx 0.197\%$).
 ===END===
 
 ===TEASER===
 SLUG: hopping-rabbit-fibonacci
-IDS: G4A-06, R8-35, R8-36, R8-37
+IDS: G4A-06, R8-35, R8-36, R8-37, Q-033, Q-238, Q-296, Q-314, Q-458
+FIRMS: Five Rings, Goldman Sachs
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: easy
@@ -731,6 +752,28 @@ with $g(0,0) = 1$ and $g = 0$ at negative arguments. Along the axes $g(m,0) = f(
 Closed form: if the rabbit makes $i$ horizontal 2-hops and $j$ vertical 2-hops, it makes $m-i$ horizontal and $n-j$ vertical hops. There are $\binom{m-i}{i}$ orders of the horizontal hop sizes and $\binom{n-j}{j}$ of the vertical ones, and $\binom{m-i+n-j}{m-i}$ ways to interleave the two sequences:
 $$g(m,n) = \sum_{i=0}^{\lfloor m/2\rfloor}\sum_{j=0}^{\lfloor n/2\rfloor}\binom{m-i}{i}\binom{n-j}{j}\binom{m-i+n-j}{m-i}.$$
 Check: $g(2,2) = 6 + 3 + 3 + 2 = 14$.
+FOLLOWUP: Five Rings variant: hops of any length
+The staircase has $10$ stairs, and on each hop the rabbit may jump up **any** number of stairs. In how many ways can it reach the top ($10$th) stair?
+FOLLOWUP_ANSWER:
+$2^9 = 512$. A way of climbing is a sequence of positive hop lengths summing to $10$ (a *composition* of $10$). Equivalently, it is determined by the set of intermediate stairs the rabbit lands on, which can be any subset of $\{1,\dots,9\}$: each of the $9$ intermediate stairs is either landed on or not. So there are $2^9 = 512$ ways. (Recursively: $a_n = a_{n-1} + \dots + a_1 + a_0$ with $a_0=1$ gives $a_n = 2^{n-1}$.)
+FOLLOWUP: Five Rings variant: an even number of hops
+Same $10$-stair staircase, the rabbit may hop up any number of stairs at a time, but it must use an **even** number of hops in total. How many ways are there?
+FOLLOWUP_ANSWER:
+$256$. A climb with $k$ hops corresponds to choosing $k-1$ landing stairs among the $9$ intermediate ones: $\binom{9}{k-1}$ ways. With $k$ even, $k-1$ is odd, so the count is
+$$\binom91+\binom93+\binom95+\binom97+\binom99 = 9+84+126+36+1 = 256 = 2^8,$$
+since the odd-size subsets of a nonempty set are exactly half of all $2^9$ subsets.
+FOLLOWUP: Five Rings variant: odd-length hops only
+Same $10$-stair staircase, but every hop must cover an **odd** number of stairs ($1, 3, 5, \dots$). How many ways are there to reach the top?
+FOLLOWUP_ANSWER:
+$55$. Let $c_n$ be the number of ways to climb $n$ stairs with odd hops. Look at the last hop: if it is $1$ stair, the rest is a climb of $n-1$ stairs ($c_{n-1}$ ways); if it is $2j+1\ge3$ stairs, shortening it by $2$ gives a valid climb of $n-2$ stairs, and this is a bijection onto all climbs of $n-2$ stairs ($c_{n-2}$ ways). So
+$$c_n = c_{n-1} + c_{n-2},\qquad c_1 = 1,\ c_2 = 1,$$
+the Fibonacci numbers: $1,1,2,3,5,8,13,21,34,55$. Hence $c_{10} = 55$.
+FOLLOWUP: Five Rings / Goldman Sachs variant: no single-stair hops
+Same $10$-stair staircase, the rabbit may hop any number of stairs **greater than 1** (so never exactly one stair). How many ways are there to reach the top?
+FOLLOWUP_ANSWER:
+$34$. Let $d_n$ be the number of climbs of $n$ stairs with hops of length $\ge2$. If the last hop is exactly $2$, the rest is a climb of $n-2$ stairs ($d_{n-2}$ ways); if it is $\ge3$, shortening it by $1$ gives a valid climb of $n-1$ stairs, bijectively ($d_{n-1}$ ways). So $d_n = d_{n-1}+d_{n-2}$ with $d_2 = 1$ (one hop of $2$) and $d_3 = 1$ (one hop of $3$):
+$$d_2,\dots,d_{10} = 1,1,2,3,5,8,13,21,34.$$
+Hence $d_{10} = 34$ (the Fibonacci number $F_9$).
 ===END===
 
 ===TEASER===
@@ -775,7 +818,8 @@ In any minimal scheme (462 locks), the lower-bound argument shows each lock's ke
 
 ===TEASER===
 SLUG: knockout-tournament-top-two-meet-in-final
-IDS: G4A-08, R3A-64, R3A-65, R3A-66
+IDS: G4A-08, R3A-64, R3A-65, R3A-66, Q-404, Q-454
+FIRMS: Five Rings
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: medium
@@ -811,11 +855,18 @@ FOLLOWUP: How many rounds?
 There are $M$ teams in a knockout tournament. A round is any set of simultaneous matches in which each team plays at most one match. What is the minimum number of rounds needed to determine the winner?
 FOLLOWUP_ANSWER:
 $\lceil \log_2 M\rceil$. In a round with $r$ teams at most $\lfloor r/2\rfloor$ matches are played, so at least $\lceil r/2 \rceil$ teams survive: the number of teams can at most halve (rounded up). After $k$ rounds at least $\lceil M/2^k\rceil$ teams remain, which is 1 only if $2^k \ge M$. Conversely, pairing up as many teams as possible each round (with one bye when $r$ is odd) takes the count from $r$ to $\lceil r/2\rceil$ and reaches 1 after exactly $\lceil\log_2 M\rceil$ rounds. Example: $M = 100$ needs 7 rounds and 99 matches.
+FOLLOWUP: Five Rings variant: two given teams, coin-flip matches
+A single-elimination tournament has $8$ teams. In each round the remaining teams are paired uniformly at random, and every match is won by either side with probability $\tfrac12$. What is the probability that two specified teams play each other at some point?
+FOLLOWUP_ANSWER:
+$\tfrac14$. Count matches: a knockout with $8$ teams has exactly $7$ matches (each eliminates one team). By symmetry (random pairings and fair coin-flip matches treat all teams alike), each of the $\binom82 = 28$ pairs of teams is equally likely to be one of the matches played, and the expected number of pairs that meet is $7$. So
+$$P(\text{a given pair meets}) = \frac{7}{28} = \frac14.$$
+Check by rounds: they meet in round 1 with probability $\frac17$; otherwise both must win (prob. $\frac14$) and then meet among $4$ teams with probability $\frac13$; and so on: $\frac17 + \frac67\cdot\frac14\cdot\left(\frac13 + \frac23\cdot\frac14\cdot1\right) = \frac17 + \frac{6}{28}\cdot\frac12 = \frac14$. In general, with $2^n$ teams the answer is $\frac{2^n-1}{\binom{2^n}{2}} = \frac{1}{2^{n-1}}$.
 ===END===
 
 ===TEASER===
 SLUG: application-letters-derangements
-IDS: G4A-09, H1A-35
+IDS: G4A-09, H1A-35, Q-279, Q-399, Q-255
+FIRMS: Citadel, DRW
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: medium
@@ -852,11 +903,18 @@ $$P(\text{all wrong}) = \frac{D_5}{5!} = \frac{44}{120} = \frac{11}{30}.$$
 **Variant (Heard on the Street: random hotel keys).** $N$ guests receive the $N$ room keys at random, with $N$ very large. The probability that *at least one* guest gets his own room is
 $$1 - \sum_{k=0}^N\frac{(-1)^k}{k!} \xrightarrow[N\to\infty]{} 1 - e^{-1} \approx 0.632 .$$
 The book also gives a quick heuristic: treat the $N$ events as independent, each of probability $1/N$, so $P(\text{no match}) \approx (1 - 1/N)^N \to e^{-1}$. The events are not actually independent, so this is only a heuristic; it happens to give the correct limit, and inclusion-exclusion is the real proof. For $N = 5$ the exact value $19/30 \approx 0.633$ is already very close to the limit.
+FOLLOWUP: Citadel variant: exactly five fixed points
+Let $F_n$ be the number of fixed points of a uniformly random permutation of $\{1,\dots,n\}$. The limit $\lim_{n\to\infty}P(F_n = 5)$ can be written as $\frac{c}{e}$. Find $c$.
+FOLLOWUP_ANSWER:
+$c = \frac{1}{120}$. Choose which $5$ points are fixed ($\binom n5$ ways) and derange the other $n-5$ ($D_{n-5}$ ways):
+$$P(F_n = 5) = \frac{\binom n5 D_{n-5}}{n!} = \frac{1}{5!}\cdot\frac{D_{n-5}}{(n-5)!}.$$
+From the main problem, $\frac{D_m}{m!} = \sum_{k=0}^m\frac{(-1)^k}{k!}\to e^{-1}$, so $P(F_n = 5)\to \frac{1}{5!\,e} = \frac{1/120}{e}$. In general $F_n$ converges in distribution to a Poisson$(1)$ variable, $P(F=k) = \frac{e^{-1}}{k!}$.
 ===END===
 
 ===TEASER===
 SLUG: birthday-problem-23
-IDS: G4A-10
+IDS: G4A-10, Q-029
+FIRMS: Five Rings, Goldman Sachs, Two Sigma
 SECTION: probability
 CATEGORY: Counting & combinatorics
 DIFFICULTY: easy

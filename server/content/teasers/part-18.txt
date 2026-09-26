@@ -1,0 +1,947 @@
+===TEASER===
+SLUG: two-cylinders-intersection-volume
+IDS: Q-304
+FIRMS: Citadel
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: hard
+TITLE: Volume common to two crossing cylinders
+QUESTION:
+Two infinitely long solid cylinders, each of radius $1$, are placed so that their axes meet at a right angle. What is the volume of the region lying inside **both** cylinders?
+HINT1:
+Put the axes along two coordinate axes and write the region as two inequalities. Then think about slicing the solid instead of integrating over a messy 3D shape.
+HINT2:
+Take the axes to be the $x$-axis and the $y$-axis: the region is $y^2+z^2\le 1$ and $x^2+z^2\le 1$. Slice at a fixed height $z$: what shape is the cross-section, and what is its area?
+ANSWER:
+$\dfrac{16}{3}$
+REFRESH:
+**Volume by slicing (Cavalieri)**: if a solid's cross-section at height $z$ has area $A(z)$, its volume is $\int A(z)\,dz$. In particular two solids with the same cross-sectional area at every height have the same volume.
+EXPLANATION:
+This solid (the Steinmetz solid) looks awkward, but horizontal slices are simple. At height $z$, the first cylinder only restricts $y$ to $|y|\le\sqrt{1-z^2}$ and the second only restricts $x$ to $|x|\le\sqrt{1-z^2}$. So each slice is a **square** of side $2\sqrt{1-z^2}$, with area $4(1-z^2)$. Integrate that for $z$ from $-1$ to $1$.
+
+A cute way to see it: the unit sphere sits inside the solid, and at each height the sphere's slice is the disc inscribed in the square slice. Disc over square is always $\pi/4$, so the solid's volume is the sphere's volume times $4/\pi$.
+SOLUTION: Slicing into squares
+Place the cylinders as
+$$C_1=\{y^2+z^2\le 1\}\ (\text{axis }= x\text{-axis}),\qquad C_2=\{x^2+z^2\le 1\}\ (\text{axis }= y\text{-axis}).$$
+Both force $|z|\le 1$. Fix $z\in[-1,1]$. The slice of $C_1\cap C_2$ at height $z$ is
+$$\{(x,y):\ |x|\le\sqrt{1-z^2},\ |y|\le\sqrt{1-z^2}\},$$
+a square of side $2\sqrt{1-z^2}$ and area $A(z)=4(1-z^2)$. Hence
+$$V=\int_{-1}^{1}4(1-z^2)\,dz=4\Big[z-\frac{z^3}{3}\Big]_{-1}^{1}=4\Big(2-\frac{2}{3}\Big)=\frac{16}{3}.$$
+SOLUTION: Compare with the inscribed sphere
+The unit ball $x^2+y^2+z^2\le1$ is contained in both cylinders. Its slice at height $z$ is a disc of radius $r=\sqrt{1-z^2}$, area $\pi r^2$, which is exactly the disc inscribed in the square slice of side $2r$ (area $4r^2$). So at every height
+$$\frac{A_{\text{solid}}(z)}{A_{\text{ball}}(z)}=\frac{4r^2}{\pi r^2}=\frac{4}{\pi}.$$
+Integrating over $z$, the volumes are in the same ratio:
+$$V=\frac{4}{\pi}\cdot\frac{4}{3}\pi=\frac{16}{3}.$$
+===END===
+===TEASER===
+SLUG: two-random-segments-overlap
+IDS: Q-305
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Do two random segments overlap?
+QUESTION:
+Let $X_1,X_2,X_3,X_4$ be i.i.d. $\text{Unif}(0,1)$. On the real line, draw the segment between $X_1$ and $X_2$ and the segment between $X_3$ and $X_4$. What is the probability that the two segments intersect (share at least one point)?
+HINT1:
+Only the relative order of the four points matters, not their exact positions.
+HINT2:
+Sort the four points. Which of them belong to the first segment? By symmetry, every way of splitting the four sorted positions into two pairs is equally likely. In which splits are the segments disjoint?
+ANSWER:
+$\dfrac{2}{3}$
+REFRESH:
+**Exchangeability of i.i.d. continuous variables**: for i.i.d. continuous $X_1,\dots,X_n$, ties have probability 0 and all $n!$ orderings are equally likely.
+EXPLANATION:
+Sort the four points into positions $1<2<3<4$. The two segments are determined by which pair of positions belongs to segment A. There are three ways to split $\{1,2,3,4\}$ into two pairs: $\{1,2\}\{3,4\}$, $\{1,3\}\{2,4\}$, $\{1,4\}\{2,3\}$. Only the first gives two disjoint segments (one entirely to the left of the other); the second gives overlapping segments, the third gives one segment inside the other. By symmetry the three splits are equally likely, so the segments intersect with probability $2/3$.
+SOLUTION: Counting orderings
+All $4!=24$ orderings of $X_1,\dots,X_4$ are equally likely. The segments are disjoint iff both endpoints of one segment are smaller than both endpoints of the other, i.e. the two smallest values are $\{X_1,X_2\}$ or $\{X_3,X_4\}$.
+
+Number of orderings where $\{X_1,X_2\}$ occupy the two lowest ranks: $2!\cdot 2!=4$. Same for $\{X_3,X_4\}$: $4$. So
+$$P(\text{disjoint})=\frac{8}{24}=\frac13,\qquad P(\text{intersect})=1-\frac13=\frac23.$$
+SOLUTION: Pairings of the sorted positions
+Given the sorted positions, the partner of the smallest point (the other endpoint of its segment) is equally likely to be position 2, 3 or 4, by symmetry. The segments are disjoint only if the partner is position 2. So $P(\text{disjoint})=1/3$ and $P(\text{intersect})=2/3$.
+===END===
+===TEASER===
+SLUG: irrational-power-irrational-rational
+IDS: Q-307
+FIRMS: BNP Paribas
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Irrational to an irrational power
+QUESTION:
+Do there exist irrational numbers $a$ and $b$ such that $a^b$ is rational? Justify your answer.
+HINT1:
+Try $\sqrt2$ as a base. You may not need to know whether a certain number is rational to finish the argument.
+HINT2:
+Look at $\sqrt2^{\sqrt2}$. Either it is rational, or it is not. In the second case, raise it to the power $\sqrt2$ once more.
+ANSWER:
+Yes: for example $(\sqrt2^{\sqrt2})^{\sqrt2}=2$ (or $\sqrt2^{\,\log_2 9}=3$).
+REFRESH:
+**$\sqrt2$ is irrational**: if $\sqrt2=p/q$ in lowest terms then $p^2=2q^2$, so $p$ is even, then $q$ is even — contradiction.
+**Power rule**: $(x^y)^z=x^{yz}$ for $x>0$.
+EXPLANATION:
+There is a famous proof that does not even tell you which pair works. Consider $x=\sqrt2^{\sqrt2}$. If $x$ is rational, then $a=b=\sqrt2$ works. If $x$ is irrational, then take $a=x$, $b=\sqrt2$: $a^b=\sqrt2^{\sqrt2\cdot\sqrt2}=\sqrt2^2=2$. Either way a pair exists.
+
+If you want an explicit pair, pick the exponent so the powers cancel: $\sqrt2^{\,b}=2^{b/2}$, so choose $b=2\log_2 3=\log_2 9$, giving $3$. You only have to check that $\log_2 9$ is irrational, which is a one-line parity argument.
+SOLUTION: Non-constructive dichotomy
+Let $x=\sqrt2^{\sqrt2}$.
+- If $x\in\mathbb{Q}$: take $a=b=\sqrt2$, both irrational, and $a^b=x$ is rational.
+- If $x\notin\mathbb{Q}$: take $a=x$ (irrational) and $b=\sqrt2$ (irrational). Then
+$$a^b=\big(\sqrt2^{\sqrt2}\big)^{\sqrt2}=\sqrt2^{\sqrt2\cdot\sqrt2}=\sqrt2^{\,2}=2\in\mathbb{Q}.$$
+In both cases irrational $a,b$ with $a^b$ rational exist. (In fact $\sqrt2^{\sqrt2}$ is irrational — even transcendental, by the Gelfond–Schneider theorem — so the second case is the true one, but the argument doesn't need that.)
+SOLUTION: Explicit pair
+Take $a=\sqrt2$ and $b=\log_2 9$. Then
+$$a^b=2^{\frac12\log_2 9}=2^{\log_2 3}=3.$$
+$\log_2 9$ is irrational: if $\log_2 9=p/q$ with $p,q$ positive integers, then $2^p=9^q$; the left side is even and the right side is odd, contradiction. And $\sqrt2$ is irrational. So this is an explicit example.
+===END===
+===TEASER===
+SLUG: guess-cards-until-fifth-king
+IDS: Q-309
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: hard
+TITLE: Guess when the fifth king appears
+QUESTION:
+A dealer shuffles $10$ standard decks together ($520$ cards, $40$ of each rank) and turns cards over one at a time from the top. The game ends as soon as the $5$th king is turned over. You win if your guess is closest to the total number of cards turned over (the final king included). Which number should you guess to maximise your chance of winning? (This is **not** the expected value.)
+HINT1:
+You want the most likely value (the mode) of the stopping time. Write down $P(N=n)$ and compare consecutive values.
+HINT2:
+$N=n$ means: among the first $n-1$ cards there are exactly $4$ kings, and card $n$ is a king. Equivalently, count the arrangements of the 40 king positions: 4 among the first $n-1$ positions, one at position $n$, 35 among the last $520-n$. Then look at the ratio $P(N=n)/P(N=n-1)$ and find when it drops below $1$.
+ANSWER:
+$54$
+REFRESH:
+**Negative hypergeometric distribution**: drawing without replacement from $N$ items of which $K$ are successes, the draw $n$ on which the $r$-th success occurs has
+$$P(n)=\frac{\binom{n-1}{r-1}\binom{N-n}{K-r}}{\binom{N}{K}},$$
+because the $K$ success positions form a uniformly random $K$-subset of $\{1,\dots,N\}$. Its mean is $r\,\frac{N+1}{K+1}$.
+**Mode of a discrete distribution**: if $p(n)/p(n-1)>1$ exactly for $n\le m$, then $m$ is the mode.
+EXPLANATION:
+The 40 kings occupy a uniformly random set of 40 positions among 520. The game lasts $n$ cards when position $n$ holds a king, 4 kings lie before it and 35 after it. That gives a clean formula, and the ratio of consecutive probabilities simplifies to a ratio of two linear factors. The probabilities increase while the ratio is above $1$, which happens up to $n=54$, and decrease afterwards.
+
+Note that the mean is much larger: $5\cdot 521/41\approx 63.5$. The distribution is right-skewed (a long tail of games where kings are late), so the mode is well below the mean.
+SOLUTION: Ratio of consecutive probabilities
+The king positions are a uniform random 40-subset of $\{1,\dots,520\}$. The event $\{N=n\}$ means: position $n$ is a king, exactly 4 of the first $n-1$ positions are kings, and the other 35 kings are among the last $520-n$ positions. Hence
+$$p(n)=P(N=n)=\frac{\binom{n-1}{4}\binom{520-n}{35}}{\binom{520}{40}},\qquad 5\le n\le 485.$$
+Ratio of consecutive terms:
+$$\frac{p(n)}{p(n-1)}=\frac{\binom{n-1}{4}}{\binom{n-2}{4}}\cdot\frac{\binom{520-n}{35}}{\binom{521-n}{35}}=\frac{n-1}{n-5}\cdot\frac{486-n}{521-n}.$$
+This is $>1$ iff
+$$(n-1)(486-n)>(n-5)(521-n)$$
+$$-n^2+487n-486>-n^2+526n-2605\iff 2119>39n\iff n<54.33.$$
+So $p(n)$ increases up to $n=54$ and decreases from $n=55$ on. Check: $p(54)/p(53)=\frac{53\cdot432}{49\cdot467}=\frac{22896}{22883}>1$ and $p(55)/p(54)=\frac{54\cdot431}{50\cdot466}=\frac{23274}{23300}<1$.
+
+The most likely number of cards is $54$ (with $p(54)\approx 0.01649$), which is the guess that maximises your chance of being exactly right. The mean is $5\cdot\frac{521}{41}\approx 63.5$, so guessing the mean would be a mistake.
+===END===
+===TEASER===
+SLUG: last-roll-to-reach-1000
+IDS: Q-313
+FIRMS: Optiver, SIG
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: The roll that crosses 1000
+QUESTION:
+You roll a fair six-sided die repeatedly and keep a running total, stopping as soon as the total is at least $1000$. Which face is most likely to be the value of the final roll?
+HINT1:
+Think about where the running total can be just before the last roll, and what roll is needed from there.
+HINT2:
+The last roll equals $k$ exactly when the total just before it is one of $1000-k,\dots,999$ and you then roll $k$. Write $P(\text{last}=k)$ as a sum over those totals.
+ANSWER:
+$6$ (with probability about $6/21=2/7$)
+REFRESH:
+**Renewal density**: for a walk with i.i.d. positive steps of mean $\mu$, the probability of landing exactly on a large value $s$ tends to $1/\mu$. For a fair die, $\mu=3.5$, so each large total is visited with probability $\approx 2/7$.
+EXPLANATION:
+The final roll is the one that jumps from below $1000$ to $1000$ or more. A roll of $6$ does that from any of six totals ($994,\dots,999$), whereas a roll of $1$ only does it from $999$. A bigger face has more starting points from which it can be the finishing roll, so it is more likely to be the last. It's the same bias as "the bus interval you arrive in tends to be long": long jumps are more likely to be the ones that straddle a fixed point.
+
+Quantitatively each total near $1000$ is hit with probability $\approx 2/7$, so $P(\text{last}=k)\approx \frac{2}{7}\cdot k\cdot\frac16=\frac{k}{21}$.
+SOLUTION: Sum over the pre-final totals
+Let $v_s=P(\text{the running total ever equals } s)$; $v_s>0$ for every $s\ge0$. The last roll is $k$ iff for some $j\in\{1,\dots,k\}$ the total visits $1000-j$ and the next roll is $k$ (then the total becomes $1000-j+k\ge1000$; and since the total was below $1000$, that roll is indeed the last). For different $j$ these events are disjoint (the roll of $k$ from $1000-j$ ends the game, so the walk cannot also roll $k$ from another total in that window) and the next roll is independent of the past, so
+$$P(\text{last}=k)=\frac16\sum_{j=1}^{k}v_{1000-j}.$$
+Every term is positive, so $P(\text{last}=k)$ is strictly increasing in $k$: face $6$ is the most likely.
+
+Numerically, $v_s\to 1/3.5=2/7$ very fast, so
+$$P(\text{last}=k)\approx\frac16\cdot k\cdot\frac27=\frac{k}{21}:\qquad \frac1{21},\frac2{21},\dots,\frac6{21}.$$
+(An exact computation gives $0.0476, 0.0952, 0.1429, 0.1905, 0.2381, 0.2857$.)
+===END===
+===TEASER===
+SLUG: chickens-cows-spiders-legs
+IDS: Q-315
+FIRMS: SIG
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Chickens, cows and spiders
+QUESTION:
+A farmyard holds chickens ($2$ legs each), cows ($4$ legs each) and spiders ($8$ legs each), with $440$ legs in total. There are twice as many chickens as cows, and twice as many spiders as chickens. How many spiders are there?
+HINT1:
+Express everything in terms of the number of cows.
+HINT2:
+With $c$ cows there are $2c$ chickens and $4c$ spiders. Count legs per "group" of one cow, two chickens and four spiders.
+ANSWER:
+$44$ spiders
+REFRESH:
+NONE
+EXPLANATION:
+The ratios fix the herd up to a scale factor: for every cow there are 2 chickens and 4 spiders. One such group has $4+2\cdot2+4\cdot8=40$ legs, so $440$ legs means $11$ groups, i.e. $11$ cows, $22$ chickens, $44$ spiders.
+SOLUTION: One unknown
+Let $c$ be the number of cows. Then chickens $=2c$ and spiders $=2\cdot 2c=4c$. Legs:
+$$4c+2(2c)+8(4c)=4c+4c+32c=40c=440\ \Rightarrow\ c=11.$$
+Spiders $=4c=44$. Check: $44+44+352=440$.
+===END===
+===TEASER===
+SLUG: type-copy-paste-200-letters
+IDS: Q-316
+FIRMS: SIG
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Type, copy, paste: 200 letters fast
+QUESTION:
+You start with an empty document. Each second you may do exactly one of:
+- **type** one letter,
+- **copy** the entire current text to the clipboard (replacing its content),
+- **paste** the clipboard at the end of the text.
+
+What is the minimum number of seconds needed to have at least $200$ letters?
+HINT1:
+A copy followed by several pastes multiplies the length. How much does multiplying by $m$ cost in seconds?
+HINT2:
+"Copy then $m-1$ pastes" costs $m$ seconds and multiplies the length by $m$. Argue that all typing should happen at the very beginning. Then you want to maximise $a\cdot m_1 m_2\cdots$ subject to $a+m_1+m_2+\dots=t$: a maximal-product partition problem.
+ANSWER:
+$15$ seconds
+REFRESH:
+**Maximal product of a partition**: among positive integers summing to $s$, the product is maximised by using as many 3's as possible (with a 2 or two 2's to finish): e.g. $14=3+3+3+3+2$ gives $162$, $15=3\cdot5$ gives $243$.
+EXPLANATION:
+After the initial typing, the useful operations come in blocks "copy, then paste $m-1$ times", which cost $m$ seconds and multiply the text length by $m$. Typing extra letters later is never better than typing them at the start (where they get multiplied by everything that follows). So in $t$ seconds the best you can do is $a\cdot m_1\cdots m_k$ where $a+m_1+\dots+m_k=t$ — a partition of $t$, and you want the largest product. Products of parts are maximised by 3's: in $14$ seconds the best is $3^4\cdot 2=162<200$, in $15$ seconds $3^5=243\ge200$.
+SOLUTION: Reduce to a partition problem
+**Normal form.** (i) Moving a "type" keystroke to the very beginning never hurts: the states (text length, clipboard length) along the modified sequence are componentwise at least as large as in the original from that point on, and each operation is monotone in both. (ii) Two copies in a row, or a copy not followed by a paste, waste time; a paste before any copy does nothing. So an optimal sequence is: type $a$ letters, then blocks each consisting of one copy followed by $m_i-1\ge1$ pastes.
+
+A block with $m_i$ seconds turns length $L$ into $m_iL$. After $t=a+m_1+\dots+m_k$ seconds the length is
+$$a\cdot m_1\cdots m_k.$$
+**Upper bound at 14 seconds.** The length is the product of the parts of a partition of $14$ (the part $a$ included). In a partition with maximal product: a part $1$ can be merged into another part $x$ ($x+1>x\cdot1$); a part $x\ge4$ can be split into $2$ and $x-2$ ($2(x-2)\ge x$); and three 2's can be replaced by two 3's ($9>8$). So the maximum uses 3's and at most two 2's: $14=3+3+3+3+2$, product $81\cdot 2=162<200$. So 14 seconds are not enough.
+
+**15 seconds suffice.** $15=3+3+3+3+3$ gives $3^5=243$. Concretely: type 3 letters (3 s), then 4 times "copy, paste, paste" (3 s each):
+$$3\to9\to27\to81\to243\qquad(3+4\cdot3=15\text{ s}).$$
+Another 15-second route: type 3, then $\times2,\times2,\times2,\times3,\times3$ ($3+2+2+2+3+3=15$ s), giving $216$. Either way at least 200 letters.
+
+Minimum: $15$ seconds.
+===END===
+===TEASER===
+SLUG: lamp-grid-no-adjacent-lit
+IDS: Q-317
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: No two neighbouring lamps lit
+QUESTION:
+A $3\times3$ grid holds $9$ lamps; each is lit independently with probability $\tfrac12$. What is the probability that no two lamps sharing a side are both lit?
+HINT1:
+All $2^9=512$ configurations are equally likely, so you just need to count the good ones.
+HINT2:
+Go row by row: a row has no two adjacent lit lamps in only 5 ways. Two consecutive rows are compatible iff no column is lit in both. Alternatively, split on whether the centre lamp is lit.
+ANSWER:
+$\dfrac{63}{512}$
+REFRESH:
+**Transfer counting**: to count grids row by row, list the allowed rows and for each middle row count the compatible rows above and below; with 3 rows the total is $\sum_{r}(\#\text{rows compatible with } r)^2$.
+**Independent sets of a cycle**: the number of subsets of the $n$-cycle with no two adjacent vertices is the Lucas number $L_n$ ($L_1=1,L_2=3,L_n=L_{n-1}+L_{n-2}$); $L_8=47$.
+EXPLANATION:
+Every configuration has probability $1/512$, so we count the "good" ones (independent sets of the grid graph). Rows of 3 with no two adjacent lit are $000,100,010,001,101$. Stack three such rows so that no column is lit in two consecutive rows. Fixing the middle row, the top and bottom rows are chosen independently from the rows compatible with it, which turns the count into a sum of squares.
+SOLUTION: Row-by-row counting
+Allowed rows (1 = lit): $000,\ 100,\ 010,\ 001,\ 101$.
+Two rows are compatible iff they share no lit column. For each middle row $r$, count compatible rows:
+- $000$: all 5.
+- $100$: rows with the first column off: $000,010,001$ → 3.
+- $010$: middle column off: $000,100,001,101$ → 4.
+- $001$: 3 (by symmetry with $100$).
+- $101$: first and last columns off: $000,010$ → 2.
+
+Top and bottom rows are chosen independently given the middle row, so the number of good grids is
+$$5^2+3^2+4^2+3^2+2^2=25+9+16+9+4=63.$$
+Probability $=63/512$.
+SOLUTION: Split on the centre lamp
+- **Centre lit.** Its 4 side-neighbours must be off; the 4 corners are not adjacent to each other (nor to the centre), so they are free: $2^4=16$ good grids.
+- **Centre off.** The 8 border lamps form a cycle (each border cell touches exactly two border cells), and the condition is "no two adjacent on this 8-cycle". The number of such subsets is the Lucas number $L_8$: $L_1=1,L_2=3,L_3=4,L_4=7,L_5=11,L_6=18,L_7=29,L_8=47$.
+
+Total $16+47=63$, probability $63/512$.
+===END===
+===TEASER===
+SLUG: traffic-light-change-in-four-seconds
+IDS: Q-318
+FIRMS: Transmarket Group
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Will the light change in the next 4 seconds?
+QUESTION:
+A traffic light cycles green → yellow → red → green…, with green lasting $40$ seconds, yellow $4$ seconds and red $40$ seconds. You look at the light at a uniformly random moment. What is the probability that it changes colour during the next $4$ seconds?
+HINT1:
+How long is one full cycle, and how many colour changes happen per cycle?
+HINT2:
+The light changes within the next 4 seconds iff your arrival time falls in the 4-second window just before one of the changes. Add up those windows and divide by the cycle length.
+ANSWER:
+$\dfrac17$
+REFRESH:
+**Uniform time in a periodic system**: a uniformly random instant, reduced modulo the period $T$, is uniform on $[0,T)$; the probability of a set of phases is its total length divided by $T$.
+EXPLANATION:
+The cycle lasts $40+4+40=84$ seconds and contains $3$ changes (green→yellow, yellow→red, red→green). You see a change within 4 seconds exactly when you arrive during one of the three 4-second windows preceding a change. These windows don't overlap (the shortest phase, yellow, is exactly 4 seconds long, so two of them just touch), so the favourable time is $3\times4=12$ seconds out of $84$.
+SOLUTION: Favourable windows
+Put the cycle on $[0,84)$: green on $[0,40)$, yellow on $[40,44)$, red on $[44,84)$, with changes at $40$, $44$ and $84\equiv0$. Arriving at time $u$ (uniform on $[0,84)$), a change happens in $(u,u+4]$ iff
+$$u\in[36,40)\ \cup\ [40,44)\ \cup\ [80,84).$$
+These are disjoint intervals of total length $12$, so
+$$P=\frac{12}{84}=\frac17.$$
+===END===
+===TEASER===
+SLUG: ten-lines-max-plane-regions
+IDS: Q-320
+FIRMS: Five Rings, Jane Street
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: easy
+TITLE: Cutting the plane with 10 lines
+QUESTION:
+What is the largest number of regions into which $10$ straight lines, no two of them parallel, can divide the plane? (One line gives $2$ regions.)
+HINT1:
+Add the lines one at a time. How many new regions can the $n$-th line create at most?
+HINT2:
+The $n$-th line meets the previous $n-1$ lines in at most $n-1$ points, which cut it into at most $n$ pieces. Each piece splits one existing region into two.
+ANSWER:
+$56$
+REFRESH:
+**Sum of the first integers**: $1+2+\dots+n=\frac{n(n+1)}{2}$.
+EXPLANATION:
+When a new line is added, it is chopped into pieces by its crossings with the lines already drawn, and every piece cuts an old region in two. With $n-1$ lines already present, the new line has at most $n-1$ crossings, hence at most $n$ pieces, hence adds at most $n$ regions. Lines in general position (no two parallel, no three through one point) achieve this every time. So $R(n)=1+(1+2+\dots+n)$.
+SOLUTION: Recursion
+Let $R(n)$ be the maximum number of regions with $n$ lines; $R(0)=1$. The $n$-th line crosses each earlier line at most once, so in at most $n-1$ points, which split it into at most $n$ segments/rays; each one divides a region into two, adding at most $n$ regions. In general position every bound is attained, so
+$$R(n)=R(n-1)+n\quad\Rightarrow\quad R(n)=1+\frac{n(n+1)}{2},$$
+$$R(10)=1+\frac{10\cdot11}{2}=1+55=56.$$
+SOLUTION: Count via crossing points
+Take lines in general position and a direction "up" not perpendicular to any line, so no line is horizontal. Every region either is unbounded downwards or has a unique lowest point, which is a crossing point. Far down, a horizontal line meets all $n$ lines and is cut into $n+1$ intervals: that gives $n+1$ regions unbounded downwards. Each crossing point of two lines is the lowest point of exactly one region (the wedge just above it). So
+$$R(n)=(n+1)+\binom n2,\qquad R(10)=11+45=56.$$
+===END===
+===TEASER===
+SLUG: lognormal-log-of-mean
+IDS: Q-323
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Log of a lognormal mean
+QUESTION:
+Suppose $\ln X\sim N(0,1)$. Compute $\ln\big(\mathbb{E}[X]\big)$.
+HINT1:
+$\ln\mathbb{E}[X]$ is not $\mathbb{E}[\ln X]$. Write $X$ as an exponential of a normal variable.
+HINT2:
+$X=e^Z$ with $Z\sim N(0,1)$, so $\mathbb{E}[X]$ is the moment generating function of $Z$ evaluated at $1$.
+ANSWER:
+$\dfrac12$
+REFRESH:
+**Normal MGF**: if $Z\sim N(\mu,\sigma^2)$ then $\mathbb{E}[e^{tZ}]=e^{\mu t+\sigma^2t^2/2}$.
+**Jensen's inequality**: for convex $\varphi$, $\varphi(\mathbb{E}Z)\le\mathbb{E}\varphi(Z)$.
+EXPLANATION:
+$X=e^Z$ and $\mathbb{E}[\ln X]=0$, but because $z\mapsto e^z$ is convex, the large values of $Z$ pull the mean of $X$ above $e^0=1$ (Jensen): $\mathbb{E}[e^Z]=e^{1/2}$. This "$+\sigma^2/2$" correction is the same one you will meet in the Black–Scholes model, where the median and the mean of the stock price differ by a factor $e^{\sigma^2 T/2}$.
+SOLUTION: Moment generating function
+Let $Z=\ln X\sim N(0,1)$. Then $\mathbb{E}[X]=\mathbb{E}[e^{Z}]=M_Z(1)=e^{1^2/2}=e^{1/2}$, so
+$$\ln\mathbb{E}[X]=\frac12.$$
+SOLUTION: Completing the square
+$$\mathbb{E}[e^Z]=\int_{-\infty}^{\infty}e^{z}\frac{e^{-z^2/2}}{\sqrt{2\pi}}\,dz=e^{1/2}\int_{-\infty}^{\infty}\frac{e^{-(z-1)^2/2}}{\sqrt{2\pi}}\,dz=e^{1/2},$$
+using $z-\frac{z^2}{2}=\frac12-\frac{(z-1)^2}{2}$ and the fact that the $N(1,1)$ density integrates to $1$. Hence $\ln\mathbb{E}[X]=1/2$.
+===END===
+===TEASER===
+SLUG: five-portals-escape-distance
+IDS: Q-324
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Five portals: how far until freedom?
+QUESTION:
+John is in a room with $5$ identical-looking portals and picks one uniformly at random each time. Two portals lead out: one through a path of $2$ miles, the other through a path of $5$ miles. The other three bring him back to the same room, through paths of $3$, $4$ and $1$ miles. Each time he returns, the portals are shuffled so he cannot tell which is which. What is the expected total distance John walks before he is free?
+HINT1:
+Condition on the first portal he picks. After a return, the situation is exactly the same as at the start.
+HINT2:
+Let $E$ be the expected distance. Write $E$ as an average over the 5 portals, where a returning portal contributes its length plus $E$.
+ANSWER:
+$7.5$ miles
+REFRESH:
+**First-step analysis**: $\mathbb{E}[D]=\sum_i P(\text{first step}=i)\,\mathbb{E}[D\mid \text{first step}=i]$; if after a step the process restarts, $\mathbb{E}[D\mid i]=d_i+\mathbb{E}[D]$.
+**Wald's identity**: if $D_1,D_2,\dots$ are i.i.d. with finite mean and $N$ is a stopping time with $\mathbb{E}N<\infty$, then $\mathbb{E}\big[\sum_{i=1}^N D_i\big]=\mathbb{E}[N]\,\mathbb{E}[D_1]$.
+EXPLANATION:
+Because the portals are reshuffled, John has no memory: each trip is a fresh uniform choice, and a return puts him back in the initial situation. So the expected remaining distance is always the same number $E$, which gives a one-line linear equation. Alternatively: he makes a geometric number of trips (success probability $2/5$, so $5/2$ trips on average) and each trip is on average $(2+5+3+4+1)/5=3$ miles long.
+SOLUTION: First-step equation
+$$E=\frac15(2)+\frac15(5)+\frac15(3+E)+\frac15(4+E)+\frac15(1+E)=\frac{15}{5}+\frac35E=3+\frac35E.$$
+So $\frac25E=3$, i.e. $E=\frac{15}{2}=7.5$ miles.
+SOLUTION: Wald's identity
+Each attempt is an i.i.d. uniform portal choice with length $D_i$, $\mathbb{E}[D_i]=\frac{2+5+3+4+1}{5}=3$. The number of attempts $N$ (up to and including the escape) is geometric with success probability $2/5$, so $\mathbb{E}[N]=5/2$, and $N$ is a stopping time. By Wald,
+$$\mathbb{E}\Big[\sum_{i=1}^{N}D_i\Big]=\frac52\cdot 3=7.5\text{ miles}.$$
+===END===
+===TEASER===
+SLUG: two-cards-five-times-face-reward
+IDS: Q-325
+FIRMS: Old Mission, Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Two draws, five times the card
+QUESTION:
+A stack has $35$ cards numbered $1$ to $35$. You draw a card uniformly at random, note it and put it back, and do this twice. Each card drawn pays $5$ times its number. What is your expected total reward?
+HINT1:
+Linearity of expectation: handle one draw first.
+HINT2:
+The expected face value of one uniform draw from $1,\dots,35$ is the midpoint of the range.
+ANSWER:
+$180$
+REFRESH:
+**Linearity of expectation**: $\mathbb{E}[aX+bY]=a\mathbb{E}X+b\mathbb{E}Y$, with or without independence.
+EXPLANATION:
+One draw has mean face $\frac{1+35}{2}=18$, so it pays $5\times18=90$ on average. Two draws pay twice that. Replacement doesn't even matter for the expectation: without replacement each draw is still marginally uniform, so the answer would be the same.
+SOLUTION: Linearity
+For one draw, $\mathbb{E}[\text{face}]=\frac1{35}\sum_{k=1}^{35}k=\frac{1}{35}\cdot\frac{35\cdot36}{2}=18$, so the expected reward is $5\cdot18=90$. For two draws, by linearity,
+$$\mathbb{E}[\text{total}]=90+90=180.$$
+===END===
+===TEASER===
+SLUG: hundred-doors-hundred-rolls
+IDS: Q-326
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: 100 doors, 100 rolls
+QUESTION:
+There are $100$ doors, each hiding \$1. You roll a fair $100$-sided die $100$ times. Each roll names a door; if that door has not been opened yet, you open it and take its dollar (a repeated door gives nothing). What is the expected amount you collect?
+HINT1:
+Don't try to track the whole process. Ask about a single door.
+HINT2:
+You collect one dollar per door that is rolled at least once. Use indicators and linearity; what is the probability that a given door is never rolled?
+ANSWER:
+$100\big(1-0.99^{100}\big)\approx 63.40$ dollars
+REFRESH:
+**Indicator trick**: if $N=\sum_i \mathbf 1_{A_i}$ then $\mathbb{E}N=\sum_i P(A_i)$, whatever the dependence between the events.
+**Limit**: $(1-1/n)^n\to e^{-1}\approx0.3679$.
+EXPLANATION:
+The money collected equals the number of distinct doors hit. A given door is missed by each roll with probability $0.99$, so missed by all 100 rolls with probability $0.99^{100}\approx e^{-1}$. Each door is therefore opened with probability about $63.4\%$, and by linearity the expected gain is $100$ times that. It is slightly more than $100(1-1/e)\approx63.21$ because $0.99^{100}$ is slightly below $1/e$.
+SOLUTION: Indicators
+Let $I_j=1$ if door $j$ is rolled at least once. Then the gain is $G=\sum_{j=1}^{100}I_j$ and
+$$P(I_j=1)=1-\Big(\frac{99}{100}\Big)^{100}.$$
+Compute $0.99^{100}=e^{100\ln 0.99}$ with $\ln0.99=-0.0100503$, so $0.99^{100}=e^{-1.00503}=e^{-1}e^{-0.00503}\approx0.367879\times0.994979\approx0.366032$. Hence
+$$\mathbb{E}[G]=100\,(1-0.366032)\approx 63.40\text{ dollars}.$$
+Note: the source states $63.58$; the correct value is $\approx 63.40$ because $0.99^{100}=0.36603\ldots$, so $1-0.99^{100}=0.63397\ldots$
+===END===
+===TEASER===
+SLUG: roll-until-sum-even
+IDS: Q-327
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Roll until the total is even
+QUESTION:
+You roll a fair six-sided die repeatedly, keeping a running total, and stop as soon as the total is even. What is the expected number of rolls?
+HINT1:
+Only the parity of the total matters.
+HINT2:
+Whatever has happened so far, what is the probability that the next roll makes the total even?
+ANSWER:
+$2$
+REFRESH:
+**Geometric distribution**: the number of independent trials up to and including the first success, with success probability $p$, has mean $1/p$.
+EXPLANATION:
+A die roll is odd or even with probability $1/2$ each, independently of the past. On the first roll, an even roll makes the total even; afterwards the total is odd while you are still rolling, and an odd roll makes it even. Either way each roll ends the game with probability exactly $1/2$, so the number of rolls is geometric with $p=1/2$ and mean $2$.
+SOLUTION: Geometric count
+First roll: the total is even iff the roll is even: probability $1/2$. If not, the total is odd, and each subsequent roll makes it even iff the roll is odd: probability $1/2$, independently of the past. So each roll stops the game with probability $1/2$ and the number of rolls $N\sim\text{Geom}(1/2)$:
+$$\mathbb{E}[N]=\frac{1}{1/2}=2.$$
+SOLUTION: First-step equations
+Let $E$ be the expected number of rolls from the start and $E_{\text{odd}}$ from an odd total. Then $E_{\text{odd}}=1+\frac12\cdot0+\frac12E_{\text{odd}}$, giving $E_{\text{odd}}=2$, and $E=1+\frac12\cdot 0+\frac12E_{\text{odd}}=1+1=2$.
+===END===
+===TEASER===
+SLUG: coin-sequence-given-three-heads
+IDS: Q-328
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: THHTH given three heads
+QUESTION:
+Five fair coins are tossed in a row. Given that exactly $3$ heads came up, what is the probability that the sequence was $THHTH$?
+HINT1:
+Conditioning on the number of heads leaves a set of equally likely sequences.
+HINT2:
+How many sequences of length 5 have exactly 3 heads?
+ANSWER:
+$\dfrac1{10}$
+REFRESH:
+**Conditioning with equally likely outcomes**: given an event $B$ made of equally likely outcomes, each outcome in $B$ has conditional probability $1/|B|$.
+EXPLANATION:
+All $32$ sequences are equally likely. Those with exactly 3 heads are $\binom53=10$ in number, all still equally likely after conditioning, and $THHTH$ is one of them.
+SOLUTION: Direct count
+$$P(THHTH\mid 3\text{ heads})=\frac{P(THHTH)}{P(3\text{ heads})}=\frac{1/32}{\binom53/32}=\frac1{10}.$$
+===END===
+===TEASER===
+SLUG: seventh-derivative-at-zero
+IDS: Q-329
+FIRMS: SIG
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: A seventh derivative at zero
+QUESTION:
+Let $f(x)=(1+x+2x^2+3x^3)\,e^{x^2}$. Compute $f^{(7)}(0)$.
+HINT1:
+Differentiating seven times by hand is a trap. How is $f^{(7)}(0)$ related to the Taylor series of $f$ at $0$?
+HINT2:
+$f^{(7)}(0)=7!\times[x^7]f(x)$. Expand $e^{x^2}=\sum_k x^{2k}/k!$ (even powers only) and find which terms of the polynomial can combine with it to give $x^7$.
+ANSWER:
+$8400$
+REFRESH:
+**Taylor coefficients**: if $f(x)=\sum_n a_nx^n$ near $0$, then $f^{(n)}(0)=n!\,a_n$.
+**Leibniz rule**: $(pg)^{(n)}=\sum_{j=0}^n\binom nj p^{(j)}g^{(n-j)}$.
+EXPLANATION:
+Reading derivatives off a power series is much faster than differentiating. Since $e^{x^2}$ contains only even powers, an $x^7$ in the product can only come from an odd power of the polynomial: $x\cdot x^6$ or $3x^3\cdot x^4$. Add those two coefficients and multiply by $7!$.
+SOLUTION: Power series coefficient
+$$e^{x^2}=1+x^2+\frac{x^4}{2!}+\frac{x^6}{3!}+\dots$$
+The coefficient of $x^7$ in $(1+x+2x^2+3x^3)e^{x^2}$:
+- from $x\cdot\frac{x^6}{3!}$: $\frac16$;
+- from $3x^3\cdot\frac{x^4}{2!}$: $\frac32$;
+- $1$ and $2x^2$ are even and would need an odd power of $e^{x^2}$: none.
+
+So $[x^7]f=\frac16+\frac32=\frac53$ and
+$$f^{(7)}(0)=7!\cdot\frac53=5040\cdot\frac53=8400.$$
+SOLUTION: Leibniz rule
+Write $f=p\,g$ with $p(x)=1+x+2x^2+3x^3$, $g(x)=e^{x^2}$. At $0$: $p(0)=1$, $p'(0)=1$, $p''(0)=4$, $p'''(0)=18$, higher derivatives $0$. From the series of $g$, $g^{(2k)}(0)=\frac{(2k)!}{k!}$ and odd derivatives vanish: $g^{(4)}(0)=\frac{24}{2}=12$, $g^{(6)}(0)=\frac{720}{6}=120$.
+$$f^{(7)}(0)=\sum_{j=0}^{3}\binom7j p^{(j)}(0)\,g^{(7-j)}(0).$$
+Only $j$ odd gives an even order $7-j$: $j=1$ and $j=3$.
+$$f^{(7)}(0)=\binom71\cdot1\cdot g^{(6)}(0)+\binom73\cdot18\cdot g^{(4)}(0)=7\cdot120+35\cdot18\cdot12=840+7560=8400.$$
+===END===
+===TEASER===
+SLUG: dice-sum-eight-contains-six
+IDS: Q-330
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Sum of 8 — is there a six?
+QUESTION:
+Two fair six-sided dice are rolled and their sum is $8$. What is the probability that one of the dice shows a $6$?
+HINT1:
+List the ordered outcomes that give a sum of 8.
+HINT2:
+With ordered dice, all 36 outcomes are equally likely, and so are those that remain after conditioning.
+ANSWER:
+$\dfrac25$
+REFRESH:
+**Conditioning on equally likely outcomes**: $P(A\mid B)=|A\cap B|/|B|$ when all outcomes are equally likely.
+EXPLANATION:
+The ordered pairs with sum 8 are $(2,6),(3,5),(4,4),(5,3),(6,2)$: five equally likely outcomes. A six appears in two of them. Counting ordered pairs matters: $(4,4)$ is a single outcome while $\{3,5\}$ counts twice.
+SOLUTION: Enumerate
+$B=\{\text{sum}=8\}=\{(2,6),(3,5),(4,4),(5,3),(6,2)\}$, $|B|=5$. $A\cap B=\{(2,6),(6,2)\}$. So
+$$P(A\mid B)=\frac25.$$
+===END===
+===TEASER===
+SLUG: roll-to-accumulate-six-resets
+IDS: Q-331
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Keep rolling or bank it? (a 6 wipes you out)
+QUESTION:
+You roll a fair six-sided die as many times as you like. A roll of $1$–$5$ is added to your score; you may stop at any time and keep your score. But if you ever roll a $6$, your score becomes $0$ and the game is over. What stopping rule maximises your expected score, and what is the maximal expected score?
+HINT1:
+Compare "stop now with $s$" against "roll exactly once more and then decide". What does one more roll give in expectation?
+HINT2:
+One more roll gives $\frac16\sum_{k=1}^5(s+k)=\frac{5s+15}{6}$ in expectation (if you then stop). This beats $s$ iff $s<15$. Justify that this one-step comparison is optimal, then compute the value by backward induction from the stopping totals $15,\dots,19$.
+ANSWER:
+Stop as soon as your score reaches $15$ or more; the maximal expected score is $\approx 6.15$ (exactly $2893395172951/6^{15}\approx 6.1537$).
+REFRESH:
+**One-step look-ahead rule**: in an optimal stopping problem, if the set of states where "stopping now is at least as good as continuing exactly one step then stopping" is closed (once in it you never leave), then stopping on first entry into that set is optimal.
+**Backward induction**: $V(s)=\max\big(s,\ \mathbb{E}[V(\text{next state})]\big)$, computed from the states where you surely stop.
+EXPLANATION:
+The trade-off of one more roll: with probability $5/6$ you gain on average $3$ points, and with probability $1/6$ you lose your whole score $s$. So the expected gain is $\frac56\cdot3-\frac16 s=\frac{15-s}{6}$: positive iff $s<15$. Since the score only grows while you play, once it is $\ge15$ it stays $\ge15$, so the myopic rule "roll while $s<15$" is globally optimal (at exactly $15$ you are indifferent). The expected value from $0$ is found by averaging over the five scores you can end on, $15$ to $19$, weighted by the probability of reaching each without ever rolling a $6$.
+SOLUTION: Optimal rule and backward induction
+**Rule.** From score $s$, rolling once and then stopping gives
+$$\frac16\cdot0+\frac16\sum_{k=1}^{5}(s+k)=\frac{5s+15}{6},$$
+which exceeds $s$ iff $s<15$. The set $\{s\ge15\}$ is closed (the score never decreases while playing), so by the one-step look-ahead rule it is optimal to stop at the first time $s\ge15$ (stopping at exactly $15$ or rolling once more are equally good).
+
+**Value.** Let $V(s)$ be the optimal expected final score from $s$. $V(s)=s$ for $s\ge15$, and for $s\le14$
+$$V(s)=\frac16\sum_{k=1}^{5}V(s+k).$$
+Backwards:
+$$\begin{aligned}
+V(14)&=\tfrac16(15+16+17+18+19)=\tfrac{85}{6}\approx14.167\\
+V(13)&=\tfrac16(V(14)+15+16+17+18)\approx13.361\\
+V(12)&\approx12.588,\quad V(11)\approx11.853,\quad V(10)\approx11.161\\
+V(9)&\approx10.522,\quad V(8)\approx9.914,\quad V(7)\approx9.340\\
+V(6)&\approx8.798,\quad V(5)\approx8.289,\quad V(4)\approx7.811\\
+V(3)&\approx7.359,\quad V(2)\approx6.933,\quad V(1)\approx6.532\\
+V(0)&\approx6.1537.
+\end{aligned}$$
+Equivalently, the probabilities of finishing on $15,16,17,18,19$ are about $0.1313,\ 0.1009,\ 0.0741,\ 0.0481,\ 0.0234$ (total $\approx0.378$; otherwise a $6$ ends the game with $0$), and
+$$15(0.1313)+16(0.1009)+17(0.0741)+18(0.0481)+19(0.0234)\approx6.15.$$
+Exactly, $V(0)=\dfrac{2893395172951}{6^{15}}\approx 6.1537$.
+===END===
+===TEASER===
+SLUG: english-history-double-majors
+IDS: Q-333
+FIRMS: Old Mission
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Neither English nor History
+QUESTION:
+At a college, $30\%$ of students major in English, $45\%$ major in History, and $15\%$ major in both. What percentage of students major in neither English nor History?
+HINT1:
+Adding $30\%$ and $45\%$ counts some students twice.
+HINT2:
+Inclusion–exclusion: $P(E\cup H)=P(E)+P(H)-P(E\cap H)$. Then take the complement.
+ANSWER:
+$40\%$
+REFRESH:
+**Inclusion–exclusion (two sets)**: $|A\cup B|=|A|+|B|-|A\cap B|$.
+EXPLANATION:
+The double majors are counted in both the $30\%$ and the $45\%$, so the share majoring in at least one of the two is $30+45-15=60\%$. The rest, $40\%$, majors in neither.
+SOLUTION: Inclusion–exclusion
+$$P(E\cup H)=0.30+0.45-0.15=0.60,\qquad P(\text{neither})=1-0.60=0.40=40\%.$$
+===END===
+===TEASER===
+SLUG: nine-team-knockout-two-meet
+IDS: Q-338
+FIRMS:
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Nine-team knockout: do two teams meet?
+QUESTION:
+A single-elimination tournament starts with $9$ teams. In each round, if the number of remaining teams is odd, one team chosen uniformly at random gets a bye (advances without playing); the other teams are paired uniformly at random, and each match is won by either side with probability $\tfrac12$. The tournament continues until one team remains. What is the probability that two given teams play each other at some point?
+HINT1:
+Tracking the bracket round by round is painful. Count matches instead.
+HINT2:
+How many matches are played in total? By symmetry, is any pair of teams more likely to meet than any other?
+ANSWER:
+$\dfrac29$
+REFRESH:
+**Linearity with symmetry**: if $N=\sum_{\text{pairs}}\mathbf 1_{\text{pair meets}}$ and all pairs have the same probability $p$, then $\mathbb{E}N=\binom n2 p$.
+EXPLANATION:
+Each match eliminates exactly one team, and the tournament ends with one team left, so exactly $8$ matches are played, whatever happens. Two teams can meet at most once (one of them is then out). The rules (random byes, random pairings, fair coins) treat all teams identically, so every one of the $\binom92=36$ pairs has the same probability $p$ of meeting. Counting matches: $36p=8$.
+SOLUTION: Counting matches
+Every match eliminates one team, so going from $9$ teams to $1$ takes exactly $8$ matches, and they involve $8$ distinct pairs (a pair can't meet twice). Let $M_{ij}=1$ if teams $i,j$ meet. Then
+$$\sum_{i<j}M_{ij}=8\quad\Rightarrow\quad\sum_{i<j}P(M_{ij}=1)=8.$$
+The tournament's rules are invariant under relabelling the teams, so $P(M_{ij}=1)=p$ is the same for all $\binom92=36$ pairs. Hence
+$$36p=8,\qquad p=\frac{8}{36}=\frac29.$$
+===END===
+===TEASER===
+SLUG: commutator-equals-identity
+IDS: Q-339
+FIRMS: Morgan Stanley
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Can AB − BA be the identity?
+QUESTION:
+Find two square matrices $A$ and $B$ (real or complex, same size $n\times n$) such that $AB-BA=I$, or prove that none exist.
+HINT1:
+Look for a linear quantity that behaves very simply on $AB$ and $BA$.
+HINT2:
+Take the trace of both sides.
+ANSWER:
+Impossible: $\operatorname{tr}(AB-BA)=0$ but $\operatorname{tr}(I)=n\neq0$.
+REFRESH:
+**Trace**: $\operatorname{tr}(M)=\sum_i M_{ii}$ is linear and satisfies $\operatorname{tr}(AB)=\operatorname{tr}(BA)$ for any $A$ ($n\times m$) and $B$ ($m\times n$).
+EXPLANATION:
+The trace of a product doesn't depend on the order: $\operatorname{tr}(AB)=\sum_{i,j}A_{ij}B_{ji}=\operatorname{tr}(BA)$. So every commutator $AB-BA$ has trace $0$, while the $n\times n$ identity has trace $n$. No finite matrices work.
+
+Two footnotes worth knowing: over a field of characteristic $p$ the argument fails when $p\mid n$ (and $p\times p$ examples exist); and on an infinite-dimensional space it is possible: on polynomials, with $A=\frac{d}{dx}$ and $B=$ multiplication by $x$, $(xf)'-xf'=f$, i.e. $AB-BA=I$ — this is the canonical commutation relation of quantum mechanics.
+SOLUTION: Trace argument
+For any $n\times n$ matrices,
+$$\operatorname{tr}(AB)=\sum_{i=1}^n\sum_{j=1}^nA_{ij}B_{ji}=\sum_{j=1}^n\sum_{i=1}^nB_{ji}A_{ij}=\operatorname{tr}(BA).$$
+So by linearity $\operatorname{tr}(AB-BA)=0$. If $AB-BA=I_n$, taking traces gives $0=n$, impossible for $n\ge1$ over $\mathbb{R}$ or $\mathbb{C}$. Hence no such matrices exist.
+===END===
+===TEASER===
+SLUG: det-a-minus-a-transpose-bernoulli
+IDS: Q-340
+FIRMS: WorldQuant
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Expected determinant of A − Aᵀ
+QUESTION:
+$A$ is a random $2\times2$ matrix whose four entries are i.i.d. $\text{Bernoulli}(1/2)$. Compute $\mathbb{E}\big[\det(A-A^T)\big]$.
+HINT1:
+Write out $A-A^T$ explicitly. What happens to the diagonal?
+HINT2:
+$A-A^T$ is antisymmetric: $\begin{pmatrix}0&d\\-d&0\end{pmatrix}$ with $d=A_{12}-A_{21}$. Its determinant is $d^2$.
+ANSWER:
+$\dfrac12$
+REFRESH:
+**$2\times2$ determinant**: $\det\begin{pmatrix}a&b\\c&e\end{pmatrix}=ae-bc$.
+EXPLANATION:
+Subtracting the transpose kills the diagonal and leaves $d=A_{12}-A_{21}$ above it and $-d$ below. The determinant is $0\cdot0-d(-d)=d^2$. Since $d\in\{-1,0,1\}$, $d^2$ is just the indicator that the two off-diagonal entries differ, which happens with probability $1/2$.
+SOLUTION: Direct computation
+$$A-A^T=\begin{pmatrix}0&A_{12}-A_{21}\\A_{21}-A_{12}&0\end{pmatrix},\qquad\det(A-A^T)=-(A_{12}-A_{21})(A_{21}-A_{12})=(A_{12}-A_{21})^2.$$
+$A_{12},A_{21}$ are independent fair bits, so $(A_{12}-A_{21})^2=1$ iff they differ, with probability $\frac12\cdot\frac12+\frac12\cdot\frac12=\frac12$. Hence
+$$\mathbb{E}[\det(A-A^T)]=\frac12.$$
+(Check via moments: $\mathbb{E}[(A_{12}-A_{21})^2]=\mathbb{E}A_{12}^2+\mathbb{E}A_{21}^2-2\mathbb{E}A_{12}\mathbb{E}A_{21}=\frac12+\frac12-\frac12=\frac12$.)
+===END===
+===TEASER===
+SLUG: median-of-three-uniforms-below-two-thirds
+IDS: Q-343
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: Median of three uniforms below 2/3
+QUESTION:
+Three numbers are drawn independently from $\text{Unif}(0,1)$ and sorted. What is the probability that the middle one (the median) is less than $\tfrac23$?
+HINT1:
+Translate "the median is below $2/3$" into a statement about how many of the three numbers are below $2/3$.
+HINT2:
+The median is below $2/3$ iff at least two of the three numbers are below $2/3$. The count below $2/3$ is binomial.
+ANSWER:
+$\dfrac{20}{27}$
+REFRESH:
+**Order statistics and binomials**: $X_{(k)}\le x$ iff at least $k$ of the $n$ samples are $\le x$, so $P(X_{(k)}\le x)=\sum_{j\ge k}\binom nj F(x)^j(1-F(x))^{n-j}$.
+**Density of the median of 3 uniforms**: $f(x)=6x(1-x)$ on $[0,1]$ (Beta(2,2)).
+EXPLANATION:
+The median of three is below a threshold exactly when at least two of the three points are below it. Each point is independently below $2/3$ with probability $2/3$, so the count is $\text{Bin}(3,2/3)$ and we need it to be $2$ or $3$.
+SOLUTION: Binomial count
+Let $K$ be the number of samples below $2/3$; $K\sim\text{Bin}(3,\tfrac23)$.
+$$P(K\ge2)=\binom32\Big(\frac23\Big)^2\frac13+\Big(\frac23\Big)^3=3\cdot\frac49\cdot\frac13+\frac8{27}=\frac{12}{27}+\frac{8}{27}=\frac{20}{27}.$$
+SOLUTION: Density of the median
+The median of three uniforms has density $f(x)=\frac{3!}{1!\,1!\,1!}x(1-x)=6x(1-x)$ (one sample below $x$, one at $x$, one above). So
+$$P\Big(\text{median}<\frac23\Big)=\int_0^{2/3}6x(1-x)\,dx=\big[3x^2-2x^3\big]_0^{2/3}=\frac43-\frac{16}{27}=\frac{20}{27}.$$
+===END===
+===TEASER===
+SLUG: digit-sum-nine-up-to-100000
+IDS: Q-347
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: How many numbers have digit sum 9?
+QUESTION:
+How many positive integers not exceeding $100\,000$ have digits adding up to $9$? (Examples: $81$, $144$, $13212$.)
+HINT1:
+Pad every number below $100\,000$ with leading zeros so that it has exactly 5 digits. What about $100\,000$ itself?
+HINT2:
+You need the number of solutions of $d_1+d_2+d_3+d_4+d_5=9$ with $0\le d_i\le 9$. Does the upper bound $9$ ever bite?
+ANSWER:
+$715$
+REFRESH:
+**Stars and bars**: the number of solutions of $x_1+\dots+x_k=n$ in non-negative integers is $\binom{n+k-1}{k-1}$.
+EXPLANATION:
+Writing the numbers $1,\dots,99\,999$ as 5-digit strings with leading zeros is a bijection with the strings $00001,\dots,99999$, and a digit sum of $9$ is the same for the padded string. So we count 5-tuples of digits adding to $9$. Since the sum is only $9$, no digit can exceed $9$ anyway, so the digit constraint is automatic and plain stars and bars applies. The number $100\,000$ has digit sum $1$ and $0$ is excluded (its digit sum is $0$), so nothing else changes.
+SOLUTION: Stars and bars
+Count $(d_1,\dots,d_5)\in\{0,\dots,9\}^5$ with $d_1+\dots+d_5=9$. Every non-negative solution automatically has $d_i\le9$, so the count is
+$$\binom{9+5-1}{5-1}=\binom{13}{4}=\frac{13\cdot12\cdot11\cdot10}{24}=715.$$
+Each such tuple is a distinct positive integer below $100\,000$ (it is non-zero since the digits sum to 9), and $100\,000$ (digit sum $1$) doesn't qualify. Answer: $715$.
+===END===
+===TEASER===
+SLUG: all-evens-before-first-odd
+IDS: Q-348
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: All evens before the first odd
+QUESTION:
+You roll a fair six-sided die until the first odd number ($1$, $3$ or $5$) appears. What is the probability that, by then, each of $2$, $4$ and $6$ has already appeared at least once?
+HINT1:
+Repeated faces are irrelevant: only the order in which new "kinds" of outcome first appear matters.
+HINT2:
+Lump $1,3,5$ into one outcome "odd" with probability $1/2$. Look at the order of first appearance of the four outcomes $2,4,6,\text{odd}$: you need "odd" to come last. Build that order one new outcome at a time.
+ANSWER:
+$\dfrac1{20}$
+REFRESH:
+**Order of first appearances**: with i.i.d. trials, conditional on the next outcome being one not seen yet, it is outcome $i$ with probability $p_i/\sum_{j\ \text{unseen}}p_j$.
+EXPLANATION:
+Rolls that repeat an already seen even number don't change anything, so ignore them. Each time something new appears, it is either "odd" (weight $3$, i.e. the three odd faces) or one of the unseen even faces (weight $1$ each). We need the three even faces to show up, one by one, before "odd" does: first a new even beats "odd" with probability $3/6$, then $2/5$, then $1/4$.
+SOLUTION: Chain of new outcomes
+Weights: each even face $1/6$, "odd" $1/2=3/6$.
+- First new outcome is an even face: $\dfrac{3/6}{3/6+3/6}=\dfrac12$.
+- Next new outcome (among 2 unseen evens and "odd") is an even: $\dfrac{2/6}{2/6+3/6}=\dfrac25$.
+- Next new outcome (1 unseen even vs "odd") is the even: $\dfrac{1/6}{1/6+3/6}=\dfrac14$.
+
+$$P=\frac12\cdot\frac25\cdot\frac14=\frac1{20}.$$
+SOLUTION: Inclusion–exclusion
+For a set $S$ of even faces, let $A_S$ be the event that no face of $S$ appears before the first odd. Ignoring the rolls outside $S\cup\{1,3,5\}$, $A_S$ says that the first roll landing in $S\cup\{1,3,5\}$ is odd:
+$$P(A_S)=\frac{3/6}{(3+|S|)/6}=\frac{3}{3+|S|}.$$
+By inclusion–exclusion over the faces that are missing,
+$$P(\text{all of }2,4,6\text{ seen})=\sum_{S\subseteq\{2,4,6\}}(-1)^{|S|}P(A_S)=1-3\cdot\frac34+3\cdot\frac35-\frac36=\frac{20-45+36-10}{20}=\frac1{20}.$$
+===END===
+===TEASER===
+SLUG: coins-then-dice-odd-total
+IDS: Q-351
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Heads earn dice: is the total odd?
+QUESTION:
+Two fair coins are tossed. For each head, a fair six-sided die is rolled. What is the probability that the sum of the dice rolled is odd? (If no die is rolled, the sum is $0$.)
+HINT1:
+Condition on the number of heads.
+HINT2:
+With at least one die, is the parity of the sum biased? Think about the last die rolled.
+ANSWER:
+$\dfrac38$
+REFRESH:
+**Law of total probability**: $P(A)=\sum_k P(A\mid K=k)P(K=k)$.
+**Parity of a sum**: if one summand is a fair parity bit independent of the others, the sum is odd with probability exactly $1/2$.
+EXPLANATION:
+With zero heads there are no dice, the sum is $0$, which is even. With one or two dice, the last die's parity is a fair coin flip independent of the rest, so the sum is odd with probability exactly $1/2$. At least one head happens with probability $3/4$, so the answer is $\frac34\cdot\frac12$.
+SOLUTION: Condition on the number of heads
+$K\sim\text{Bin}(2,\tfrac12)$: $P(K=0)=\frac14$, $P(K=1)=\frac12$, $P(K=2)=\frac14$.
+- $K=0$: sum $=0$, even: $P(\text{odd})=0$.
+- $K=1$: one die, odd with probability $\frac36=\frac12$.
+- $K=2$: two dice, odd iff exactly one is odd: $2\cdot\frac12\cdot\frac12=\frac12$.
+
+$$P(\text{odd})=\frac14\cdot0+\frac12\cdot\frac12+\frac14\cdot\frac12=\frac14+\frac18=\frac38.$$
+===END===
+===TEASER===
+SLUG: all-odds-before-any-even
+IDS: Q-352
+FIRMS: IMC, SIG
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: 1, 3 and 5 before any even
+QUESTION:
+You roll a fair six-sided die repeatedly. What is the probability that each of the odd faces $1$, $3$ and $5$ appears at least once before any even face appears?
+HINT1:
+Repeats of an odd face you have already seen change nothing; only "new" outcomes matter.
+HINT2:
+Treat all even faces as a single outcome "even" of probability $1/2$. You need the three odd faces to appear as new outcomes, one after another, before "even" shows up. Multiply the step probabilities.
+ANSWER:
+$\dfrac1{20}$
+REFRESH:
+**Order of first appearances**: with i.i.d. trials, conditional on the next outcome being one not seen yet, it is outcome $i$ with probability $p_i/\sum_{j\ \text{unseen}}p_j$.
+EXPLANATION:
+Group the even faces into one outcome "even" with weight $3$ (out of $6$); each odd face has weight $1$. Rolls that repeat an odd face already seen are wasted and can be skipped. Each time something new appears, it must be a new odd face rather than "even": $3$ good faces against $3$ bad ones first, then $2$ against $3$, then $1$ against $3$.
+SOLUTION: Chain of new outcomes
+$$P=\frac{3}{3+3}\cdot\frac{2}{2+3}\cdot\frac{1}{1+3}=\frac12\cdot\frac25\cdot\frac14=\frac1{20}.$$
+SOLUTION: Inclusion–exclusion
+For a set $S$ of odd faces, the probability that none of $S$ appears before the first even is $\frac{3}{3+|S|}$ (the first roll in $S\cup\{2,4,6\}$ must be even). So
+$$P(1,3,5\text{ all seen first})=\sum_{S\subseteq\{1,3,5\}}(-1)^{|S|}\frac{3}{3+|S|}=1-\frac94+\frac95-\frac12=\frac{20-45+36-10}{20}=\frac1{20}.$$
+===END===
+===TEASER===
+SLUG: oil-well-share-option
+IDS: Q-355
+FIRMS: Old Mission, SIG
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: Option on an oil explorer's shares
+QUESTION:
+An oil company is drilling a well: it succeeds with probability $30\%$ and fails with probability $70\%$. If it fails the shares will be worth $20$; if it succeeds they will be worth $100$. You hold an option (a right, not an obligation) to buy one share for $50$ the day after the result is known. What is the fair price of the option (ignore interest rates)?
+HINT1:
+Work out what the option pays in each scenario. Would you exercise it in both?
+HINT2:
+It pays $\max(S-50,0)$. Weight the two scenarios by their probabilities.
+ANSWER:
+$15$
+REFRESH:
+**Call option payoff**: a call with strike $K$ pays $\max(S_T-K,0)$ at expiry. With given real-world probabilities, no interest rate and no risk premium, its fair value is the expected payoff.
+EXPLANATION:
+You only exercise if the shares are worth more than $50$. In the success scenario you buy at $50$ something worth $100$ and gain $50$; in the failure scenario buying at $50$ something worth $20$ would lose money, so you walk away with $0$. The fair price is the average payoff: $0.3\times50=15$. Note the option is worth more than $\max(\mathbb{E}S-50,0)=\max(44-50,0)=0$: the right to walk away is what gives it value.
+SOLUTION: Expected payoff
+Payoff $=\max(S-50,0)$:
+- success ($p=0.3$): $\max(100-50,0)=50$;
+- failure ($p=0.7$): $\max(20-50,0)=0$.
+
+$$\text{Fair price}=0.3\cdot50+0.7\cdot0=15.$$
+(For comparison, the share itself is worth $0.3\cdot100+0.7\cdot20=44$ today.)
+===END===
+===TEASER===
+SLUG: odd-faced-die-call-option
+IDS: Q-356
+FIRMS: Optiver
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: easy
+TITLE: A call on an odd-numbered die
+QUESTION:
+A fair $12$-sided die has the twelve odd numbers $1,3,5,\dots,23$ on its faces. You are offered a call option on the roll with strike $12$: after one roll it pays $\max(X-12,\,0)$ dollars, where $X$ is the face shown. What is its fair value?
+HINT1:
+Which faces make the option pay anything?
+HINT2:
+Only the faces $13,15,\dots,23$ pay; list their payoffs and average over all 12 faces.
+ANSWER:
+\$3
+REFRESH:
+**Call payoff**: $\max(X-K,0)$; its fair value (no interest, no risk premium) is $\mathbb{E}[\max(X-K,0)]$.
+EXPLANATION:
+The option is worthless on the six faces below $12$. On the six faces above, it pays $1,3,5,7,9,11$ dollars. Summing $1+3+\dots+11=36$ and dividing by $12$ faces gives $3$ dollars. Notice that the option is worth more than the "intrinsic value at the mean" $\max(\mathbb{E}X-12,0)=0$: optionality has value.
+SOLUTION: Average the payoffs
+Faces: $1,3,\dots,23$, each with probability $\frac1{12}$. Payoffs $\max(X-12,0)$: $0$ for $X\le11$; for $X=13,15,17,19,21,23$ they are $1,3,5,7,9,11$. So
+$$\mathbb{E}[\max(X-12,0)]=\frac{1+3+5+7+9+11}{12}=\frac{36}{12}=3.$$
+Note: the original statement reads "faces $1,3,\dots,12$", which is garbled (a 12-face die with values up to 12 would make a strike-12 call worthless); the intended faces are the twelve odd numbers $1$ to $23$, which gives the stated value of \$3.
+===END===
+===TEASER===
+SLUG: call-butterfly-arbitrage-1000-1010-1020
+IDS: Q-357
+FIRMS: Transmarket Group
+SECTION: trading
+CATEGORY: Options & Greeks
+DIFFICULTY: medium
+TITLE: Three calls, one arbitrage
+QUESTION:
+Three European calls on the same underlying with the same expiry trade at:
+- strike $1000$: price $4$,
+- strike $1010$: price $3.5$,
+- strike $1020$: price $2.75$.
+
+Find the arbitrage. What is the minimum guaranteed profit per unit (ignoring interest rates and costs)?
+HINT1:
+Call prices must be decreasing in the strike (they are here) and satisfy one more shape constraint. Check it.
+HINT2:
+Call prices must be **convex** in the strike: the middle call should cost at most the average of its neighbours. Here $3.5>\frac{4+2.75}{2}$. Which combination of the three calls exploits that?
+ANSWER:
+Buy the $1000$ call, sell two $1010$ calls, buy the $1020$ call (a butterfly): you receive $0.25$ upfront and the payoff at expiry is never negative, so at least $0.25$ profit (up to $10.25$).
+REFRESH:
+**Convexity of call prices**: for $K_1<K_2<K_3$ equally spaced, $C(K_2)\le\frac{C(K_1)+C(K_3)}{2}$, because the butterfly $C(K_1)-2C(K_2)+C(K_3)$ has a non-negative payoff and so must have a non-negative price.
+**Butterfly payoff**: long $K_1$, short $2\times K_2$, long $K_3$ pays a "tent": $0$ outside $[K_1,K_3]$, rising to $K_2-K_1$ at $K_2$.
+EXPLANATION:
+A long butterfly never loses money at expiry, so it should cost something. Here its price is $4-2(3.5)+2.75=-0.25$: the market pays you $0.25$ to take it. You lock in $0.25$ today and keep whatever the tent pays at expiry (between $0$ and $10$). The mispriced leg is the $1010$ call, which is too expensive relative to its neighbours ($3.5$ vs at most $3.375$).
+SOLUTION: Butterfly
+Portfolio: $+1$ call $1000$, $-2$ calls $1010$, $+1$ call $1020$.
+
+**Cash today:** $-4+2(3.5)-2.75=+0.25$ (received).
+
+**Payoff at expiry** as a function of the underlying $S$:
+- $S\le1000$: all calls expire worthless: $0$.
+- $1000\le S\le1010$: $(S-1000)\ge0$.
+- $1010\le S\le1020$: $(S-1000)-2(S-1010)=1020-S\ge0$.
+- $S\ge1020$: $(S-1000)-2(S-1010)+(S-1020)=0$.
+
+So the payoff is between $0$ and $10$ (maximal at $S=1010$), never negative. Total profit $=0.25+\text{payoff}\ge0.25$: a guaranteed profit of at least $0.25$ per butterfly (and up to $10.25$), with no risk. (Per listed contract, multiply by the contract multiplier.)
+===END===
+===TEASER===
+SLUG: three-planets-realign
+IDS: Q-359
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: medium
+TITLE: When do three planets line up again?
+QUESTION:
+Three planets orbit a star in the same plane and the same direction, with periods of $40$, $60$ and $90$ years (uniform circular motion). Right now the three planets and the star lie on one straight line. After how many years will the three planets and the star next lie on one straight line again?
+HINT1:
+The naive LCM of the periods is when everything returns to the starting position; but lining up with the star does not require every planet to be back where it started, nor even on the same side of the star.
+HINT2:
+Work with angle differences: two planets are collinear with the star when their angle difference is a multiple of half a turn. Compute how often each pair does that.
+ANSWER:
+$180$ years
+REFRESH:
+**Relative (synodic) period**: two bodies with periods $T_1<T_2$ moving the same way gain one full lap on each other every $\frac{1}{1/T_1-1/T_2}$ time units.
+**LCM of rationals**: the first common positive multiple of $a$ and $b$ is $\operatorname{lcm}(a,b)$ for integers.
+EXPLANATION:
+Measure angles in turns. Planet $i$ is at angle $t/T_i$ plus its start angle. They start collinear with the star, so all start angles agree modulo half a turn; we can take them all equal to $0$ modulo $\tfrac12$. The configuration is collinear again when every pairwise angle difference is a multiple of $\frac12$ turn. The pair $(40,60)$ drifts apart at $\frac1{40}-\frac1{60}=\frac1{120}$ turn per year, so it is collinear every $60$ years; the pair $(60,90)$ drifts at $\frac1{180}$, collinear every $90$ years. Both happen first at $\operatorname{lcm}(60,90)=180$, and the third pair then follows automatically. At $t=180$ the fast planet has done $4.5$ laps, so it is on the opposite side of the star from the other two — but all four bodies are on one line.
+SOLUTION: Pairwise angle differences
+Angles in turns: $\theta_i(t)=\theta_i(0)+t/T_i$ with $T=40,60,90$, and $\theta_i(0)-\theta_j(0)\in\frac12\mathbb{Z}$. Collinearity with the star at time $t$ means $\theta_i(t)-\theta_j(t)\in\frac12\mathbb{Z}$ for all pairs, i.e.
+$$t\Big(\frac1{40}-\frac1{60}\Big)=\frac{t}{120}\in\tfrac12\mathbb{Z}\iff 60\mid t,\qquad t\Big(\frac1{60}-\frac1{90}\Big)=\frac{t}{180}\in\tfrac12\mathbb{Z}\iff 90\mid t.$$
+(The pair $(40,90)$: $t\cdot\frac{5}{360}=\frac{t}{72}\in\frac12\mathbb{Z}\iff 36\mid t$, implied by the other two conditions since the differences add up.) The smallest positive $t$ with $60\mid t$ and $90\mid t$ is $\operatorname{lcm}(60,90)=180$.
+
+Check at $t=180$: laps $180/40=4.5$, $180/60=3$, $180/90=2$. Planets 2 and 3 are back at their start, planet 1 is diametrically opposite its start: all collinear with the star. Answer: $180$ years.
+FOLLOWUP: Same side of the star
+Suppose the three planets start on the same ray from the star (all on the same side), with the same periods $40$, $60$, $90$ years. When are they next all on the same side of the star, on one ray?
+FOLLOWUP_ANSWER:
+Now each pairwise angle difference must be a whole number of turns: $t/120\in\mathbb{Z}$ and $t/180\in\mathbb{Z}$, so $t$ is a multiple of $\operatorname{lcm}(120,180)=360$ (and then $t/72=5\in\mathbb{Z}$ too). Answer: **$360$ years**, which here coincides with $\operatorname{lcm}(40,60,90)=360$, when every planet is back at its starting point ($9$, $6$ and $4$ laps).
+===END===

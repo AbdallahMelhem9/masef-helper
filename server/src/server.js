@@ -429,7 +429,7 @@ const parseJson = (s, fallback) => {
 // The list (no statements or solutions), with this user's progress.
 app.get('/api/teasers', requireAuth, async (req, res) => {
   const rows = db
-    .prepare('SELECT id, slug, section, category, title, difficulty, books, position, illustration IS NOT NULL AS hasIllustration FROM teasers ORDER BY position, id')
+    .prepare('SELECT id, slug, section, category, title, difficulty, books, firms, position, illustration IS NOT NULL AS hasIllustration FROM teasers ORDER BY position, id')
     .all();
   let states = [];
   try {
@@ -442,6 +442,7 @@ app.get('/api/teasers', requireAuth, async (req, res) => {
     rows.map((t) => ({
       ...t,
       books: parseJson(t.books, []),
+      firms: parseJson(t.firms, []),
       hasIllustration: !!t.hasIllustration,
       completed: !!bySlug.get(t.slug)?.completed,
       hasBoard: !!bySlug.get(t.slug)?.ink_filled,
@@ -473,6 +474,7 @@ app.get('/api/teasers/:slug', requireAuth, async (req, res) => {
     solutions: parseJson(t.solutions, []),
     followups: parseJson(t.followups, []),
     books: parseJson(t.books, []),
+    firms: parseJson(t.firms, []),
     refs: parseJson(t.refs, []),
     completed,
   });

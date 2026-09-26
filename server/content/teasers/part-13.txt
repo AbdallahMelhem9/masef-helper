@@ -1,0 +1,1054 @@
+===TEASER===
+SLUG: rand7-to-rand10
+IDS: Q-430, Q-156
+FIRMS: Goldman Sachs, Jane Street
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Build a fair 1–10 from a fair 1–7
+QUESTION:
+You have a function `rand7()` that returns an integer from $1$ to $7$, each with probability $1/7$, independently on every call. Using only `rand7()`, construct a procedure that returns an integer from $1$ to $10$, each with probability exactly $1/10$. How many calls does your procedure use on average?
+HINT1:
+One call gives only $7$ equally likely outcomes, and $10$ does not divide $7$. What happens to the number of equally likely outcomes if you call the function twice?
+HINT2:
+Two calls give $49$ equally likely ordered pairs. Keep a block of them whose size is a multiple of $10$, and do something about the rest so that you never bias the answer.
+ANSWER:
+Encode two calls as $Z = 7(a-1) + b \in \{1,\dots,49\}$; if $Z \le 40$ return $((Z-1) \bmod 10) + 1$, otherwise start again. It uses $2 \cdot 49/40 = 2.45$ calls on average.
+REFRESH:
+- **Rejection sampling:** if $Z$ is uniform on a finite set $S$ and $A \subset S$, then $Z$ conditioned on $Z \in A$ is uniform on $A$. Repeating independent draws until one lands in $A$ produces exactly that conditional law.
+- **Geometric distribution:** if each attempt succeeds with probability $p$, independently, the number of attempts until the first success has mean $1/p$.
+EXPLANATION:
+No fixed number of calls can work: $k$ calls give $7^k$ equally likely outcomes, and $7^k$ is never divisible by $10$, so you can never split them into $10$ groups of equal size. You must allow the procedure to "throw away" some outcomes and try again.
+
+Two calls give a uniform number on $\{1,\dots,49\}$ (think of the two calls as the two digits of a base-7 number). The first $40$ values split into $10$ groups of $4$, so conditionally on landing in $\{1,\dots,40\}$ each of the $10$ answers has probability $4/40 = 1/10$. The $9$ leftover values are simply rejected and we redraw. Because each attempt is independent and identical, the accepted value is exactly uniform — rejection never introduces bias, it only costs time.
+SOLUTION: Rejection sampling on 49 outcomes
+*Step 1.* Call `rand7()` twice to get $a, b$. The pair $(a,b)$ is uniform over $49$ equally likely pairs. Map it to $Z = 7(a-1) + b$. The map is a bijection onto $\{1,\dots,49\}$ (as in base $7$), so $Z$ is uniform on $\{1,\dots,49\}$.
+
+*Step 2.* If $Z \le 40$, output $X = ((Z-1) \bmod 10) + 1$. Each value of $X$ is hit by exactly $4$ values of $Z$ (e.g. $X = 3$ for $Z \in \{3,13,23,33\}$).
+
+*Step 3.* If $Z \in \{41,\dots,49\}$, discard and go back to Step 1.
+
+*Correctness.* On a given attempt, $P(X = j,\ \text{accept}) = 4/49$ for each $j$, and $P(\text{accept}) = 40/49$. Attempts are independent, so
+$$P(X = j) = \sum_{r\ge 0} \left(\tfrac{9}{49}\right)^r \cdot \tfrac{4}{49} = \frac{4/49}{1 - 9/49} = \frac{4}{40} = \frac{1}{10}.$$
+
+*Cost.* The number of attempts is geometric with success probability $40/49$, so its mean is $49/40$, and each attempt costs $2$ calls: $2 \cdot 49/40 = 2.45$ calls on average.
+SOLUTION: Recycling the rejected randomness (fewer calls)
+When $Z \in \{41,\dots,49\}$, the value $Z - 40$ is itself uniform on $\{1,\dots,9\}$. Combine it with one more call: $Z' = 7(Z-41) + c \in \{1,\dots,63\}$, uniform. Accept if $Z' \le 60$ (six copies of each digit), else $Z'-60$ is uniform on $\{1,2,3\}$; combine with one more call to get a uniform on $\{1,\dots,21\}$, accept if $\le 20$, else you are left with a single outcome (no randomness left) and restart from scratch. The output is still exactly uniform at every stage, and the average number of calls drops to about $2.19$. This is optional polish; interviewers mostly want the basic rejection scheme and its correctness argument.
+FOLLOWUP: A 15-sided die from two ordinary dice
+You have two fair six-sided dice and need to simulate a fair $15$-sided die (outcomes $1,\dots,15$ each with probability $1/15$). How?
+FOLLOWUP_ANSWER:
+Use one die to choose a block of five and the other to choose within the block. Roll die $A$: map $\{1,2\}\to 0$, $\{3,4\}\to 1$, $\{5,6\}\to 2$, so $G$ is uniform on $\{0,1,2\}$. Roll die $B$: if it shows $6$, reroll it until it shows $1$–$5$; call the result $r$, uniform on $\{1,\dots,5\}$ (rejection sampling). Output $5G + r$, which is uniform on $\{1,\dots,15\}$ because $G$ and $r$ are independent and uniform: $P(5G+r = k) = \tfrac13 \cdot \tfrac15 = \tfrac1{15}$. Equivalently: roll both dice, list the $36$ ordered pairs, keep $30$ of them split into $15$ pairs of outcomes, and reroll on the other $6$.
+===END===
+
+===TEASER===
+SLUG: first-uniform-above-threshold
+IDS: Q-477, Q-018
+FIRMS: Citadel, DRW, Goldman Sachs, Hudson River Trading
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: Waiting to beat a random threshold
+QUESTION:
+Let $U, X_1, X_2, \dots$ be independent, all uniform on $(0,1)$. The threshold $U$ is drawn once; then you draw $X_1, X_2, \dots$ until one exceeds it. Let
+$$N = \min\{n \ge 1 : X_n > U\}.$$
+Compute $\mathbb{E}[N]$ (or show it is infinite).
+HINT1:
+Condition on the threshold. If you knew $U = u$, what kind of random variable would $N$ be?
+HINT2:
+Given $U = u$, $N$ is geometric with success probability $1-u$, so $\mathbb{E}[N \mid U = u] = 1/(1-u)$. Now average over $u$ — and look carefully at what happens near $u = 1$.
+ANSWER:
+$\mathbb{E}[N] = +\infty$ (even though $N$ is finite with probability $1$).
+REFRESH:
+- **Tower property:** $\mathbb{E}[N] = \mathbb{E}\big[\mathbb{E}[N \mid U]\big]$, valid also for non-negative variables with infinite mean.
+- **Tail-sum formula:** for $N \in \{1,2,\dots\}$, $\mathbb{E}[N] = \sum_{n\ge 0} P(N > n)$.
+- **Probability integral transform:** if $T$ has a continuous CDF $F$, then $F(T)$ is uniform on $(0,1)$.
+EXPLANATION:
+For a fixed threshold $u$ you wait on average $1/(1-u)$ draws — reasonable. But the threshold is random, and with small but non-negligible probability it lands very close to $1$, where the wait explodes. Averaging $1/(1-u)$ over $u \in (0,1)$ gives $\int_0^1 \frac{du}{1-u}$, a logarithmically divergent integral: the rare huge waits dominate.
+
+Another way to see it: $N > n$ means $U$ is the largest of the $n+1$ variables $U, X_1,\dots,X_n$, which by symmetry has probability $\frac{1}{n+1}$. So $P(N > n) = \frac{1}{n+1}$, and $\sum \frac1{n+1}$ is the harmonic series, which diverges. This second argument uses only symmetry, so it works for **any** continuous distribution, not just the uniform.
+SOLUTION: Conditioning on the threshold
+Given $U = u$, the $X_n$ are i.i.d. with $P(X_n > u) = 1-u$, so $N$ is geometric with parameter $1-u$ and
+$$\mathbb{E}[N \mid U = u] = \frac{1}{1-u}.$$
+By the tower property,
+$$\mathbb{E}[N] = \int_0^1 \frac{du}{1-u} = \lim_{\varepsilon \to 0} \big[-\ln(1-u)\big]_0^{1-\varepsilon} = \lim_{\varepsilon\to 0} \ln\frac{1}{\varepsilon} = +\infty.$$
+Note that $P(N < \infty) = \int_0^1 1\,du = 1$: the wait is always finite, but its mean is not.
+SOLUTION: Symmetry and the harmonic series
+$N > n$ iff $X_1,\dots,X_n$ are all below $U$, i.e. iff $U$ is the maximum of the $n+1$ i.i.d. continuous variables $U, X_1, \dots, X_n$. Each of them is equally likely to be the maximum (ties have probability $0$), so
+$$P(N > n) = \frac{1}{n+1}.$$
+Then
+$$\mathbb{E}[N] = \sum_{n=0}^\infty P(N > n) = \sum_{n=0}^{\infty} \frac{1}{n+1} = 1 + \frac12 + \frac13 + \cdots = +\infty.$$
+FOLLOWUP: Same question with Beta(12, 8) variables
+Now $T, X_1, X_2, \dots$ are i.i.d. $\text{Beta}(12,8)$ and $N = \min\{n : X_n > T\}$. Is $\mathbb{E}[N]$ finite?
+FOLLOWUP_ANSWER:
+No, $\mathbb{E}[N] = +\infty$ again. The symmetry argument never used the uniform law: $P(N > n) = P(T \text{ is the largest of } T, X_1,\dots,X_n) = \frac1{n+1}$ for any continuous distribution, so $\mathbb{E}[N] = \sum_{n\ge0}\frac1{n+1} = \infty$. Equivalently, with $F$ the Beta CDF, $\mathbb{E}[N\mid T] = \frac{1}{1-F(T)}$ and $F(T)$ is uniform on $(0,1)$, which brings you back to $\int_0^1 \frac{du}{1-u} = \infty$.
+===END===
+
+===TEASER===
+SLUG: pigeonhole-five-same-birth-month
+IDS: Q-027, Q-213
+FIRMS: Jane Street
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Five people born in the same month
+QUESTION:
+What is the smallest number of people you need in a room to be **certain** that at least five of them were born in the same calendar month, however their birthdays happen to be distributed?
+HINT1:
+Play the adversary: how many people can you put in the room while carefully avoiding five in any single month?
+HINT2:
+There are $12$ months and each can hold at most $4$ people without reaching five. What is the largest "safe" room, and what happens when one more person walks in?
+ANSWER:
+$49$
+REFRESH:
+- **Generalised pigeonhole principle:** if $n$ objects are placed in $k$ boxes and $n > k\,m$, then some box contains at least $m+1$ objects.
+EXPLANATION:
+"Certain" means you must beat the worst case. The worst case is the most balanced one: an adversary fills every month with exactly $4$ people, which is $12 \times 4 = 48$ people with no month reaching five. So $48$ is not enough. With $49$ people, if every month had at most $4$, there would be at most $48$ people — contradiction — so some month has at least $5$.
+SOLUTION: Worst case plus pigeonhole
+*48 is not enough.* Put exactly $4$ people in each of the $12$ months: $48$ people and no month contains five.
+
+*49 is enough.* Suppose $49$ people but every month has at most $4$ of them. Summing over months, there are at most $12\cdot 4 = 48$ people, a contradiction. Hence some month contains at least $5$ people.
+
+The minimum is $4\cdot 12 + 1 = 49$.
+FOLLOWUP: Two people in the same month
+What is the least number of people needed so that at least two of them are certainly born in the same month?
+FOLLOWUP_ANSWER:
+$13$. With $12$ people, one per month avoids any match; with $13$ people and only $12$ months, two share a month by the pigeonhole principle ($13 > 12 \cdot 1$).
+===END===
+
+===TEASER===
+SLUG: ferry-three-quarters-plus-seven
+IDS: Q-248, Q-368
+FIRMS: IMC, Jane Street, SIG
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Three quarters off, seven on
+QUESTION:
+A ferry leaves with some whole number of passengers. At each stop, exactly $\tfrac34$ of the passengers on board get off, and then $7$ new passengers get on. This happens at three stops in total (the first stop and two more), after which the ferry reaches its final destination. The number of passengers must be a whole number at every moment. What is the smallest possible number of passengers on board at the end?
+HINT1:
+Write the effect of one stop as a function $x \mapsto \dots$. What must be true of $x$ for "three quarters get off" to make sense?
+HINT2:
+Each stop sends $x$ to $x/4 + 7$ and requires $x$ to be divisible by $4$. Work backwards from the end: what is the smallest the load can be just before the last stop?
+ANSWER:
+$10$ passengers (starting from $52$: $52 \to 20 \to 12 \to 10$).
+REFRESH:
+- **Divisibility:** $\tfrac34 x$ is an integer iff $4 \mid x$.
+- **Affine iteration:** $x_{k+1} = x_k/4 + 7$ has fixed point $x^* = 28/3$ and $x_k - x^* = (x_0 - x^*)/4^k$.
+EXPLANATION:
+One stop maps $x \mapsto x/4 + 7$, which only makes sense if $x$ is a multiple of $4$ (a quarter stays on). The final count is $x_3 = x_2/4 + 7$, so to make it small we want $x_2$ small — but $x_2$ itself is at least $7$ (it came from a stop that added $7$) and must be a multiple of $4$. Pushing back one level: $x_1 \ge 7$ and $4 \mid x_1$ force $x_1 \ge 8$, so $x_2 \ge 8/4 + 7 = 9$, so $x_2 \ge 12$, so $x_3 \ge 10$. Then check that $10$ is actually reachable.
+SOLUTION: Backward bounds
+Let $x_0$ be the initial load and $x_k$ the load after stop $k$, so $x_{k} = x_{k-1}/4 + 7$ with $4 \mid x_{k-1}$ for $k = 1,2,3$.
+
+*Bounds.* $x_1 = x_0/4 + 7 \ge 7$ and $4 \mid x_1$, so $x_1 \ge 8$. Then $x_2 = x_1/4 + 7 \ge 9$, and $4 \mid x_2$, so $x_2 \ge 12$. Finally $x_3 = x_2/4 + 7 \ge 3 + 7 = 10$.
+
+*Achievability.* Take $x_2 = 12$, so $x_1 = 4(12 - 7) = 20$ and $x_0 = 4(20 - 7) = 52$. Check: $52 \to 13 + 7 = 20 \to 5 + 7 = 12 \to 3 + 7 = 10$, every step divisible by $4$. (Then $x_0 = 52$ is also the smallest valid start with $x_0 > 0$, since $x_0 \equiv 52 \pmod{64}$ is forced for three stops.)
+
+The minimum final load is $10$.
+SOLUTION: Closed form of the iteration
+The fixed point of $x \mapsto x/4+7$ is $x^* = 28/3$, and $x_k - \tfrac{28}{3} = (x_0 - \tfrac{28}{3})/4^k$. So $x_3 = \tfrac{28}{3} + \tfrac{3x_0 - 28}{3\cdot 64}$. The requirement $4 \mid x_0$, $4 \mid x_1$, $4 \mid x_2$ is equivalent to $x_0 \equiv 52 \pmod{64}$ (check: $4\mid x_0$; then $x_1 = x_0/4+7$ divisible by $4$ means $x_0/4 \equiv 1 \pmod 4$, i.e. $x_0 \equiv 4 \pmod{16}$; one more level gives $x_0 \equiv 52 \pmod{64}$). The smallest such $x_0 > 0$ is $52$, and $x_3$ increases with $x_0$, giving $x_3 = \tfrac{28}{3} + \tfrac{128}{192} = \tfrac{28}{3} + \tfrac{2}{3} = 10$.
+FOLLOWUP: What if the routine never ends?
+Same rule, but the bus repeats it at infinitely many stops and must always carry a whole number of people. What is the smallest possible initial number?
+FOLLOWUP_ANSWER:
+It is impossible. From the closed form $x_k = \tfrac{28}{3} + (x_0 - \tfrac{28}{3})/4^k$, the load converges to $28/3 \approx 9.33$. A sequence of integers converging to a limit is eventually equal to it, but $28/3$ is not an integer (and $x_0 = 28/3$ is not allowed either). So after finitely many stops the count stops being a whole number, whatever the start.
+FOLLOWUP: Product of two dice is a square
+Two fair six-sided dice are rolled and their values multiplied. What is the probability that the product is a perfect square?
+FOLLOWUP_ANSWER:
+$2/9$. The square products are the doubles $(1,1),(2,2),\dots,(6,6)$ (products $1,4,9,16,25,36$), plus $(1,4)$ and $(4,1)$ with product $4$. Nothing else works: a product of two different values from $\{1,\dots,6\}$ is a square only for $1\cdot 4$. That is $8$ outcomes out of $36$: $8/36 = 2/9$.
+===END===
+
+===TEASER===
+SLUG: fraction-sequence-alternating-differences
+IDS: Q-265, Q-264, Q-456
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: What comes next: a chain of fractions
+QUESTION:
+Find the next term of the sequence
+$$\frac35,\ \frac1{10},\ \frac{23}{30},\ \frac1{60},\ \frac{49}{60},\ -\frac1{60},\ \ ?$$
+HINT1:
+The terms jump up and down. Instead of the terms themselves, look at how much you move from one term to the next.
+HINT2:
+Compute the successive differences and write each one with the smallest possible denominator. Look at numerators and denominators separately.
+ANSWER:
+$\dfrac{353}{420}$
+REFRESH:
+- **Difference sequence:** for a sequence $(a_n)$, the first differences are $d_n = a_{n+1} - a_n$; then $a_{n+1} = a_1 + d_1 + \cdots + d_n$.
+EXPLANATION:
+When a sequence of fractions looks chaotic, the rule often lives in the gaps. Here the gaps are $-\tfrac12, +\tfrac23, -\tfrac34, +\tfrac45, -\tfrac56$: the fractions $\tfrac{k}{k+1}$ with alternating signs. The next gap is $+\tfrac67$, so the next term is $-\tfrac1{60} + \tfrac67$.
+SOLUTION: First differences
+Successive differences (common denominators in brackets):
+$$\begin{aligned}
+\tfrac1{10} - \tfrac35 &= \tfrac{1-6}{10} = -\tfrac12,\\
+\tfrac{23}{30} - \tfrac1{10} &= \tfrac{23-3}{30} = \tfrac23,\\
+\tfrac1{60} - \tfrac{23}{30} &= \tfrac{1-46}{60} = -\tfrac34,\\
+\tfrac{49}{60} - \tfrac1{60} &= \tfrac{48}{60} = \tfrac45,\\
+-\tfrac1{60} - \tfrac{49}{60} &= -\tfrac{50}{60} = -\tfrac56.
+\end{aligned}$$
+So $d_k = (-1)^k \tfrac{k}{k+1}$ for $k = 1,\dots,5$, and the next difference is $d_6 = +\tfrac67$. The next term is
+$$-\frac1{60} + \frac67 = \frac{-7 + 360}{420} = \frac{353}{420}.$$
+($420 = \operatorname{lcm}(60,7)$, and $353$ is prime, so the fraction is already reduced.)
+FOLLOWUP: Fractions with a familiar denominator
+What comes next: $\tfrac11, \tfrac12, \tfrac13, \tfrac15, \tfrac18, \ ?$
+FOLLOWUP_ANSWER:
+$\tfrac1{13}$. The denominators $1,2,3,5,8$ are Fibonacci numbers, each the sum of the two before it ($3+5 = 8$), so the next denominator is $5 + 8 = 13$.
+FOLLOWUP: A warm-up
+What comes next: $1, 4, 9, 16, 25, \ ?$
+FOLLOWUP_ANSWER:
+$36$. The terms are the squares $1^2, 2^2, \dots, 5^2$, so the next is $6^2 = 36$. (Equivalently, the differences $3,5,7,9$ are the odd numbers, and the next is $11$: $25 + 11 = 36$.)
+===END===
+
+===TEASER===
+SLUG: ants-on-a-triangle
+IDS: Q-485, W-085
+FIRMS: JP Morgan, Citadel
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Three ants on a triangle
+QUESTION:
+Three ants stand at the three corners of an equilateral triangle. At the same moment, each ant picks one of the two edges leaving its corner (clockwise or counterclockwise), with probability $\tfrac12$ each and independently of the others, and walks along it at the same speed. What is the probability that no two ants collide?
+HINT1:
+Each ant has only two choices, so there are only a handful of equally likely scenarios. Which ones avoid all collisions?
+HINT2:
+If two ants go in different rotational directions, some pair of neighbours must be walking towards each other on the same edge. So the only safe scenarios are the ones where...
+ANSWER:
+$\dfrac14$
+REFRESH:
+- **Equally likely outcomes:** with $3$ independent fair binary choices, each of the $2^3 = 8$ outcomes has probability $1/8$.
+EXPLANATION:
+The ants avoid each other only if they all circulate in the same rotational direction: all clockwise or all counterclockwise, like a merry-go-round. As soon as the ants do not all agree, there is one ant going clockwise whose clockwise neighbour goes counterclockwise, and those two walk head-on along the same edge. So $2$ of the $8$ equally likely configurations are safe.
+SOLUTION: Counting configurations
+Each ant chooses clockwise (C) or counterclockwise (A): $2^3 = 8$ equally likely configurations.
+
+*All the same direction* (CCC or AAA): each ant walks along the edge towards the next corner, which the ant there is leaving in the same direction at the same speed — nobody meets. $2$ configurations.
+
+*Mixed directions:* going around the triangle, the labels are not all equal, so somewhere a C is immediately followed (in the clockwise order) by an A. The C ant walks towards its clockwise neighbour along the edge joining them, and that neighbour walks back along the same edge: they collide.
+
+Hence $P(\text{no collision}) = \dfrac{2}{8} = \dfrac14$.
+SOLUTION: Follow the first ant
+Whatever the first ant chooses, the other two must choose the same rotational direction as the first to avoid a collision, each with probability $\tfrac12$, independently: $\tfrac12\cdot\tfrac12 = \tfrac14$. (For $n$ ants on the corners of an $n$-gon the same argument gives $2/2^n = 2^{1-n}$.)
+===END===
+
+===TEASER===
+SLUG: coin-bias-game-alice-bob
+IDS: Q-074, Q-415
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Choose your coin's bias
+QUESTION:
+Alice and Bob each get a coin whose probability of heads they choose themselves: Alice picks $p_1$, Bob picks $p_2$. Then both coins are flipped once.
+- Both heads ($HH$): Alice pays Bob $\$6$.
+- Both tails ($TT$): Alice pays Bob $\$4$.
+- Otherwise ($HT$ or $TH$): Bob pays Alice $\$5$.
+
+Alice must announce $p_1$ **before** Bob chooses $p_2$. The set of values of $p_1$ for which Bob's expected gain is $\le 0$ **whatever** $p_2$ he picks is an interval $[a, b]$. Find $b - a$.
+HINT1:
+Write Bob's expected gain as a function of $p_1$ and $p_2$. As a function of $p_2$ alone (with $p_1$ fixed), what shape does it have?
+HINT2:
+Bob's expected gain is affine in $p_2$, so its maximum over $p_2 \in [0,1]$ is attained at $p_2 = 0$ or $p_2 = 1$. Require both endpoint values to be $\le 0$.
+ANSWER:
+$b - a = \dfrac{5}{11} - \dfrac49 = \dfrac{1}{99}$
+REFRESH:
+- **Affine functions on an interval:** $g(p) = \alpha + \beta p$ on $[0,1]$ attains its max and min at the endpoints, so $g \le 0$ on $[0,1]$ iff $g(0)\le 0$ and $g(1) \le 0$.
+- **Independence:** $P(HH) = p_1p_2$, $P(TT) = (1-p_1)(1-p_2)$.
+EXPLANATION:
+Bob's payoff from any fixed $p_2$ is a weighted average of his payoffs at $p_2 = 0$ ("always tails") and $p_2 = 1$ ("always heads"), so only those two pure strategies matter. Always-heads earns Bob $6$ when Alice shows heads and loses $5$ otherwise; always-tails earns $4$ when Alice shows tails and loses $5$ otherwise. Alice must choose $p_1$ so that neither of these pure strategies is profitable: that gives two linear inequalities, $p_1 \ge 4/9$ and $p_1 \le 5/11$, a very thin window of width $1/99$.
+SOLUTION: Bob's expected gain is linear in his choice
+Bob's expected gain:
+$$\begin{aligned}
+G(p_1,p_2) &= 6p_1p_2 + 4(1-p_1)(1-p_2) - 5\big[p_1(1-p_2) + (1-p_1)p_2\big]\\
+&= (4 - 9p_1) + (20p_1 - 9)\,p_2.
+\end{aligned}$$
+(Expand: the constant term is $4(1-p_1) - 5p_1 = 4 - 9p_1$; the coefficient of $p_2$ is $6p_1 - 4(1-p_1) + 5p_1 - 5(1-p_1) = 20p_1 - 9$.)
+
+For fixed $p_1$ this is affine in $p_2$, so $G \le 0$ for all $p_2\in[0,1]$ iff
+- $G(p_1, 0) = 4 - 9p_1 \le 0 \iff p_1 \ge \tfrac49$,
+- $G(p_1, 1) = 11p_1 - 5 \le 0 \iff p_1 \le \tfrac5{11}$.
+
+So the interval is $\left[\tfrac49, \tfrac5{11}\right]$ and
+$$b - a = \frac5{11} - \frac49 = \frac{45 - 44}{99} = \frac1{99}.$$
+Bonus: Alice's best choice minimises $\max(4-9p_1,\ 11p_1-5)$; the two lines cross at $20p_1 = 9$, i.e. $p_1 = 9/20$, where Bob's best expected gain is $4 - 81/20 = -\tfrac1{20}$. The game favours Alice by $5$ cents per round.
+FOLLOWUP: Alice announces three quarters
+Same game, and Alice announces $p_1 = \tfrac34$. For which $p_2$ does Bob have a strictly positive expected gain? The set is of the form $(a, 1]$; find $a$.
+FOLLOWUP_ANSWER:
+With $p_1 = \tfrac34$: $G = (4 - \tfrac{27}{4}) + (15 - 9)p_2 = -\tfrac{11}4 + 6p_2$. This is $> 0$ iff $p_2 > \tfrac{11}{24}$. So $a = \tfrac{11}{24}$ (check: at $p_2 = 1$, $G = \tfrac{13}{4} > 0$, consistent with $\tfrac34$ lying outside Alice's safe window $[\tfrac49,\tfrac5{11}]$). Note: the source states $20$; the correct value is $a = 11/24$, because Bob's expected gain $-\tfrac{11}{4} + 6p_2$ changes sign exactly at $p_2 = 11/24$.
+===END===
+
+===TEASER===
+SLUG: abs-difference-of-normals
+IDS: Q-002
+FIRMS: Citadel, DRW, Goldman Sachs
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Expected absolute difference of two normals
+QUESTION:
+Let $X \sim N(0,1)$ and $Y \sim N(0,4)$ be independent (the second parameter is the variance). Compute $\mathbb{E}\,|Y - X|$.
+HINT1:
+What is the distribution of $Y - X$? Once you know it, the problem is about the absolute value of a single normal variable.
+HINT2:
+$Y - X$ is centred normal with variance $4 + 1$. For $Z \sim N(0,1)$, compute $\mathbb{E}|Z| = 2\int_0^\infty z\,\varphi(z)\,dz$ and rescale.
+ANSWER:
+$\sqrt{10/\pi} \approx 1.784$
+REFRESH:
+- **Sums of independent normals:** if $X \sim N(\mu_1,\sigma_1^2)$ and $Y\sim N(\mu_2,\sigma_2^2)$ are independent, then $aX + bY \sim N(a\mu_1 + b\mu_2,\ a^2\sigma_1^2 + b^2\sigma_2^2)$.
+- **Scaling:** if $Z \sim N(0,1)$ then $\sigma Z \sim N(0,\sigma^2)$.
+- **Half-normal mean:** $\mathbb{E}|Z| = \sqrt{2/\pi}$ for $Z \sim N(0,1)$.
+EXPLANATION:
+Independent normals add: $Y - X$ is normal with mean $0$ and variance $\operatorname{Var}Y + \operatorname{Var}X = 5$ (variances add even for a difference). So $Y - X = \sqrt5\, Z$ with $Z$ standard normal, and $\mathbb{E}|Y - X| = \sqrt5\,\mathbb{E}|Z|$. The mean absolute value of a standard normal is $\sqrt{2/\pi} \approx 0.798$ — a bit less than its standard deviation $1$. So the answer is $\sqrt5 \cdot \sqrt{2/\pi} = \sqrt{10/\pi}$.
+SOLUTION: Reduce to one normal
+*Distribution.* $-X \sim N(0,1)$ is independent of $Y$, so $Y - X \sim N(0, 4 + 1) = N(0,5)$, i.e. $Y - X$ has the law of $\sqrt5\,Z$ with $Z\sim N(0,1)$.
+
+*Half-normal mean.* By symmetry,
+$$\mathbb{E}|Z| = 2\int_0^\infty z\,\frac{e^{-z^2/2}}{\sqrt{2\pi}}\,dz = \frac{2}{\sqrt{2\pi}}\Big[-e^{-z^2/2}\Big]_0^\infty = \frac{2}{\sqrt{2\pi}} = \sqrt{\frac2\pi}.$$
+
+*Conclusion.*
+$$\mathbb{E}|Y - X| = \sqrt5\,\sqrt{\frac2\pi} = \sqrt{\frac{10}{\pi}} \approx 1.784.$$
+Note: the source states $5$; the correct value is $\sqrt{10/\pi}\approx 1.784$, because $5$ is the variance of $Y - X$, not the mean of its absolute value.
+===END===
+
+===TEASER===
+SLUG: first-ace-two-decks
+IDS: Q-003
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Race to the first ace: 13 cards or 39?
+QUESTION:
+A standard $52$-card deck is shuffled and split into a pile of $13$ cards and a pile of $39$ cards. You and a friend each take one pile and turn over cards from the top until you reach the first ace; whoever needs **fewer** cards wins. If a pile contains no ace at all, its owner loses (the other pile is considered faster). If both reach their first ace at the same position, nobody wins. Your friend lets you choose the pile. Which one do you take — the $13$-card pile, the $39$-card pile, or does it not matter?
+HINT1:
+Compare the two piles card by card, position by position. For the first $13$ positions, is there any asymmetry between the two players?
+HINT2:
+Write $P(\text{small pile wins}) = \sum_{a=1}^{13} P(\text{its first ace is at } a,\ \text{the large pile's first } a \text{ cards have no ace})$, and similarly for the large pile. The terms for positions $1,\dots,13$ are identical; what is left over?
+ANSWER:
+Take the $39$-card pile: it wins with probability $\approx 51.0\%$ versus $\approx 45.5\%$ for the $13$-card pile (ties $\approx 3.5\%$).
+REFRESH:
+- **Uniform shuffle:** every set of $4$ positions (out of $52$) is equally likely to hold the aces, each with probability $1/\binom{52}{4}$.
+- **Hockey-stick identity:** $\sum_{m=0}^{M} \binom{m}{k} = \binom{M+1}{k+1}$.
+EXPLANATION:
+Up to depth $13$ the game is perfectly symmetric: at each position both piles show a random card from the same shuffled deck, so "small pile's first ace at position $a$ and large pile clean so far" has the same probability as the mirror event. The difference is what happens after position $13$: the small pile has run out. If neither pile has shown an ace in its first $13$ cards, the small pile has no aces at all and the large pile wins automatically. That extra event has probability $\binom{26}{4}/\binom{52}4 \approx 5.5\%$, and it all goes to the $39$-card pile.
+
+The trap is to think "the small pile is short so it finds its ace quickly": a short pile is also very likely ($\approx 30\%$) to contain no ace at all.
+SOLUTION: Position-by-position comparison
+Place the four aces at a uniformly random set of $4$ of the $52$ positions.
+
+*Small pile wins with its first ace at position $a$* ($1 \le a \le 13$): the small pile's first $a-1$ cards are non-aces, its $a$-th card is an ace, and the large pile's first $a$ cards are non-aces (a tie at $a$ does not count). That fixes $2a$ specific positions: one ace and $2a-1$ non-aces. The other $3$ aces lie among the $52 - 2a$ unconstrained positions:
+$$P = \frac{\binom{52-2a}{3}}{\binom{52}{4}}.$$
+*Large pile wins with its first ace at position $b \le 13$*: by the same count, $\binom{52-2b}{3}/\binom{52}{4}$ — identical terms.
+
+*Large pile wins with its first ace at position $b \ge 14$*: then the whole small pile ($13$ cards) and the large pile's first $b-1$ cards are non-aces, the $b$-th is an ace; the remaining $3$ aces are among $52 - 13 - b = 39 - b$ positions: $\binom{39-b}{3}/\binom{52}4$.
+
+Therefore
+$$P(\text{large}) - P(\text{small}) = \frac{1}{\binom{52}{4}}\sum_{b=14}^{39}\binom{39-b}{3} = \frac{1}{\binom{52}{4}}\sum_{m=0}^{25}\binom{m}{3} = \frac{\binom{26}{4}}{\binom{52}{4}} = \frac{14950}{270725}\approx 0.055 > 0,$$
+using the hockey-stick identity. (It is exactly the probability that the top $13$ cards of both piles contain no ace.)
+
+Numerically, $P(\text{small}) = \frac{1}{270725}\sum_{a=1}^{13}\binom{52-2a}{3} = \frac{123136}{270725} = \frac{9472}{20825} \approx 0.455$, $P(\text{large}) = \frac{138086}{270725} \approx 0.510$, ties $\approx 0.035$.
+
+Choose the $39$-card pile.
+SOLUTION: Conditioning on how the aces are split
+Let $K$ be the number of aces in the small pile: $P(K=k) = \binom{13}{k}\binom{39}{4-k}/\binom{52}{4}$, giving $P(K=0) \approx 0.304$, $P(K=1)\approx 0.439$, $P(K=2)\approx 0.213$, $P(K=3)\approx 0.041$, $P(K=4)\approx 0.003$.
+- $K = 0$: the large pile wins outright ($\approx 30.4\%$ of the time).
+- $K = 4$: the small pile wins outright ($\approx 0.3\%$).
+- $1\le K\le 3$: both piles have aces; the first ace of a pile of $n$ cards containing $j$ aces is at position $i$ with probability $\binom{n-i}{j-1}/\binom{n}{j}$. Comparing the two independent positions gives conditional win probabilities for the small pile of about $0.566$, $0.778$, $0.910$ (for $K = 1,2,3$) and for the large pile of about $0.378$, $0.176$, $0.064$.
+
+Adding up: $P(\text{small}) \approx 0.439\cdot0.566 + 0.213\cdot0.778 + 0.041\cdot0.910 + 0.003 \approx 0.455$ and $P(\text{large}) \approx 0.304 + 0.439\cdot 0.378 + 0.213\cdot 0.176 + 0.041\cdot 0.064 \approx 0.510$. The small pile is quicker *when it has an ace*, but it has none almost a third of the time, and that decides the game.
+===END===
+
+===TEASER===
+SLUG: boy-girl-adjacent-pairs
+IDS: Q-005
+FIRMS: WorldQuant
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Boy–girl neighbours in a random line
+QUESTION:
+A class of $15$ boys and $10$ girls lines up in a uniformly random order. On average, how many pairs of neighbours in the line consist of one boy and one girl? (For example, the line $BGBBGGGBGGBBBBG$ has $7$ such boy–girl neighbouring pairs.)
+HINT1:
+Don't try to find the distribution of the count. Break the count into small pieces, one per pair of neighbouring positions.
+HINT2:
+There are $24$ neighbouring pairs of positions. Write the count as a sum of $24$ indicators and use linearity of expectation; each indicator has the same probability.
+ANSWER:
+$12$
+REFRESH:
+- **Linearity of expectation:** $\mathbb{E}\big[\sum_i I_i\big] = \sum_i P(I_i = 1)$ for indicators $I_i$, with no independence needed.
+- **Random permutation:** in a uniformly random line, any two given positions hold a uniformly random ordered pair of distinct children.
+EXPLANATION:
+The line has $24$ neighbouring pairs of positions. For any one of them, the two children standing there are a random pair of distinct children, so the chance that one is a boy and the other a girl is the same for every pair: $2\cdot\tfrac{15}{25}\cdot\tfrac{10}{24} = \tfrac12$. Linearity of expectation adds these up without caring that neighbouring pairs are dependent: $24 \times \tfrac12 = 12$.
+SOLUTION: Indicators and linearity
+For $i = 1,\dots,24$ let $I_i = 1$ if positions $i$ and $i+1$ hold one boy and one girl. The count is $C = \sum_{i=1}^{24} I_i$.
+
+The ordered pair of children in positions $(i, i+1)$ is uniform among ordered pairs of distinct children, so
+$$P(I_i = 1) = P(BG) + P(GB) = \frac{15}{25}\cdot\frac{10}{24} + \frac{10}{25}\cdot\frac{15}{24} = \frac{300}{600} = \frac12.$$
+By linearity,
+$$\mathbb{E}[C] = 24 \cdot \frac12 = 12.$$
+Note: the source states $20$; the correct value is $12$, because there are only $24$ neighbouring pairs and each is mixed with probability exactly $1/2$ (a quick simulation confirms $12$).
+SOLUTION: General formula
+With $b$ boys and $g$ girls, $n = b + g$, there are $n - 1$ adjacent pairs, each mixed with probability $\frac{2bg}{n(n-1)}$, so
+$$\mathbb{E}[C] = (n-1)\cdot\frac{2bg}{n(n-1)} = \frac{2bg}{n} = \frac{2\cdot 15\cdot 10}{25} = 12.$$
+Sanity check: with $1$ boy and $1$ girl the formula gives $2\cdot1\cdot1/2 = 1$, correct.
+===END===
+
+===TEASER===
+SLUG: adjacent-ones-up-to-100000
+IDS: Q-006
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Numbers containing "11"
+QUESTION:
+How many integers from $1$ to $100\,000$ (inclusive) contain two adjacent digits both equal to $1$ somewhere in their decimal representation (e.g. $311$, $1102$, $51117$)?
+HINT1:
+Counting the numbers that *avoid* the pattern is easier than counting those that contain it. Can you pad all numbers to the same length without changing the answer?
+HINT2:
+Write every number below $100\,000$ as a $5$-digit string with leading zeros (leading zeros never create "11"). Count strings of length $n$ with no "11" by a recursion on the last digit: ends in $1$ or doesn't.
+ANSWER:
+$3691$
+REFRESH:
+- **Complement counting:** $\#\{\text{has property}\} = \#\{\text{all}\} - \#\{\text{avoids property}\}$.
+- **Inclusion–exclusion:** $|A_1\cup\cdots\cup A_m| = \sum|A_i| - \sum_{i<j}|A_i\cap A_j| + \sum_{i<j<k}|A_i\cap A_j\cap A_k| - \cdots$
+EXPLANATION:
+$100\,000$ itself has no "11", and every number from $1$ to $99\,999$ can be written as a $5$-digit string $00001,\dots,99999$; adding leading zeros never creates a "11". Also $00000$ has no "11". So the answer is the number of $5$-digit strings (over $0$–$9$) containing "11", which is $10^5$ minus the number of strings avoiding it.
+
+To count strings avoiding "11", build them left to right keeping track of one bit of memory: does the string currently end in a $1$? If not, the next digit can be anything ($10$ options); if it does, the next digit must not be $1$ ($9$ options).
+SOLUTION: Recursion on the last digit
+Let $u_n$ = number of length-$n$ digit strings with no "11" that end in $1$, and $v_n$ = those that end in another digit. Then
+$$u_{n+1} = v_n, \qquad v_{n+1} = 9(u_n + v_n),$$
+because a $1$ can only be appended to a string not ending in $1$, and any of the $9$ other digits can be appended to anything. Starting from $u_1 = 1$, $v_1 = 9$:
+
+| $n$ | $u_n$ | $v_n$ | total $u_n+v_n$ |
+|---|---|---|---|
+| 1 | 1 | 9 | 10 |
+| 2 | 9 | 90 | 99 |
+| 3 | 90 | 891 | 981 |
+| 4 | 891 | 8829 | 9720 |
+| 5 | 8829 | 87480 | 96309 |
+
+So $96\,309$ of the $100\,000$ strings $00000,\dots,99999$ avoid "11", and $100\,000 - 96\,309 = 3691$ contain it. The string $00000$ is not among them and $100\,000$ does not contain "11", so the count over $1,\dots,100\,000$ is $3691$.
+SOLUTION: Inclusion–exclusion on the position of "11"
+Let $A_i$ ($i=1,\dots,4$) be the set of $5$-digit strings with $1$s in positions $i$ and $i+1$. Each $|A_i| = 10^3$, sum $4000$.
+
+Pairs: overlapping ($A_i\cap A_{i+1}$ forces "111"): $3$ pairs $\times 10^2 = 300$; disjoint ($\{1,3\},\{1,4\},\{2,4\}$) force $4$ digits: $3 \times 10 = 30$. Total $330$.
+
+Triples: $\{1,2,3\}$ and $\{2,3,4\}$ force $4$ digits ($10$ each); $\{1,2,4\}$ and $\{1,3,4\}$ force all $5$ digits ($1$ each). Total $22$.
+
+The quadruple forces "11111": $1$.
+
+$$|A_1\cup\cdots\cup A_4| = 4000 - 330 + 22 - 1 = 3691.$$
+===END===
+
+===TEASER===
+SLUG: apples-left-after-last-green
+IDS: Q-009
+FIRMS: WorldQuant
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Apples left after the last green one
+QUESTION:
+A basket holds $4$ green apples and $50$ red apples. You take apples out one at a time, uniformly at random and without replacement, and stop as soon as all $4$ green apples have been taken. What is the expected number of apples still in the basket?
+HINT1:
+The apples left in the basket are all red. For a single red apple, what does it mean to be "left over"?
+HINT2:
+A red apple is left over iff it comes after all $4$ green apples in the random order. Among that red apple and the $4$ greens, which one comes last is uniform.
+ANSWER:
+$10$
+REFRESH:
+- **Linearity of expectation:** the expected size of a random set is the sum over items of the probability each item belongs to it.
+- **Symmetry of random orderings:** in a uniformly random order of $m$ distinct items, each item is equally likely ($1/m$) to be the last among them.
+EXPLANATION:
+Imagine drawing all $54$ apples in a random order. You stop at the last green apple, so the apples left are exactly the red apples that come after every green one. Focus on one red apple and the $4$ greens: these $5$ apples appear in a uniformly random relative order, so the red one is last among them with probability $1/5$. Each of the $50$ red apples contributes $1/5$ on average: $50/5 = 10$.
+SOLUTION: Indicators
+Order all $54$ apples uniformly at random. For each red apple $r$, let $I_r = 1$ if $r$ comes after all four green apples. The number left in the basket is $L = \sum_{r} I_r$ (only red apples can remain, and a red apple remains iff it is after the last green).
+
+The relative order of $r$ and the $4$ greens is uniform over $5!$ orders, so $P(I_r = 1) = 1/5$. Therefore
+$$\mathbb{E}[L] = 50\cdot\frac15 = 10.$$
+SOLUTION: Gaps between green apples
+The $4$ green apples cut the sequence of $50$ reds into $5$ gaps (before the first green, between consecutive greens, after the last). By symmetry each gap has the same expected size, and the sizes add to $50$, so each has mean $50/5 = 10$. The apples left are exactly the last gap: $10$.
+===END===
+
+===TEASER===
+SLUG: random-rectangle-area-half
+IDS: Q-011
+FIRMS: Morgan Stanley
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Random rectangle with area at most one half
+QUESTION:
+Two numbers $X$ and $Y$ are drawn independently and uniformly from $[0,1]$ and used as the side lengths of a rectangle. What is the probability that the rectangle has area at most $\tfrac12$?
+HINT1:
+The pair $(X,Y)$ is a uniform point in the unit square, so the probability is an area. Which region of the square satisfies $xy \le \tfrac12$?
+HINT2:
+The boundary is the hyperbola $y = \frac1{2x}$, which enters the square at $x = \tfrac12$. Compute the area of the complement (above the hyperbola) with one integral.
+ANSWER:
+$\dfrac12 + \dfrac{\ln 2}{2} \approx 0.8466$
+REFRESH:
+- **Uniform point in the unit square:** $P((X,Y) \in A) = \text{area}(A \cap [0,1]^2)$.
+- **Integral:** $\int_a^b \frac{dx}{x} = \ln\frac{b}{a}$.
+EXPLANATION:
+Probability equals area. For $x \le \tfrac12$ every $y \in[0,1]$ works (the area is at most $\tfrac12\cdot 1$). For $x > \tfrac12$ we need $y \le \frac{1}{2x}$, a height that shrinks from $1$ to $\tfrac12$. Adding the full strip of area $\tfrac12$ and the region under the hyperbola between $\tfrac12$ and $1$ gives $\tfrac12 + \tfrac12\ln 2$.
+SOLUTION: Integrate the good region
+$$P(XY \le \tfrac12) = \int_0^1 P\!\left(Y \le \tfrac{1}{2x}\right)dx = \int_0^{1/2} 1\,dx + \int_{1/2}^1 \frac{1}{2x}\,dx = \frac12 + \frac12\big[\ln x\big]_{1/2}^{1} = \frac12 + \frac{\ln 2}{2}.$$
+Numerically $\tfrac12 + 0.3466 = 0.8466$.
+SOLUTION: Distribution of a product of uniforms
+For $0 < t \le 1$, $P(XY \le t) = t - t\ln t$ (same computation with $\tfrac12$ replaced by $t$: $t + \int_t^1 \frac{t}{x}dx = t - t\ln t$). At $t = \tfrac12$: $\tfrac12 - \tfrac12\ln\tfrac12 = \tfrac12 + \tfrac12\ln 2 \approx 0.8466$. Equivalently, $-\ln X$ and $-\ln Y$ are i.i.d. exponential(1), their sum is Gamma(2,1), and $P(-\ln X - \ln Y \ge \ln 2) = e^{-\ln 2}(1 + \ln 2) = \tfrac12(1+\ln 2)$.
+===END===
+
+===TEASER===
+SLUG: arrangements-red-blue-green-balls
+IDS: Q-014
+FIRMS: IMC
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Lining up 3 red, 7 blue and 9 green balls
+QUESTION:
+Balls of the same colour are indistinguishable. In how many distinct ways can you arrange $3$ red, $7$ blue and $9$ green balls in a row?
+HINT1:
+If all $19$ balls were different there would be $19!$ orders. How many of those orders look identical once colours are all you can see?
+HINT2:
+Alternatively, choose which positions get the red balls, then which of the remaining positions get the blue ones.
+ANSWER:
+$\dfrac{19!}{3!\,7!\,9!} = 11\,085\,360$
+REFRESH:
+- **Multinomial coefficient:** the number of arrangements of $n$ objects with $n_1,\dots,n_k$ identical copies of each type ($\sum n_i = n$) is $\dfrac{n!}{n_1!\cdots n_k!}$.
+- **Binomial coefficient:** $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.
+EXPLANATION:
+Label the balls temporarily to make them distinct: $19!$ orders. Erasing the labels, each visible colour pattern is produced by $3!\,7!\,9!$ labelled orders (permute the reds among themselves, the blues among themselves, the greens among themselves). Divide. The arithmetic is easiest done as a product of two binomial coefficients: pick the $3$ red positions out of $19$, then the $7$ blue positions out of the remaining $16$.
+SOLUTION: Choose positions colour by colour
+$$\binom{19}{3}\binom{16}{7}\binom{9}{9} = 969 \times 11440 \times 1.$$
+With $\binom{19}{3} = \frac{19\cdot18\cdot17}{6} = 969$ and $\binom{16}{7} = \frac{16\cdot15\cdot14\cdot13\cdot12\cdot11\cdot10}{5040} = 11440$:
+$$969 \times 11440 = 969\times 11000 + 969 \times 440 = 10\,659\,000 + 426\,360 = 11\,085\,360.$$
+This equals the multinomial coefficient $\frac{19!}{3!\,7!\,9!}$.
+===END===
+
+===TEASER===
+SLUG: basketball-first-to-two-points
+IDS: Q-015
+FIRMS: Citadel, Optiver
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Win by two points
+QUESTION:
+Alice and Bob play a sequence of basketball games; both start at $0$ points. Alice wins each game with probability $0.3$, independently. The winner of a game gains $1$ point and the loser loses $1$ point. The first player to reach $2$ points wins the match. What is the probability that Alice wins the match?
+HINT1:
+Alice's score is always the negative of Bob's. So the whole match is described by one number moving up or down by $1$ — where does it stop?
+HINT2:
+Look at the games in pairs. After two games from $0$, the match is either decided or back at $0$.
+ANSWER:
+$\dfrac{9}{58} \approx 0.155$
+REFRESH:
+- **Gambler's ruin:** a walk moving $+1$ with probability $p$ and $-1$ with probability $q = 1-p$ ($p\ne q$), started at $i$, hits $N$ before $0$ with probability $\dfrac{1 - (q/p)^i}{1 - (q/p)^N}$.
+- **Geometric series / first-step analysis:** if a process returns to its start with probability $r$ and otherwise ends, $P(\text{end in } A) = \frac{P(\text{end in } A \text{ in one round})}{1 - r}$.
+EXPLANATION:
+Let $S$ be Alice's score; Bob's is $-S$. The match is a random walk on $\{-2,-1,0,1,2\}$ from $0$, stopping at $\pm 2$. From $0$, two games decide everything: $AA$ (prob $p^2$) wins for Alice, $BB$ (prob $q^2$) wins for Bob, and $AB$ or $BA$ sends the walk back to $0$ with nothing gained. So the match is a repeated "two-game round" until one of $AA$, $BB$ happens, and Alice wins with probability $\frac{p^2}{p^2+q^2}$. The squares make the weaker player even weaker: $0.3$ per game becomes about $0.155$ per match.
+SOLUTION: Rounds of two games
+Starting at $0$, after two games the score is $+2$ (prob $p^2 = 0.09$), $-2$ (prob $q^2 = 0.49$) or $0$ (prob $2pq = 0.42$). Being back at $0$ is the same situation as the start, so with $w = P(\text{Alice wins})$:
+$$w = p^2 + 2pq\,w \quad\Longrightarrow\quad w = \frac{p^2}{1-2pq} = \frac{p^2}{p^2 + q^2} = \frac{0.09}{0.09 + 0.49} = \frac{9}{58}.$$
+SOLUTION: Gambler's ruin
+Shift by $2$: the walk starts at $i = 2$ and Alice wins if it hits $N = 4$ before $0$. With $q/p = 7/3$:
+$$w = \frac{1 - (7/3)^2}{1 - (7/3)^4} = \frac{1}{1 + (7/3)^2} = \frac{9}{9 + 49} = \frac{9}{58}.$$
+===END===
+
+===TEASER===
+SLUG: bear-catches-three-fish
+IDS: Q-017
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Does the bear catch the 5th fish?
+QUESTION:
+A bear stands in a stream as fish swim past one by one. It catches each passing fish with probability $\tfrac12$, independently, and leaves as soon as it has caught $3$ fish. What is the probability that the $5$th fish is caught?
+HINT1:
+For the 5th fish to be caught, two things must happen. What must be true about the bear when the 5th fish arrives?
+HINT2:
+The bear must still be there, i.e. it caught at most $2$ of the first $4$ fish; and then it must catch the 5th.
+ANSWER:
+$\dfrac{11}{32}$
+REFRESH:
+- **Binomial distribution:** the number of successes in $n$ independent trials with probability $p$ satisfies $P(K = k) = \binom nk p^k(1-p)^{n-k}$.
+- **Independence:** the catch of the 5th fish is independent of what happened with the first four.
+EXPLANATION:
+The 5th fish is caught iff the bear has not yet left (fewer than $3$ catches among the first $4$ fish) and then catches it. The number of catches in $4$ fair trials is binomial: $P(\le 2) = \frac{1 + 4 + 6}{16} = \frac{11}{16}$. Multiply by $\tfrac12$.
+SOLUTION: Count the first four fish
+Let $K$ = catches among fish $1$–$4$, $K\sim\text{Bin}(4,\tfrac12)$. The bear is still present at fish 5 iff $K \le 2$:
+$$P(K\le 2) = \frac{\binom40 + \binom41 + \binom42}{2^4} = \frac{1 + 4 + 6}{16} = \frac{11}{16}.$$
+Given that, it catches fish 5 with probability $\tfrac12$ independently:
+$$P = \frac{11}{16}\cdot\frac12 = \frac{11}{32}.$$
+SOLUTION: Sum over the catch number
+Fish 5 is the bear's 1st, 2nd or 3rd catch. It is its $k$-th catch iff exactly $k-1$ of the first four are caught and fish 5 is caught: $\binom{4}{k-1}/2^5$. Summing $k=1,2,3$: $\frac{1 + 4 + 6}{32} = \frac{11}{32}$.
+===END===
+
+===TEASER===
+SLUG: big-mac-twenty-dollar-bill
+IDS: Q-022
+FIRMS: Old Mission
+SECTION: brainteaser
+CATEGORY: Mental math
+DIFFICULTY: easy
+TITLE: Big Macs for a twenty
+QUESTION:
+In $2000$ a Big Mac cost $89$ cents. With a $\$20$ bill, let $x$ be the number of Big Macs you can buy and $y$ the change left over, in cents. Ignoring taxes, compute $xy$.
+HINT1:
+Work in cents: you are dividing $2000$ by $89$ with remainder. $89$ is very close to a round number.
+HINT2:
+$89 = 90 - 1$. How many $90$s fit into $2000$, and how much does the "minus one" per burger give back?
+ANSWER:
+$x = 22$, $y = 42$, so $xy = 924$.
+REFRESH:
+- **Euclidean division:** $2000 = 89x + y$ with $0 \le y < 89$ determines $x$ and $y$ uniquely.
+EXPLANATION:
+Think of each burger as $90$ cents with a $1$-cent refund. $22$ burgers at $90$ cost $1980$, minus $22$ cents of refunds: $1958$. The remainder is $2000 - 1958 = 42 < 89$, so a 23rd burger is not affordable. Then $22 \times 42$ is quick with $22\times 42 = 21\times 42 + 42$ or $(32-10)(32+10) = 1024 - 100$.
+SOLUTION: Mental division by 89
+$89 \times 22 = 90\times 22 - 22 = 1980 - 22 = 1958 \le 2000$, and $89 \times 23 = 1958 + 89 = 2047 > 2000$. So $x = 22$ and $y = 2000 - 1958 = 42$.
+
+$xy = 22 \times 42$: use $(32 - 10)(32 + 10) = 32^2 - 10^2 = 1024 - 100 = 924$.
+===END===
+
+===TEASER===
+SLUG: fewest-bills-pay-1-to-100
+IDS: Q-023
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Fewest bills to pay any amount up to 100
+QUESTION:
+Bills come in denominations of $\$1$, $\$5$, $\$20$ and $\$100$. You want to carry a single collection of bills in your wallet such that **every** whole amount from $\$1$ to $\$100$ can be paid exactly using some of the bills in it (the same wallet is used for every amount). What is the minimum number of bills in the wallet?
+HINT1:
+Look at the hardest amount to pay. Which amount below $100$ needs the most bills even when you are free to choose any bills you like?
+HINT2:
+$\$99$ needs at least $11$ bills. Think about amounts modulo $5$ to see how many $\$1$ bills you need, and then ask whether an $11$-bill wallet could also pay $\$100$.
+ANSWER:
+$12$ bills (for example five $\$1$, three $\$5$, four $\$20$; or four $\$1$, three $\$5$, four $\$20$ and one $\$100$).
+REFRESH:
+- **Greedy change-making:** for denominations $1, 5, 20, 100$ the greedy representation (largest bill first) uses the fewest bills.
+- **Residues:** only $\$1$ bills change an amount's remainder modulo $5$.
+EXPLANATION:
+$\$99$ alone forces a lot: modulo $5$ it is $4$, and only $\$1$ bills affect the remainder mod $5$, so you need four $\$1$s; the rest, $95$, has remainder $15$ modulo $20$, forcing three $\$5$s; the remaining $80$ needs four $\$20$s. That is $11$ bills, and they add up to exactly $99$ — no bill is left over to pay $\$100$. So at least $12$ are needed. Twelve suffice: four $1$s, three $5$s and four $20$s pay everything from $1$ to $99$ (like digits in a mixed base), and a twelfth bill handles $100$.
+SOLUTION: Lower bound from 99, then a construction
+*Lower bound.* Any way of paying $\$99$ uses at least four $\$1$ bills ($99\equiv 4 \pmod 5$ and the other bills are multiples of $5$), then at least three $\$5$ bills (the remaining $95$ is paid with $\$5$s and $\$20$s; since $95 \equiv 15 \pmod{20}$, the $\$5$ part is at least $15$), and then $80$ from $\$20$s: four bills. (Using more small bills instead only increases the count.) The minimum is $11$ bills, and any $11$-bill payment of $99$ is exactly $4\times 1 + 3 \times 5 + 4\times 20$.
+
+If the wallet had only $11$ bills, paying $\$99$ would use all of them, so the wallet would total exactly $\$99$ and could not pay $\$100$. Hence at least $12$ bills.
+
+*Construction with 12.* Four $\$1$, three $\$5$, four $\$20$: any amount $n = 20a + 5b + c$ with $0\le a \le 4$, $0 \le b\le 3$, $0\le c\le 4$ is payable, which covers $0$ to $99$. Add one $\$100$ bill (or a fifth $\$1$, making the total $100$) to pay $\$100$. A brute-force search over all wallets confirms $12$ is optimal.
+
+Note: the source states $20$; the correct value is $12$, because the $12$-bill wallet above pays every amount from $1$ to $100$ and $11$ bills cannot, as shown.
+===END===
+
+===TEASER===
+SLUG: birthday-day-off-staffing
+IDS: Q-028
+FIRMS: Squarepoint Capital
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Birthdays as company holidays
+QUESTION:
+A company has a strange rule: on any day of the year on which at least one employee has a birthday, **nobody** works; on every other day, **all** employees work $24$ hours. Birthdays are independent and uniform over $365$ days. The company wants to choose the number of employees $n$ that maximises the expected **total number of employee-hours not worked** in a year (summed over all employees). What $n$ should it choose? (If no finite $n$ is optimal, say so.)
+HINT1:
+Write the expected number of birthday days (days off) for $n$ employees, then multiply by what one day off is worth in employee-hours.
+HINT2:
+The expected number of days off is $365\big(1 - (364/365)^n\big)$ and each is worth $24n$ employee-hours. Is the product increasing in $n$?
+ANSWER:
+No finite optimum: the expected idle employee-hours grow without bound in $n$, so the company should hire as many people as possible (answer "infinite").
+REFRESH:
+- **Linearity of expectation with indicators:** $\mathbb{E}[\#\text{days with property}] = \sum_{\text{days}} P(\text{day has property})$.
+- **Useful inequality:** $(1 - 1/m)^n \to 0$ as $n\to\infty$, and $1 - (1-1/m)^n$ is increasing in $n$.
+EXPLANATION:
+A given day is a holiday iff at least one of the $n$ employees is born on it, which has probability $1 - (364/365)^n$. That probability increases with $n$, and each holiday is worth $24n$ employee-hours, which also increases with $n$. The product of two increasing positive quantities increases: more employees means both more holidays and more people enjoying each holiday. The expected idle hours behave like $24\cdot 365\, n$ for large $n$ — there is no maximum.
+
+The famous version of this puzzle asks the opposite question (maximise hours *worked*), where the two effects fight and there is a finite optimum; see the follow-up.
+SOLUTION: Expected idle hours
+Let $D$ = number of days on which somebody has a birthday. For each day $d$,
+$$P(d \text{ is a holiday}) = 1 - \left(\tfrac{364}{365}\right)^n, \qquad \mathbb{E}[D] = 365\left(1 - \left(\tfrac{364}{365}\right)^n\right).$$
+On each holiday all $n$ employees are off for $24$ hours, so the expected total idle employee-hours are
+$$H(n) = 24 n \cdot 365\left(1 - \left(\tfrac{364}{365}\right)^n\right).$$
+Both factors $n$ and $1 - (364/365)^n$ are positive and strictly increasing in $n$, so $H(n)$ is strictly increasing, and $H(n)\sim 8760\,n\to\infty$. No finite $n$ maximises it: the answer is "infinitely many employees".
+FOLLOWUP: The classic version: maximise hours worked
+Same rule, but the company wants to maximise the expected total employee-hours **worked**. Which $n$?
+FOLLOWUP_ANSWER:
+Expected worked hours: $W(n) = 24n\cdot 365\,(364/365)^n$ (a day is a working day with probability $(364/365)^n$, and then all $n$ work). Compare consecutive values: $\frac{W(n+1)}{W(n)} = \frac{n+1}{n}\cdot\frac{364}{365} \ge 1 \iff 364(n+1) \ge 365 n \iff n \le 364$. So $W$ increases up to $n = 365$, with $W(365) = W(364)$ (ratio exactly $1$ at $n = 364$), then decreases. Optimal: $n = 365$ (or $364$, same value).
+===END===
+
+===TEASER===
+SLUG: red-balls-replaced-by-blue
+IDS: Q-031
+FIRMS: Citadel, SIG
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Paint the basket blue
+QUESTION:
+A basket contains $2$ red balls and $1$ blue ball. At each turn you draw a ball uniformly at random and put back a **blue** ball in its place, whatever colour you drew. What is the expected number of turns until all three balls are blue?
+HINT1:
+The only thing that matters is how many red balls are left. How long do you wait for that number to drop by one?
+HINT2:
+With $k$ red balls among $3$, each turn removes a red with probability $k/3$. The waiting time for that is geometric.
+ANSWER:
+$\dfrac92 = 4.5$ turns
+REFRESH:
+- **Geometric waiting time:** if each trial succeeds with probability $p$ independently, the expected number of trials up to and including the first success is $1/p$.
+- **Linearity of expectation:** the total time is the sum of the waiting times in each stage.
+EXPLANATION:
+Drawing a blue ball changes nothing; drawing a red ball turns one red into blue. So the number of red balls goes $2\to1\to0$, and the time spent at each level is geometric: with $2$ reds you succeed with probability $2/3$ (wait $3/2$ on average), with $1$ red with probability $1/3$ (wait $3$). The last red is the slow one — the same effect as in the coupon collector problem.
+SOLUTION: Stage by stage
+Let $T_k$ be the number of turns spent while there are $k$ red balls.
+- $k = 2$: success (drawing a red) has probability $2/3$, so $\mathbb{E}[T_2] = 3/2$.
+- $k = 1$: success has probability $1/3$, so $\mathbb{E}[T_1] = 3$.
+
+$$\mathbb{E}[T] = \mathbb{E}[T_2] + \mathbb{E}[T_1] = \frac32 + 3 = \frac92.$$
+SOLUTION: First-step equations
+Let $E_k$ be the expected remaining turns with $k$ reds. $E_0 = 0$,
+$$E_1 = 1 + \tfrac13 E_0 + \tfrac23 E_1 \Rightarrow E_1 = 3, \qquad E_2 = 1 + \tfrac23 E_1 + \tfrac13 E_2 \Rightarrow \tfrac23 E_2 = 1 + 2 \Rightarrow E_2 = \tfrac92.$$
+===END===
+
+===TEASER===
+SLUG: bread-loaf-triangle
+IDS: Q-035
+FIRMS: Citadel
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Two loaves and a triangle
+QUESTION:
+Gabe has two loaves of bread, of lengths $5$ and $8$. He cuts the $8$-unit loaf at a point chosen uniformly at random along its length. What is the probability that the $5$-unit loaf and the two pieces of the cut loaf can form a triangle (non-degenerate)?
+HINT1:
+Three lengths form a triangle iff each one is shorter than the sum of the other two. Call the cut position $x$ and write the three inequalities.
+HINT2:
+The pieces are $x$ and $8-x$. One of the three inequalities is automatic; the other two say that neither piece may be too short.
+ANSWER:
+$\dfrac58$
+REFRESH:
+- **Triangle inequality:** lengths $a,b,c>0$ form a non-degenerate triangle iff $a < b+c$, $b < a+c$ and $c < a+b$ (equivalently, the longest is shorter than the sum of the other two).
+- **Uniform distribution:** for $X\sim U(0,8)$, $P(X\in(\alpha,\beta)) = (\beta-\alpha)/8$.
+EXPLANATION:
+The two pieces together have length $8 > 5$, so the whole loaf is never too long. The danger is a piece that is too short: a piece of length $x$ fails as soon as $x + 5 \le 8 - x$, i.e. $x \le 1.5$. By symmetry the other piece fails when $x \ge 6.5$. So the cut must land in $(1.5, 6.5)$, an interval of length $5$ out of $8$.
+SOLUTION: Triangle inequalities
+Let $X \sim U(0,8)$, pieces $X$ and $8 - X$, third side $5$.
+- $5 < X + (8 - X) = 8$: always true.
+- $X < 5 + (8 - X) \iff 2X < 13 \iff X < 6.5$.
+- $8 - X < 5 + X \iff 2X > 3 \iff X > 1.5$.
+
+So the triangle exists iff $X \in (1.5, 6.5)$:
+$$P = \frac{6.5 - 1.5}{8} = \frac58.$$
+===END===
+
+===TEASER===
+SLUG: archer-at-least-one-hit
+IDS: Q-037
+FIRMS: Belvedere Trading, Citadel
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: At least one bullseye in three shots
+QUESTION:
+An archer hits the target with probability $\tfrac34$ on each shot, independently. What is the probability that she hits at least once in her next three shots?
+HINT1:
+"At least one" events are usually easiest through their complement.
+HINT2:
+The complement is "misses all three", which has probability $(1/4)^3$.
+ANSWER:
+$\dfrac{63}{64}$
+REFRESH:
+- **Complement rule:** $P(A) = 1 - P(A^c)$.
+- **Independence:** $P(A_1\cap A_2\cap A_3) = P(A_1)P(A_2)P(A_3)$ for independent events.
+EXPLANATION:
+Missing every shot is the only way to fail, and each miss has probability $\tfrac14$, so all three misses happen with probability $\tfrac1{64}$. Everything else is a success.
+SOLUTION: Complement
+$$P(\text{at least one hit}) = 1 - P(\text{three misses}) = 1 - \left(\tfrac14\right)^3 = 1 - \tfrac1{64} = \tfrac{63}{64}.$$
+SOLUTION: Direct sum over the first hit
+The first hit is on shot $1$ (prob $\tfrac34$), shot $2$ ($\tfrac14\cdot\tfrac34$) or shot $3$ ($\tfrac1{16}\cdot\tfrac34$): $\tfrac34\left(1 + \tfrac14 + \tfrac1{16}\right) = \tfrac34\cdot\tfrac{21}{16} = \tfrac{63}{64}$.
+===END===
+
+===TEASER===
+SLUG: candles-twice-as-long
+IDS: Q-038
+FIRMS: Transmarket Group
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: medium
+TITLE: When is one candle twice the other?
+QUESTION:
+Two candles have the same length and burn at constant rates: one burns out completely in $2$ hours, the other in $1$ hour. Both are lit at the same moment. At what time must they be lit so that at exactly $4$ PM one candle is twice as long as the other? Give the answer in 24-hour format (e.g. $8{:}20$ PM is written $2020$).
+HINT1:
+Take the initial length as $1$ and write each candle's length as a function of the time $t$ (in hours) since lighting.
+HINT2:
+The slow candle is always the longer one, so the condition is "slow = $2\times$ fast". Solve for $t$ and remember the fast candle must not have burnt out.
+ANSWER:
+$1520$ (light them at $3{:}20$ PM, i.e. $40$ minutes before $4$ PM).
+REFRESH:
+- **Constant burn rate:** a candle that burns out in $T$ hours has remaining length $L(t) = 1 - t/T$ (as a fraction of its initial length) for $0\le t\le T$.
+EXPLANATION:
+After $t$ hours the slow candle has $1 - t/2$ left and the fast one $1 - t$. The slow one is always longer, so we need $1 - t/2 = 2(1 - t)$, which gives $t = 2/3$ hour $= 40$ minutes. At that moment the lengths are $2/3$ and $1/3$. Working back from $4$ PM: light at $3{:}20$ PM.
+SOLUTION: Solve the linear equation
+With $t$ the time since lighting (hours), the slow and fast candles have lengths $S(t) = 1 - \tfrac t2$ and $F(t) = 1 - t$, $0 \le t \le 1$. Since $S(t) \ge F(t)$, "one is twice the other" means $S = 2F$:
+$$1 - \frac t2 = 2 - 2t \iff \frac{3t}{2} = 1 \iff t = \frac23 \text{ h} = 40 \text{ min}.$$
+Check: $S = 2/3$, $F = 1/3$, and $F > 0$ so the fast candle is still burning. They must be lit $40$ minutes before $16{:}00$, i.e. at $15{:}20$: answer $1520$.
+===END===
+
+===TEASER===
+SLUG: canoe-upstream-downstream
+IDS: Q-039
+FIRMS: Optiver
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: medium
+TITLE: Canoeing against the current
+QUESTION:
+Friends leave their campsite in a canoe and paddle **upstream** for $3$ hours, then turn around and paddle **downstream** for $5$ hours, ending $32$ miles downstream of the campsite. The river flows at a constant $2$ mph and they paddle at a constant speed $x$ in still water (so they move at $x - 2$ upstream and $x+2$ downstream). The next day they paddle upstream from that point back to the campsite, arriving at $7{:}00$ PM. At what time did they leave? Answer in 24-hour format (e.g. $4{:}30$ PM is $1630$).
+HINT1:
+Measure positions from the campsite, downstream positive. Where are they after the first leg, and after the second?
+HINT2:
+Net displacement: $5(x+2) - 3(x-2) = 32$. Solve for $x$, then compute the time to cover $32$ miles at the upstream speed.
+ANSWER:
+$1340$ (they left at $1{:}40$ PM).
+REFRESH:
+- **Relative speed on a river:** speed over ground $=$ speed in still water $\pm$ current.
+- **Distance $=$ speed $\times$ time**, so time $=$ distance / speed.
+EXPLANATION:
+The trip on day one pins down the rowing speed: going up $3(x-2)$ and then down $5(x+2)$ leaves them $32$ miles below camp, which gives $x = 8$ mph. On day two they row $32$ miles upstream at $8 - 2 = 6$ mph, which takes $5\tfrac13$ hours $= 5$ h $20$ min. Subtract from $19{:}00$.
+SOLUTION: Solve for the rowing speed
+Position after leg 1: $-3(x-2)$. After leg 2: $-3(x-2) + 5(x+2) = 2x + 16$. Setting $2x + 16 = 32$ gives $x = 8$ mph.
+
+Return: $32$ miles at $x - 2 = 6$ mph takes $\frac{32}{6} = 5\tfrac13$ h $= 5$ h $20$ min.
+
+Departure: $19{:}00 - 5{:}20 = 13{:}40$, i.e. $1340$.
+===END===
+
+===TEASER===
+SLUG: five-cards-monotone-order
+IDS: Q-040
+FIRMS: SIG
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Five cards in order
+QUESTION:
+A deck has $83$ cards numbered $1$ to $83$. It is shuffled and the dealer turns over the top $5$ cards. If these five cards appear in strictly increasing or strictly decreasing order, you are paid $\$x$; otherwise you get nothing. It costs $\$1$ to play. For which $x$ is the game fair?
+HINT1:
+Does the number $83$ matter? Think about the relative order of the five cards you see.
+HINT2:
+Five distinct numbers in random order: all $5!$ relative orders are equally likely, and exactly two of them are monotone.
+ANSWER:
+$x = 60$
+REFRESH:
+- **Random permutation:** the relative order of any $k$ distinct cards in a uniformly shuffled deck is uniform over the $k!$ possible orders.
+- **Fair game:** expected payout $=$ price.
+EXPLANATION:
+Only the relative order of the five values matters, and it is uniformly random among $5! = 120$ orderings. Exactly one is increasing and one decreasing, so the win probability is $2/120 = 1/60$ whatever the deck size (as long as it has at least $5$ distinct cards). A fair price of $1$ requires a payout of $60$.
+SOLUTION: Relative order
+Condition on the set of five values drawn; given the set, their order is uniform over $5! = 120$ permutations, and exactly $2$ are monotone. Hence $P(\text{win}) = \frac{2}{120} = \frac1{60}$. Fairness: $\frac{x}{60} = 1$, so $x = 60$.
+===END===
+
+===TEASER===
+SLUG: two-containers-smallest-with-100
+IDS: Q-041
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: hard
+TITLE: The smallest card next to card 100
+QUESTION:
+Cards numbered $1$ to $100$ are each placed, independently and uniformly at random, into one of two containers. Let $M$ be the smallest number among the cards in the container that holds card $100$. Compute $\mathbb{E}[M]$. The answer has the form $a\left(1 - a^{-b}\right)$ with integers $a, b$; give $ab$.
+HINT1:
+Only the container of card $100$ matters. For card $k$ to be the minimum there, what must happen to cards $1, \dots, k-1$ and to card $k$?
+HINT2:
+Use $\mathbb{E}[M] = \sum_{k\ge1} P(M \ge k)$. The event $M \ge k$ means none of the cards $1,\dots,k-1$ is in card $100$'s container.
+ANSWER:
+$\mathbb{E}[M] = 2\left(1 - 2^{-100}\right)$, so $ab = 2\cdot 100 = 200$.
+REFRESH:
+- **Tail-sum formula:** for $M \in \{1, 2, \dots, n\}$, $\mathbb{E}[M] = \sum_{k=1}^{n} P(M \ge k)$.
+- **Finite geometric series:** $\sum_{j=0}^{n-1} r^j = \frac{1-r^n}{1-r}$.
+EXPLANATION:
+Each small card independently shares card $100$'s container with probability $\tfrac12$. The minimum in that container is $\ge k$ iff cards $1, \dots, k-1$ all went to the other container: probability $2^{-(k-1)}$. Adding these tails gives a geometric series $1 + \tfrac12 + \tfrac14 + \cdots + 2^{-99}$, just under $2$. The minimum is usually tiny: it is $1$ half the time, $2$ a quarter of the time, and so on — like the number of tosses to the first head, truncated at $100$.
+SOLUTION: Tail sums
+For $1 \le k \le 100$: $M \ge k$ iff cards $1,\dots,k-1$ are all in the container not holding card $100$; given where card $100$ went, each such card is there with probability $\tfrac12$ independently. So $P(M\ge k) = 2^{-(k-1)}$ ($M \ge 1$ is certain, and $M\le 100$ always). Then
+$$\mathbb{E}[M] = \sum_{k=1}^{100} 2^{-(k-1)} = \frac{1 - 2^{-100}}{1 - \tfrac12} = 2\left(1 - 2^{-100}\right).$$
+So $a = 2$, $b = 100$ and $ab = 200$.
+SOLUTION: Point probabilities
+$P(M = k) = 2^{-k}$ for $1\le k\le 99$ (cards $1..k-1$ elsewhere, card $k$ with card $100$) and $P(M = 100) = 2^{-99}$. Then
+$$\mathbb{E}[M] = \sum_{k=1}^{99} k\,2^{-k} + 100\cdot 2^{-99}.$$
+Using $\sum_{k=1}^{n} k\,2^{-k} = 2 - (n+2)2^{-n}$ with $n = 99$: $2 - 101\cdot2^{-99} + 100\cdot 2^{-99} = 2 - 2^{-99} = 2(1 - 2^{-100})$.
+===END===
+
+===TEASER===
+SLUG: card-or-three-fifty
+IDS: Q-044
+FIRMS: Jane Street
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: easy
+TITLE: Take the card or take 3.50
+QUESTION:
+Ten face-down cards are numbered $1$ to $10$. You pick one at random and look at it. You may then either take $\$3.50$ or take the card's number in dollars. What is the fair value of this game?
+HINT1:
+You decide after seeing the card. For which card values would you rather have the $\$3.50$?
+HINT2:
+Your payout is $\max(3.5,\ \text{card})$. Average it over the ten equally likely cards.
+ANSWER:
+$\$5.95$
+REFRESH:
+- **Expectation of a function of a discrete variable:** $\mathbb{E}[g(X)] = \sum_x g(x)P(X = x)$.
+EXPLANATION:
+Seeing the card first turns the game into an option: you take the card when it beats $3.50$ (cards $4$ to $10$) and the cash otherwise (cards $1,2,3$). The value is the plain average $5.5$ plus the extra from replacing $1, 2, 3$ by $3.5$: $\frac{2.5 + 1.5 + 0.5}{10} = 0.45$.
+SOLUTION: Average the payoff
+Payout $= \max(3.5, C)$ with $C$ uniform on $\{1,\dots,10\}$:
+$$\mathbb{E} = \frac{3\times 3.5 + (4 + 5 + \cdots + 10)}{10} = \frac{10.5 + 49}{10} = \frac{59.5}{10} = 5.95.$$
+SOLUTION: Base value plus option value
+$\max(3.5, C) = C + (3.5 - C)^+$. $\mathbb{E}[C] = 5.5$ and $\mathbb{E}[(3.5 - C)^+] = \frac{2.5 + 1.5 + 0.5}{10} = 0.45$, total $5.95$.
+===END===
+
+===TEASER===
+SLUG: keep-or-discard-cards-average
+IDS: Q-045
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Keep or discard: paid the average
+QUESTION:
+A deck of $100$ cards numbered $1$ to $100$ is shuffled and dealt face up one card at a time. After seeing each card you decide immediately whether to **keep** it or **discard** it; each discard costs $\$1$. At the end you receive the **average** of the values of the cards you kept (in dollars), minus your discard costs. What is the optimal strategy, and what is its expected profit?
+HINT1:
+Discarding a card changes the average, but by how much, compared with the $\$1$ it costs? Try the most extreme case: what if you could discard the lowest cards with perfect hindsight?
+HINT2:
+If you end up keeping $m$ cards, bound your payoff: the average of the kept cards is at most the average of the $m$ largest numbers, and you paid $100 - m$. Maximise this upper bound over $m$.
+ANSWER:
+Keep every card; the profit is exactly $\dfrac{101}{2} = \$50.50$, and no strategy can do better.
+REFRESH:
+- **Average of consecutive integers:** the average of $n-m+1, \dots, n$ is $\frac{2n - m + 1}{2}$.
+- **Upper-bound argument:** if every outcome of every strategy is $\le c$ and some strategy always achieves $c$, that strategy is optimal.
+EXPLANATION:
+Throwing away a low card raises the average only a little, because the average is taken over many cards: removing the single worst card (the $1$) moves the average of $1..100$ from $50.5$ to $51$ — a gain of $0.5$ for a cost of $1$. Even with perfect hindsight, dropping the $k$ worst cards raises the average by $k/2$ and costs $k$. So discarding never pays, whatever you see, and keeping everything guarantees $50.5$.
+SOLUTION: A bound that holds on every deal
+Suppose that on some deal you keep $m \ge 1$ cards and discard $100 - m$. The kept cards are $m$ distinct numbers in $\{1,\dots,100\}$, so their average is at most the average of $\{101-m, \dots, 100\}$, which is $\frac{201 - m}{2}$. Hence your profit is at most
+$$\frac{201 - m}{2} - (100 - m) = \frac{1 + m}{2} \le \frac{101}{2},$$
+with equality only if $m = 100$. (Keeping nothing yields at most $-100$.) This bound holds for every deal and every strategy, including ones that peek ahead.
+
+Keeping all $100$ cards achieves exactly $\frac{1 + 2 + \cdots + 100}{100} = \frac{101}{2}$ on every deal. So it is optimal and the expected profit is $\$50.50$.
+===END===
+
+===TEASER===
+SLUG: thank-you-cards-poisson
+IDS: Q-046
+FIRMS: Two Sigma
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Thank-you cards from two Poisson streams
+QUESTION:
+Two firms receive clients according to independent Poisson processes with rates $6$ and $10$ per unit time. Each client of the first firm leaves excellent feedback with probability $\tfrac16$, each client of the second with probability $\tfrac15$, independently of everything else. Every client who leaves excellent feedback gets a thank-you card. What is the expected time between two consecutive thank-you cards (counting both firms together)?
+HINT1:
+Two facts about Poisson processes do all the work: what happens when you keep each arrival independently with some probability, and what happens when you merge independent processes?
+HINT2:
+Thinning gives card-worthy arrivals at rates $6\cdot\tfrac16$ and $10\cdot\tfrac15$. Merging independent Poisson processes adds the rates.
+ANSWER:
+$\dfrac13$ (time units)
+REFRESH:
+- **Thinning:** if each arrival of a Poisson($\lambda$) process is kept independently with probability $p$, the kept arrivals form a Poisson($\lambda p$) process.
+- **Superposition:** the union of independent Poisson processes with rates $\lambda_1, \lambda_2$ is a Poisson process with rate $\lambda_1 + \lambda_2$.
+- **Inter-arrival times:** in a Poisson($\lambda$) process they are i.i.d. exponential with mean $1/\lambda$.
+EXPLANATION:
+Card-worthy clients arrive at firm 1 at rate $6 \times \tfrac16 = 1$ and at firm 2 at rate $10\times \tfrac15 = 2$, each still a Poisson process. Together they form a Poisson process of rate $3$, whose gaps are exponential with mean $1/3$.
+SOLUTION: Thinning and superposition
+By thinning, thank-you cards at firm 1 form a Poisson process of rate $\lambda_1 = 6\cdot\frac16 = 1$, and at firm 2 of rate $\lambda_2 = 10\cdot\frac15 = 2$; they are independent. Their superposition is Poisson with rate $\lambda_1 + \lambda_2 = 3$. The time between consecutive cards is exponential with rate $3$, so its mean is $\frac13$.
+===END===
+
+===TEASER===
+SLUG: expected-value-of-seven-bills
+IDS: Q-047
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Grab seven bills out of eight
+QUESTION:
+A box contains one $\$100$ bill, three $\$20$ bills and four $\$10$ bills. You draw $7$ bills at random without replacement. What is the expected total value of the bills you draw?
+HINT1:
+Drawing $7$ out of $8$ is the same as leaving exactly one bill behind.
+HINT2:
+The bill left behind is uniformly random among the $8$. Alternatively, each bill is drawn with the same probability — which one?
+ANSWER:
+$\$175$
+REFRESH:
+- **Linearity of expectation:** $\mathbb{E}\big[\sum_i v_i I_i\big] = \sum_i v_i P(I_i = 1)$.
+- **Sampling without replacement:** when $k$ of $n$ items are drawn at random, each item is included with probability $k/n$.
+EXPLANATION:
+The box holds $100 + 60 + 40 = 200$ dollars. You take everything except one uniformly random bill, whose expected value is $200/8 = 25$. So you expect $200 - 25 = 175$.
+SOLUTION: The bill left behind
+Total $= 100 + 3\cdot 20 + 4\cdot 10 = 200$. The bill not drawn is uniform over the $8$ bills, with expected value $200/8 = 25$. Expected total drawn $= 200 - 25 = 175$.
+SOLUTION: Indicators
+Each bill is drawn with probability $7/8$, so $\mathbb{E}[\text{total}] = \frac78 \cdot 200 = 175$.
+===END===
+
+===TEASER===
+SLUG: pay-for-more-uniforms
+IDS: Q-049
+FIRMS: Optiver
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Paying 2 cents per extra draw
+QUESTION:
+You receive one free random number, uniform on $(0,1)$. You may then generate further independent uniform numbers as many times as you like, paying $\$0.02$ for each extra one, deciding each time based on everything seen so far. When you stop, you receive the **largest** number generated (in dollars), minus what you paid. What is your expected profit under the optimal strategy?
+HINT1:
+Suppose your current best is $m$. Compare the expected improvement from exactly one more draw with its cost.
+HINT2:
+One more draw improves your best by $\mathbb{E}[(U - m)^+] = \frac{(1-m)^2}{2}$. Stop as soon as this is at most $0.02$; then compute the expected payoff and the expected number of paid draws for that threshold rule.
+ANSWER:
+Draw until you see a number $\ge 0.8$; expected profit $\$0.82$.
+REFRESH:
+- **One-step look-ahead:** in a stopping problem where, once stopping is better than one more step, it stays better forever (a "monotone" problem), the rule "stop as soon as stopping beats one more step" is optimal.
+- **Geometric waiting time:** mean $1/p$ trials to the first success.
+- **Uniform conditioned on an interval:** $U$ given $U > c$ is uniform on $(c,1)$, mean $\frac{1+c}{2}$.
+EXPLANATION:
+With current best $m$, one more draw gains $\mathbb{E}[\max(m,U)] - m = \int_m^1 (u - m)\,du = \frac{(1-m)^2}{2}$ and costs $0.02$. It is worth drawing iff $(1-m)^2 > 0.04$, i.e. $m < 0.8$. Since your best only goes up, once you are above $0.8$ you stay there, so the one-step rule is optimal: keep drawing until a number beats $0.8$. You then collect a uniform on $(0.8,1)$, worth $0.9$ on average, and you pay for the draws it took to get there: the first is free, and the number of draws is geometric with success probability $0.2$ (mean $5$), so on average $4$ paid draws, $0.08$. Net: $0.9 - 0.08 = 0.82$.
+SOLUTION: Threshold rule and its value
+*Threshold.* With best $m$, the gain of one extra draw is $\mathbb{E}[(U - m)^+] = \int_m^1 (u-m)\,du = \frac{(1-m)^2}{2}$. It exceeds the cost iff $\frac{(1-m)^2}{2} > 0.02 \iff m < 0.8$. The set $\{m \ge 0.8\}$ is closed under further draws (the maximum never decreases), so the problem is monotone and the one-step look-ahead rule is optimal: stop at the first number $\ge 0.8$.
+
+*Value.* Let $N$ be the index of the first draw $\ge 0.8$; $N$ is geometric with $p = 0.2$, $\mathbb{E}[N] = 5$, and you pay for $N - 1$ draws. The stopping value is the first draw above $0.8$, uniform on $(0.8, 1)$ with mean $0.9$ (and it is the maximum, since all earlier draws were below $0.8$). So
+$$\mathbb{E}[\text{profit}] = 0.9 - 0.02\,(\mathbb{E}[N] - 1) = 0.9 - 0.08 = 0.82.$$
+SOLUTION: Value-function equation
+Let $V(m)$ be the optimal expected future payoff with current best $m$ (future costs included). For $m \ge 0.8$, $V(m) = m$. For $m < 0.8$ guess $V(m) = c$, a constant (the old best no longer matters: you will keep going until you pass $0.8$). Then
+$$c = -0.02 + \int_0^{0.8} c\,du + \int_{0.8}^1 u\,du = -0.02 + 0.8c + 0.18 \;\Rightarrow\; 0.2c = 0.16 \;\Rightarrow\; c = 0.8.$$
+Note $V(m) = 0.8 \ge m$ for $m<0.8$, consistent with continuing. The first draw is free, so the game is worth
+$$\mathbb{E}[V(U)] = 0.8\cdot 0.8 + \int_{0.8}^1 u\,du = 0.64 + 0.18 = 0.82.$$
+===END===
+
+===TEASER===
+SLUG: longer-piece-variance
+IDS: Q-051
+FIRMS: Five Rings
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Variance of the longer piece
+QUESTION:
+A rope of length $1$ metre is cut at a point $X$ chosen uniformly on $(0,1)$. Let $L = \max(X, 1-X)$ be the length of the longer piece. Compute $\operatorname{Var}(L)$.
+HINT1:
+What values can $L$ take, and is any of them more likely than another?
+HINT2:
+$L$ is uniform on $(\tfrac12, 1)$: check $P(L \le \ell)$ for $\ell\in(\tfrac12,1)$. Then use the variance of a uniform distribution.
+ANSWER:
+$\dfrac1{48}$ (square metres)
+REFRESH:
+- **Uniform distribution:** if $V\sim U(a,b)$ then $\mathbb{E}[V] = \frac{a+b}{2}$ and $\operatorname{Var}(V) = \frac{(b-a)^2}{12}$.
+- **Variance formula:** $\operatorname{Var}(L) = \mathbb{E}[L^2] - (\mathbb{E}L)^2$.
+EXPLANATION:
+Folding the interval $(0,1)$ at its midpoint maps $X$ to $L$: the cut at $x$ and the cut at $1-x$ give the same longer piece. Folding a uniform distribution in half gives a uniform distribution on the half: $L \sim U(\tfrac12, 1)$, an interval of length $\tfrac12$, so $\operatorname{Var}(L) = \frac{(1/2)^2}{12} = \frac1{48}$.
+SOLUTION: Distribution of L
+For $\ell \in [\tfrac12, 1]$: $L \le \ell \iff 1-\ell \le X \le \ell$, so $P(L\le\ell) = 2\ell - 1$, the CDF of $U(\tfrac12,1)$. Hence
+$$\operatorname{Var}(L) = \frac{(1 - \tfrac12)^2}{12} = \frac1{48}.$$
+SOLUTION: Direct moments
+$\mathbb{E}[L] = 2\int_{1/2}^1 x\,dx = \frac34$ and $\mathbb{E}[L^2] = 2\int_{1/2}^1 x^2\,dx = \frac23\left(1 - \frac18\right) = \frac7{12}$. So
+$$\operatorname{Var}(L) = \frac7{12} - \frac9{16} = \frac{28 - 27}{48} = \frac1{48}.$$
+===END===

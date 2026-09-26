@@ -83,8 +83,9 @@ export interface LoginResponse {
   created: boolean;
 }
 
-export type TeaserSection = 'brainteaser' | 'probability';
-export type TeaserBook = 'green' | 'red' | 'heard';
+export type TeaserSection = 'brainteaser' | 'probability' | 'trading';
+// Where a puzzle comes from: one of the three books, or a free question bank / site.
+export type TeaserBook = 'green' | 'red' | 'heard' | 'quantqa' | 'wso' | 'everythingquant' | 'quantt';
 
 export interface TeaserSummary {
   id: number;
@@ -94,6 +95,7 @@ export interface TeaserSummary {
   title: string;
   difficulty: 'easy' | 'medium' | 'hard' | null;
   books: TeaserBook[];
+  firms: string[];
   position: number;
   completed: boolean;
   hasBoard: boolean;
