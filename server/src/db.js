@@ -139,3 +139,43 @@ for (const [name, ddl] of [
 // NULL for courses with content.
 const courseCols = db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name);
 if (!courseCols.includes('unavailable_reason')) db.exec('ALTER TABLE courses ADD COLUMN unavailable_reason TEXT');
+
+// Brain teasers and probability puzzles from the interview books (content,
+// rebuilt by scripts/build-teasers.js). slug is the stable key user data
+// hangs on, so rebuilding the table never loses progress or boards.
+// solutions / followups / books / refs are JSON arrays.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS teasers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug TEXT NOT NULL UNIQUE,
+    section TEXT NOT NULL CHECK (section IN ('brainteaser', 'probability')),
+    category TEXT NOT NULL,
+    title TEXT NOT NULL,
+    difficulty TEXT,
+    question TEXT NOT NULL,
+    hint1 TEXT,
+    hint2 TEXT,
+    answer TEXT,
+    refresh TEXT,
+    explanation TEXT,
+    solutions TEXT NOT NULL DEFAULT '[]',
+    followups TEXT NOT NULL DEFAULT '[]',
+    books TEXT NOT NULL DEFAULT '[]',
+    refs TEXT NOT NULL DEFAULT '[]',
+    position INTEGER NOT NULL DEFAULT 0
+  );
+
+  -- Per-user state on one teaser: completed flag and the board (ink JSON).
+  CREATE TABLE IF NOT EXISTS teaser_user (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    slug TEXT NOT NULL,
+    completed INTEGER NOT NULL DEFAULT 0,
+    completed_at TEXT,
+    ink TEXT,
+    ink_filled INTEGER NOT NULL DEFAULT 0,
+    ink_updated_at TEXT,
+    PRIMARY KEY (user_id, slug)
+  );
+`);
+const teaserCols = db.prepare('PRAGMA table_info(teasers)').all().map((c) => c.name);
+if (!teaserCols.includes('followups')) db.exec("ALTER TABLE teasers ADD COLUMN followups TEXT NOT NULL DEFAULT '[]'");

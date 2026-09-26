@@ -16,7 +16,7 @@ fs.copyFileSync(path.join(DATA_DIR, 'masef.db'), seedPath);
 
 const seed = new DatabaseSync(seedPath);
 // Personal handwritten ink is never published either.
-seed.exec('DELETE FROM sessions; DELETE FROM users; DELETE FROM ink; DELETE FROM section_ink; VACUUM;');
+seed.exec('DELETE FROM sessions; DELETE FROM users; DELETE FROM ink; DELETE FROM section_ink; DELETE FROM teaser_user; VACUUM;');
 const counts = {
   courses: seed.prepare('SELECT COUNT(*) n FROM courses').get().n,
   sections: seed.prepare('SELECT COUNT(*) n FROM sections').get().n,

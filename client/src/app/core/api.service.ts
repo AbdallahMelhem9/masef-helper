@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { ChatMessage, Course, Lesson, Pdf, Section } from './models';
+import { ChatMessage, Course, Lesson, Pdf, Section, Teaser, TeaserSummary } from './models';
 
 // How long the tutor's chat answer should be; 'auto' lets it read the wanted
 // length off the question itself.
@@ -63,5 +63,17 @@ export class ApiService {
     return firstValueFrom(
       this.http.post<{ user: ChatMessage; assistant: ChatMessage }>(`/api/sections/${sectionId}/messages`, { content, length })
     );
+  }
+
+  getTeasers(): Promise<TeaserSummary[]> {
+    return firstValueFrom(this.http.get<TeaserSummary[]>('/api/teasers'));
+  }
+
+  getTeaser(slug: string): Promise<Teaser> {
+    return firstValueFrom(this.http.get<Teaser>(`/api/teasers/${slug}`));
+  }
+
+  setTeaserCompleted(slug: string, completed: boolean): Promise<{ ok: boolean; completed: boolean }> {
+    return firstValueFrom(this.http.put<{ ok: boolean; completed: boolean }>(`/api/teasers/${slug}/completed`, { completed }));
   }
 }

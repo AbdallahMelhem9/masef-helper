@@ -8,3 +8,6 @@ server/logs/
 
 .env
 *.env
+
+# Interview books (scans, copyrighted): source material only
+brainteasers/

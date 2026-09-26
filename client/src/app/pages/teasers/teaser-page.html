@@ -1,0 +1,201 @@
+<div class="page wide">
+  @if (teaser(); as t) {
+    <nav class="crumbs">
+      <a routerLink="/teasers">Puzzles</a>
+      <span class="crumb-sep">/</span>
+      <a [routerLink]="['/teasers', t.section]">{{ SECTION_INFO[t.section].title }}</a>
+      <span class="crumb-sep">/</span>
+      <a [routerLink]="['/teasers', t.section, categorySlug(t.category)]">{{ t.category }}</a>
+    </nav>
+
+    <header class="tz-head">
+      <div class="tz-title">
+        <h1>{{ t.title }}</h1>
+        <div class="tz-meta">
+          <app-book-tags [books]="t.books" />
+          @if (t.difficulty) {
+            <span class="diff" [class]="'diff diff-' + t.difficulty">{{ t.difficulty }}</span>
+          }
+          @if (position().total > 1) {
+            <span class="count">{{ position().index + 1 }} / {{ position().total }} in {{ t.category }}</span>
+          }
+        </div>
+      </div>
+      <div class="tz-actions">
+        <button type="button" class="nav-btn" [disabled]="!position().prev" (click)="go(position().prev)" title="Previous puzzle">&larr;</button>
+        <button type="button" class="done-btn" [class.on]="t.completed" [disabled]="savingDone()" (click)="toggleCompleted()">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.4-1.4z" fill="currentColor" /></svg>
+          {{ t.completed ? 'Completed' : 'Mark as completed' }}
+        </button>
+        <button type="button" class="nav-btn" [disabled]="!position().next" (click)="go(position().next)" title="Next puzzle">&rarr;</button>
+      </div>
+    </header>
+
+    <section class="tz-question">
+      <app-math-content [content]="t.question" />
+    </section>
+
+    <div class="workspace">
+      <!-- The board -->
+      <section class="board-col">
+        <div class="board-tools">
+          <span class="board-label">Your board</span>
+          <button type="button" class="head-btn" [class.on]="penActive()" (click)="penActive.set(!penActive())">
+            <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor" /></svg>
+            Pen
+          </button>
+          <button type="button" class="head-btn" [class.on]="typedOpen()" (click)="typedOpen.set(!typedOpen())">Typed</button>
+          <button type="button" class="head-btn" (click)="addPage()">+ Page</button>
+          <span class="board-status">{{ statusLabel() }}</span>
+        </div>
+        @if (penActive()) {
+          <div class="pen-bar">
+            <app-pen-palette
+              [tool]="penTool()"
+              [canUndo]="canUndo()"
+              [fingerDraws]="fingerDraws()"
+              (toolChange)="penTool.set($event)"
+              (undo)="inkLayer?.undo()"
+              (clear)="inkLayer?.clearAll()"
+              (fingerDrawsChange)="setFingerDraws($event)"
+            />
+          </div>
+        }
+        @if (doc(); as d) {
+          @if (typedOpen()) {
+            <textarea
+              class="typed"
+              [ngModel]="d.text || ''"
+              (ngModelChange)="onText($event)"
+              placeholder="Type your reasoning, a guess, an equation…"
+              rows="4"
+            ></textarea>
+          }
+          <div class="board-paper" [style.minHeight.px]="paperHeight">
+            <app-ink-layer
+              [strokes]="d.strokes"
+              [active]="penActive()"
+              [tool]="penTool()"
+              [fingerDraws]="fingerDraws()"
+              (strokesChange)="onStrokes($event)"
+              (canUndoChange)="canUndo.set($event)"
+            />
+          </div>
+        } @else {
+          <p class="loading">Opening the board&hellip;</p>
+        }
+      </section>
+
+      <!-- Hints and solution -->
+      <aside class="help-col">
+        <div class="reveal" [class.open]="hintsShown() >= 1">
+          <div class="reveal-head">
+            <span class="reveal-label">Hint 1</span>
+            @if (hintsShown() < 1) {
+              <button type="button" class="reveal-btn" (click)="showNextHint()" [disabled]="!t.hint1">Show</button>
+            }
+          </div>
+          @if (hintsShown() >= 1 && t.hint1) {
+            <app-math-content class="reveal-body" [content]="t.hint1" />
+          }
+        </div>
+
+        <div class="reveal" [class.open]="hintsShown() >= 2" [class.locked]="hintsShown() < 1">
+          <div class="reveal-head">
+            <span class="reveal-label">Hint 2</span>
+            @if (hintsShown() < 2) {
+              <button type="button" class="reveal-btn" (click)="showNextHint()" [disabled]="hintsShown() < 1 || !t.hint2">Show</button>
+            }
+          </div>
+          @if (hintsShown() >= 2 && t.hint2) {
+            <app-math-content class="reveal-body" [content]="t.hint2" />
+          }
+        </div>
+
+        <div class="reveal solution" [class.open]="solutionShown()">
+          <div class="reveal-head">
+            <span class="reveal-label">Solution</span>
+            <button type="button" class="reveal-btn" (click)="toggleSolution()">{{ solutionShown() ? 'Hide' : 'Show' }}</button>
+          </div>
+          @if (solutionShown()) {
+            <div class="sol">
+              @if (t.answer) {
+                <div class="sol-answer">
+                  <span class="sol-tag">Answer</span>
+                  <app-math-content [content]="t.answer" />
+                </div>
+              }
+              @if (t.explanation) {
+                <h3 class="sol-h">Explanation</h3>
+                <app-math-content [content]="t.explanation" />
+              }
+              @if (t.refresh) {
+                <div class="sol-refresh">
+                  <span class="sol-tag">Refresh</span>
+                  <app-math-content [content]="t.refresh" />
+                </div>
+              }
+              @if (t.solutions.length) {
+                @if (t.solutions.length > 1) {
+                  <div class="sol-tabs" role="tablist">
+                    @for (s of t.solutions; track $index) {
+                      <button type="button" role="tab" class="sol-tab" [class.on]="activeSolution() === $index" (click)="activeSolution.set($index)">
+                        Solution {{ $index + 1 }}
+                      </button>
+                    }
+                  </div>
+                }
+                @let s = t.solutions[activeSolution()] || t.solutions[0];
+                <h3 class="sol-h">
+                  @if (t.solutions.length === 1) {
+                    Solution &middot;
+                  }
+                  {{ s.title }}
+                </h3>
+                <app-math-content [content]="s.body" />
+              }
+            </div>
+          }
+        </div>
+
+        @if (t.followups.length) {
+          <div class="followups">
+            <h3 class="sol-h">Follow-up questions</h3>
+            @for (f of t.followups; track $index) {
+              <div class="followup">
+                <p class="fu-title">{{ f.title }}</p>
+                <app-math-content [content]="f.question" />
+                <button type="button" class="reveal-btn small" (click)="toggleFollowup($index)">
+                  {{ followupsShown().has($index) ? 'Hide answer' : 'Show answer' }}
+                </button>
+                @if (followupsShown().has($index)) {
+                  <div class="fu-answer"><app-math-content [content]="f.answer" /></div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @if (t.refs.length) {
+          <p class="sources">
+            <span class="sol-tag">Source</span>
+            @for (r of t.refs; track $index) {
+              <span class="src">{{ r }}</span>
+            }
+          </p>
+        }
+
+        <button type="button" class="done-btn wide" [class.on]="t.completed" [disabled]="savingDone()" (click)="toggleCompleted()">
+          {{ t.completed ? 'Completed ✓' : 'Mark as completed' }}
+        </button>
+        @if (position().next; as n) {
+          <button type="button" class="next-link" (click)="go(n)">Next: {{ n.title }} &rarr;</button>
+        }
+      </aside>
+    </div>
+  } @else if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  } @else {
+    <p class="loading">Loading the puzzle&hellip;</p>
+  }
+</div>

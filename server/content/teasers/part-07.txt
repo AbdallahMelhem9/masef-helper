@@ -1,0 +1,1006 @@
+===TEASER===
+SLUG: density-sum-two-uniforms
+IDS: R3B-49, R3B-50, R3B-51, R3B-52
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Density of the sum of two uniforms
+QUESTION:
+Let $X$ and $Y$ be two independent random variables, each uniform on the unit interval $[0,1]$. What is the probability density function of $X+Y$?
+HINT1:
+The density of a sum of independent variables is obtained by "smearing" one density along the other. Alternatively, think of $(X,Y)$ as a uniform point in the unit square.
+HINT2:
+Either compute the convolution $h(z)=\int f(z-y)\,g(y)\,dy$ and work out for which $y$ the integrand is non-zero, or compute $\mathbb P(X+Y\le z)$ as the area of the part of the unit square below the line $x+y=z$ (two cases: $z\le 1$ and $z\ge1$), then differentiate.
+ANSWER:
+The triangular density $h(z)=z$ on $[0,1]$, $h(z)=2-z$ on $[1,2]$, and $0$ elsewhere.
+REFRESH:
+- **Convolution formula.** If $X$ and $Y$ are independent with densities $f$ and $g$, then $X+Y$ has density $h(z)=\int_{-\infty}^{\infty} f(z-y)\,g(y)\,dy$.
+- **Density from the CDF.** If $F_Z(z)=\mathbb P(Z\le z)$ is differentiable (piecewise), the density is $h=F_Z'$.
+- **Joint density of independent variables** is the product of the marginals; for two independent $U(0,1)$ variables it is $1$ on the unit square, so probabilities are areas.
+EXPLANATION:
+Because $X$ and $Y$ are independent uniforms, the pair $(X,Y)$ is a uniformly random point of the unit square, and $\mathbb P(X+Y\le z)$ is simply the area of the part of the square lying below the line $x+y=z$. For small $z$ that region is a little right triangle of area $z^2/2$; for $z$ close to $2$ it is the whole square minus a small triangle in the top-right corner, of area $1-(2-z)^2/2$. Differentiating gives a density that rises linearly from $0$ at $z=0$ to $1$ at $z=1$ and then falls linearly back to $0$ at $z=2$: a "tent".
+
+Intuitively, sums near $1$ are the most likely because there are many ways to make them ($0.1+0.9$, $0.5+0.5$, $0.9+0.1$, ...), whereas a sum near $0$ or near $2$ forces both variables to be extreme. This is exactly the continuous analogue of the sum of two dice being most likely $7$.
+SOLUTION: Convolution
+For independent $X,Y$ with densities $f$ and $g$, conditioning on $Y$ gives
+$$\mathbb P(X+Y\le z)=\int_{-\infty}^{\infty}\mathbb P(X\le z-y)\,g(y)\,dy,$$
+and differentiating in $z$,
+$$h(z)=\int_{-\infty}^{\infty} f(z-y)\,g(y)\,dy .$$
+Here $f=g=\mathbb 1_{[0,1]}$. The factor $g(y)$ is $1$ exactly when $0\le y\le 1$, and $f(z-y)$ is $1$ exactly when $0\le z-y\le 1$, i.e. $z-1\le y\le z$. So the integrand is $1$ on $[\max(0,z-1),\,\min(1,z)]$ and $0$ elsewhere:
+$$h(z)=\int_{\max(0,z-1)}^{\min(1,z)}1\,dy=\big(\min(1,z)-\max(0,z-1)\big)^+ .$$
+Cases:
+- $z\le 0$: the interval is empty, $h(z)=0$.
+- $0\le z\le 1$: $h(z)=\int_0^z dy=z$.
+- $1\le z\le 2$: $h(z)=\int_{z-1}^1 dy=2-z$.
+- $z\ge 2$: empty, $h(z)=0$.
+
+Check: $\int_0^1 z\,dz+\int_1^2(2-z)\,dz=\tfrac12+\tfrac12=1$. So $X+Y$ has the triangular density on $[0,2]$ with peak $1$ at $z=1$.
+SOLUTION: Geometry of the unit square
+$(X,Y)$ is uniform on $[0,1]^2$, so $F(z)=\mathbb P(X+Y\le z)$ is the area of $\{(x,y)\in[0,1]^2 : x+y\le z\}$.
+- For $0\le z\le1$ the region is the triangle with vertices $(0,0),(z,0),(0,z)$: $F(z)=z^2/2$.
+- For $1\le z\le 2$ the complement inside the square is the triangle with vertices $(1,1),(z-1,1),(1,z-1)$, of legs $2-z$: $F(z)=1-(2-z)^2/2$.
+
+Differentiating: $h(z)=z$ on $[0,1]$ and $h(z)=2-z$ on $[1,2]$, zero elsewhere.
+FOLLOWUP: Difference of exponentials
+Let $X$ and $V$ be independent exponential random variables, $X\sim\text{Exp}(\lambda)$ and $V\sim\text{Exp}(\mu)$, and set $Y=-V$ (so $X$ and $-Y$ are exponential). What is the density of $X+Y=X-V$? What happens when $\lambda=\mu$?
+FOLLOWUP_ANSWER:
+Use the convolution-type formula $h(z)=\int f_X(z+v)\,f_V(v)\,dv$ (condition on $V=v$: $X-V\le z\iff X\le z+v$). The integrand is non-zero when $v\ge0$ and $z+v\ge 0$.
+
+- If $z\ge 0$: $v$ ranges over $[0,\infty)$,
+$$h(z)=\int_0^\infty \lambda e^{-\lambda(z+v)}\,\mu e^{-\mu v}\,dv=\lambda\mu e^{-\lambda z}\cdot\frac{1}{\lambda+\mu}=\frac{\lambda\mu}{\lambda+\mu}e^{-\lambda z}.$$
+- If $z<0$: $v$ ranges over $[-z,\infty)$,
+$$h(z)=\lambda\mu e^{-\lambda z}\int_{-z}^\infty e^{-(\lambda+\mu)v}\,dv=\lambda\mu e^{-\lambda z}\frac{e^{(\lambda+\mu)z}}{\lambda+\mu}=\frac{\lambda\mu}{\lambda+\mu}e^{\mu z}.$$
+
+So $h(z)=\frac{\lambda\mu}{\lambda+\mu}e^{-\lambda z}$ for $z\ge0$ and $\frac{\lambda\mu}{\lambda+\mu}e^{\mu z}$ for $z<0$ (it integrates to $\frac{\mu}{\lambda+\mu}+\frac{\lambda}{\lambda+\mu}=1$). With equal rates $\lambda=\mu$ this is the **Laplace (double-exponential) density** $h(z)=\frac{\lambda}{2}e^{-\lambda|z|}$.
+FOLLOWUP: Density of the product
+For $X,Y$ independent uniform on $[0,1]$, derive the density of $XY$.
+FOLLOWUP_ANSWER:
+For $0<z<1$, condition on $Y=y$: $\mathbb P(XY\le z\mid Y=y)=\min(1,z/y)$. Hence
+$$\mathbb P(XY\le z)=\int_0^z 1\,dy+\int_z^1\frac zy\,dy=z+z(\ln 1-\ln z)=z-z\ln z .$$
+Differentiating: $h(z)=1-\ln z-1=-\ln z$ for $0<z<1$, and $0$ otherwise. (Check: $\int_0^1-\ln z\,dz=1$.) The density blows up at $0$: products of two numbers in $[0,1]$ tend to be small.
+FOLLOWUP: Density of the ratio
+For $X,Y$ independent uniform on $[0,1]$, derive the density of $X/Y$.
+FOLLOWUP_ANSWER:
+$U=X/Y$ takes values in $(0,\infty)$ and $\mathbb P(U\le u)$ is the area of $\{(x,y)\in[0,1]^2: x\le uy\}$.
+- If $0\le u\le 1$: the region is the triangle with vertices $(0,0),(0,1),(u,1)$, area $u/2$.
+- If $u\ge 1$: the complement is the triangle $\{x>uy\}$ with vertices $(0,0),(1,0),(1,1/u)$, area $\frac{1}{2u}$, so $\mathbb P(U\le u)=1-\frac1{2u}$.
+
+Differentiating: $h(u)=\tfrac12$ on $[0,1]$ and $h(u)=\frac{1}{2u^2}$ for $u>1$. (Total mass $\tfrac12+\tfrac12=1$; note $\mathbb E[U]=\infty$ because of the $1/u^2$ tail.)
+===END===
+
+===TEASER===
+SLUG: central-limit-theorem
+IDS: R3B-53, R3B-54, R3B-55, R3B-56
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: What does the Central Limit Theorem say?
+QUESTION:
+What does the Central Limit Theorem say? State it precisely.
+HINT1:
+It is about sums (or averages) of many independent, identically distributed random variables, and it holds whatever their common distribution is, as long as a certain moment is finite.
+HINT2:
+Centre the sum $S_n=X_1+\dots+X_n$ by its mean and divide by its standard deviation. What does the distribution of this standardised sum approach, and in which sense of convergence?
+ANSWER:
+If $X_1,X_2,\dots$ are i.i.d. with mean $\mu$ and finite variance $\sigma^2>0$, then $\dfrac{S_n-n\mu}{\sigma\sqrt n}$ converges in distribution to $N(0,1)$.
+REFRESH:
+- **Convergence in distribution.** $Y_n\Rightarrow Y$ if $\mathbb P(Y_n\le x)\to\mathbb P(Y\le x)$ at every point $x$ where the CDF of $Y$ is continuous.
+- **Mean and variance of a sum of i.i.d. variables.** $\mathbb E[S_n]=n\mu$, $\operatorname{Var}(S_n)=n\sigma^2$ (variances add under independence).
+- **Characteristic function.** $\varphi_X(t)=\mathbb E[e^{itX}]$; for $N(0,1)$ it is $e^{-t^2/2}$; for independent variables $\varphi_{X+Y}=\varphi_X\varphi_Y$.
+EXPLANATION:
+The CLT says that if you add up many independent copies of the same random quantity, the shape of the distribution of the total becomes Gaussian, and the only features of the original distribution that survive are its mean and its variance. The mean fixes where the sum is centred ($n\mu$), the variance fixes its spread ($\sigma\sqrt n$), and everything else (skewness, kurtosis, whether it is discrete or continuous...) is washed out.
+
+This is why the normal distribution is everywhere in finance and statistics: sample means, sums of many small independent returns, measurement errors, Monte Carlo estimators all become approximately normal, with error of order $1/\sqrt n$. The key conditions are independence (or weak dependence), identical distribution (or a Lindeberg-type condition), and a finite second moment: without finite variance (e.g. Cauchy variables) the theorem fails.
+
+The mode of convergence matters: the CLT is a statement about distributions (CDFs), not about the random variables themselves converging.
+SOLUTION: Precise statement
+Let $X_1,X_2,\dots$ be independent and identically distributed with $\mathbb E[X_1]=\mu$ and $\operatorname{Var}(X_1)=\sigma^2\in(0,\infty)$. Put $S_n=X_1+\dots+X_n$, so $\mathbb E[S_n]=n\mu$ and $\operatorname{Var}(S_n)=n\sigma^2$. Then the standardised sum
+$$Y_n=\frac{S_n-n\mu}{\sigma\sqrt n}=\sqrt n\,\frac{\bar X_n-\mu}{\sigma}$$
+converges in distribution to a standard normal:
+$$\lim_{n\to\infty}\mathbb P(Y_n\le x)=\Phi(x)=\int_{-\infty}^x\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du\quad\text{for every }x\in\mathbb R.$$
+Equivalently, for large $n$, $\bar X_n\approx N(\mu,\sigma^2/n)$ and $S_n\approx N(n\mu,n\sigma^2)$.
+
+Remarks worth giving in an interview:
+- The limit does not depend on the distribution of $X_1$ beyond $\mu$ and $\sigma^2$.
+- Finite variance is essential: for i.i.d. Cauchy variables $\bar X_n$ is again Cauchy for every $n$.
+- There are more general versions: Lindeberg's CLT for independent but not identically distributed variables, versions for martingale differences and weakly dependent sequences, and multivariate versions (limit $N(0,\Sigma)$).
+- The Berry–Esseen theorem quantifies the speed: $\sup_x|\mathbb P(Y_n\le x)-\Phi(x)|\le C\,\mathbb E|X_1-\mu|^3/(\sigma^3\sqrt n)$.
+FOLLOWUP: Modes of convergence
+What is convergence in distribution? What other types of convergence are there in probability theory, and how are they related?
+FOLLOWUP_ANSWER:
+Let $Y_n,Y$ be random variables.
+- **In distribution (weakly):** $F_{Y_n}(x)\to F_Y(x)$ at every continuity point $x$ of $F_Y$; equivalently $\mathbb E[g(Y_n)]\to\mathbb E[g(Y)]$ for every bounded continuous $g$. Only the laws matter; the variables may even live on different spaces.
+- **In probability:** for every $\varepsilon>0$, $\mathbb P(|Y_n-Y|>\varepsilon)\to0$.
+- **Almost surely:** $\mathbb P(Y_n\to Y)=1$.
+- **In $L^p$ ($p\ge1$):** $\mathbb E|Y_n-Y|^p\to 0$ (mean-square for $p=2$).
+
+Relations: a.s. $\Rightarrow$ in probability $\Rightarrow$ in distribution; $L^p\Rightarrow$ in probability (by Markov's inequality, $\mathbb P(|Y_n-Y|>\varepsilon)\le \mathbb E|Y_n-Y|^p/\varepsilon^p$); $L^q\Rightarrow L^p$ for $q\ge p$. None of the converses hold in general, but: convergence in distribution to a constant implies convergence in probability; convergence in probability implies a.s. convergence along a subsequence; convergence in probability plus uniform integrability gives $L^1$. Examples: the strong law of large numbers is a.s. convergence, the weak law is convergence in probability, the CLT is convergence in distribution.
+FOLLOWUP: Proof with characteristic functions
+Using characteristic functions, prove the Central Limit Theorem for i.i.d. random variables with finite second moment.
+FOLLOWUP_ANSWER:
+WLOG $\mu=0$, $\sigma=1$ (replace $X_i$ by $(X_i-\mu)/\sigma$). Let $\varphi(t)=\mathbb E[e^{itX_1}]$. Since $\mathbb E[X_1^2]<\infty$, $\varphi$ is twice differentiable with $\varphi(0)=1$, $\varphi'(0)=i\mathbb E X_1=0$, $\varphi''(0)=-\mathbb E X_1^2=-1$, so by Taylor's theorem
+$$\varphi(t)=1-\frac{t^2}{2}+o(t^2)\qquad(t\to0).$$
+By independence, $Y_n=S_n/\sqrt n$ has characteristic function
+$$\varphi_{Y_n}(t)=\varphi\!\left(\frac{t}{\sqrt n}\right)^{n}=\left(1-\frac{t^2}{2n}+o\!\left(\frac1n\right)\right)^{n}\xrightarrow[n\to\infty]{}e^{-t^2/2}$$
+for each fixed $t$ (using $(1+a_n/n)^n\to e^{a}$ when $a_n\to a$, valid for complex $a_n$). $e^{-t^2/2}$ is the characteristic function of $N(0,1)$, and it is continuous at $0$, so by **Lévy's continuity theorem** $Y_n\Rightarrow N(0,1)$. $\blacksquare$
+FOLLOWUP: Lindeberg's condition
+What is Lindeberg's condition?
+FOLLOWUP_ANSWER:
+Let $X_1,X_2,\dots$ be independent (not necessarily identically distributed) with means $\mu_k$, finite variances $\sigma_k^2$, and let $s_n^2=\sum_{k=1}^n\sigma_k^2$. **Lindeberg's condition** is: for every $\varepsilon>0$,
+$$\frac{1}{s_n^2}\sum_{k=1}^n\mathbb E\!\left[(X_k-\mu_k)^2\,\mathbb 1_{\{|X_k-\mu_k|>\varepsilon s_n\}}\right]\xrightarrow[n\to\infty]{}0 .$$
+Under it, $\dfrac{\sum_{k=1}^n(X_k-\mu_k)}{s_n}\Rightarrow N(0,1)$ (Lindeberg's CLT). In words: no single term contributes a non-negligible share of the total variance; the variance comes from many small pieces. It holds automatically in the i.i.d. finite-variance case (the expectation inside is $n\,\mathbb E[X_1^2\mathbb 1_{\{|X_1|>\varepsilon\sigma\sqrt n\}}]$, divided by $n\sigma^2$, which tends to $0$ by dominated convergence). A convenient sufficient condition is Lyapunov's: $\frac{1}{s_n^{2+\delta}}\sum_k\mathbb E|X_k-\mu_k|^{2+\delta}\to0$ for some $\delta>0$. Conversely (Feller), if $\max_k\sigma_k^2/s_n^2\to0$ and the CLT holds, Lindeberg's condition must hold.
+===END===
+
+===TEASER===
+SLUG: covariance-matrix-positive-semidefinite
+IDS: R3B-57, R3B-58, R3B-59, R3B-60
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Is a covariance matrix positive definite?
+QUESTION:
+Prove that a covariance matrix is positive definite.
+HINT1:
+Before proving it, ask whether it is actually true. Can a covariance matrix have a zero eigenvalue?
+HINT2:
+For a vector $a$ of constants, compute the variance of the random variable $a_1X_1+\dots+a_nX_n$ in terms of the covariance matrix $C$.
+ANSWER:
+The claim is false as stated: a covariance matrix is always positive **semi**-definite ($a^\top Ca=\operatorname{Var}(a^\top X)\ge0$), and positive definite exactly when no non-trivial linear combination of the variables is almost surely constant.
+REFRESH:
+- **Positive (semi-)definite.** A symmetric matrix $C$ is positive semi-definite if $a^\top Ca\ge0$ for all $a\in\mathbb R^n$, positive definite if $a^\top Ca>0$ for all $a\ne0$.
+- **Bilinearity of covariance.** $\operatorname{Cov}\big(\sum_i a_iX_i,\sum_j b_jX_j\big)=\sum_{i,j}a_ib_j\operatorname{Cov}(X_i,X_j)$.
+- **Variance is non-negative**, and $\operatorname{Var}(Y)=0$ iff $Y$ is a.s. constant.
+EXPLANATION:
+Interviewers often state this wrongly on purpose (or by accident): the correct statement is positive semi-definite. The whole proof is one observation: the quadratic form $a^\top Ca$ is not an abstract number, it is the variance of the portfolio $a^\top X=a_1X_1+\dots+a_nX_n$. Variances cannot be negative, so $a^\top Ca\ge0$.
+
+This also tells you exactly when strict positivity fails: $a^\top Ca=0$ means the portfolio $a^\top X$ has zero variance, i.e. is a.s. constant. For instance if $X_2=2X_1$, then $a=(2,-1)$ gives $a^\top X=0$ and $C=\begin{pmatrix}1&2\\2&4\end{pmatrix}\sigma^2$ is singular. In finance this is the situation of a redundant asset (or a riskless combination), and it is why estimated covariance matrices with more assets than observations are singular.
+SOLUTION: Variance of a linear combination
+Let $X=(X_1,\dots,X_n)^\top$ have covariance matrix $C$, $C_{ij}=\operatorname{Cov}(X_i,X_j)$, and let $\mu_i=\mathbb E X_i$. $C$ is symmetric since $\operatorname{Cov}(X_i,X_j)=\operatorname{Cov}(X_j,X_i)$.
+
+Fix $a\in\mathbb R^n$ and let $Y=\sum_i a_iX_i$. Then $Y-\mathbb EY=\sum_ia_i(X_i-\mu_i)$, so
+$$\operatorname{Var}(Y)=\mathbb E\Big[\Big(\sum_i a_i(X_i-\mu_i)\Big)\Big(\sum_j a_j(X_j-\mu_j)\Big)\Big]=\sum_{i,j}a_ia_j\,\mathbb E[(X_i-\mu_i)(X_j-\mu_j)]=\sum_{i,j}a_ia_jC_{ij}=a^\top Ca .$$
+Since a variance is non-negative, $a^\top Ca\ge0$ for all $a$: $C$ is positive semi-definite.
+
+It is not positive definite in general: $a^\top Ca=0$ iff $\operatorname{Var}(a^\top X)=0$ iff $a^\top X$ is a.s. constant. Example: $X_1=Z$, $X_2=-Z$ with $\operatorname{Var}Z=1$ gives $C=\begin{pmatrix}1&-1\\-1&1\end{pmatrix}$, and $a=(1,1)$ gives $a^\top Ca=0$. So $C$ is positive definite if and only if no non-trivial linear combination of the $X_i$ is a.s. constant.
+SOLUTION: Matrix form
+Write $C=\mathbb E\big[(X-\mu)(X-\mu)^\top\big]$ (outer product). Then for any $a$,
+$$a^\top Ca=\mathbb E\big[a^\top(X-\mu)(X-\mu)^\top a\big]=\mathbb E\big[\big((X-\mu)^\top a\big)^2\big]\ge0,$$
+because it is the expectation of a square. Same conclusion: positive semi-definite, with equality iff $(X-\mu)^\top a=0$ a.s.
+FOLLOWUP: Testing positive definiteness
+How can you tell if a (symmetric) matrix is positive definite?
+FOLLOWUP_ANSWER:
+For a real symmetric $A$, the following are equivalent to positive definiteness:
+1. $x^\top Ax>0$ for every $x\ne0$ (definition).
+2. All eigenvalues of $A$ are strictly positive (diagonalise $A=Q\Lambda Q^\top$, then $x^\top Ax=\sum\lambda_iy_i^2$ with $y=Q^\top x$).
+3. **Sylvester's criterion:** all leading principal minors $\det(A_{1:k,1:k})$, $k=1,\dots,n$, are $>0$.
+4. $A$ has a Cholesky factorisation $A=LL^\top$ with $L$ lower triangular with strictly positive diagonal. In practice this is the test used: attempt a Cholesky decomposition; it fails (a non-positive pivot) iff $A$ is not positive definite.
+5. $A=B^\top B$ for some $B$ with linearly independent columns.
+
+For semi-definiteness: eigenvalues $\ge0$, or **all** principal minors (not only the leading ones) $\ge0$. Quick necessary conditions: positive diagonal, and $|a_{ij}|<\sqrt{a_{ii}a_{jj}}$.
+FOLLOWUP: Positive entries but not PSD
+Give an example of a matrix with positive entries that is not positive semi-definite.
+FOLLOWUP_ANSWER:
+$A=\begin{pmatrix}1&2\\2&1\end{pmatrix}$. With $x=(1,-1)^\top$: $x^\top Ax=1-2-2+1=-2<0$. Its eigenvalues are $3$ (eigenvector $(1,1)$) and $-1$ (eigenvector $(1,-1)$), and $\det A=-3<0$. It cannot be a covariance matrix: it would mean two unit-variance variables with covariance $2$, i.e. correlation $2>1$.
+FOLLOWUP: Zero-mean assumption
+In the proof that $\operatorname{Var}(a_1X_1+\dots+a_nX_n)=a^\top Ca$, show that we lose no generality by assuming $\mathbb E(X_i)=0$ for all $i$.
+FOLLOWUP_ANSWER:
+Let $\tilde X_i=X_i-\mu_i$, which have mean zero. Covariances are unaffected by adding constants: $\operatorname{Cov}(\tilde X_i,\tilde X_j)=\mathbb E[(X_i-\mu_i)(X_j-\mu_j)]=\operatorname{Cov}(X_i,X_j)$, so $\tilde X$ has the same covariance matrix $C$. Likewise $\sum a_i\tilde X_i=\sum a_iX_i-\sum a_i\mu_i$ differs from $\sum a_iX_i$ by a constant, and $\operatorname{Var}(Y+c)=\operatorname{Var}(Y)$. So both sides of $\operatorname{Var}(a^\top X)=a^\top Ca$ are unchanged when we replace $X$ by $\tilde X$; proving it for mean-zero variables proves it in general.
+===END===
+
+===TEASER===
+SLUG: change-of-measure-importance-sampling
+IDS: R3B-61, R3B-62, R3B-63, R3B-64, R3B-65, R3B-66
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: hard
+TITLE: Change of measure and importance sampling
+QUESTION:
+Explain what a change of measure is. Give an example where a change of measure is useful in Monte Carlo simulation.
+HINT1:
+A new probability measure can be built by reweighting the old one with a positive random variable of expectation $1$. Think about which outcomes you would like to see more often in a simulation.
+HINT2:
+If $\frac{d\mathbb Q}{d\mathbb P}=Z$, then $\mathbb E_{\mathbb P}[X]=\mathbb E_{\mathbb Q}\big[X\,\tfrac{d\mathbb P}{d\mathbb Q}\big]$. Try it on a digital option paying $\mathbb 1_{\{S_T>a\}}$ with $S_T\sim U(0,1)$: sample from a density that puts more weight on $(a,1)$ and compare the variances of the two estimators.
+ANSWER:
+A change of measure reweights probabilities by a positive density $Z=d\mathbb Q/d\mathbb P$ with $\mathbb E_{\mathbb P}Z=1$ (Radon–Nikodym; Girsanov for Brownian drifts); in Monte Carlo it gives importance sampling, e.g. pricing a deep out-of-the-money digital by sampling more paths in the money and multiplying by $d\mathbb P/d\mathbb Q$, which reduces variance.
+REFRESH:
+- **Absolute continuity / equivalence.** $\mathbb Q\ll\mathbb P$ if $\mathbb P(A)=0\Rightarrow\mathbb Q(A)=0$; $\mathbb P\sim\mathbb Q$ (equivalent) if each is absolutely continuous w.r.t. the other: same null sets.
+- **Radon–Nikodym theorem.** If $\mathbb Q\ll\mathbb P$ (both $\sigma$-finite) there is an a.s. unique $Z\ge0$ with $\mathbb Q(A)=\mathbb E_{\mathbb P}[\mathbb 1_AZ]$; one writes $Z=d\mathbb Q/d\mathbb P$, and then $\mathbb E_{\mathbb Q}[X]=\mathbb E_{\mathbb P}[XZ]$.
+- **Monte Carlo estimator.** $\hat C=\frac1n\sum_{k=1}^n g(U_k)$ with i.i.d. $U_k$ is unbiased for $\mathbb E[g(U)]$ with variance $\operatorname{Var}(g(U))/n$.
+- **Variance of a Bernoulli($p$)**: $p(1-p)$.
+EXPLANATION:
+A probability measure says how likely each event is. A change of measure keeps the same possible outcomes but changes their weights: some become more likely, others less. The recipe is to choose a positive random variable $Z$ with $\mathbb E_{\mathbb P}[Z]=1$ and declare $\mathbb Q(A)=\mathbb E_{\mathbb P}[Z\mathbb 1_A]$. Two golden rules: the new measure must live on the same events, and what was impossible must stay impossible (and, for an equivalent change, what was possible must stay possible). When $\mathbb P$ and $\mathbb Q$ are equivalent, you can go back and forth, and any expectation under one measure is an expectation under the other with a correction factor:
+$$\mathbb E_{\mathbb P}[X]=\mathbb E_{\mathbb Q}\Big[X\frac{d\mathbb P}{d\mathbb Q}\Big].$$
+
+In derivatives pricing the star is **Girsanov's theorem**: reweighting Brownian paths by an exponential martingale $\exp\big(\int\gamma\,dW-\tfrac12\int\gamma^2dt\big)$ turns a Brownian motion into a Brownian motion with drift (and vice versa). This is how one moves from the real-world measure to the risk-neutral one: the drift changes, the volatility does not.
+
+In Monte Carlo the same identity gives **importance sampling**. If the payoff is non-zero only on a rare event, most simulated paths are wasted and the estimator is noisy. Sample instead under a measure where the important region is common, and multiply each payoff by the likelihood ratio $d\mathbb P/d\mathbb Q$, which is small precisely on the paths you over-sampled. The expectation is unchanged, but the variance can drop dramatically.
+SOLUTION: Definition and Girsanov
+**Construction.** On $(\Omega,\mathcal F,\mathbb P)$ let $Z>0$ with $\mathbb E_{\mathbb P}[Z]=1$ and set $\mathbb Q(A)=\mathbb E_{\mathbb P}[\mathbb 1_AZ]$ for $A\in\mathcal F$. Then $\mathbb Q(\Omega)=1$, $\mathbb Q$ is countably additive (monotone convergence), and $\mathbb P(A)=0\Rightarrow\mathbb Q(A)=0$. Since $Z>0$, also $\mathbb Q(A)=0\Rightarrow\mathbb P(A)=0$, so $\mathbb P\sim\mathbb Q$, with $\frac{d\mathbb Q}{d\mathbb P}=Z$ and $\frac{d\mathbb P}{d\mathbb Q}=\frac1Z$. Conversely, by the Radon–Nikodym theorem every $\mathbb Q\ll\mathbb P$ arises this way (with $Z\ge0$).
+
+**Girsanov.** Let $W$ be a $\mathbb P$-Brownian motion with filtration $(\mathcal F_t)$, $\gamma$ an adapted process, and
+$$Z_t=\exp\Big(\int_0^t\gamma_u\,dW_u-\frac12\int_0^t\gamma_u^2\,du\Big).$$
+If $\mathbb E_{\mathbb P}[Z_T]=1$ (e.g. under Novikov's condition $\mathbb E\,e^{\frac12\int_0^T\gamma^2du}<\infty$), $Z$ is a martingale, $\frac{d\mathbb Q}{d\mathbb P}\big|_{\mathcal F_T}=Z_T$ defines $\mathbb Q\sim\mathbb P$, and under $\mathbb Q$
+$$W^{\mathbb Q}_t=W_t-\int_0^t\gamma_u\,du$$
+is a standard Brownian motion. So $W$, driftless under $\mathbb P$, has drift $\gamma$ under $\mathbb Q$; equivalently, a process with drift under $\mathbb P$ can be made driftless under a suitable $\mathbb Q$.
+SOLUTION: Monte Carlo example (importance sampling for a digital)
+Take zero rates and a terminal stock price $S_T\sim U(0,1)$ under $\mathbb P$. A digital option pays $\mathbb 1_{\{S_T>a\}}$ with $a\in(0,1)$, so its price is
+$$C=\mathbb E_{\mathbb P}[\mathbb 1_{\{S_T>a\}}]=1-a .$$
+**Plain Monte Carlo.** With i.i.d. $U_k\sim U(0,1)$, $\hat C=\frac1n\sum_k\mathbb 1_{\{U_k>a\}}$ is an average of Bernoulli($1-a$) variables:
+$$\operatorname{Var}(\hat C)=\frac{a(1-a)}{n}.$$
+If $a$ is close to $1$ (deep out of the money), almost all samples return $0$ and the relative error $\sqrt{a/((1-a)n)}$ is huge.
+
+**New measure.** For $0<\alpha<1$ let $\mathbb Q$ have density
+$$f(x)=\begin{cases}\alpha/a,&0\le x\le a,\\ (1-\alpha)/(1-a),&a<x\le 1,\end{cases}$$
+so $\mathbb Q(S_T>a)=1-\alpha$. As the $\mathbb P$-density is $1$, $\frac{d\mathbb Q}{d\mathbb P}(x)=f(x)$ and $\frac{d\mathbb P}{d\mathbb Q}(x)=1/f(x)$, which equals $\frac{1-a}{1-\alpha}$ on $(a,1]$. Hence
+$$C=\mathbb E_{\mathbb Q}\Big[\mathbb 1_{\{S_T>a\}}\frac{d\mathbb P}{d\mathbb Q}\Big]=\frac{1-a}{1-\alpha}\,\mathbb E_{\mathbb Q}[\mathbb 1_{\{S_T>a\}}].$$
+The estimator is $\hat C_2=\frac{1-a}{1-\alpha}\cdot\frac1n\sum_k\mathbb 1_{\{U^*_k>a\}}$ with $U^*_k$ i.i.d. of density $f$. The indicators are Bernoulli($1-\alpha$), so
+$$\operatorname{Var}(\hat C_2)=\Big(\frac{1-a}{1-\alpha}\Big)^2\frac{\alpha(1-\alpha)}{n}=\frac{(1-a)^2\,\alpha}{(1-\alpha)\,n}.$$
+Compare: $\operatorname{Var}(\hat C_2)<\operatorname{Var}(\hat C)\iff\frac{(1-a)\alpha}{1-\alpha}<a\iff\alpha-a\alpha<a-a\alpha\iff\alpha<a$. So variance is reduced exactly when $\mathbb Q$ puts **more** mass than $\mathbb P$ on the in-the-money region ($1-\alpha>1-a$), and it decreases to $0$ as $\alpha\to0$: sampling only from $(a,1)$ gives the constant estimator $1-a$, which is exact. (Note: the book says the variance is smaller "for large enough $\alpha$"; it is the opposite, small enough $\alpha$, namely $\alpha<a$.) This is not surprising: the ideal sampling density is proportional to $|\text{payoff}|\times$ density, and here that is uniform on $(a,1)$; but it requires knowing the answer in advance, which is why in practice one only approximates it. The limit $\alpha\to1$ is useless: $\mathbb Q$ then almost never samples the payoff region and the weight $\frac{1-a}{1-\alpha}$ explodes; at $\alpha=1$, $\mathbb P$ is no longer absolutely continuous w.r.t. $\mathbb Q$ on the payoff region and the identity breaks.
+
+**Out-of-the-money calls.** Same idea in Black–Scholes: for a call with $K\gg S_0$, few paths end in the money. Shift the drift of the driving Brownian motion (Girsanov) so that $\log S_T$ is centred near $\log K$; about half the paths finish in the money, and each payoff is multiplied by the likelihood ratio $d\mathbb P/d\mathbb Q$ so that the expectation is unchanged.
+FOLLOWUP: Check the importance-sampling expectation
+In the digital example ($S_T\sim U(0,1)$ under $\mathbb P$, new density $f=\alpha/a$ on $[0,a]$ and $(1-\alpha)/(1-a)$ on $(a,1]$), evaluate $\frac{1-a}{1-\alpha}\mathbb E_{\mathbb Q}[\mathbb 1_{\{S_T>a\}}]$ directly and check it gives the correct price.
+FOLLOWUP_ANSWER:
+$\mathbb E_{\mathbb Q}[\mathbb 1_{\{S_T>a\}}]=\int_a^1\frac{1-\alpha}{1-a}\,dx=(1-a)\cdot\frac{1-\alpha}{1-a}=1-\alpha$. Therefore $\frac{1-a}{1-\alpha}(1-\alpha)=1-a=\mathbb P(S_T>a)$, the correct price. More generally $\mathbb E_{\mathbb Q}\big[g\cdot\frac1f\big]=\int_0^1 g(x)\frac{1}{f(x)}f(x)\,dx=\int_0^1g(x)\,dx=\mathbb E_{\mathbb P}[g]$ for any payoff $g$, as long as $f>0$ wherever $g\ne0$.
+FOLLOWUP: Normal to Poisson?
+Is it possible to perform a change of measure from a normal distribution to a Poisson distribution? Why or why not?
+FOLLOWUP_ANSWER:
+No. A change of measure $\mathbb Q(A)=\mathbb E_{\mathbb P}[Z\mathbb 1_A]$ requires $\mathbb Q\ll\mathbb P$. Take $A=\{0,1,2,\dots\}$: under the normal law $\mathbb P(A)=0$ (a countable set has zero Lebesgue measure, and the normal has a density), but under the Poisson law $\mathbb Q(A)=1$. So $\mathbb Q\not\ll\mathbb P$ and no Radon–Nikodym derivative exists; in fact the two laws are mutually singular (each is carried by a set the other gives probability $0$). The reverse direction fails too: Poisson gives probability $0$ to $\mathbb R\setminus\mathbb N$, which has normal probability $1$.
+FOLLOWUP: Normal to Cauchy
+What is the Radon–Nikodym derivative required to change a standard normal distribution into a standard Cauchy distribution?
+FOLLOWUP_ANSWER:
+Both laws have strictly positive densities on $\mathbb R$, so they are equivalent, and the derivative is the ratio of densities:
+$$\frac{d\mathbb Q}{d\mathbb P}(x)=\frac{\frac{1}{\pi(1+x^2)}}{\frac{1}{\sqrt{2\pi}}e^{-x^2/2}}=\sqrt{\frac{2}{\pi}}\;\frac{e^{x^2/2}}{1+x^2}.$$
+Check: $\mathbb E_{\mathbb P}\big[\frac{d\mathbb Q}{d\mathbb P}(X)\big]=\int\frac{1}{\pi(1+x^2)}dx=1$. Note the derivative is unbounded and has infinite variance under $\mathbb P$ (its second moment is $\int\frac{2}{\pi}\frac{e^{x^2/2}}{(1+x^2)^2}\frac{1}{\sqrt{2\pi}}dx=\infty$): using normal samples to estimate Cauchy expectations by importance sampling is a very bad idea, since heavy tails cannot be represented by light-tailed samples.
+FOLLOWUP: Drift but not diffusion
+Why can a change of measure be used only to change the drift, and not the diffusion coefficient, of an Itô process?
+FOLLOWUP_ANSWER:
+The diffusion coefficient can be read off a single path through the quadratic variation: for $dX_t=\mu_tdt+\sigma_tdW_t$,
+$$\sum_j(X_{t_{j+1}}-X_{t_j})^2\to\int_0^T\sigma_t^2\,dt$$
+in probability (a.s. along suitable partitions) as the mesh goes to $0$. This is a statement about events of probability one. Equivalent measures have the same null sets, hence the same almost-sure events, so under any $\mathbb Q\sim\mathbb P$ the quadratic variation, and therefore $\sigma$, is the same. If we tried to use a different volatility $\tilde\sigma$, the event $\{[X]_T=\int_0^T\sigma^2dt\}$ would have probability $1$ under one law and $0$ under the other: the two path measures are mutually singular and no Radon–Nikodym derivative exists. The drift, in contrast, acts at order $dt$ and is never revealed with certainty by a finite path segment, so it can be reweighted (Girsanov).
+FOLLOWUP: Radon–Nikodym for a drift change
+What is the Radon–Nikodym derivative that changes the SDE $dX_t=\mu(X_t)dt+\sigma dW_t$ into $dX_t=\alpha(X_t)dt+\sigma dW_t$ on $[0,T]$? What conditions are needed?
+FOLLOWUP_ANSWER:
+Set $\gamma_t=\dfrac{\alpha(X_t)-\mu(X_t)}{\sigma}$ and define
+$$\frac{d\mathbb Q}{d\mathbb P}\Big|_{\mathcal F_T}=\exp\Big(\int_0^T\gamma_t\,dW_t-\frac12\int_0^T\gamma_t^2\,dt\Big),$$
+where $W$ is the $\mathbb P$-Brownian motion. By Girsanov, $W^{\mathbb Q}_t=W_t-\int_0^t\gamma_s\,ds$ is a $\mathbb Q$-Brownian motion, and
+$$dX_t=\mu\,dt+\sigma(dW^{\mathbb Q}_t+\gamma_tdt)=\big(\mu(X_t)+\alpha(X_t)-\mu(X_t)\big)dt+\sigma\,dW^{\mathbb Q}_t=\alpha(X_t)dt+\sigma\,dW^{\mathbb Q}_t .$$
+Written in terms of the path of $X$ (substituting $dW_t=(dX_t-\mu\,dt)/\sigma$):
+$$\frac{d\mathbb Q}{d\mathbb P}=\exp\Big(\int_0^T\frac{\alpha(X_t)-\mu(X_t)}{\sigma^2}dX_t-\frac12\int_0^T\frac{\alpha(X_t)^2-\mu(X_t)^2}{\sigma^2}dt\Big).$$
+Conditions: $\sigma\ne0$ and the same in both SDEs (see the previous follow-up); same starting point; $\gamma$ adapted with $\int_0^T\gamma_t^2dt<\infty$ a.s.; and the exponential must be a true martingale with $\mathbb E_{\mathbb P}[\cdot]=1$, e.g. by Novikov's condition $\mathbb E_{\mathbb P}\exp\big(\frac12\int_0^T\gamma_t^2dt\big)<\infty$ (automatic if $\alpha-\mu$ is bounded). Both SDEs should also have solutions that do not explode on $[0,T]$.
+===END===
+
+===TEASER===
+SLUG: expected-normal-cdf-of-normal
+IDS: R3B-71, R3B-72, R3B-73, R3B-74
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Expected Gaussian CDF of a Gaussian
+QUESTION:
+Let $M(x)$ be the cumulative distribution function of the standard normal distribution, and let $X\sim N(0,1)$. What is $\mathbb E[M(X)]$?
+HINT1:
+$M(X)$ is a random variable with values in $(0,1)$. What do you know about applying a continuous CDF to its own random variable?
+HINT2:
+Compute $\mathbb P(M(X)\le u)$ for $u\in(0,1)$ using that $M$ is strictly increasing. Alternatively, write $M(x)=\tfrac12+g(x)$ and check whether $g$ is odd.
+ANSWER:
+$\mathbb E[M(X)]=\tfrac12$.
+REFRESH:
+- **Symmetry of the normal CDF.** $\Phi(-x)=1-\Phi(x)$, because the density $\varphi$ is even.
+- **Probability integral transform.** If $X$ has a continuous CDF $F$, then $F(X)\sim U(0,1)$.
+- **Odd/even functions.** $h$ is odd if $h(-x)=-h(x)$, even if $h(-x)=h(x)$; an odd integrable function integrates to $0$ over $\mathbb R$.
+EXPLANATION:
+The quick insight: plugging a random variable into its own CDF gives a uniform random variable. $M(X)$ is the "percentile rank" of $X$ within its own distribution: the chance that $M(X)\le 0.3$ is the chance that $X$ lands in its bottom $30\%$, which is $0.3$. A uniform on $(0,1)$ has mean $\tfrac12$.
+
+An even more intuitive reading: $M(X)=\mathbb P(X'\le X\mid X)$ for an independent copy $X'$, so $\mathbb E[M(X)]=\mathbb P(X'\le X)$, and by symmetry between two i.i.d. continuous variables this is $\tfrac12$.
+SOLUTION: Probability integral transform
+$M=\Phi$ is continuous and strictly increasing from $\mathbb R$ onto $(0,1)$. For $u\in(0,1)$,
+$$\mathbb P(\Phi(X)\le u)=\mathbb P(X\le\Phi^{-1}(u))=\Phi(\Phi^{-1}(u))=u .$$
+So $\Phi(X)\sim U(0,1)$ and $\mathbb E[\Phi(X)]=\tfrac12$.
+SOLUTION: Odd-function symmetry
+Let $\varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}$ (even) and $g(x)=\Phi(x)-\tfrac12$. Since $\Phi(-x)=1-\Phi(x)$,
+$$g(-x)=1-\Phi(x)-\tfrac12=\tfrac12-\Phi(x)=-g(x),$$
+so $g$ is odd and bounded, and $g\varphi$ is odd and integrable, hence integrates to $0$. Therefore
+$$\mathbb E[\Phi(X)]=\int_{-\infty}^\infty\Big(g(x)+\tfrac12\Big)\varphi(x)\,dx=0+\tfrac12\int_{-\infty}^\infty\varphi(x)\,dx=\tfrac12 .$$
+SOLUTION: Independent copy
+Let $X'$ be an independent copy of $X$. Then $\Phi(x)=\mathbb P(X'\le x)$, so by conditioning on $X$, $\mathbb E[\Phi(X)]=\mathbb P(X'\le X)$. By symmetry $\mathbb P(X'\le X)=\mathbb P(X\le X')$, and these two sum to $1+\mathbb P(X=X')=1$. So the answer is $\tfrac12$.
+FOLLOWUP: Odd times even integrates to zero
+Use the definitions of odd and even functions to show that $\int_{-\infty}^\infty o(x)e(x)\,dx=0$ when $o$ is odd, $e$ is even (and the product is integrable).
+FOLLOWUP_ANSWER:
+Let $h=o\cdot e$. Then $h(-x)=o(-x)e(-x)=-o(x)e(x)=-h(x)$, so $h$ is odd. Split and substitute $x=-y$ in the negative half:
+$$\int_{-\infty}^0h(x)\,dx=\int_0^\infty h(-y)\,dy=-\int_0^\infty h(y)\,dy,$$
+so $\int_{-\infty}^\infty h=\int_{-\infty}^0h+\int_0^\infty h=0$. The integrability assumption $\int|h|<\infty$ is needed so both halves are finite: e.g. $h(x)=x$ is odd but $\int_{-\infty}^\infty x\,dx$ is not defined.
+FOLLOWUP: Expectation of the density at X
+With $X\sim N(0,1)$ and density $f(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}$, what is $\mathbb E[f(X)]$?
+FOLLOWUP_ANSWER:
+$$\mathbb E[f(X)]=\int_{-\infty}^\infty f(x)^2\,dx=\frac{1}{2\pi}\int_{-\infty}^\infty e^{-x^2}\,dx=\frac{1}{2\pi}\sqrt\pi=\frac{1}{2\sqrt\pi}\approx0.282,$$
+using $\int e^{-x^2}dx=\sqrt\pi$ (the $N(0,\tfrac12)$ density $\frac{1}{\sqrt\pi}e^{-x^2}$ integrates to $1$).
+FOLLOWUP: Non-normal X
+If $X$ is not normal and $F$ is its CDF, do we always get $\mathbb E[F(X)]=\tfrac12$?
+FOLLOWUP_ANSWER:
+Yes if $F$ is continuous (then $F(X)\sim U(0,1)$, or use the independent-copy argument). No if $X$ has atoms. With an independent copy $X'$, $\mathbb E[F(X)]=\mathbb P(X'\le X)$, and $\mathbb P(X'\le X)+\mathbb P(X\le X')=1+\mathbb P(X=X')$, so
+$$\mathbb E[F(X)]=\tfrac12\big(1+\mathbb P(X=X')\big)\ge\tfrac12,$$
+with equality iff $F$ has no jumps. Examples: $X\equiv c$ constant gives $F(X)=1$, mean $1$; $X\sim$ Bernoulli($p$) gives $F(0)=1-p$, $F(1)=1$, so $\mathbb E[F(X)]=(1-p)^2+p=1-p+p^2$, which equals $\tfrac12\big(1+(1-p)^2+p^2\big)$ as the formula predicts, and is $\tfrac34$ for $p=\tfrac12$.
+===END===
+
+===TEASER===
+SLUG: what-is-brownian-motion
+IDS: R3S-01, R3S-02, R3S-03
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: easy
+TITLE: What is Brownian motion?
+QUESTION:
+What is Brownian motion? Give a definition and its main properties.
+HINT1:
+Think of a random walk with ever smaller and more frequent steps. Which properties of its increments survive in the limit?
+HINT2:
+A definition needs four ingredients: the starting value, the independence of increments, the law of an increment $W_t-W_s$ (mean and variance), and the regularity of paths.
+ANSWER:
+A process $(W_t)_{t\ge0}$ with $W_0=0$, continuous paths, and independent increments $W_t-W_s\sim N(0,t-s)$ for $s<t$.
+REFRESH:
+- **Normal distribution.** $N(m,v)$ has density $\frac{1}{\sqrt{2\pi v}}e^{-(x-m)^2/(2v)}$; a sum of independent normals is normal, with means and variances adding.
+- **Jointly Gaussian vector** is determined by its mean vector and covariance matrix.
+- **Central Limit Theorem.** Standardised sums of i.i.d. finite-variance variables converge in distribution to $N(0,1)$.
+EXPLANATION:
+Brownian motion is the continuous-time version of a fair coin-tossing random walk. Take a walk that moves $\pm1$ at each toss, speed up time by a factor $n$ and shrink space by $\sqrt n$: by the CLT the position at time $t$ is approximately $N(0,t)$, disjoint time intervals involve disjoint sets of tosses and so are independent, and in the limit the path becomes continuous. The scaling $\sqrt n$ in space for $n$ in time is the essential feature: over a time step $\Delta t$ the process moves about $\sqrt{\Delta t}$, which is much larger than $\Delta t$ for small steps. That is why paths are continuous but nowhere differentiable, and why $(dW_t)^2=dt$ in stochastic calculus.
+
+For interviews, the definition with independent Gaussian increments is usually enough; knowing the covariance $\mathbb E[W_sW_t]=\min(s,t)$, the random-walk construction and a few path properties shows depth.
+SOLUTION: Definition and properties
+**Definition.** A stochastic process $(W_t)_{t\ge0}$ is a (standard) Brownian motion if
+1. $W_0=0$;
+2. for $0\le s<t$, $W_t-W_s\sim N(0,t-s)$;
+3. increments over disjoint intervals are independent: for $0=t_0<t_1<\dots<t_m$, the variables $W_{t_1}-W_{t_0},\dots,W_{t_m}-W_{t_{m-1}}$ are independent (equivalently $W_t-W_s$ is independent of $\{W_r:r\le s\}$);
+4. $t\mapsto W_t$ is continuous almost surely.
+
+**Equivalent description.** For any times $t_1<\dots<t_m$, $(W_{t_1},\dots,W_{t_m})$ is jointly Gaussian with mean $0$ and covariance $\operatorname{Cov}(W_{t_i},W_{t_j})=\min(t_i,t_j)$ (plus continuity of paths). Indeed, for $s\le t$, $\mathbb E[W_sW_t]=\mathbb E[W_s^2]+\mathbb E[W_s(W_t-W_s)]=s+0$.
+
+**Construction as a limit of random walks.** Let $X_j=\pm1$ with probability $\tfrac12$ each, independent, $M_k=\sum_{j\le k}X_j$, and $W^{(n)}_t=\frac{1}{\sqrt n}M_{nt}$ (linearly interpolated). Then for $ns,nt$ integers, $\mathbb E[W^{(n)}_t-W^{(n)}_s]=0$, $\operatorname{Var}(W^{(n)}_t-W^{(n)}_s)=\frac{n(t-s)}{n}=t-s$, increments over disjoint intervals are independent, and by the CLT $W^{(n)}_t\Rightarrow N(0,t)$. Donsker's theorem says the whole path converges in law to Brownian motion.
+
+**Path properties (almost surely).**
+- Continuous everywhere, differentiable nowhere; infinite first variation on every interval.
+- Quadratic variation $\sum(W_{t_{j+1}}-W_{t_j})^2\to t$ on $[0,t]$: this is the meaning of $(dW_t)^2=dt$.
+- If it hits a level, it crosses it infinitely often in any small time interval after the hit; in dimension $1$ it visits every level.
+- Scaling: $\big(\frac{1}{\sqrt c}W_{ct}\big)_{t\ge0}$ is again a Brownian motion; so are $-W$ and $(tW_{1/t})_{t>0}$ (extended by $0$ at $t=0$).
+- It is a martingale and a Markov process; $W_t^2-t$ and $e^{\lambda W_t-\lambda^2t/2}$ are martingales.
+
+A $k$-dimensional Brownian motion is a vector of $k$ independent one-dimensional ones. (History: named after the botanist Robert Brown, who in 1827 observed the jittery motion of pollen particles in water; Bachelier used it for prices in 1900.)
+FOLLOWUP: Diffusion process
+What is a diffusion process?
+FOLLOWUP_ANSWER:
+A diffusion is a continuous-time Markov process with continuous paths whose local behaviour is described by a drift $\mu(t,x)$ and a diffusion (volatility) coefficient $\sigma(t,x)$: over a short time $h$,
+$$\mathbb E[X_{t+h}-X_t\mid X_t=x]=\mu(t,x)h+o(h),\qquad\operatorname{Var}(X_{t+h}-X_t\mid X_t=x)=\sigma^2(t,x)h+o(h).$$
+Typically it is the solution of an SDE $dX_t=\mu(t,X_t)dt+\sigma(t,X_t)dW_t$. Its generator is $\mathcal Lf=\mu f'+\tfrac12\sigma^2f''$, and its transition densities solve the Kolmogorov backward/forward (Fokker–Planck) PDEs, which links diffusions to PDEs such as Black–Scholes. Examples: Brownian motion ($\mu=0,\sigma=1$), geometric Brownian motion ($\mu x,\sigma x$), Ornstein–Uhlenbeck ($\theta(m-x),\sigma$).
+FOLLOWUP: Why Brownian motion in finance?
+Why is Brownian motion useful in finance?
+FOLLOWUP_ANSWER:
+- **Modelling:** price changes result from many small independent shocks; by the CLT their aggregate is Gaussian, which is exactly what Brownian increments are. Independent increments encode the (weak-form) efficient-market idea that past moves do not predict future ones.
+- **Tractability:** Gaussian increments give closed forms (e.g. $\mathbb E e^{\sigma W_t}=e^{\sigma^2t/2}$), hence the Black–Scholes formula when prices follow geometric Brownian motion $S_t=S_0e^{(\mu-\sigma^2/2)t+\sigma W_t}$, which stays positive and has log-normal returns.
+- **Itô calculus:** stochastic integrals against $W$ model the gains of self-financing strategies, Itô's lemma gives the dynamics of derivative prices, and delta-hedging removes the $dW$ term, leading to the Black–Scholes PDE.
+- **Change of measure and completeness:** Girsanov moves between real-world and risk-neutral measures by changing only the drift; the martingale representation theorem says every claim can be replicated, which underpins no-arbitrage pricing.
+- **Building block:** interest-rate models (Vasicek, CIR), stochastic volatility (Heston) and jump-diffusions are all built on it; it is also the continuous-time limit of binomial trees.
+===END===
+
+===TEASER===
+SLUG: square-of-geometric-brownian-motion
+IDS: R3S-07, R3S-08, R3S-09
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: easy
+TITLE: Square of a log-normal process
+QUESTION:
+If $S_t$ follows a log-normal (geometric) Brownian motion, $dS_t=\mu S_t\,dt+\sigma S_t\,dW_t$, what process does $S_t^2$ follow?
+HINT1:
+Either apply Itô's formula to $f(x)=x^2$, or use the explicit solution of the geometric Brownian motion.
+HINT2:
+With $Y_t=S_t^2$: $dY_t=2S_t\,dS_t+(dS_t)^2$, and $(dS_t)^2=\sigma^2S_t^2\,dt$. Express everything in terms of $Y_t$.
+ANSWER:
+$d(S_t^2)=(2\mu+\sigma^2)S_t^2\,dt+2\sigma S_t^2\,dW_t$: again a geometric Brownian motion, with drift $2\mu+\sigma^2$ and volatility $2\sigma$.
+REFRESH:
+- **Itô's formula.** If $dX_t=a_t\,dt+b_t\,dW_t$ and $f(t,x)$ is $C^{1}$ in $t$ and $C^2$ in $x$, then $df(t,X_t)=f_t\,dt+f_x\,dX_t+\tfrac12f_{xx}\,(dX_t)^2$, computed with the rules $(dW_t)^2=dt$, $dt\,dW_t=0$, $(dt)^2=0$; so $(dX_t)^2=b_t^2\,dt$.
+- **Solution of GBM.** $S_t=S_0\exp\big((\mu-\tfrac12\sigma^2)t+\sigma W_t\big)$ solves $dS_t=\mu S_tdt+\sigma S_tdW_t$.
+EXPLANATION:
+A geometric Brownian motion is the exponential of a Brownian motion with drift: $S_t=S_0e^{X_t}$ with $X_t=(\mu-\tfrac12\sigma^2)t+\sigma W_t$. Squaring just doubles the exponent, $S_t^2=S_0^2e^{2X_t}$, and $2X_t$ is still a Brownian motion with drift, so $S_t^2$ is again log-normal, with twice the volatility.
+
+The only subtlety is the drift. Naively one might expect $2\mu$. The Itô correction adds $\sigma^2$: squaring is a convex operation, and convexity combined with randomness raises the expected value (Jensen). Concretely, $\mathbb E[S_t^2]=S_0^2e^{(2\mu+\sigma^2)t}$, which is bigger than $(\mathbb E S_t)^2=S_0^2e^{2\mu t}$ by the factor $e^{\sigma^2t}$, as it must be since $\operatorname{Var}(S_t)>0$.
+SOLUTION: Itô's formula
+Let $Y_t=f(S_t)$ with $f(x)=x^2$, $f'(x)=2x$, $f''(x)=2$. Since $(dS_t)^2=\sigma^2S_t^2(dW_t)^2=\sigma^2S_t^2\,dt$,
+$$dY_t=2S_t\,dS_t+\tfrac12\cdot2\,(dS_t)^2=2\mu S_t^2\,dt+2\sigma S_t^2\,dW_t+\sigma^2S_t^2\,dt .$$
+Hence
+$$dY_t=(2\mu+\sigma^2)\,Y_t\,dt+2\sigma\,Y_t\,dW_t,$$
+a geometric Brownian motion with drift parameter $2\mu+\sigma^2$ and volatility $2\sigma$, started at $S_0^2$.
+SOLUTION: Explicit solution
+$S_t=S_0\exp\big((\mu-\tfrac12\sigma^2)t+\sigma W_t\big)$, so
+$$S_t^2=S_0^2\exp\big((2\mu-\sigma^2)t+2\sigma W_t\big).$$
+A GBM with drift $m$ and volatility $v$ has the form $Y_0\exp\big((m-\tfrac12v^2)t+vW_t\big)$. Matching $v=2\sigma$ and $m-\tfrac12(2\sigma)^2=2\mu-\sigma^2$ gives $m=2\mu+\sigma^2$: the same answer.
+FOLLOWUP: SDE for the k-th power
+Without further work, write down the SDE for $S_t^k$ ($k$ a positive integer), where $dS_t=\mu S_tdt+\sigma S_tdW_t$.
+FOLLOWUP_ANSWER:
+$S_t^k=S_0^k\exp\big(k(\mu-\tfrac12\sigma^2)t+k\sigma W_t\big)$ is a GBM with volatility $k\sigma$ and drift $m$ with $m-\tfrac12k^2\sigma^2=k\mu-\tfrac12k\sigma^2$, i.e.
+$$d(S_t^k)=\Big(k\mu+\tfrac12k(k-1)\sigma^2\Big)S_t^k\,dt+k\sigma\,S_t^k\,dW_t .$$
+(Itô check: $d(S^k)=kS^{k-1}dS+\tfrac12k(k-1)S^{k-2}\sigma^2S^2dt$.) For $k=2$ this gives $2\mu+\sigma^2$ and $2\sigma$. It holds for any real $k$.
+FOLLOWUP: Square of a Bessel process
+The $d$-dimensional Bessel process is $R_t=\sqrt{(W^1_t)^2+\dots+(W^d_t)^2}$ for independent Brownian motions $W^i$; it satisfies $dR_t=\frac{d-1}{2R_t}dt+dW_t$ for some Brownian motion $W$. What SDE does $R_t^2$ satisfy? Derive it (a) by Itô's formula on this SDE, (b) directly from the definition.
+FOLLOWUP_ANSWER:
+(Note: the book prints the drift as $\frac{d-1}{2}\,dt$; the correct Bessel drift is $\frac{d-1}{2R_t}\,dt$, consistent with the book's own $dR_t=\frac1{R_t}dt+dW_t$ for $d=3$.)
+
+(a) With $f(x)=x^2$: $d(R_t^2)=2R_t\,dR_t+(dR_t)^2=2R_t\frac{d-1}{2R_t}dt+2R_tdW_t+dt$, so
+$$d(R_t^2)=d\;dt+2R_t\,dW_t=d\;dt+2\sqrt{R_t^2}\,dW_t .$$
+(b) $R_t^2=\sum_i(W^i_t)^2$ and $d\big((W^i_t)^2\big)=2W^i_tdW^i_t+dt$, so $d(R_t^2)=d\;dt+2\sum_iW^i_tdW^i_t$. Define $dB_t=\sum_i\frac{W^i_t}{R_t}dW^i_t$: it is a continuous martingale with $(dB_t)^2=\sum_i\frac{(W^i_t)^2}{R_t^2}dt=dt$ (cross terms vanish by independence), so by Lévy's characterisation $B$ is a Brownian motion, and $d(R_t^2)=d\,dt+2R_t\,dB_t$. This squared Bessel process ($\mathrm{BESQ}^d$) has the same form as the CIR interest-rate model.
+===END===
+
+===TEASER===
+SLUG: call-on-square-of-asset-pde
+IDS: R3S-10, R3S-11
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Call option on the square of an asset
+QUESTION:
+Suppose you have a call option on the square of a log-normal asset, i.e. the payoff at $T$ is $(S_T^2-K)^+$ where $dS_t=\mu S_tdt+\sigma S_tdW_t$ and the interest rate is $r$. What equation does the option price satisfy?
+HINT1:
+Look back at the derivation of the Black–Scholes equation: what did it assume about the payoff?
+HINT2:
+The option price is a function $C(t,S_t)$ of time and the current stock price, and the hedge is still done in the stock $S$. Alternatively, rewrite the equation in the variable $V=S^2$ using the chain rule.
+ANSWER:
+It satisfies the Black–Scholes PDE $C_t+\tfrac12\sigma^2S^2C_{SS}+rSC_S-rC=0$ with terminal condition $C(T,S)=(S^2-K)^+$; in the variable $V=S^2$ this reads $C_t+2\sigma^2V^2C_{VV}+(2r+\sigma^2)VC_V-rC=0$.
+REFRESH:
+- **Black–Scholes PDE.** Any derivative whose price is $C(t,S_t)$, with $S$ a GBM traded asset, satisfies $C_t+\tfrac12\sigma^2S^2C_{SS}+rSC_S-rC=0$; only the terminal/boundary conditions depend on the payoff.
+- **Chain rule.** If $C(t,S)=G(t,S^2)$ then $C_S=2SG_V$ and $C_{SS}=2G_V+4S^2G_{VV}$.
+- **Itô's formula** as in the previous puzzles, with $(dW_t)^2=dt$.
+EXPLANATION:
+The Black–Scholes argument never uses the shape of the payoff: it forms a portfolio of the option and $-\partial C/\partial S$ shares, observes that it is instantaneously riskless, and forces it to earn $r$. That works for any European claim whose value is a function of $(t,S_t)$. So a call on $S^2$ satisfies exactly the same PDE as a vanilla call; only the terminal condition changes to $(S^2-K)^+$.
+
+If you prefer to think in the variable $V=S^2$, the PDE looks different: $V$ has volatility $2\sigma$ and, under the risk-neutral measure, drift $2r+\sigma^2$ (not $r$!). The trap is to treat $V=S^2$ as if it were a traded asset and write the Black–Scholes equation with drift $r$ and volatility $2\sigma$: that would be wrong because $S^2$ is not the price of anything you can buy and hold, so its discounted value need not be a martingale.
+SOLUTION: Black–Scholes argument
+Let $C(t,S)$ be the price. By Itô, $dC=\big(C_t+\mu SC_S+\tfrac12\sigma^2S^2C_{SS}\big)dt+\sigma SC_S\,dW_t$. The portfolio $\Pi=C-C_S\,S$ has $d\Pi=\big(C_t+\tfrac12\sigma^2S^2C_{SS}\big)dt$, riskless, so no arbitrage forces $d\Pi=r\Pi\,dt$:
+$$C_t+\tfrac12\sigma^2S^2C_{SS}+rSC_S-rC=0,\qquad C(T,S)=(S^2-K)^+ .$$
+Nothing depended on the payoff. Solving it (risk-neutral expectation): under $\mathbb Q$, $S_T^2=S_0^2\exp\big((2r-\sigma^2)T+2\sigma W_T\big)$ is log-normal with log-mean $m=\ln S_0^2+(2r-\sigma^2)T$ and log-s.d. $s=2\sigma\sqrt T$, so
+$$C_0=e^{-rT}\Big(S_0^2e^{(2r+\sigma^2)T}N(d_1)-KN(d_2)\Big),\quad d_2=\frac{\ln(S_0^2/K)+(2r-\sigma^2)T}{2\sigma\sqrt T},\ d_1=d_2+2\sigma\sqrt T .$$
+SOLUTION: Change of variable V = S^2
+Write $C(t,S)=G(t,V)$ with $V=S^2$. Then $C_t=G_t$, $C_S=2SG_V$, $C_{SS}=2G_V+4S^2G_{VV}$. Substituting into the Black–Scholes PDE:
+$$G_t+\tfrac12\sigma^2S^2\big(2G_V+4S^2G_{VV}\big)+rS\cdot2SG_V-rG=0,$$
+and since $S^2=V$, $S^4=V^2$:
+$$G_t+2\sigma^2V^2G_{VV}+(2r+\sigma^2)VG_V-rG=0,\qquad G(T,V)=(V-K)^+ .$$
+This is the "Black–Scholes-type" equation for a process with volatility $2\sigma$ and drift $2r+\sigma^2$, matching the risk-neutral dynamics $d(S_t^2)=(2r+\sigma^2)S_t^2dt+2\sigma S_t^2dW^{\mathbb Q}_t$. Note the drift is not $r$: $S^2$ is not a traded asset.
+FOLLOWUP: Derive the V-equation by change of variable
+Show how the equation $\frac{\partial C}{\partial t}+2\sigma^2V^2\frac{\partial^2C}{\partial V^2}+(2r+\sigma^2)V\frac{\partial C}{\partial V}-rC=0$ follows from the Black–Scholes equation by a change of variable.
+FOLLOWUP_ANSWER:
+This is the second method above. With $V=S^2$ and $C(t,S)=G(t,V(S))$: $\frac{\partial C}{\partial S}=G_V\frac{dV}{dS}=2SG_V$ and $\frac{\partial^2C}{\partial S^2}=2G_V+2S\cdot G_{VV}\cdot2S=2G_V+4S^2G_{VV}$. Plug into $C_t+\tfrac12\sigma^2S^2C_{SS}+rSC_S-rC=0$:
+$$G_t+\sigma^2S^2G_V+2\sigma^2S^4G_{VV}+2rS^2G_V-rG=0\ \Longrightarrow\ G_t+2\sigma^2V^2G_{VV}+(2r+\sigma^2)VG_V-rG=0 .$$
+===END===
+
+===TEASER===
+SLUG: mean-reverting-stock-price
+IDS: R3S-12, R3S-13, R3S-14, R3S-15
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Mean-reverting stock price
+QUESTION:
+Assume the stock price follows the SDE
+$$dS_t=\alpha(\mu-S_t)\,dt+\sigma S_t\,dW_t,$$
+with $\alpha,\sigma,\mu>0$. What qualitative behaviour does the stock price exhibit? What is the impact of the parameters $\alpha$ and $\mu$? What effect do they have on the price of a call option on this stock?
+HINT1:
+Look at the sign of the drift when $S_t>\mu$ and when $S_t<\mu$. For the option, remember which measure is used for pricing.
+HINT2:
+Under the risk-neutral measure the drift of a traded stock is forced to be $rS_t$, whatever it was under the real-world measure (Girsanov changes the drift but not the volatility). What is left of $\alpha$ and $\mu$ after that?
+ANSWER:
+The price mean-reverts to the level $\mu$ at speed $\alpha$; but if $S$ is a traded asset, $\alpha$ and $\mu$ have no effect on the call price, which is the Black–Scholes price with volatility $\sigma$.
+REFRESH:
+- **Risk-neutral pricing.** For a traded, non-dividend-paying asset, under the pricing measure $\mathbb Q$ its discounted price is a martingale, so $dS_t=rS_tdt+(\text{same volatility})\,dW^{\mathbb Q}_t$; the option price is $e^{-rT}\mathbb E_{\mathbb Q}[\text{payoff}]$.
+- **Girsanov.** An equivalent change of measure changes the drift of an Itô process and leaves its volatility unchanged.
+EXPLANATION:
+The drift $\alpha(\mu-S_t)$ always points towards $\mu$: above $\mu$ it is negative, below it is positive. So $\mu$ is the long-run level the price is pulled towards and $\alpha$ is the strength of the pull (roughly, the deviation from $\mu$ decays like $e^{-\alpha t}$ in expectation). The noise $\sigma S_t\,dW_t$ is proportional to the price, like in Black–Scholes. The price also stays positive: at $S=0$ the noise vanishes while the drift $\alpha\mu$ pushes up.
+
+The surprising part is the option price. Real-world drift is irrelevant for pricing a derivative on a traded asset: you can hedge with the stock, and the hedging argument (or the risk-neutral measure) replaces whatever drift the stock has by $rS_t$. The volatility $\sigma S_t$ is untouched, and it is exactly the Black–Scholes volatility structure. So the call is worth the Black–Scholes price with volatility $\sigma$, independent of $\alpha$ and $\mu$. (This would change if the underlying were not tradable, e.g. an interest rate or a spot commodity with storage issues: then its drift would matter.)
+SOLUTION: Qualitative analysis and pricing
+**Behaviour.** The drift $\alpha(\mu-S_t)$ is negative when $S_t>\mu$ and positive when $S_t<\mu$: the process is mean-reverting to $\mu$. Taking expectations, $m(t)=\mathbb E[S_t]$ satisfies $m'(t)=\alpha(\mu-m(t))$ (the $dW$ term has zero mean), so
+$$\mathbb E[S_t]=\mu+(S_0-\mu)e^{-\alpha t}\xrightarrow[t\to\infty]{}\mu .$$
+So $\mu$ is the long-run mean level and $\alpha$ the speed of reversion (half-life $\ln2/\alpha$). Larger $\alpha$ gives a tighter pull, hence prices that wander less far from $\mu$. The volatility is proportional to $S_t$, so fluctuations are larger when the price is high.
+
+**Option price.** Assume $S$ is a traded asset and rates are $r$. Under the risk-neutral measure the discounted price $e^{-rt}S_t$ must be a martingale. By Girsanov we can change the drift but not the diffusion term, so under $\mathbb Q$:
+$$dS_t=rS_t\,dt+\sigma S_t\,dW^{\mathbb Q}_t,$$
+(the change of measure uses $\gamma_t=\frac{rS_t-\alpha(\mu-S_t)}{\sigma S_t}$). This is exactly the Black–Scholes model. Hence the call price is the Black–Scholes price with volatility $\sigma$ and does not depend on $\alpha$ or $\mu$. Equivalently, the delta-hedging derivation of the Black–Scholes PDE $C_t+\tfrac12\sigma^2S^2C_{SS}+rSC_S-rC=0$ never uses the real-world drift.
+FOLLOWUP: SDE for the square
+With $dS_t=\alpha(\mu-S_t)dt+\sigma S_tdW_t$, what SDE does $X_t=S_t^2$ follow?
+FOLLOWUP_ANSWER:
+Itô with $f(x)=x^2$: $dX_t=2S_tdS_t+(dS_t)^2$, and $(dS_t)^2=\sigma^2S_t^2dt$. So
+$$dX_t=\big(2\alpha\mu S_t-2\alpha S_t^2+\sigma^2S_t^2\big)dt+2\sigma S_t^2dW_t=\Big(2\alpha\mu\sqrt{X_t}-(2\alpha-\sigma^2)X_t\Big)dt+2\sigma X_t\,dW_t,$$
+using $S_t=\sqrt{X_t}$ since $S_t>0$.
+FOLLOWUP: Role of mu and sigma in GBM
+For the geometric Brownian motion $dY_t=\mu Y_tdt+\sigma Y_tdW_t$, what effect do the parameters $\mu$ and $\sigma$ have?
+FOLLOWUP_ANSWER:
+$Y_t=Y_0\exp\big((\mu-\tfrac12\sigma^2)t+\sigma W_t\big)$. $\mu$ is the expected (arithmetic) rate of return: $\mathbb E[Y_t]=Y_0e^{\mu t}$. $\sigma$ is the volatility: log-returns $\ln(Y_t/Y_0)\sim N\big((\mu-\tfrac12\sigma^2)t,\sigma^2t\big)$, so $\sigma$ sets the size of relative fluctuations. Together they fix the typical growth: the median of $Y_t$ is $Y_0e^{(\mu-\sigma^2/2)t}$, and the path growth rate is $\mu-\tfrac12\sigma^2$ (since $W_t/t\to0$). So higher volatility lowers the typical path while leaving the mean unchanged; if $\mu<\tfrac12\sigma^2$, then $Y_t\to0$ almost surely even though $\mathbb E[Y_t]$ may grow. The process stays strictly positive. For option pricing only $\sigma$ matters ($\mu$ is replaced by $r$).
+FOLLOWUP: Three-dimensional Bessel process stays positive
+The 3-dimensional Bessel process satisfies $dR_t=\frac{1}{R_t}dt+dW_t$ with $R_0=x>0$. Explain why it can never become negative.
+FOLLOWUP_ANSWER:
+Two ways to see it. (1) **The drift:** as $R_t\downarrow0$ the drift $1/R_t$ blows up to $+\infty$, an increasingly violent upward push, while the noise stays of size $dW_t$; the process is repelled from $0$ before it can reach it, and a continuous path cannot become negative without passing through $0$. (2) **The construction:** $R_t=|B_t|$ is the distance from the origin of a 3-dimensional Brownian motion started at distance $x$, which is non-negative by definition, and in dimension $d\ge2$ Brownian motion almost surely never hits a given point, so $R_t>0$ for all $t$. (One can also check with Itô that $1/R_t$ is a local martingale, and a scale-function argument shows $0$ is never reached.)
+===END===
+
+===TEASER===
+SLUG: sde-for-log-of-gbm
+IDS: R3S-16, R3S-17, R3S-18
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: easy
+TITLE: SDE for the log of a GBM
+QUESTION:
+Given that $dS_t=\mu S_t\,dt+\sigma S_t\,dW_t$, give an SDE for $\log S_t$.
+HINT1:
+Apply Itô's formula to $f(x)=\log x$; do not forget the second-order term.
+HINT2:
+$f'(x)=1/x$, $f''(x)=-1/x^2$, and $(dS_t)^2=\sigma^2S_t^2\,dt$.
+ANSWER:
+$d\log S_t=\big(\mu-\tfrac12\sigma^2\big)dt+\sigma\,dW_t$.
+REFRESH:
+- **Itô's formula.** $df(X_t)=f'(X_t)dX_t+\tfrac12f''(X_t)(dX_t)^2$, with $(dW_t)^2=dt$, $dt\,dW_t=0$, $(dt)^2=0$.
+- **Derivatives of log.** $(\log x)'=1/x$, $(\log x)''=-1/x^2$.
+EXPLANATION:
+In ordinary calculus $d\log S=dS/S=\mu\,dt+\sigma\,dW$. In stochastic calculus there is an extra term because $\log$ is concave and $(dS)^2$ is of order $dt$, not negligible. The correction is $-\tfrac12\sigma^2\,dt$. This is the famous "volatility drag": the average log-return $\mu-\tfrac12\sigma^2$ is smaller than the average arithmetic return $\mu$. Once you have the SDE for $\log S_t$, it has constant coefficients, so it integrates immediately and gives the explicit solution of the GBM.
+SOLUTION: Itô's formula
+Let $X_t=\log S_t$. With $f(x)=\log x$, $f'(x)=1/x$, $f''(x)=-1/x^2$, and $(dS_t)^2=\sigma^2S_t^2dt$:
+$$dX_t=\frac{1}{S_t}dS_t-\frac{1}{2S_t^2}(dS_t)^2=\frac{\mu S_tdt+\sigma S_tdW_t}{S_t}-\frac{\sigma^2S_t^2}{2S_t^2}dt=\Big(\mu-\frac{\sigma^2}{2}\Big)dt+\sigma\,dW_t .$$
+SOLUTION: From the explicit solution
+If one knows $S_t=S_0\exp\big((\mu-\tfrac12\sigma^2)t+\sigma W_t\big)$ (which can be checked with Itô), then $X_t=\log S_0+(\mu-\tfrac12\sigma^2)t+\sigma W_t$, and differentiating gives $dX_t=(\mu-\tfrac12\sigma^2)dt+\sigma dW_t$.
+FOLLOWUP: Solve for log S and S
+Given $dX_t=(\mu-\tfrac12\sigma^2)dt+\sigma dW_t$ with $X_t=\log S_t$, write down $X_t$ and hence $S_t$.
+FOLLOWUP_ANSWER:
+The coefficients are constant, so integrate from $0$ to $t$: $X_t=X_0+(\mu-\tfrac12\sigma^2)t+\sigma W_t$ with $X_0=\log S_0$. Exponentiating,
+$$S_t=S_0\exp\Big(\big(\mu-\tfrac12\sigma^2\big)t+\sigma W_t\Big).$$
+In particular $\log S_t\sim N\big(\log S_0+(\mu-\tfrac12\sigma^2)t,\ \sigma^2t\big)$: $S_t$ is log-normal.
+FOLLOWUP: SDE for S squared
+Given $dS_t=\mu S_tdt+\sigma S_tdW_t$, what is the SDE for $S_t^2$?
+FOLLOWUP_ANSWER:
+$d(S_t^2)=2S_tdS_t+(dS_t)^2=2\mu S_t^2dt+2\sigma S_t^2dW_t+\sigma^2S_t^2dt$, i.e.
+$$d(S_t^2)=(2\mu+\sigma^2)S_t^2\,dt+2\sigma S_t^2\,dW_t .$$
+Check via logs: $\log S_t^2=2\log S_t$ has $d(\cdot)=(2\mu-\sigma^2)dt+2\sigma dW_t$, i.e. GBM with volatility $2\sigma$ and drift $(2\mu-\sigma^2)+\tfrac12(2\sigma)^2=2\mu+\sigma^2$.
+===END===
+
+===TEASER===
+SLUG: cosh-brownian-martingale
+IDS: R3S-19, R3S-20
+SECTION: probability
+CATEGORY: Martingales & stopping times
+DIFFICULTY: medium
+TITLE: The cosh martingale
+QUESTION:
+Let $W_t$ be a standard Brownian motion and $\lambda\in\mathbb R$. Show that
+$$X_t=\cosh(\lambda W_t)\,e^{-\lambda^2t/2}$$
+is a martingale.
+HINT1:
+Recall $\cosh y=\tfrac12(e^y+e^{-y})$. Is there a well-known martingale hiding inside?
+HINT2:
+Either apply Itô's formula to $g(t,x)=\cosh(\lambda x)e^{-\lambda^2t/2}$ and show the $dt$ terms cancel (then check integrability), or compute $\mathbb E[e^{\pm\lambda W_t}\mid\mathcal F_s]$ directly using independent increments.
+ANSWER:
+$X_t=\tfrac12\big(e^{\lambda W_t-\lambda^2t/2}+e^{-\lambda W_t-\lambda^2t/2}\big)$ is the average of two exponential martingales, hence a martingale (equivalently, Itô gives $dX_t=\lambda\sinh(\lambda W_t)e^{-\lambda^2t/2}\,dW_t$ with a square-integrable integrand).
+REFRESH:
+- **Martingale.** $(X_t)$ adapted, $\mathbb E|X_t|<\infty$, and $\mathbb E[X_t\mid\mathcal F_s]=X_s$ for $s\le t$.
+- **Normal MGF.** If $Z\sim N(0,v)$ then $\mathbb E[e^{\lambda Z}]=e^{\lambda^2v/2}$.
+- **Itô integrals are martingales** when $\mathbb E\int_0^T f_t^2\,dt<\infty$: then $\int_0^t f_s\,dW_s$ is a (square-integrable) martingale on $[0,T]$.
+- **Itô's formula** for $g(t,W_t)$: $dg=\big(g_t+\tfrac12g_{xx}\big)dt+g_x\,dW_t$.
+EXPLANATION:
+The exponential martingale $e^{\lambda W_t-\lambda^2t/2}$ is the basic example: $e^{\lambda W_t}$ tends to grow on average (it is a convex function of $W$), and the factor $e^{-\lambda^2t/2}$ exactly compensates, since $\mathbb E[e^{\lambda W_t}]=e^{\lambda^2t/2}$. Replacing $\lambda$ by $-\lambda$ gives a second one, and $\cosh$ is just their average. Since martingales form a vector space, the result follows immediately.
+
+The Itô route shows the same thing mechanically: a function $g(t,W_t)$ is a martingale when its drift $g_t+\tfrac12g_{xx}$ vanishes (the backward heat equation), plus an integrability check. For $g=\cosh(\lambda x)e^{-\lambda^2t/2}$, $g_t=-\tfrac{\lambda^2}{2}g$ and $\tfrac12g_{xx}=\tfrac{\lambda^2}{2}g$ cancel.
+SOLUTION: Direct conditional expectation
+For $s\le t$, write $W_t=W_s+(W_t-W_s)$ with $W_t-W_s\sim N(0,t-s)$ independent of $\mathcal F_s$. Then
+$$\mathbb E\big[e^{\lambda W_t}\mid\mathcal F_s\big]=e^{\lambda W_s}\,\mathbb E\big[e^{\lambda(W_t-W_s)}\big]=e^{\lambda W_s}e^{\lambda^2(t-s)/2},$$
+so $M^{\lambda}_t=e^{\lambda W_t-\lambda^2t/2}$ satisfies $\mathbb E[M^\lambda_t\mid\mathcal F_s]=M^\lambda_s$. It is integrable ($\mathbb E M^\lambda_t=1$) and adapted, hence a martingale, for every real $\lambda$ (in particular for $-\lambda$). Now
+$$X_t=\cosh(\lambda W_t)e^{-\lambda^2t/2}=\tfrac12\big(M^{\lambda}_t+M^{-\lambda}_t\big),$$
+and a linear combination of martingales is a martingale. $\blacksquare$
+SOLUTION: Itô's formula plus integrability
+Let $g(t,x)=\cosh(\lambda x)e^{-\lambda^2t/2}$: $g_t=-\tfrac{\lambda^2}{2}g$, $g_x=\lambda\sinh(\lambda x)e^{-\lambda^2t/2}$, $g_{xx}=\lambda^2g$. Itô:
+$$dX_t=\Big(g_t+\tfrac12g_{xx}\Big)dt+g_x\,dW_t=\Big(-\tfrac{\lambda^2}{2}X_t+\tfrac{\lambda^2}{2}X_t\Big)dt+\lambda\sinh(\lambda W_t)e^{-\lambda^2t/2}dW_t,$$
+so $X_t=1+\int_0^tf_u\,dW_u$ with $f_u=\lambda\sinh(\lambda W_u)e^{-\lambda^2u/2}$. Zero drift alone only gives a local martingale; it is a true martingale if $\mathbb E\int_0^Tf_u^2du<\infty$. Using $\sinh^2y=\tfrac14(e^{2y}-2+e^{-2y})\le\tfrac14(e^{2y}+e^{-2y})$, $e^{-\lambda^2u}\le1$, and $\mathbb E e^{\pm2\lambda W_u}=e^{2\lambda^2u}$:
+$$\mathbb E\int_0^Tf_u^2\,du\le\frac{\lambda^2}{4}\int_0^T2e^{2\lambda^2u}\,du=\frac{e^{2\lambda^2T}-1}{4}<\infty .$$
+Hence $X$ is a martingale on every $[0,T]$.
+FOLLOWUP: Three classical Brownian martingales
+Show that the following are martingales: (1) $X_t=W_t^2-t$; (2) $Y_t=W_t^3-3tW_t$; (3) $Z_t=\exp\big(\sigma W_t-\tfrac12\sigma^2t\big)$.
+FOLLOWUP_ANSWER:
+Let $s\le t$, $D=W_t-W_s\sim N(0,t-s)$ independent of $\mathcal F_s$, so $\mathbb E D=\mathbb E D^3=0$, $\mathbb E D^2=t-s$. All three are integrable (polynomials and exponentials of Gaussians).
+
+(1) $\mathbb E[W_t^2\mid\mathcal F_s]=W_s^2+2W_s\mathbb E D+\mathbb E D^2=W_s^2+(t-s)$, so $\mathbb E[W_t^2-t\mid\mathcal F_s]=W_s^2-s$.
+
+(2) $\mathbb E[W_t^3\mid\mathcal F_s]=W_s^3+3W_s^2\mathbb ED+3W_s\mathbb ED^2+\mathbb ED^3=W_s^3+3W_s(t-s)$ and $\mathbb E[3tW_t\mid\mathcal F_s]=3tW_s$. So $\mathbb E[Y_t\mid\mathcal F_s]=W_s^3+3W_s(t-s)-3tW_s=W_s^3-3sW_s=Y_s$.
+
+(3) $\mathbb E[Z_t\mid\mathcal F_s]=e^{\sigma W_s-\sigma^2t/2}\mathbb E e^{\sigma D}=e^{\sigma W_s-\sigma^2t/2+\sigma^2(t-s)/2}=Z_s$.
+
+Itô check: $dX=2W\,dW$, $dY=(3W^2-3t)\,dW$ (the $3W\,dt$ from Itô cancels $-3W\,dt$), $dZ=\sigma Z\,dW$: no drift, and the integrands are square-integrable on $[0,T]$. (These are the Hermite-polynomial martingales, coefficients of the expansion of $e^{\sigma W_t-\sigma^2t/2}$ in powers of $\sigma$.)
+===END===
+
+===TEASER===
+SLUG: is-w-cubed-a-martingale
+IDS: R3S-21, R3S-22, R3S-23, R3S-24
+SECTION: probability
+CATEGORY: Martingales & stopping times
+DIFFICULTY: easy
+TITLE: Is W cubed a martingale?
+QUESTION:
+If $W_t$ is a standard Brownian motion, is $W_t^3$ a martingale?
+HINT1:
+A martingale has no systematic tendency to go up or down. Compute the drift of $W_t^3$.
+HINT2:
+Apply Itô's formula to $f(x)=x^3$: $d(W_t^3)=3W_t^2\,dW_t+\tfrac12\cdot6W_t\,dt$. Alternatively compute $\mathbb E[W_t^3\mid\mathcal F_s]$ by writing $W_t=W_s+(W_t-W_s)$.
+ANSWER:
+No: $d(W_t^3)=3W_t\,dt+3W_t^2\,dW_t$ has a non-zero drift; indeed $\mathbb E[W_t^3\mid\mathcal F_s]=W_s^3+3(t-s)W_s\neq W_s^3$.
+REFRESH:
+- **Itô's formula** for $f(W_t)$: $df(W_t)=f'(W_t)\,dW_t+\tfrac12f''(W_t)\,dt$.
+- **Moments of a centred normal** $D\sim N(0,v)$: $\mathbb ED=\mathbb ED^3=0$, $\mathbb ED^2=v$, $\mathbb ED^4=3v^2$.
+- **Martingale test via Itô.** If $dX_t=a_tdt+b_tdW_t$ with $a\not\equiv0$, $X$ is not a martingale; if $a\equiv0$ and $\mathbb E\int_0^Tb_t^2dt<\infty$, it is.
+EXPLANATION:
+$W_t^3$ is not symmetric in the way $W_t$ is. When $W$ is positive, the convex part of $x^3$ is in play and small fluctuations push $W^3$ up on average; when $W$ is negative, $x^3$ is concave and fluctuations push it down. The Itô drift $3W_t\,dt$ captures exactly this: it has the sign of $W_t$. So given the past, the future is biased (up if $W_s>0$, down if $W_s<0$), which rules out the martingale property. Note that the unconditional mean $\mathbb E[W_t^3]=0$ is constant, so checking only $\mathbb E[X_t]=X_0$ is not enough to detect the failure. The fix is $W_t^3-3tW_t$, which is a martingale.
+SOLUTION: Itô's formula
+With $f(x)=x^3$, $f'(x)=3x^2$, $f''(x)=6x$:
+$$d(W_t^3)=3W_t^2\,dW_t+\tfrac12\cdot6W_t\,(dW_t)^2=3W_t\,dt+3W_t^2\,dW_t .$$
+The drift $3W_t$ is not identically zero, so $W_t^3$ is not a martingale (a continuous semimartingale is a martingale only if its finite-variation part vanishes).
+SOLUTION: Conditional expectation
+For $s<t$, $W_t=W_s+D$ with $D\sim N(0,t-s)$ independent of $\mathcal F_s$:
+$$\mathbb E[W_t^3\mid\mathcal F_s]=W_s^3+3W_s^2\mathbb E[D]+3W_s\mathbb E[D^2]+\mathbb E[D^3]=W_s^3+3(t-s)W_s .$$
+This differs from $W_s^3$ whenever $W_s\ne0$, which has probability one. So $W_t^3$ is not a martingale (it is, however, $W_t^3-3tW_t$ that is).
+FOLLOWUP: Zero drift is not enough
+If a process has zero drift, what else do you need to check to conclude that it is a martingale?
+FOLLOWUP_ANSWER:
+Zero drift, $X_t=X_0+\int_0^tb_s\,dW_s$, only makes $X$ a **local** martingale. To be a true martingale one needs integrability: for example $\mathbb E\int_0^Tb_s^2\,ds<\infty$ (then $X$ is even square-integrable, by the Itô isometry $\mathbb E(X_t-X_0)^2=\mathbb E\int_0^tb_s^2ds$), or more generally $\mathbb E\big[(\int_0^Tb_s^2ds)^{1/2}\big]<\infty$, or $X$ bounded, or uniformly integrable on bounded time intervals. Counterexample: for a 3-dimensional Brownian motion $B$ started at $x\ne0$, $1/|B_t|$ has zero drift (it is a local martingale) but $\mathbb E[1/|B_t|]\to0$ as $t\to\infty$, so it is not a martingale (a "strict local martingale").
+FOLLOWUP: Two simple Brownian martingales
+Write down two simple martingales involving Brownian motion.
+FOLLOWUP_ANSWER:
+$W_t$ itself ($\mathbb E[W_t-W_s\mid\mathcal F_s]=0$), $W_t^2-t$, and the exponential martingale $e^{\sigma W_t-\sigma^2t/2}$ for any real $\sigma$. (Also $W_t^3-3tW_t$, and more generally any $g(t,W_t)$ solving $g_t+\tfrac12g_{xx}=0$ with suitable growth.)
+FOLLOWUP: W squared minus t, two ways
+Show that $W_t^2-t$ is a martingale, both by Itô's formula (zero drift) and by the standard method ($\mathbb E[W_t^2-t\mid\mathcal F_s]=W_s^2-s$ for $s<t$).
+FOLLOWUP_ANSWER:
+**Itô:** $d(W_t^2)=2W_tdW_t+dt$, so $d(W_t^2-t)=2W_t\,dW_t$: zero drift. Integrability: $\mathbb E\int_0^T4W_t^2dt=4\int_0^Tt\,dt=2T^2<\infty$, so $\int_0^t2W_udW_u$ is a true martingale.
+
+**Standard:** with $D=W_t-W_s\sim N(0,t-s)$ independent of $\mathcal F_s$,
+$$\mathbb E[W_t^2\mid\mathcal F_s]=\mathbb E[(W_s+D)^2\mid\mathcal F_s]=W_s^2+2W_s\mathbb E[D]+\mathbb E[D^2]=W_s^2+(t-s),$$
+so $\mathbb E[W_t^2-t\mid\mathcal F_s]=W_s^2-s$. Integrability: $\mathbb E|W_t^2-t|\le2t<\infty$, and it is adapted.
+===END===
+
+===TEASER===
+SLUG: ito-two-to-the-brownian-motion
+IDS: R3S-25, R3S-26, R3S-27
+SECTION: probability
+CATEGORY: Martingales & stopping times
+DIFFICULTY: easy
+TITLE: Itô's formula on 2 to the W
+QUESTION:
+Apply Itô's formula to $2^{W_t}$, where $W_t$ is a standard Brownian motion. Is it a martingale?
+HINT1:
+Rewrite $2^x$ as an exponential with base $e$.
+HINT2:
+With $c=\log 2$, $f(x)=e^{cx}$ has $f'=cf$ and $f''=c^2f$. Plug into $df(W_t)=f'(W_t)dW_t+\tfrac12f''(W_t)dt$ and look at the $dt$ term.
+ANSWER:
+$d(2^{W_t})=\log(2)\,2^{W_t}\,dW_t+\tfrac12(\log 2)^2\,2^{W_t}\,dt$; the drift is strictly positive, so it is not a martingale (it is a submartingale; $2^{W_t}e^{-(\log 2)^2t/2}$ is a martingale).
+REFRESH:
+- **Itô's formula** for $f(W_t)$: $df(W_t)=f'(W_t)\,dW_t+\tfrac12f''(W_t)\,dt$.
+- **Normal MGF.** $\mathbb E[e^{cZ}]=e^{c^2v/2}$ for $Z\sim N(0,v)$.
+- **Jensen's inequality.** For convex $\phi$, $\mathbb E[\phi(X)\mid\mathcal G]\ge\phi(\mathbb E[X\mid\mathcal G])$; a convex function of a martingale is a submartingale (if integrable).
+EXPLANATION:
+$2^{W_t}=e^{(\log2)W_t}$ is a convex function of a martingale. Convexity turns symmetric noise into an upward bias: a step up of size $\varepsilon$ raises $2^x$ by more than a step down of the same size lowers it. Itô's formula quantifies this bias as the drift $\tfrac12f''=\tfrac12(\log2)^2\,2^{W_t}>0$. So $2^{W_t}$ grows on average, $\mathbb E[2^{W_t}]=e^{(\log 2)^2t/2}$, and cannot be a martingale. Dividing by that growth factor gives the exponential martingale $e^{cW_t-c^2t/2}$ with $c=\log2$.
+SOLUTION: Itô's formula
+Let $c=\log2$ and $Y_t=2^{W_t}=e^{cW_t}$. With $f(x)=e^{cx}$, $f'(x)=ce^{cx}$, $f''(x)=c^2e^{cx}$:
+$$dY_t=c\,Y_t\,dW_t+\tfrac12c^2Y_t\,dt=\log(2)\,2^{W_t}\,dW_t+\tfrac12(\log2)^2\,2^{W_t}\,dt .$$
+The drift $\tfrac12(\log2)^2Y_t$ is strictly positive, so $Y$ is not a martingale.
+SOLUTION: Conditional expectation
+For $s<t$, $\mathbb E[2^{W_t}\mid\mathcal F_s]=2^{W_s}\,\mathbb E\big[e^{c(W_t-W_s)}\big]=2^{W_s}e^{c^2(t-s)/2}>2^{W_s}$. So $2^{W_t}$ is a strict submartingale, and $e^{cW_t-c^2t/2}$ is the corresponding martingale.
+FOLLOWUP: Which g makes 2^W g(W) a martingale?
+Let $X_t=2^{W_t}g(W_t)$. Prove that for $X_t$ to be a martingale, $g$ must satisfy $(\log2)^2g(x)+2\log(2)g'(x)+g''(x)=0$. What are the solutions?
+FOLLOWUP_ANSWER:
+Let $c=\log2$ and $h(x)=e^{cx}g(x)$, so $X_t=h(W_t)$ and by Itô $dX_t=h'(W_t)dW_t+\tfrac12h''(W_t)dt$. Compute
+$$h'=e^{cx}(cg+g'),\qquad h''=e^{cx}(c^2g+2cg'+g'').$$
+If $X$ is a martingale, its drift must vanish: $h''(W_t)=0$ for a.e. $t$, a.s. Since $W_t$ has a positive density on all of $\mathbb R$ and $h''$ is continuous, this forces $h''\equiv0$, i.e. (as $e^{cx}>0$) $c^2g+2cg'+g''=0$. The characteristic equation $r^2+2cr+c^2=(r+c)^2=0$ has the double root $-c$, so $g(x)=(A+Bx)e^{-cx}=(A+Bx)2^{-x}$, and then $X_t=A+BW_t$: the only martingales of this form are affine functions of $W$, as they must be since $h''=0$.
+FOLLOWUP: Why not a martingale, in words
+Explain in words why $2^{W_t}$ is not a martingale.
+FOLLOWUP_ANSWER:
+Because $x\mapsto2^x$ is strictly convex and $W$ is a symmetric, unbiased martingale. An up-move of $W$ by $\varepsilon$ multiplies the value by $2^\varepsilon$, a down-move by $2^{-\varepsilon}$, and $\tfrac12(2^\varepsilon+2^{-\varepsilon})>1$: gains outweigh losses, so the expected future value exceeds the current one (Jensen). The only functions of $W_t$ alone that are martingales are affine ($a+bW_t$); anything curved needs a time-dependent correction such as $e^{-(\log2)^2t/2}$.
+===END===
+
+===TEASER===
+SLUG: ratio-of-two-brownian-motions
+IDS: R3S-28, R3S-29, R3S-30, R3S-31, R3S-32
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Ratio of two Brownian motions
+QUESTION:
+Given two independent standard Brownian motions $W_t$ and $Z_t$, what is the distribution of $\dfrac{W_t}{Z_t}$ (for fixed $t>0$)? What stochastic differential equation does the ratio satisfy?
+HINT1:
+At a fixed time, $W_t$ and $Z_t$ are independent $N(0,t)$ variables. Does $t$ matter for the ratio? For the SDE, think of the ratio as a product $W_t\cdot Z_t^{-1}$.
+HINT2:
+For the law, condition on $Z$ and differentiate $\mathbb P(W/Z\le u)$, or use the rotational symmetry of $(W,Z)$ in the plane. For the SDE, use Itô on $1/Z_t$ and then the product rule $d(XY)=X\,dY+Y\,dX+dX\,dY$, with $dW_t\,dZ_t=0$.
+ANSWER:
+$W_t/Z_t$ is standard Cauchy, density $\frac{1}{\pi(1+u^2)}$, for every $t$; and $d\big(\tfrac{W_t}{Z_t}\big)=\tfrac{1}{Z_t}dW_t-\tfrac{W_t}{Z_t^2}dZ_t+\tfrac{W_t}{Z_t^3}dt$ (while $Z_t\ne0$).
+REFRESH:
+- **Ratio density.** If $X,Y$ are independent with densities $f_X,f_Y$, then $U=X/Y$ has density $f_U(u)=\int|y|\,f_X(uy)\,f_Y(y)\,dy$.
+- **Itô product rule.** $d(X_tY_t)=X_tdY_t+Y_tdX_t+dX_t\,dY_t$; for independent Brownian motions $dW_tdZ_t=0$, and $(dW_t)^2=dt$.
+- **Cauchy distribution.** Density $\frac{1}{\pi(1+u^2)}$; CDF $\tfrac12+\tfrac1\pi\arctan u$; no mean.
+EXPLANATION:
+At a fixed time the pair $(W_t,Z_t)$ is a standard Gaussian vector in the plane scaled by $\sqrt t$; its law is rotationally symmetric, so its direction (angle) $\Theta$ is uniform on $[0,2\pi)$. The ratio $W_t/Z_t$ is the slope $\tan\Theta$ of that direction (up to relabelling), and the tangent of a uniform angle is Cauchy. The scale $\sqrt t$ cancels in the ratio, so the answer is the same for all $t$.
+
+The SDE part is a mechanical application of Itô's rules. The only non-classical term is $\frac{W_t}{Z_t^3}dt$, which comes from the second derivative of $1/z$ and the fact that $(dZ_t)^2=dt$; the cross term $dW_t\,d(1/Z_t)$ disappears because the two Brownian motions are independent. (The SDE only makes sense while $Z_t\ne0$; both processes start at $0$, and the ratio has no limit as $t\downarrow0$.)
+SOLUTION: Conditioning (law) and Itô (SDE)
+**Law.** Since $W_t/Z_t=(W_t/\sqrt t)/(Z_t/\sqrt t)$ and $W_t/\sqrt t,Z_t/\sqrt t$ are independent $N(0,1)$, take $W,Z$ i.i.d. $N(0,1)$ with density $\phi$. Conditioning on $Z=z$ (sign matters):
+$$\mathbb P\Big(\frac WZ\le u\Big)=\int_{-\infty}^0\mathbb P(W\ge zu)\phi(z)\,dz+\int_0^\infty\mathbb P(W\le zu)\phi(z)\,dz .$$
+Differentiating in $u$: $\frac{d}{du}\mathbb P(W\ge zu)=-z\phi(zu)$ and $\frac{d}{du}\mathbb P(W\le zu)=z\phi(zu)$, so the density is
+$$f(u)=\int_{-\infty}^\infty|z|\,\phi(zu)\,\phi(z)\,dz=\frac{1}{2\pi}\int_{-\infty}^\infty|z|e^{-z^2(1+u^2)/2}dz=\frac1\pi\int_0^\infty ze^{-z^2(1+u^2)/2}dz .$$
+With $\int_0^\infty ze^{-cz^2}dz=\frac{1}{2c}$ and $c=\frac{1+u^2}{2}$:
+$$f(u)=\frac{1}{\pi(1+u^2)} :$$
+the standard Cauchy distribution.
+
+**SDE.** For $f(z)=1/z$: $f'=-1/z^2$, $f''=2/z^3$, so
+$$d\Big(\frac1{Z_t}\Big)=-\frac{1}{Z_t^2}dZ_t+\frac{1}{Z_t^3}dt .$$
+Product rule, with $dW_t\,dZ_t=0$ and $dW_t\,dt=0$:
+$$d\Big(\frac{W_t}{Z_t}\Big)=\frac{1}{Z_t}dW_t+W_t\,d\Big(\frac1{Z_t}\Big)+dW_t\,d\Big(\frac1{Z_t}\Big)=\frac{1}{Z_t}dW_t-\frac{W_t}{Z_t^2}dZ_t+\frac{W_t}{Z_t^3}dt .$$
+SOLUTION: Polar coordinates
+$(W,Z)$ i.i.d. $N(0,1)$ has density $\frac{1}{2\pi}e^{-(w^2+z^2)/2}$, which depends only on the radius. In polar coordinates $W=R\sin\Theta$, $Z=R\cos\Theta$ the angle $\Theta$ is uniform on $[0,2\pi)$ and independent of $R$. Then $W/Z=\tan\Theta$, and $\tan$ of a uniform angle has $\mathbb P(\tan\Theta\le u)=\tfrac12+\tfrac1\pi\arctan u$ (look at $\Theta\in(-\pi/2,\pi/2)$, uniform after folding by the period $\pi$). Differentiating: $\frac{1}{\pi(1+u^2)}$.
+FOLLOWUP: General t
+Prove that $W_t/Z_t$ is standard Cauchy for every $t>0$.
+FOLLOWUP_ANSWER:
+$W_t\overset{d}{=}\sqrt t\,W_1$, $Z_t\overset{d}{=}\sqrt t\,Z_1$ and they are independent, so $(W_t,Z_t)\overset{d}{=}(\sqrt t\,W_1,\sqrt t\,Z_1)$ and
+$$\frac{W_t}{Z_t}\overset{d}{=}\frac{\sqrt t\,W_1}{\sqrt t\,Z_1}=\frac{W_1}{Z_1}\sim\text{Cauchy}(0,1).$$
+Directly: in the density formula with $\phi_t(x)=\frac{1}{\sqrt{2\pi t}}e^{-x^2/(2t)}$, $\int|z|\phi_t(zu)\phi_t(z)dz=\frac{1}{\pi t}\int_0^\infty ze^{-z^2(1+u^2)/(2t)}dz=\frac{1}{\pi t}\cdot\frac{t}{1+u^2}$.
+FOLLOWUP: Distribution of the product
+For independent Brownian motions, derive the distribution of the product $W_tZ_t$.
+FOLLOWUP_ANSWER:
+First $t=1$, $W,Z$ i.i.d. $N(0,1)$. The product density is $f(u)=\int\frac{1}{|z|}\phi\big(\frac uz\big)\phi(z)\,dz$ (condition on $Z=z$: $WZ\in du\iff W\in du/z$), so
+$$f(u)=\frac1\pi\int_0^\infty\frac1z\exp\Big(-\frac{z^2}{2}-\frac{u^2}{2z^2}\Big)dz=\frac{1}{\pi}K_0(|u|),$$
+using $\int_0^\infty z^{-1}e^{-az^2-b/z^2}dz=K_0(2\sqrt{ab})$ with $a=\tfrac12$, $b=\tfrac{u^2}{2}$; $K_0$ is the modified Bessel function of the second kind (log-singular at $0$, decaying like $e^{-|u|}$). By scaling, $W_tZ_t\overset d=tWZ$, so its density is $\frac{1}{\pi t}K_0\big(\frac{|u|}{t}\big)$. Easier descriptions: the characteristic function is $\mathbb E e^{i\theta WZ}=\mathbb E e^{-\theta^2Z^2/2}=(1+\theta^2)^{-1/2}$; and $WZ=\tfrac12\big(A^2-B^2\big)$ with $A=\frac{W+Z}{\sqrt2}$, $B=\frac{W-Z}{\sqrt2}$ i.i.d. $N(0,1)$, a difference of independent $\chi^2_1$ variables. Mean $0$, variance $t^2$.
+FOLLOWUP: Correlated Brownian motions
+Repeat the SDE computation for $W_t/Z_t$ when $dW_t\,dZ_t=\rho\,dt$. What happens as $\rho\to1$?
+FOLLOWUP_ANSWER:
+Now the cross term survives: $dW_t\,d\big(\tfrac1{Z_t}\big)=-\frac{1}{Z_t^2}dW_tdZ_t=-\frac{\rho}{Z_t^2}dt$. Hence
+$$d\Big(\frac{W_t}{Z_t}\Big)=\frac1{Z_t}dW_t-\frac{W_t}{Z_t^2}dZ_t+\Big(\frac{W_t}{Z_t^3}-\frac{\rho}{Z_t^2}\Big)dt .$$
+As $\rho\to1$, $W\to Z$ (both start at $0$ and $d(W-Z)^2=2(1-\rho)dt\to0$), so the ratio tends to the constant $1$. Consistently, setting $W=Z$ in the SDE gives $\frac1ZdZ-\frac1ZdZ+\big(\frac1{Z^2}-\frac1{Z^2}\big)dt=0$. In distribution: $W_t=\rho Z_t+\sqrt{1-\rho^2}V_t$ with $V$ independent, so $W_t/Z_t=\rho+\sqrt{1-\rho^2}\,V_t/Z_t$ is Cauchy with location $\rho$ and scale $\sqrt{1-\rho^2}$, which collapses to $1$ as $\rho\to1$.
+FOLLOWUP: The Bessel process SDE
+Let $W^1,\dots,W^d$ be independent Brownian motions and $R_t=\sqrt{(W^1_t)^2+\dots+(W^d_t)^2}$. Show that $R_t$ satisfies an SDE of the form $dR_t=(\text{drift})\,dt+dB_t$ for some Brownian motion $B$, and identify the drift.
+FOLLOWUP_ANSWER:
+(Note: the book states $dR_t=\frac{d-1}{2}dt+dW_t$; the correct drift is $\frac{d-1}{2R_t}$.) Let $F(x)=|x|=\sqrt{x_1^2+\dots+x_d^2}$ on $x\ne0$. Then $\partial_iF=\frac{x_i}{|x|}$ and $\partial_{ii}F=\frac{1}{|x|}-\frac{x_i^2}{|x|^3}$, so $\sum_i\partial_{ii}F=\frac{d}{|x|}-\frac{1}{|x|}=\frac{d-1}{|x|}$. Multidimensional Itô (with $dW^idW^j=\delta_{ij}dt$):
+$$dR_t=\sum_i\frac{W^i_t}{R_t}dW^i_t+\frac12\cdot\frac{d-1}{R_t}dt .$$
+Define $dB_t=\sum_i\frac{W^i_t}{R_t}dW^i_t$. $B$ is a continuous local martingale with $(dB_t)^2=\sum_i\frac{(W^i_t)^2}{R_t^2}dt=dt$, so by Lévy's characterisation it is a standard Brownian motion. Therefore
+$$dR_t=\frac{d-1}{2R_t}dt+dB_t .$$
+(For $d\ge2$ the process started away from $0$ never hits $0$, so dividing by $R_t$ is legitimate; for $d=3$ this is $dR_t=\frac{1}{R_t}dt+dB_t$.)
+===END===
+
+===TEASER===
+SLUG: solve-ornstein-uhlenbeck-sde
+IDS: R3S-33, R3S-34, R3S-35
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Solve the Ornstein–Uhlenbeck SDE
+QUESTION:
+Solve the SDE of the Ornstein–Uhlenbeck (mean-reverting) process
+$$dX_t=\theta(\mu-X_t)\,dt+\sigma\,dW_t,\qquad X_0\text{ given},\ \theta>0 .$$
+HINT1:
+Without the noise this is a linear ODE $x'=\theta(\mu-x)$. How do you solve linear ODEs?
+HINT2:
+Multiply by the integrating factor $e^{\theta t}$ and compute $d\big(e^{\theta t}X_t\big)$; since $e^{\theta t}$ is deterministic, the product rule has no Itô correction. Then integrate from $0$ to $t$.
+ANSWER:
+$X_t=X_0e^{-\theta t}+\mu\big(1-e^{-\theta t}\big)+\sigma\displaystyle\int_0^te^{-\theta(t-s)}\,dW_s$, a Gaussian variable with mean $X_0e^{-\theta t}+\mu(1-e^{-\theta t})$ and variance $\frac{\sigma^2}{2\theta}(1-e^{-2\theta t})$.
+REFRESH:
+- **Integrating factor.** For $x'+\theta x=g$, $(e^{\theta t}x)'=e^{\theta t}g$.
+- **Product rule with a deterministic function.** If $f$ is $C^1$ and deterministic, $d(f(t)X_t)=f'(t)X_tdt+f(t)dX_t$ (no $dX\,df$ term).
+- **Wiener integral.** For deterministic $h$, $\int_0^th(s)dW_s\sim N\big(0,\int_0^th(s)^2ds\big)$ (Itô isometry + Gaussianity); its mean is $0$.
+EXPLANATION:
+The OU equation is linear, so it is solved exactly like a linear ODE: multiply by $e^{\theta t}$, which turns the left side into an exact differential and removes $X_t$ from the right. The solution has three pieces: the initial condition, forgotten exponentially fast at rate $\theta$; the long-run level $\mu$, approached at the same rate; and the accumulated noise, where a shock received at time $s$ is damped by $e^{-\theta(t-s)}$ by time $t$. Because the noise enters linearly with a deterministic weight, $X_t$ is Gaussian, and as $t\to\infty$ it settles to the stationary law $N\big(\mu,\frac{\sigma^2}{2\theta}\big)$: mean reversion balances diffusion. This is the Vasicek short-rate model.
+SOLUTION: Integrating factor
+Compute, with $f(t)=e^{\theta t}$ deterministic:
+$$d\big(e^{\theta t}X_t\big)=\theta e^{\theta t}X_t\,dt+e^{\theta t}dX_t=\theta e^{\theta t}X_tdt+e^{\theta t}\theta(\mu-X_t)dt+e^{\theta t}\sigma dW_t=\theta\mu e^{\theta t}dt+\sigma e^{\theta t}dW_t .$$
+The $X_t$ terms cancel. Integrate from $0$ to $t$:
+$$e^{\theta t}X_t=X_0+\theta\mu\int_0^te^{\theta s}ds+\sigma\int_0^te^{\theta s}dW_s=X_0+\mu\big(e^{\theta t}-1\big)+\sigma\int_0^te^{\theta s}dW_s .$$
+Multiply by $e^{-\theta t}$:
+$$X_t=X_0e^{-\theta t}+\mu\big(1-e^{-\theta t}\big)+\sigma\int_0^te^{-\theta(t-s)}dW_s .$$
+Check: writing $X_t=\mu+e^{-\theta t}\big(X_0-\mu+\sigma\int_0^te^{\theta s}dW_s\big)$ and differentiating gives $dX_t=-\theta(X_t-\mu)dt+\sigma dW_t$.
+FOLLOWUP: Mean of the OU process
+Show that $\mathbb E(X_t)=X_0e^{-\theta t}+\mu(1-e^{-\theta t})$.
+FOLLOWUP_ANSWER:
+Take expectations in the explicit solution. The stochastic integral $\int_0^te^{-\theta(t-s)}dW_s$ has a deterministic, square-integrable integrand, so it is a mean-zero (Gaussian) variable. Hence $\mathbb E(X_t)=X_0e^{-\theta t}+\mu(1-e^{-\theta t})$. Alternative: $m(t)=\mathbb EX_t$ satisfies $m'(t)=\theta(\mu-m(t))$, $m(0)=X_0$, whose solution is the same expression.
+FOLLOWUP: Variance of the OU process
+Show that $\operatorname{Var}(X_t)=\frac{\sigma^2}{2\theta}\big(1-e^{-2\theta t}\big)$.
+FOLLOWUP_ANSWER:
+$X_t-\mathbb EX_t=\sigma\int_0^te^{-\theta(t-s)}dW_s$. By the Itô isometry $\mathbb E\big[(\int_0^th_sdW_s)^2\big]=\int_0^th_s^2ds$:
+$$\operatorname{Var}(X_t)=\sigma^2\int_0^te^{-2\theta(t-s)}ds=\sigma^2e^{-2\theta t}\cdot\frac{e^{2\theta t}-1}{2\theta}=\frac{\sigma^2}{2\theta}\big(1-e^{-2\theta t}\big).$$
+As $t\to\infty$ it tends to $\frac{\sigma^2}{2\theta}$, the stationary variance; for small $t$ it is $\approx\sigma^2t$, like a Brownian motion.
+===END===
+
+===TEASER===
+SLUG: brownian-covariance-e-ws-wt
+IDS: R3S-36, R3S-37
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: easy
+TITLE: Compute E(W_s W_t)
+QUESTION:
+Calculate $\mathbb E(W_sW_t)$ where $W$ is a standard Brownian motion and $s,t\ge0$.
+HINT1:
+Assume $s\le t$ and use the one property that makes Brownian computations easy: independent increments.
+HINT2:
+Write $W_t=W_s+(W_t-W_s)$ and expand the product.
+ANSWER:
+$\mathbb E(W_sW_t)=\min(s,t)$.
+REFRESH:
+- **Brownian increments.** For $s\le t$, $W_t-W_s\sim N(0,t-s)$ is independent of $W_s$ (indeed of $\mathcal F_s$).
+- **Independence and expectation.** If $X,Y$ are independent and integrable, $\mathbb E[XY]=\mathbb E[X]\mathbb E[Y]$.
+- **Polarisation.** $xy=\tfrac12\big(x^2+y^2-(y-x)^2\big)$.
+EXPLANATION:
+$W_s$ and $W_t$ share the common history up to time $\min(s,t)$; after that, the later one moves on independently. The shared part contributes its variance $\min(s,t)$ to the covariance, and the independent extra piece contributes nothing because it has mean zero. The trick "add and subtract $W_s$" is the standard way to turn any Brownian computation into one about independent increments.
+SOLUTION: Independent increments
+WLOG $s\le t$. Then
+$$\mathbb E(W_sW_t)=\mathbb E\big(W_s(W_s+(W_t-W_s))\big)=\mathbb E(W_s^2)+\mathbb E(W_s)\,\mathbb E(W_t-W_s)=s+0\cdot0=s .$$
+By symmetry, in general $\mathbb E(W_sW_t)=\min(s,t)$. (Since means are $0$, this is also $\operatorname{Cov}(W_s,W_t)$; the correlation is $\sqrt{s/t}$.)
+SOLUTION: Polarisation
+With $s\le t$: $W_sW_t=\tfrac12\big(W_s^2+W_t^2-(W_t-W_s)^2\big)$, so
+$$\mathbb E(W_sW_t)=\tfrac12\big(s+t-(t-s)\big)=s .$$
+FOLLOWUP: Exponential moment of W_t
+What is $\mathbb E\big(e^{\lambda W_t}\big)$?
+FOLLOWUP_ANSWER:
+$W_t\sim N(0,t)$, so by completing the square
+$$\mathbb E\,e^{\lambda W_t}=\int\frac{1}{\sqrt{2\pi t}}e^{\lambda x-x^2/(2t)}dx=e^{\lambda^2t/2}\int\frac{1}{\sqrt{2\pi t}}e^{-(x-\lambda t)^2/(2t)}dx=e^{\lambda^2t/2}.$$
+This is why $e^{\lambda W_t-\lambda^2t/2}$ has constant mean $1$ (and is in fact a martingale).
+===END===
+
+===TEASER===
+SLUG: brownian-positive-at-1-negative-at-2
+IDS: R3S-38, R3S-39, R3S-40
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Positive at time 1, negative at time 2
+QUESTION:
+Let $X_t$ be a standard Brownian motion with $X_0=0$. Given that $X_1>0$, what is the probability that $X_2<0$?
+HINT1:
+Split $X_2=X_1+(X_2-X_1)$. The two pieces are independent and have the same distribution.
+HINT2:
+You need the second increment to be negative and larger in absolute value than the first. Alternatively, plot the pair of increments $(A,B)$ in the plane: their joint law is rotationally symmetric, so probabilities of cones are angles over $2\pi$.
+ANSWER:
+$\tfrac14$.
+REFRESH:
+- **Brownian increments** over disjoint intervals of equal length are i.i.d. normal: $A=X_1-X_0$ and $B=X_2-X_1$ are i.i.d. $N(0,1)$.
+- **Rotational symmetry.** If $A,B$ are i.i.d. $N(0,1)$, the density of $(A,B)$ depends only on $a^2+b^2$, so the angle of $(A,B)$ is uniform on $[0,2\pi)$.
+- **Conditional probability.** $\mathbb P(E\mid F)=\mathbb P(E\cap F)/\mathbb P(F)$.
+EXPLANATION:
+Let $A=X_1$ and $B=X_2-X_1$, i.i.d. $N(0,1)$. Given $A>0$, the walk ends up negative at time $2$ iff the second step goes down, and goes down by more than the first step went up. The direction of $B$ is a fair coin (probability $\tfrac12$), independent of its size; and whether $|B|>|A|$ is a comparison of two i.i.d. continuous magnitudes, another fair coin. So the answer is $\tfrac12\times\tfrac12=\tfrac14$.
+
+Geometrically, $(A,B)$ is a uniformly random direction in the plane. The condition $A>0$ is a half-plane (angle $\pi$), and $A>0$, $A+B<0$ is the wedge between the directions $-90^\circ$ and $-45^\circ$ (angle $\pi/4$). The ratio is $\frac{\pi/4}{\pi}=\frac14$.
+SOLUTION: Symmetry of increments
+With $A=X_1$, $B=X_2-X_1$ i.i.d. $N(0,1)$, the event is $\{A>0,\ A+B<0\}=\{A>0,\ B<0,\ |B|>|A|\}$. Now $\operatorname{sign}(B)$ is independent of $(|A|,|B|,\operatorname{sign}A)$ by symmetry of $B$ and independence, and $\mathbb P(|B|>|A|)=\tfrac12$ since $|A|,|B|$ are i.i.d. continuous; also $\operatorname{sign}A$ is independent of $(|A|,|B|)$. So
+$$\mathbb P(A>0,A+B<0)=\tfrac12\cdot\tfrac12\cdot\tfrac12=\tfrac18,\qquad\mathbb P(X_2<0\mid X_1>0)=\frac{1/8}{1/2}=\frac14 .$$
+SOLUTION: Angle in the plane
+$(A,B)$ has density $\frac{1}{2\pi}e^{-(a^2+b^2)/2}$, so its polar angle $\Theta$ is uniform on $(-\pi,\pi]$. $\{A>0\}=\{\Theta\in(-\pi/2,\pi/2)\}$ has probability $\tfrac12$. $\{A>0,\ B<-A\}$: with $A=R\cos\Theta$, $B=R\sin\Theta$, it means $\cos\Theta>0$ and $\tan\Theta<-1$, i.e. $\Theta\in(-\pi/2,-\pi/4)$, probability $\frac{\pi/4}{2\pi}=\frac18$. Hence the conditional probability is $\frac{1/8}{1/2}=\frac14$.
+FOLLOWUP: Which properties make it work?
+What properties of Brownian motion make the answer $\tfrac14$ work?
+FOLLOWUP_ANSWER:
+(1) Independent increments: $X_2-X_1$ is independent of $X_1$. (2) Stationary increments: over equal time lengths, $X_2-X_1$ and $X_1-X_0$ have the same law, so $\mathbb P(|B|>|A|)=\tfrac12$. (3) Symmetry of the increment law about $0$, so $\mathbb P(B<0)=\tfrac12$ independently of $|B|$. (4) Continuity of the distribution (no atoms), so ties $|A|=|B|$ have probability $0$. Gaussianity itself is not needed: the same answer holds for any process with i.i.d., symmetric, continuous increments (e.g. a symmetric Lévy process). With unequal time lengths, e.g. $\mathbb P(X_t<0\mid X_1>0)$, the argument must be adapted: writing $X_t-X_1=\sqrt{t-1}\,B$, the favourable wedge has angle $\arctan\sqrt{t-1}$ inside a half-plane of angle $\pi$, so $\mathbb P(X_t<0\mid X_1>0)=\frac1\pi\arctan\sqrt{t-1}$, which is $\frac14$ at $t=2$.
+FOLLOWUP: Positive at both times
+If a Brownian motion starts at $0$, what is the probability that it is positive at both time $1$ and time $2$?
+FOLLOWUP_ANSWER:
+With the same $A,B$: $\{X_1>0,X_2>0\}=\{A>0,\ B>-A\}$. In polar angle this is $\cos\Theta>0$ and $\sin\Theta>-\cos\Theta$, i.e. $\Theta\in(-\pi/4,\pi/2)$, an angle of $3\pi/4$. So the probability is $\frac{3\pi/4}{2\pi}=\frac38$. Check: $\mathbb P(X_1>0)=\tfrac12=\tfrac38+\tfrac18$. (General formula for a centred bivariate normal with correlation $\rho$: $\mathbb P(\text{both}>0)=\tfrac14+\frac{\arcsin\rho}{2\pi}$; here $\rho=\operatorname{corr}(X_1,X_2)=1/\sqrt2$, $\arcsin(1/\sqrt2)=\pi/4$, giving $\tfrac38$.)
+===END===
+
+===TEASER===
+SLUG: brownian-bridge-distribution
+IDS: R3S-41, R3S-42, R3S-43, R3S-44
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: Distribution of a Brownian bridge
+QUESTION:
+Let $W$ be a Brownian bridge, that is a Brownian motion constrained so that $W_0=0$ and $W_t=x$. What is the distribution of $W_s$ for $0\le s<t$?
+HINT1:
+You want the conditional law of $W_s$ given $W_t=x$. Both are Gaussian, and conditioning Gaussians gives Gaussians.
+HINT2:
+Either use Bayes: $\mathbb P(W_s\in dy\mid W_t=x)\propto\mathbb P(W_s\in dy)\,\mathbb P(W_t\in dx\mid W_s=y)$ and complete the square in $y$; or find the constant $c$ such that $W_s-cW_t$ is uncorrelated with (hence independent of) $W_t$.
+ANSWER:
+$W_s\mid W_t=x\ \sim\ N\Big(\dfrac{s}{t}\,x,\ \dfrac{s(t-s)}{t}\Big)$.
+REFRESH:
+- **Bayes for densities.** $f_{Y\mid X}(y\mid x)=\dfrac{f_Y(y)\,f_{X\mid Y}(x\mid y)}{f_X(x)}$.
+- **Gaussian vectors.** For a jointly Gaussian pair, zero covariance implies independence; linear combinations are Gaussian.
+- **Brownian covariance.** $\operatorname{Cov}(W_s,W_t)=\min(s,t)$.
+- **Markov property.** Given $W_s=y$, $W_t-y\sim N(0,t-s)$.
+EXPLANATION:
+Knowing where the path ends pulls the middle towards the straight line from $(0,0)$ to $(t,x)$: the conditional mean of $W_s$ is the linear interpolation $\frac stx$. The randomness is squeezed at both ends: the variance $\frac{s(t-s)}{t}$ is $0$ at $s=0$ and at $s=t$ (both endpoints are pinned) and is largest, $t/4$, in the middle. A neat way to see all of this at once: $W_s-\frac stW_t$ is uncorrelated with $W_t$, so it is independent of it, and its law does not care about the value $x$. The bridge is therefore "straight line plus independent Gaussian wiggle": $W_s=\frac stx+\big(W_s-\frac stW_t\big)$.
+SOLUTION: Bayes and completing the square
+With $p_u(z)=\frac{1}{\sqrt{2\pi u}}e^{-z^2/(2u)}$ and the Markov property,
+$$\mathbb P(W_s\in dy\mid W_t=x)=\frac{p_s(y)\,p_{t-s}(x-y)}{p_t(x)}\,dy .$$
+The exponent is $-\tfrac12E$ with
+$$E=\frac{y^2}{s}+\frac{(x-y)^2}{t-s}-\frac{x^2}{t}.$$
+Multiply by $ts(t-s)$: $y^2t(t-s)+(x-y)^2ts-x^2s(t-s)=y^2t^2-2xyts+x^2s^2=(yt-xs)^2$. So
+$$E=\frac{(yt-xs)^2}{ts(t-s)}=\frac{\big(y-\frac stx\big)^2}{s(t-s)/t}.$$
+The prefactor is $\frac{\sqrt{2\pi t}}{\sqrt{2\pi s}\sqrt{2\pi(t-s)}}=\frac{1}{\sqrt{2\pi\,s(t-s)/t}}$. Hence
+$$\mathbb P(W_s\in dy\mid W_t=x)=\frac{1}{\sqrt{2\pi\,s(t-s)/t}}\exp\Big(-\frac{(y-sx/t)^2}{2\,s(t-s)/t}\Big)dy,$$
+the $N\big(\frac{s}{t}x,\frac{s(t-s)}{t}\big)$ density. (Note: the book's final display omits the factor $2$ in the exponent and states the variance as $s(t-s)$; the correct variance is $s(t-s)/t$.)
+SOLUTION: Gaussian regression
+Let $c=s/t$ and $Y=W_s-cW_t$. Then $\operatorname{Cov}(Y,W_t)=\operatorname{Cov}(W_s,W_t)-c\operatorname{Var}(W_t)=s-\frac st\cdot t=0$. $(Y,W_t)$ is jointly Gaussian, so $Y$ is independent of $W_t$, with
+$$\operatorname{Var}(Y)=s-2c\,s+c^2t=s-\frac{2s^2}{t}+\frac{s^2}{t}=\frac{s(t-s)}{t},\qquad\mathbb EY=0 .$$
+Therefore, given $W_t=x$: $W_s=cx+Y\sim N\big(\frac stx,\frac{s(t-s)}{t}\big)$.
+FOLLOWUP: Bridge with drift
+If the original process is a Brownian motion with drift, $X_u=\mu u+W_u$, and we condition on $X_0=0$, $X_t=x$, what is the distribution of $X_s$?
+FOLLOWUP_ANSWER:
+Exactly the same: $N\big(\frac stx,\frac{s(t-s)}{t}\big)$; the drift disappears. Indeed $X_s-\frac stX_t=\mu s+W_s-\frac st(\mu t+W_t)=W_s-\frac stW_t$, which (as above) is Gaussian with mean $0$, variance $\frac{s(t-s)}t$, and independent of $W_t$, hence of $X_t=\mu t+W_t$. So given $X_t=x$, $X_s=\frac stx+(W_s-\frac stW_t)$. Intuition: once the endpoint is fixed, the drift carries no extra information; this is why drift is irrelevant for Brownian bridge simulations and why $X_t$ is a sufficient statistic for $\mu$.
+FOLLOWUP: Bridge started at z
+Generalise to a Brownian motion constrained by $W_0=z$ and $W_t=x$.
+FOLLOWUP_ANSWER:
+$W_u-z$ is a standard Brownian motion from $0$ constrained to end at $x-z$. By the main result, $W_s-z\sim N\big(\frac st(x-z),\frac{s(t-s)}t\big)$, so
+$$W_s\sim N\Big(z+\frac st(x-z),\ \frac{s(t-s)}{t}\Big)=N\Big(\frac{t-s}{t}z+\frac stx,\ \frac{s(t-s)}{t}\Big):$$
+linear interpolation between the two endpoints, same variance.
+FOLLOWUP: SDE of the Brownian bridge
+What SDE does the constrained process (Brownian bridge from $0$ at time $0$ to $x$ at time $t$) satisfy?
+FOLLOWUP_ANSWER:
+$$dX_u=\frac{x-X_u}{t-u}\,du+dB_u,\qquad X_0=0,\quad0\le u<t,$$
+for a Brownian motion $B$. The drift points towards the target $x$ with a strength that blows up as $u\to t$, forcing $X_t=x$. Derivation (Doob's $h$-transform): conditioning on $W_t=x$ adds the drift $\partial_y\log p_{t-u}(x-y)=\frac{x-y}{t-u}$. Verification: integrating factor $\frac{1}{t-u}$ gives $d\big(\frac{X_u}{t-u}\big)=\frac{x}{(t-u)^2}du+\frac{dB_u}{t-u}$, so
+$$X_u=\frac utx+(t-u)\int_0^u\frac{dB_r}{t-r},$$
+which is Gaussian with mean $\frac utx$ and variance $(t-u)^2\int_0^u\frac{dr}{(t-r)^2}=(t-u)^2\Big(\frac1{t-u}-\frac1t\Big)=\frac{u(t-u)}{t}$, matching the main answer.
+===END===
+
+===TEASER===
+SLUG: meaning-of-dw-squared-equals-dt
+IDS: R3S-45, R3S-46, R3S-47, R3S-48, R3S-49, R3S-50
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: medium
+TITLE: What does (dW)^2 = dt mean?
+QUESTION:
+We often write $(dW_t)^2=dt$. What does this mean?
+HINT1:
+Over a short time step $\Delta t$, how big is a Brownian increment $\Delta W$? Compare $(\Delta W)^2$ with $\Delta t$ and with $(\Delta t)^2$.
+HINT2:
+Look at $H=\sum_j(W_{t_{j+1}}-W_{t_j})^2$ over a partition of $[0,T]$. Compute $\mathbb E[H]$ and $\operatorname{Var}(H)$, and let the mesh go to $0$.
+ANSWER:
+It means Brownian motion has quadratic variation $t$: the sum of squared increments over $[0,T]$ converges (in $L^2$) to $T$, so in Taylor expansions the $(dW_t)^2$ term is not negligible and must be replaced by $dt$ (this produces the Itô correction).
+REFRESH:
+- **Moments of a centred normal** $D\sim N(0,v)$: $\mathbb ED^2=v$, $\mathbb ED^4=3v^2$, so $\operatorname{Var}(D^2)=2v^2$.
+- **Variance of a sum of independent variables** is the sum of the variances.
+- **Quadratic variation.** $[f,f](T)=\lim_{\|\Pi\|\to0}\sum_j\big(f(t_{j+1})-f(t_j)\big)^2$ over partitions $\Pi$ of $[0,T]$ with mesh $\|\Pi\|=\max_j(t_{j+1}-t_j)$.
+- **Taylor expansion.** $f(x+h)=f(x)+f'(x)h+\tfrac12f''(x)h^2+o(h^2)$.
+EXPLANATION:
+In ordinary calculus, second-order terms like $(dx)^2$ are dropped because they are infinitely smaller than $dx$. Brownian motion is different: an increment over time $\Delta t$ has size about $\sqrt{\Delta t}$, so its square is of size $\Delta t$, the same order as the time step itself. Worse, although each $(\Delta W)^2$ is random, summing many of them averages out the randomness (law of large numbers): over $[0,T]$, $\sum(\Delta W)^2\approx T$ with vanishing variance. So in the limit $(dW_t)^2$ behaves exactly like the deterministic quantity $dt$.
+
+Consequence: when you Taylor-expand $f(W_t)$, the term $\tfrac12f''(W_t)(dW_t)^2$ survives as $\tfrac12f''(W_t)\,dt$. That is Itô's formula. The companion rules are $dW_t\,dt=0$ and $(dt)^2=0$ (their sums vanish in the limit), and they are recorded as the Itô multiplication table.
+SOLUTION: Quadratic variation computation
+Let $\Pi=\{0=t_0<\dots<t_n=T\}$, $\Delta_j=W_{t_{j+1}}-W_{t_j}\sim N(0,\delta_j)$ with $\delta_j=t_{j+1}-t_j$, independent. Let $H_\Pi=\sum_j\Delta_j^2$.
+
+Mean: $\mathbb E[H_\Pi]=\sum_j\delta_j=T$.
+
+Variance: $\operatorname{Var}(\Delta_j^2)=\mathbb E\Delta_j^4-(\mathbb E\Delta_j^2)^2=3\delta_j^2-\delta_j^2=2\delta_j^2$. By independence,
+$$\operatorname{Var}(H_\Pi)=\sum_j2\delta_j^2\le2\|\Pi\|\sum_j\delta_j=2\|\Pi\|\,T\xrightarrow[\|\Pi\|\to0]{}0 .$$
+Hence $\mathbb E\big[(H_\Pi-T)^2\big]\to0$: the sum of squared increments converges in $L^2$ (hence in probability) to the deterministic value $T$. This is the statement $[W,W](T)=T$, written in differential form as $(dW_t)^2=dt$. (Along partitions with $\sum_n\|\Pi_n\|<\infty$, e.g. dyadic ones, the convergence is even almost sure by Borel–Cantelli; it is not true pathwise for arbitrary partitions chosen after seeing the path, which is why the precise statement is in $L^2$/probability.)
+
+Note: the book writes the fourth moment of a centred normal as "$3\sigma^2$"; it is $3\sigma^4$ (here $3\delta_j^2$ with variance $\delta_j$), which is what the computation uses.
+SOLUTION: Taylor expansion view (why it matters)
+Let $dX_t=\mu\,dt+\sigma\,dW_t$ and expand $F(X_t)$ over a step $\Delta t$: $\Delta F=F'(X)\Delta X+\tfrac12F''(X)(\Delta X)^2+\dots$, with $\Delta X=\mu\Delta t+\sigma Z\sqrt{\Delta t}$, $Z\sim N(0,1)$. Then
+$$(\Delta X)^2=\sigma^2Z^2\Delta t+2\mu\sigma Z(\Delta t)^{3/2}+\mu^2(\Delta t)^2 .$$
+The last two terms are $o(\Delta t)$ and vanish when summed over $[0,T]$. The first has mean $\sigma^2\Delta t$ and variance $2\sigma^4(\Delta t)^2$; summed over $T/\Delta t$ independent steps its fluctuations have variance $O(\Delta t)\to0$, so it acts like $\sigma^2\Delta t$. Higher-order terms $(\Delta X)^3$ are $O((\Delta t)^{3/2})$ and vanish. In the limit:
+$$dF=F'(X_t)\,dX_t+\tfrac12F''(X_t)\,\sigma^2\,dt,$$
+which is Itô's formula; $(dW_t)^2=dt$ is exactly the rule that turns $\sigma^2Z^2\Delta t$ into $\sigma^2dt$.
+FOLLOWUP: Third and fourth normal moments
+Show that for a normal random variable with mean $\mu$ and standard deviation $\sigma$, the third central moment is $0$ and the fourth central moment is $3\sigma^4$.
+FOLLOWUP_ANSWER:
+(Note: the book writes "$3\sigma^2$"; with $\sigma$ the standard deviation it is $3\sigma^4$. Also "third moment zero" is about the central moment; the raw third moment is $\mu^3+3\mu\sigma^2$.) Write $X=\mu+\sigma Z$, $Z\sim N(0,1)$, so $\mathbb E(X-\mu)^k=\sigma^k\mathbb EZ^k$. $\mathbb EZ^3=0$ since $z^3\varphi(z)$ is odd and integrable. For the fourth, integrate by parts using $\varphi'(z)=-z\varphi(z)$:
+$$\mathbb EZ^4=\int z^3\cdot z\varphi(z)\,dz=\big[-z^3\varphi(z)\big]_{-\infty}^{\infty}+\int3z^2\varphi(z)\,dz=3\,\mathbb EZ^2=3 .$$
+(Or: $M(\lambda)=e^{\lambda^2/2}=\sum_k\frac{\lambda^{2k}}{2^kk!}$, and the coefficient of $\lambda^4/4!$ is $\frac{4!}{4\cdot2}=3$.) Hence $\mathbb E(X-\mu)^3=0$ and $\mathbb E(X-\mu)^4=3\sigma^4$.
+FOLLOWUP: Cross-variation with t
+Show that $[W,t](T)=0$ and $[t,t](T)=0$. How do we usually record these facts?
+FOLLOWUP_ANSWER:
+$[t,t]$: $\sum_j(t_{j+1}-t_j)^2\le\|\Pi\|\sum_j(t_{j+1}-t_j)=\|\Pi\|T\to0$.
+
+$[W,t]$: $\Big|\sum_j(W_{t_{j+1}}-W_{t_j})(t_{j+1}-t_j)\Big|\le\max_j|W_{t_{j+1}}-W_{t_j}|\cdot T\to0$, because $W$ is uniformly continuous on $[0,T]$, so the largest increment tends to $0$ as the mesh does (pathwise). Also $\mathbb E\big(\sum_j\Delta_j\delta_j\big)^2=\sum_j\delta_j^3\le\|\Pi\|^2T\to0$.
+
+They are recorded in the Itô multiplication table: $dW_t\,dW_t=dt$, $dW_t\,dt=0$, $dt\,dt=0$ (and $dW^i_tdW^j_t=0$ for independent Brownian motions).
+FOLLOWUP: First variation is infinite
+Show that the first variation of Brownian motion, $\sum_j|W_{t_{j+1}}-W_{t_j}|$, tends to infinity as the mesh of the partition of $[0,T]$ goes to $0$.
+FOLLOWUP_ANSWER:
+Take a sequence of partitions with mesh $\to0$ along which $\sum_j\Delta_j^2\to T$ almost surely (possible by the main result: $L^2$ convergence gives an a.s. convergent subsequence). Then
+$$\sum_j\Delta_j^2\le\Big(\max_j|\Delta_j|\Big)\sum_j|\Delta_j| ,\qquad\text{so}\qquad\sum_j|\Delta_j|\ge\frac{\sum_j\Delta_j^2}{\max_j|\Delta_j|}.$$
+The numerator tends to $T>0$ and the denominator tends to $0$ by uniform continuity of the path, so $\sum_j|\Delta_j|\to\infty$ a.s. (Quantitatively, for a uniform partition with $n$ steps, $\mathbb E\sum_j|\Delta_j|=n\sqrt{\tfrac{2}{\pi}\tfrac Tn}=\sqrt{\tfrac{2Tn}{\pi}}\to\infty$ while the variance stays $(1-\tfrac2\pi)T$.) Hence Brownian paths have infinite variation on every interval, which is why Stieltjes integration $\int f\,dW$ fails pathwise and Itô's integral is needed.
+FOLLOWUP: C1 functions have zero quadratic variation
+Show that a continuously differentiable function $f$ on $[0,T]$ has zero quadratic variation.
+FOLLOWUP_ANSWER:
+By the mean value theorem, $f(t_{j+1})-f(t_j)=f'(\xi_j)(t_{j+1}-t_j)$ for some $\xi_j\in(t_j,t_{j+1})$. With $M=\max_{[0,T]}|f'|<\infty$ (continuous on a compact set):
+$$\sum_j\big(f(t_{j+1})-f(t_j)\big)^2=\sum_jf'(\xi_j)^2(t_{j+1}-t_j)^2\le M^2\|\Pi\|\sum_j(t_{j+1}-t_j)=M^2\|\Pi\|T\to0 .$$
+FOLLOWUP: Finite variation implies zero quadratic variation
+Show that a continuous function with finite first variation on $[0,T]$ has zero quadratic variation there.
+FOLLOWUP_ANSWER:
+Let $V=\sup_\Pi\sum_j|f(t_{j+1})-f(t_j)|<\infty$. Then
+$$\sum_j\big(f(t_{j+1})-f(t_j)\big)^2\le\max_j|f(t_{j+1})-f(t_j)|\cdot\sum_j|f(t_{j+1})-f(t_j)|\le\max_j|f(t_{j+1})-f(t_j)|\cdot V .$$
+$f$ is continuous on the compact $[0,T]$, hence uniformly continuous, so $\max_j|f(t_{j+1})-f(t_j)|\to0$ as $\|\Pi\|\to0$. Thus the quadratic variation is $0$. Contrapositive: since Brownian motion has quadratic variation $T>0$, its paths cannot have finite variation.
+===END===

@@ -82,3 +82,31 @@ export interface LoginResponse {
   name: string;
   created: boolean;
 }
+
+export type TeaserSection = 'brainteaser' | 'probability';
+export type TeaserBook = 'green' | 'red' | 'heard';
+
+export interface TeaserSummary {
+  id: number;
+  slug: string;
+  section: TeaserSection;
+  category: string;
+  title: string;
+  difficulty: 'easy' | 'medium' | 'hard' | null;
+  books: TeaserBook[];
+  position: number;
+  completed: boolean;
+  hasBoard: boolean;
+}
+
+export interface Teaser extends Omit<TeaserSummary, 'hasBoard'> {
+  question: string;
+  hint1: string | null;
+  hint2: string | null;
+  answer: string | null;
+  refresh: string | null;
+  explanation: string | null;
+  solutions: { title: string; body: string }[];
+  followups: { title: string; question: string; answer: string }[];
+  refs: string[];
+}

@@ -7,6 +7,8 @@ import { CourseDetail } from './pages/course-detail/course-detail';
 import { LessonDetail } from './pages/lesson-detail/lesson-detail';
 import { PdfViewer } from './pages/pdf-viewer/pdf-viewer';
 import { NotesPage } from './pages/notes/notes';
+import { TeaserBrowse } from './pages/teasers/teaser-browse';
+import { TeaserPage } from './pages/teasers/teaser-page';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -21,6 +23,10 @@ export const routes: Routes = [
       { path: 'lessons/:id', component: LessonDetail },
       { path: 'pdfs/:id', component: PdfViewer },
       { path: 'pdfs/:id/notes', component: NotesPage },
+      { path: 'teasers', component: TeaserBrowse },
+      { path: 'teasers/:section', component: TeaserBrowse },
+      { path: 'teasers/:section/:category', component: TeaserBrowse },
+      { path: 'teaser/:slug', component: TeaserPage },
     ],
   },
   { path: '**', redirectTo: '' },

@@ -1,0 +1,936 @@
+===TEASER===
+SLUG: screwy-pirates
+IDS: G2-01, R8-64, R8-65
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: medium
+TITLE: Screwy pirates
+QUESTION:
+Five pirates have looted a chest containing 100 gold coins. Being democratic pirates, they agree on the following way to split the loot.
+
+The most senior pirate proposes a distribution of the coins. All pirates, **including the proposer**, then vote. If at least 50% of the pirates still alive (so 3 out of 5 at the start) accept the proposal, the gold is divided as proposed. Otherwise the proposer is fed to the sharks and the process starts again with the next most senior pirate, and so on until a plan is accepted.
+
+All pirates are perfectly rational. Their priorities are, in order: (1) stay alive, (2) get as much gold as possible, (3) being blood-thirsty, if two outcomes are otherwise equal, they prefer the one with fewer pirates left on the boat.
+
+How will the 100 coins be divided in the end?
+HINT1:
+Five pirates is too many to think about at once. What happens if there is only one pirate? Two? Build up from there.
+HINT2:
+Label the pirates $1,2,3,4,5$ from most junior to most senior. For each number $k$ of pirates, work out the accepted split; the $k$-pirate proposer then knows exactly what each voter would get if he were thrown overboard, and only needs to beat that by one coin for just enough voters. Remember that because of rule (3), a pirate who would get the same amount either way votes **no**.
+ANSWER:
+The most senior pirate keeps 98 coins and gives 1 coin each to the third and fifth most senior pirates (pirates 3 and 1 counting from the most junior); the other two get nothing.
+REFRESH:
+**Backward induction**: in a finite sequential game with perfect information, solve the last stage first, then replace each stage by its solved outcome and move one step back. Every rational player anticipates the continuation outcome exactly.
+EXPLANATION:
+The only thing a voter compares is "what I get if this plan passes" versus "what I get if the proposer dies and the next plan passes". So if we already know the outcome of the game with $k-1$ pirates, the proposer with $k$ pirates knows exactly the price of each vote: a pirate who gets $0$ in the $(k-1)$-game can be bought with $1$ coin (0 would not do, because an indifferent blood-thirsty pirate votes no). The proposer buys the cheapest votes he needs and keeps the rest.
+
+Doing this for $k=1,2,3,4,5$ shows a striking pattern: the proposer never needs to pay more than 1 coin per vote, and the pirates who can be bought cheaply alternate. With 5 pirates, the two pirates who would get nothing if the proposer died (pirates 1 and 3) are bought with 1 coin each, and together with the proposer that makes 3 votes out of 5.
+SOLUTION: Backward induction on the number of pirates
+Label the pirates $1$ (most junior) to $5$ (most senior). With $k$ pirates alive, pirate $k$ proposes and needs at least $\lceil k/2 \rceil$ votes, including his own.
+
+**$k=1$.** Pirate 1 takes all 100 coins.
+
+**$k=2$.** Pirate 2 votes for his own plan, which already gives 1 vote out of 2 $=50\%$. So he keeps everything: $(P_1,P_2)=(0,100)$.
+
+**$k=3$.** Pirate 3 needs 2 votes. If he dies, the outcome is $(0,100)$ for pirates 1 and 2. Pirate 2 cannot be bought (he would get 100 by rejecting). Pirate 1 gets 0 if pirate 3 dies, and 0 is not enough (indifferent pirates vote no), but 1 coin is. So the plan is
+$$(P_1,P_2,P_3)=(1,0,99),$$
+accepted by pirates 1 and 3.
+
+**$k=4$.** Pirate 4 needs 2 votes (his own plus one). If he dies the outcome is $(1,0,99)$. The cheapest vote is pirate 2, who would get 0: give him 1 coin. Plan:
+$$(P_1,P_2,P_3,P_4)=(0,1,0,99),$$
+accepted by pirates 2 and 4.
+
+**$k=5$.** Pirate 5 needs 3 votes (his own plus two). If he dies the outcome is $(0,1,0,99)$. Pirates 1 and 3 would get 0 there, so each can be bought with 1 coin; buying pirate 2 would cost 2 coins and pirate 4 would cost 100. So the plan is
+$$(P_1,P_2,P_3,P_4,P_5)=(1,0,1,0,98),$$
+accepted by pirates 1, 3 and 5, i.e. 3 votes out of 5. It passes.
+
+**General pattern.** With $2n+1$ pirates (the pattern continues as long as the proposer can afford one coin per vote he buys), the most senior pirate gives 1 coin to each of pirates $1,3,5,\dots,2n-1$ and keeps $100-n$ coins.
+FOLLOWUP: Six pirates and 1000 coins
+Six pirates find a chest of 1000 gold coins. They draw an order by rolling dice. The first pirate proposes a division; all pirates alive (including him) vote. If a **strict** majority agrees, the proposal is adopted; otherwise the proposer walks the plank and the next pirate proposes. A pirate votes a proposal **down if and only if he thinks he will get more by doing so** (so a pirate who would get the same either way votes yes). Proposers want to survive. What happens?
+FOLLOWUP_ANSWER:
+**The first pirate keeps all 1000 coins and his plan passes.**
+
+Work backwards; let $P_k$ be the proposer when $k$ pirates are left, and write outcomes as (coins of $P_1,\dots,P_k$).
+- $k=1$: $P_1$ takes 1000.
+- $k=2$: a strict majority of 2 is 2 votes, so $P_2$ needs $P_1$. $P_1$ gets 1000 by rejecting, so he votes yes only if offered 1000 (then he is indifferent and, by the rule, does not vote down). $P_2$ offers $(1000,0)$ to stay alive.
+- $k=3$: needs 2 votes. If $P_3$ dies, $P_2$ gets 0, so $P_2$ gets no more by rejecting a plan that gives him 0: he votes yes. Plan $(0,0,1000)$ passes.
+- $k=4$: needs 3 votes. If $P_4$ dies, $P_1,P_2$ get 0, so both accept 0. Plan $(0,0,0,1000)$ passes.
+- $k=5$: needs 3 votes. If $P_5$ dies, $P_1,P_2,P_3$ get 0. Plan $(0,0,0,0,1000)$ passes with two of them.
+- $k=6$: needs 4 votes. If $P_6$ dies, $P_1,\dots,P_4$ get 0, so three of them accept 0. Plan $(0,0,0,0,0,1000)$ passes.
+
+The key is the tie-breaking rule: since indifferent pirates vote **yes**, zero-payoff votes are free. (If instead indifferent pirates voted no, as in the classic "screwy pirates", each bought vote would cost 1 coin and the division would be much more even among the bribed pirates.)
+FOLLOWUP: Pirates when a tie passes
+Same six pirates and 1000 coins, same voting behaviour (a pirate votes down iff he would get more by doing so), but now a **tie** (exactly half the votes) is enough for the proposal to pass. What happens?
+FOLLOWUP_ANSWER:
+**Again the first pirate keeps all 1000 coins.**
+
+- $k=1$: $P_1$ takes 1000.
+- $k=2$: $P_2$'s own vote is a tie, which passes: $(0,1000)$.
+- $k=3$: needs 2 votes. If $P_3$ dies, $P_1$ gets 0, so $P_1$ accepts 0: $(0,0,1000)$.
+- $k=4$: needs 2 votes. If $P_4$ dies, $P_1$ and $P_2$ get 0, so either accepts 0: $(0,0,0,1000)$.
+- $k=5$: needs 3 votes. If $P_5$ dies, $P_1,P_2,P_3$ get 0: $(0,0,0,0,1000)$.
+- $k=6$: needs 3 votes. If $P_6$ dies, $P_1,\dots,P_4$ get 0, two of them accept 0: $(0,0,0,0,0,1000)$.
+
+The only change from the strict-majority version is at $k=2$ (the second-to-last pirate no longer has to give everything away to survive), and it does not affect the final result.
+===END===
+===TEASER===
+SLUG: tigers-and-sheep
+IDS: G2-02, R8-63
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Tigers and sheep
+QUESTION:
+One hundred tigers and one sheep are put on a magic island that has only grass. Tigers can eat grass, but they would much rather eat sheep. Assume:
+
+- Only one tiger can eat the sheep at a time, and a tiger that eats a sheep **turns into a sheep itself**.
+- All tigers are perfectly rational, and above all they want to survive.
+
+Will the sheep be eaten?
+
+(The same puzzle is sometimes told with $n$ lions in a cage and a piece of meat: a lion that eats the meat falls asleep and becomes a piece of meat for the others. What happens, as a function of $n$?)
+HINT1:
+100 is a lot of tigers. What would happen with 1 tiger? With 2?
+HINT2:
+Let $n$ be the number of tigers. A tiger that eats the sheep leaves behind exactly the situation "$n-1$ tigers and one sheep" with itself as the sheep. So it is safe to eat if and only if in the $(n-1)$-tiger situation the sheep is **not** eaten. Use induction on $n$.
+ANSWER:
+No: with an even number of tigers (such as 100) the sheep survives; with an odd number it is eaten.
+REFRESH:
+**Proof by induction**: to show a statement $S(n)$ for all $n\ge 1$, prove $S(1)$, then prove that $S(n-1)$ implies $S(n)$.
+EXPLANATION:
+The trick is that eating the sheep does not end the game; it recreates the same game with one tiger fewer, and the eater is now the prey. So each tiger asks: "in the game with $n-1$ tigers, does the sheep get eaten?" If yes, eating now is suicide; if no, eating is a free meal. The answer therefore flips each time you add a tiger: 1 tiger eats, 2 don't, 3 do, 4 don't, and so on. With 100 tigers (even), no tiger dares, and the sheep lives.
+SOLUTION: Induction on the number of tigers
+Claim: with $n$ tigers and one sheep, the sheep is eaten if $n$ is odd and not eaten if $n$ is even.
+
+**$n=1$.** The single tiger has nothing to fear once it becomes a sheep (no tigers are left), so it eats. The sheep is eaten.
+
+**$n=2$.** If either tiger eats, it becomes a sheep facing one tiger, and by the case $n=1$ it will be eaten. Survival comes first, so neither eats. The sheep survives.
+
+**Inductive step.** Suppose the claim holds for $n-1$. With $n$ tigers, a tiger that eats creates the position "$n-1$ tigers, one sheep (itself)".
+- If $n$ is odd, $n-1$ is even, so by hypothesis that sheep is not eaten: eating is safe, and (since tigers prefer sheep to grass) some tiger eats. The sheep is eaten.
+- If $n$ is even, $n-1$ is odd, so by hypothesis the new sheep would be eaten: no rational tiger eats. The sheep survives.
+
+For $n=100$ (even), **the sheep is not eaten**.
+
+The lions-and-meat version is identical: with $n$ lions, if $n$ is odd the lion closest to the meat eats it; if $n$ is even nobody eats. (Implicit assumptions: lions prefer eating to not eating, and prefer being hungry and alive to being eaten.)
+===END===
+===TEASER===
+SLUG: river-crossing-torch
+IDS: G2-03
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: River crossing with one torch
+QUESTION:
+Four people $A$, $B$, $C$ and $D$ need to cross a river at night. The only way across is an old bridge that holds at most 2 people at a time. They have a single torch, and nobody can be on the bridge without it, so the torch has to be carried back each time. A pair walks at the speed of the slower person. Crossing times: $A$ takes 10 minutes, $B$ 5 minutes, $C$ 2 minutes and $D$ 1 minute.
+
+What is the minimum total time to get all four across?
+HINT1:
+The obvious plan (the fastest person escorts everyone and brings the torch back each time) takes 19 minutes. Where is it wasting time?
+HINT2:
+The two slowest people should cross **together**, so that the 5 minutes of $B$ are "hidden" inside the 10 minutes of $A$. But they should not cross first, or one of them would have to bring the torch back. Arrange for fast people to be waiting on the far side when $A$ and $B$ arrive.
+ANSWER:
+17 minutes.
+REFRESH:
+NONE
+EXPLANATION:
+Every trip forward carries at most 2 people and every trip back carries the torch, so an efficient schedule has 3 forward trips and 2 return trips. The cost of a forward trip is the time of its slowest member. If $A$ and $B$ travel separately, you pay $10+5=15$ for their trips alone. If they travel together you pay only 10, but then someone fast must already be on the far side to bring the torch back. That is the trick: send the two fast ones first, bring one back, send the two slow ones, bring the other fast one back, and finish with the two fast ones.
+SOLUTION: Pair the two slowest
+1. $C$ and $D$ cross: 2 minutes.
+2. $D$ returns with the torch: 1 minute.
+3. $A$ and $B$ cross together: 10 minutes.
+4. $C$ returns with the torch: 2 minutes.
+5. $C$ and $D$ cross: 2 minutes.
+
+Total: $2+1+10+2+2=17$ minutes. (Sending $C$ back at step 2 and $D$ back at step 4 also gives $2+2+10+1+2=17$.)
+
+**Why nothing is faster.** A schedule with $f$ forward trips has $f-1$ returns. Forward trips carry at most 2 people and returns at least 1, so the net number of people moved is at most $2f-(f-1)=f+1$; we need 4, so $f\ge 3$. With exactly 3 forward trips and 2 returns, every forward trip carries exactly 2 people and every return exactly 1 (longer schedules only add trips and are easily checked to be slower). Note that every pair costs at least 2, since only $D$ takes 1 minute.
+- If $A$ and $B$ never cross together, the forward trips cost at least $10+5+2=17$ and the returns at least $1+1$: total at least 19.
+- If $A$ and $B$ cross together (10 minutes) on the first trip, the first return is made by $A$ or $B$ and costs at least 5, so the total is at least $10+5+2+2+1=20$.
+- If $A$ and $B$ cross together later, the other two forward trips cost at least 2 each. The two returns cannot both be made by $D$: then $D$ would cross forward three times, i.e. be in all three forward pairs, including $\{A,B\}$. So one return costs at least 2, and the total is at least $10+2+2+1+2=17$.
+
+So 17 minutes is optimal.
+===END===
+===TEASER===
+SLUG: bosss-birthday-logic
+IDS: G2-04
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: The boss's birthday
+QUESTION:
+You and your colleague $C$ know that your boss $A$'s birthday is one of these 10 dates:
+
+- Mar 4, Mar 5, Mar 8
+- Jun 4, Jun 7
+- Sep 1, Sep 5
+- Dec 1, Dec 2, Dec 8
+
+$A$ tells you **only the month** of his birthday and tells $C$ **only the day**. Then:
+
+1. You say: "I don't know $A$'s birthday, and $C$ doesn't know it either."
+2. $C$ replies: "I didn't know $A$'s birthday, but now I know it."
+3. You smile: "Now I know it too."
+
+Your administrative assistant, who saw the list of 10 dates and heard the conversation, writes down $A$'s birthday without asking any question. What did the assistant write?
+HINT1:
+Each sentence eliminates some dates. Ask: which days would let $C$ know immediately? What must your month be for you to be *sure* $C$ does not know?
+HINT2:
+Days 2 and 7 each appear only once in the list. Your first sentence says your month contains neither of them. Then $C$ uses that to pin down the date: his day must appear only once among the surviving months. Finally, your month must contain only one of the dates left.
+ANSWER:
+September 1.
+REFRESH:
+NONE
+EXPLANATION:
+This is the classic "Cheryl's birthday" puzzle. The trick is to read each sentence as a statement about what the speaker's private information *could* be, and to eliminate every date inconsistent with it. The phrase "C doesn't know either" is the strongest: you can only be sure of it if **no** date in your month has a unique day. After that, $C$ and then you each learn the answer, and each "now I know" removes more possibilities, until exactly one date survives.
+SOLUTION: Successive elimination
+Days in the list: 1 (Sep, Dec), 2 (Dec), 4 (Mar, Jun), 5 (Mar, Sep), 7 (Jun), 8 (Mar, Dec).
+
+**Statement 1.** If $C$ had been told 2 or 7, he would know the date immediately (these days are unique). You are certain that $C$ does not know, so your month contains no date with day 2 or 7. That rules out December (Dec 2) and June (Jun 7). Remaining:
+$$\text{Mar 4, Mar 5, Mar 8, Sep 1, Sep 5}.$$
+
+**Statement 2.** $C$ now knows the date, so his day appears only once in the remaining list. Day 5 appears twice (Mar 5, Sep 5), so it is excluded. Remaining:
+$$\text{Mar 4, Mar 8, Sep 1}.$$
+
+**Statement 3.** You, knowing the month, now know the date. If the month were March you could not choose between Mar 4 and Mar 8. So the month is September, and the date is **Sep 1**.
+
+The assistant can follow the same reasoning, and writes **September 1**.
+===END===
+===TEASER===
+SLUG: red-black-pairs-card-game
+IDS: G2-05
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Red and black card game
+QUESTION:
+A casino offers a game with a standard 52-card deck (26 red, 26 black). The deck is shuffled and cards are turned over two at a time. For each pair:
+
+- if both cards are black, they go to the dealer's pile;
+- if both are red, they go to your pile;
+- if one is red and one is black, they are discarded.
+
+This continues until all 52 cards have been turned over. If your pile has more cards than the dealer's, you win \$100; otherwise (including a tie) you get nothing. The casino lets you name the price you pay to play. What is the most you should pay?
+HINT1:
+Don't try to compute probabilities. Think about what the discarded pairs tell you about the cards that remain.
+HINT2:
+Each discarded pair removes exactly one red and one black card. What does that imply about the number of red cards left for your pile compared with the black cards left for the dealer's?
+ANSWER:
+Nothing: you always tie, so you never win; the fair price is \$0.
+REFRESH:
+NONE
+EXPLANATION:
+It looks like a probability question, but it is a counting identity. Discards take away reds and blacks in equal numbers, and everything that is not discarded goes to a pile. Since the deck starts with as many reds as blacks, the reds that reach your pile exactly match the blacks that reach the dealer's pile. The two piles are always the same size, ties go to the dealer, so the game is worth nothing to you.
+SOLUTION: Counting invariant
+Let $d$ be the number of mixed (discarded) pairs, $x$ the number of red-red pairs (your pile) and $y$ the number of black-black pairs (dealer's pile). Count the red cards and the black cards:
+$$\text{red: } 2x + d = 26, \qquad \text{black: } 2y + d = 26.$$
+Subtracting, $2x = 2y$, so $x=y$: your pile and the dealer's pile always contain exactly the same number of cards, whatever the order of the deck. A tie goes to the dealer, so you win \$100 with probability $0$. You should pay **\$0**.
+===END===
+===TEASER===
+SLUG: burning-ropes-45-minutes
+IDS: G2-06, H1B-22, H1B-21
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Burning ropes
+QUESTION:
+You have two ropes (or fuses), each of which takes exactly 1 hour to burn completely. The ropes are not uniform: their density varies along their length, so there is no relation between the length of a piece and the time it takes to burn (half the rope does not necessarily burn in half an hour). You have matches but no watch. How can you use the two ropes to measure exactly 45 minutes?
+
+(Variant: fuses that burn in exactly one minute, and you must measure 45 seconds; same answer with minutes replaced by seconds.)
+HINT1:
+You cannot use lengths at all. What can you do with a single rope that gives a reliable time other than 1 hour?
+HINT2:
+If a rope takes $x$ minutes to burn from one end, lighting it at **both** ends makes it burn out in exactly $x/2$ minutes, whatever its density. Start both ropes at the same moment, but in different ways.
+ANSWER:
+Light rope 1 at both ends and rope 2 at one end simultaneously; when rope 1 burns out (30 min), light the other end of rope 2; it burns out 15 minutes later, at exactly 45 minutes.
+REFRESH:
+NONE
+EXPLANATION:
+The only reliable information is the **total** burning time of a piece of rope, not where the flame is. The key fact: if a piece of rope needs $x$ minutes to burn from one end, then lighting both ends makes it burn out after exactly $x/2$ minutes. Indeed the two flames meet at some point; if the first flame burned for $t$ minutes, the second also burned for $t$ minutes, and together they consumed a piece worth $x$ minutes of burning, so $2t=x$. The meeting point is usually not the middle of the rope, but the time is exact.
+
+So halving is available. To get $45=30+15$, use the first rope to measure 30 minutes (both ends), while the second rope burns from one end during those 30 minutes. What is left of the second rope is then a "30-minute rope", which you halve by lighting its other end.
+SOLUTION: Halving by lighting both ends
+1. At time $0$, light rope 1 at **both** ends and rope 2 at **one** end.
+2. Rope 1 burns out at exactly $60/2=30$ minutes. At that moment, rope 2 has been burning for 30 minutes from one end, so the remaining piece needs exactly $60-30=30$ more minutes to burn from that end.
+3. Immediately light the **other** end of rope 2. The remaining piece, which needs 30 minutes from one end, now burns out in $30/2=15$ minutes.
+4. Rope 2 burns out at $30+15=45$ minutes.
+
+(With one-minute fuses the same steps measure $30+15=45$ seconds.)
+FOLLOWUP: One fuse, 30 seconds
+You have one fuse that burns in exactly one minute, but not uniformly: it may burn slowly, then quickly, then slowly again. You have a match and no watch. How do you measure exactly 30 seconds?
+FOLLOWUP_ANSWER:
+Bend the fuse so that both ends are side by side and light both ends at the same time. The two flames burn toward each other and meet after time $t$. Each flame has burned for $t$ seconds, and between them they consumed the whole fuse, which is worth 60 seconds of burning, so $2t=60$ and $t=30$ seconds. The meeting point is generally not the midpoint, but the moment the flames meet is exactly 30 seconds after lighting.
+===END===
+===TEASER===
+SLUG: twelve-balls-three-weighings
+IDS: G2-07, H1A-06
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: hard
+TITLE: Twelve balls, one defective, three weighings
+QUESTION:
+You have 12 balls that look identical. Eleven of them have the same weight; the remaining one is defective and is either **heavier or lighter** than the others (you do not know which). You have an old-fashioned balance with two pans: it only tells you whether the two sides weigh the same or which side is heavier.
+
+Using the balance at most **three** times, identify the defective ball **and** determine whether it is heavier or lighter.
+HINT1:
+A weighing has three possible outcomes, not two. Try first the easier problem: 9 balls, one known to be heavier, 2 weighings. Then think about how many possible answers there are here and how many outcomes three weighings give.
+HINT2:
+There are $12\times 2=24$ possible answers and $3^3=27$ outcomes, so every weighing must split the remaining possibilities as evenly as possible into three groups. Start with 4 balls against 4 balls. If it tips, in the second weighing move some balls to the other pan, remove some, and bring in known-good balls, so that each of the three results points to a different subset of suspects.
+ANSWER:
+Weigh $\{1,2,3,4\}$ vs $\{5,6,7,8\}$; if balanced, weigh $\{9,10\}$ vs $\{8,11\}$, otherwise weigh $\{1,2,5\}$ vs $\{3,6,9\}$; a third weighing then always identifies the ball and whether it is heavy or light.
+REFRESH:
+**Information counting**: $n$ weighings with 3 outcomes each can distinguish at most $3^n$ situations, so a procedure that must separate $N$ possibilities needs at least $\lceil \log_3 N\rceil$ weighings.
+EXPLANATION:
+The balance is a three-way test (left heavier, balanced, right heavier). A good weighing should leave roughly one third of the remaining possibilities in each outcome. Here a "possibility" is a pair (which ball, heavy or light): 24 of them, and three weighings give 27 outcomes, so there is very little slack.
+
+The first weighing, 4 against 4, splits the 24 cases into 8 (balls 9–12, heavy or light) if balanced, and 8 (one of 1–4 light or one of 5–8 heavy) if it tips one way. The second weighing must then split 8 cases into groups of at most 3, 3, 2. The trick is to **move balls between pans** and use known-good balls: a ball that stays on its side, switches sides, or leaves the scale reacts differently, and that encodes which ball it is. After two weighings at most 3 suspects remain and the third weighing sorts them out.
+
+(Warm-up: with 9 balls and one known to be heavy, weigh 3 vs 3; the heavy ball is in the heavier group, or in the group left out if they balance; then weigh 1 vs 1 inside that group of 3.)
+SOLUTION: Three groups of four, then rearranging
+Label the balls $1,\dots,12$. Write $kH$ / $kL$ for "ball $k$ is heavy / light".
+
+**Weighing 1:** $\{1,2,3,4\}$ vs $\{5,6,7,8\}$.
+
+**Case A: balanced.** Balls 1–8 are normal; the suspects are $9H,9L,\dots,12H,12L$ (8 cases).
+
+Weighing 2: $\{9,10\}$ vs $\{8,11\}$ (ball 8 is known to be good).
+- Left lighter: $9L$, $10L$ or $11H$. Weigh 9 vs 10: 9 lighter $\Rightarrow 9L$; balanced $\Rightarrow 11H$; 9 heavier $\Rightarrow 10L$.
+- Balanced: ball 12 is defective. Weigh 12 vs 8: 12 lighter $\Rightarrow 12L$; 12 heavier $\Rightarrow 12H$.
+- Left heavier: $9H$, $10H$ or $11L$. Weigh 9 vs 10: 9 heavier $\Rightarrow 9H$; balanced $\Rightarrow 11L$; 9 lighter $\Rightarrow 10H$.
+
+**Case B: left side lighter.** Suspects: $1L,2L,3L,4L,5H,6H,7H,8H$ (8 cases); balls 9–12 are good. (If the left side is heavier, swap the labels of the two groups and use the same procedure.)
+
+Weighing 2: $\{1,2,5\}$ vs $\{3,6,9\}$. Check each suspect: $1L$ or $2L$ make the left lighter; $6H$ makes the right heavier, so the left lighter; $3L$ makes the right lighter, i.e. the left heavier; $5H$ makes the left heavier; $4L,7H,8H$ are off the scale, so the pans balance.
+- Left lighter: $1L$, $2L$ or $6H$. Weigh 1 vs 2: 1 lighter $\Rightarrow 1L$; balanced $\Rightarrow 6H$; 1 heavier $\Rightarrow 2L$.
+- Balanced: $4L$, $7H$ or $8H$. Weigh 7 vs 8: 7 heavier $\Rightarrow 7H$; balanced $\Rightarrow 4L$; 7 lighter $\Rightarrow 8H$.
+- Left heavier: $3L$ or $5H$. Weigh 3 vs 9: 3 lighter $\Rightarrow 3L$; balanced $\Rightarrow 5H$.
+
+Every case ends with the defective ball and its type after exactly three weighings.
+SOLUTION: Singletons and rotating triplets
+Split the balls into three groups of four, $A,B,C$, and split each group into a singleton and a triplet: $A=\{a\}\cup T_A$, $B=\{b\}\cup T_B$, $C=\{c\}\cup T_C$.
+
+**Weighing 1:** $A$ vs $B$.
+
+**Balanced:** the odd ball is in $C$, and $A,B$ are good. Weighing 2: $T_C$ vs $T_B$. If $T_C$ is heavier (lighter), the odd ball is in $T_C$ and is heavy (light); weighing 3: two balls of $T_C$ against each other; the heavier (lighter) one is the odd ball, and if they balance it is the third one. If $T_C$ balances $T_B$, the odd ball is $c$; weighing 3: $c$ vs $b$ tells whether it is heavy or light.
+
+**Unbalanced**, say $A$ heavier than $B$ (so either a ball of $A$ is heavy or a ball of $B$ is light; $C$ is good). Weighing 2: **rotate the triplets**: $\{a\}\cup T_B$ vs $\{b\}\cup T_C$, leaving out $c$ and $T_A$.
+- Balanced: $a$, $b$ and $T_B$ are good, so the heavy ball is in $T_A$ (the triplet that was removed). Weigh two balls of $T_A$ against each other: the heavier one is the odd ball; if they balance, it is the third.
+- Left still heavier: $T_B$ has moved to the left, so it cannot contain a light ball (that would now make the left lighter), and $T_A$ is off the scale. So either $a$ is heavy or $b$ is light. Weigh $a$ vs $c$: if $a$ is heavier, $a$ is the heavy ball; if they balance, $b$ is the light ball.
+- Left now lighter: the only change that can flip the balance is moving $T_B$ to the left, so a ball in $T_B$ is light. Weigh two balls of $T_B$: the lighter one is the odd ball; if they balance, it is the third.
+
+Again three weighings always suffice.
+
+**General result.** If you know whether the odd ball is heavy or light, $n$ weighings can handle up to $3^n$ balls. If you do not know, and must also say whether it is heavy or light, $n$ weighings can handle up to $(3^n-3)/2$ balls: for $n=3$ that is exactly 12.
+===END===
+===TEASER===
+SLUG: trailing-zeros-100-factorial
+IDS: G2-08, H1B-24
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Trailing zeros of 100!
+QUESTION:
+How many zeros are there at the end of $100! = 100\times 99\times\cdots\times 2\times 1$? (For example, $12! = 479{,}001{,}600$ ends with two zeros.)
+HINT1:
+A trailing zero is a factor of $10 = 2\times 5$. Which of the two prime factors is scarcer in $100!$?
+HINT2:
+Count the factors of 5 in $1,2,\dots,100$. Careful: some numbers contribute more than one factor of 5.
+ANSWER:
+24.
+REFRESH:
+**Legendre's formula**: the exponent of a prime $p$ in $n!$ is $\sum_{k\ge1}\left\lfloor \dfrac{n}{p^k}\right\rfloor$ (every multiple of $p$ contributes one factor, every multiple of $p^2$ one more, and so on).
+EXPLANATION:
+The number of trailing zeros of an integer is the largest $k$ such that $10^k$ divides it, i.e. the number of complete pairs $(2,5)$ in its prime factorisation. In $100!$ there are far more factors of 2 (every even number gives one) than factors of 5, so the 5s are the bottleneck. Every multiple of 5 gives one factor of 5, and multiples of 25 give a second one.
+SOLUTION: Counting factors of 5
+The number of trailing zeros of $100!$ is $\min(v_2, v_5)$, where $v_p$ is the exponent of $p$ in $100!$. By Legendre's formula,
+$$v_5 = \left\lfloor\frac{100}{5}\right\rfloor + \left\lfloor\frac{100}{25}\right\rfloor + \left\lfloor\frac{100}{125}\right\rfloor = 20 + 4 + 0 = 24,$$
+$$v_2 = 50 + 25 + 12 + 6 + 3 + 1 = 97.$$
+So $\min(v_2,v_5)=24$. In words: the 20 multiples of 5 ($5,10,\dots,100$) each give one 5, and the 4 multiples of 25 ($25,50,75,100$) each give an extra one. There are **24** trailing zeros.
+===END===
+===TEASER===
+SLUG: horse-race-top-three
+IDS: G2-09
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: medium
+TITLE: 25 horses, 5 lanes
+QUESTION:
+There are 25 horses. Each runs at its own constant speed, and all speeds are different. The track has only 5 lanes, so a race involves at most 5 horses, and a race only tells you the finishing order of the horses in it (no times). What is the minimum number of races needed to identify the 3 fastest horses (in order)?
+HINT1:
+Every horse has to race at least once, so start with 5 races of 5 horses. What can you then eliminate?
+HINT2:
+Race the 5 group winners against each other. Using both the within-group orders and this race, list the horses that can still be in the top 3: count, for each horse, how many horses are already known to be faster.
+ANSWER:
+7 races.
+REFRESH:
+NONE
+EXPLANATION:
+After racing five groups, you know each group's internal order but nothing across groups. A race of the five group winners ranks the groups. The fastest horse overall is then known, and the remaining candidates for 2nd and 3rd are constrained: a horse can only be in the top 3 if fewer than 3 horses are known to be faster than it. Counting known-faster horses eliminates everything except 5 horses, which fit in a single final race.
+SOLUTION: Groups, winners' race, final race
+**Races 1–5.** Split the horses into 5 groups of 5 and race each group. Within a group, call the horses $G1 > G2 > G3 > G4 > G5$ ("$>$" meaning faster). Horses $G4,G5$ are beaten by at least 3 horses, so they are out.
+
+**Race 6.** Race the five group winners. Name the groups so that the result is $A1 > B1 > C1 > D1 > E1$. Then $A1$ is the fastest horse overall.
+
+Now eliminate every horse that has at least 3 horses known to be faster:
+- $D1$ is beaten by $A1,B1,C1$, so all of group $D$ is out, and likewise all of group $E$.
+- $C1$ is beaten by $A1,B1$, so it can at best be 3rd; $C2,C3$ are beaten by $A1,B1,C1$: out.
+- $B1$ can be 2nd or 3rd; $B2$ is beaten by $A1,B1$ and can at best be 3rd; $B3$ is beaten by $A1,B1,B2$: out.
+- $A2$ and $A3$ can still be 2nd and 3rd.
+
+The candidates for places 2 and 3 are exactly $A2, A3, B1, B2, C1$: 5 horses.
+
+**Race 7.** Race these 5 horses; the first two finishers are the 2nd and 3rd fastest overall.
+
+**Why not fewer.** Every horse must run at least once, which already takes 5 races, and after those 5 races the group winners have never been compared, so a 6th race is needed just to find the fastest horse. With 6 races the natural scheme above leaves 5 candidates for 2nd and 3rd, so a 7th race is needed. Total: **7 races**.
+===END===
+===TEASER===
+SLUG: infinite-power-tower
+IDS: G2-10
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Infinite power tower
+QUESTION:
+Let $x \wedge y$ denote $x^y$. If
+$$x\wedge x\wedge x\wedge x\wedge\cdots = 2,$$
+i.e. the infinite tower $x^{x^{x^{\cdot^{\cdot^{\cdot}}}}}$ equals 2, what is $x$?
+HINT1:
+An infinite tower does not change if you add or remove one level. Where does the whole tower appear inside itself?
+HINT2:
+Write $T = x^{x^{x^{\cdots}}}$. The exponent of the bottom $x$ is again $T$, so $T = x^T$. Plug in $T=2$.
+ANSWER:
+$x=\sqrt{2}$.
+REFRESH:
+**Limits of recursive sequences**: if $a_{n+1}=f(a_n)$ with $f$ continuous and $a_n\to L$, then $L=f(L)$ (take limits on both sides). **Monotone convergence**: an increasing sequence bounded above converges.
+EXPLANATION:
+The tower is the limit of $a_1=x$, $a_{n+1}=x^{a_n}$. If the limit is $T$, then since $t\mapsto x^t$ is continuous, $T=x^{T}$. With $T=2$ this reads $x^2=2$, so $x=\sqrt2$ (the base must be positive).
+
+A nice subtlety for the interview: the same argument with $T=4$ gives $x^4=4$, i.e. again $x=\sqrt2$. But the tower cannot equal both 2 and 4! The fixed-point equation only tells you what the limit must be **if it exists**, and which fixed point the sequence actually reaches has to be checked. For $x=\sqrt2$ the sequence starts at $\sqrt2\approx1.414<2$, increases, and stays below 2, so it converges to 2, not 4.
+SOLUTION: Fixed-point equation
+Let $a_1=x$ and $a_{n+1}=x^{a_n}$, and suppose $a_n\to 2$. By continuity of $t\mapsto x^t$,
+$$2=\lim a_{n+1}=\lim x^{a_n}=x^{2},$$
+so $x=\sqrt2$.
+
+**Check that $x=\sqrt2$ really gives 2.** Take $x=\sqrt2$, so $a_1=\sqrt2<2$. If $a_n<2$ then $a_{n+1}=\sqrt2^{\,a_n}<\sqrt2^{\,2}=2$, so the sequence stays below 2. It is increasing: $a_2=\sqrt2^{\sqrt2}>\sqrt2^{\,1}=a_1$ since $\sqrt2>1$, and if $a_n>a_{n-1}$ then $a_{n+1}=\sqrt2^{\,a_n}>\sqrt2^{\,a_{n-1}}=a_n$. An increasing sequence bounded above converges, and its limit $L\le 2$ satisfies $L=\sqrt2^{\,L}$. This equation has exactly two positive solutions, $L=2$ and $L=4$ (the function $L\mapsto \sqrt2^{\,L}-L$ is convex, so it has at most two zeros), hence $L=2$ and $x=\sqrt2$.
+
+(In general the tower converges exactly when $e^{-e}\le x\le e^{1/e}$; here $\sqrt2\approx1.414<e^{1/e}\approx1.445$.)
+===END===
+===TEASER===
+SLUG: box-packing-bricks
+IDS: G2-11
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: hard
+TITLE: Packing 53 bricks in a cube
+QUESTION:
+Can you pack 53 bricks of dimensions $1\times1\times4$ into a $6\times6\times6$ box? (The bricks must lie inside the box without overlapping, with their faces parallel to the faces of the box.)
+HINT1:
+The volume is not the obstacle: $53\times 4=212\le 216$. Recall the chessboard puzzle: remove two opposite corners from an $8\times 8$ board; can 31 dominoes cover the remaining 62 squares? That one is solved by a colouring.
+HINT2:
+Cut the box into 27 cubes of size $2\times2\times2$ and colour them black and white like a 3D chessboard. How many unit cells of each colour does a $1\times1\times4$ brick always occupy? Then look at the colour with fewer cubes.
+ANSWER:
+No, at most 52 bricks fit.
+REFRESH:
+**Colouring argument**: colour the cells so that every piece covers a fixed number of cells of a given colour; then the number of pieces is at most (cells of that colour available) / (cells of that colour per piece).
+EXPLANATION:
+The warm-up: on an $8\times8$ board with two opposite corners removed, both removed squares have the same colour, say black, so 30 black and 32 white squares remain. Every domino covers one black and one white square, so at most 30 dominoes fit, not 31.
+
+The 3D version uses a coarser colouring. Divide the $6\times6\times6$ box into 27 blocks of size $2\times2\times2$ and colour them alternately. Since 27 is odd, one colour has 14 blocks and the other 13. A $1\times1\times4$ brick, wherever it is placed, always has exactly half of its volume (2 unit cells) in black blocks and half in white blocks. Each block has 8 unit cells, so the 13 blocks of the minority colour contain $13\times8=104$ cells, which can serve at most $104/2=52$ bricks.
+SOLUTION: Colouring with 2×2×2 blocks
+Use coordinates $x,y,z\in\{0,1,\dots,5\}$ for the 216 unit cells. Group them into 27 blocks indexed by $(\lfloor x/2\rfloor,\lfloor y/2\rfloor,\lfloor z/2\rfloor)\in\{0,1,2\}^3$, and colour a block black if $\lfloor x/2\rfloor+\lfloor y/2\rfloor+\lfloor z/2\rfloor$ is even, white otherwise. Counting the triples in $\{0,1,2\}^3$ with even sum gives 14 black blocks and 13 white blocks, i.e. $14\times8=112$ black cells and $13\times8=104$ white cells.
+
+**Each brick uses exactly 2 white cells.** Take a brick along the $x$-axis occupying $x=a,a+1,a+2,a+3$ with $a\in\{0,1,2\}$ (and fixed $y,z$). Moving along $x$, the block colour changes every 2 cells.
+- If $a=0$ or $a=2$: the brick covers 2 cells of one block and 2 cells of the next block, which have different colours: 2 black and 2 white cells.
+- If $a=1$: it covers 1 cell of block 0, 2 cells of block 1 and 1 cell of block 2; blocks 0 and 2 have the same colour and block 1 the other one: again 2 cells of each colour.
+
+The same holds for bricks along $y$ or $z$.
+
+**Conclusion.** If $k$ bricks are packed, they use $2k$ distinct white cells, so $2k\le 104$ and $k\le 52$. Hence **53 bricks cannot be packed**, even though their total volume $212$ is less than $216$.
+===END===
+===TEASER===
+SLUG: calendar-cubes
+IDS: G2-12
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Calendar cubes
+QUESTION:
+You have two cubes made to order. Instead of the numbers 1 to 6, you write a single digit (0–9) on each face of each cube, so that every morning you can place the two cubes side by side with their front faces showing the day of the month (01 to 31). You must use both cubes every day (so days 1–9 are shown as 01–09), but you may swap the order of the cubes. Which digits must go on the faces of each cube?
+HINT1:
+Look at the days that force a digit to appear on **both** cubes: 11, 22, and the single-digit days written with a 0.
+HINT2:
+Both cubes need 0, 1 and 2. That leaves 6 free faces for the 7 digits 3, 4, 5, 6, 7, 8, 9. Is there a digit you do not actually need to write?
+ANSWER:
+Cube 1: 0, 1, 2, 3, 4, 5; cube 2: 0, 1, 2, 6, 7, 8, with the 6 turned upside down to show 9.
+REFRESH:
+NONE
+EXPLANATION:
+Days 11 and 22 need the same digit on both cubes, so 1 and 2 are on both. The single-digit days 01–09 need a 0 next to every digit 1–9. If only one cube had a 0, the other cube would need all of 1–9 (at least 8 different symbols even with the 6/9 trick), which does not fit on 6 faces; so 0 is on both cubes. That uses 3 faces per cube and leaves 6 faces for the 7 digits 3–9: one face short, unless a 6 turned upside down serves as a 9. The 6 and the 9 are never needed at the same time, so this works.
+SOLUTION: Forced digits and the 6/9 trick
+**Digits on both cubes.**
+- Day 11 needs a 1 on each cube; day 22 needs a 2 on each cube.
+- Days 01–09: if only one cube had a 0, the other cube would have to show each of $1,\dots,9$, i.e. at least 8 distinct symbols (even counting 6 and 9 as one), but it has only 6 faces. So both cubes carry a 0.
+
+So each cube has $\{0,1,2\}$ plus three free faces: 6 free faces in total.
+
+**Remaining digits.** We still need $3,4,5,6,7,8,9$: seven digits for six faces. A 6 turned upside down reads as 9, so we only need $3,4,5,6,7,8$. Put $3,4,5$ on one cube and $6,7,8$ on the other:
+$$\text{Cube 1: } 0,1,2,3,4,5 \qquad \text{Cube 2: } 0,1,2,6,7,8.$$
+
+**Check.** 01–05: the 0 of cube 2 with a digit of cube 1; 06–09: the 0 of cube 1 with 6, 7, 8 or the upside-down 6 of cube 2. Days 10, 12–21 and 23–29: a 1 or 2 on one cube with the other digit on the other cube (every digit is on some cube, and 0, 1, 2 are on both). 11 and 22: both cubes carry 1 and 2. 30, 31: the 3 of cube 1 with the 0 or 1 of cube 2. All 31 days work.
+===END===
+===TEASER===
+SLUG: door-to-offer-liar-truth-teller
+IDS: G2-13
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Door to the offer
+QUESTION:
+You face two doors: one leads to your job offer, the other to the exit. Each door has a guard in front of it. One guard always lies and the other always tells the truth, but you do not know which is which. You may ask **one** guard **one** yes/no question. What question do you ask so that you are sure to find the door to the offer?
+HINT1:
+A direct question like "Is your door the offer?" fails: work out what each guard would answer. You need a question whose answer does not depend on whether you are talking to the liar.
+HINT2:
+Make the answer pass through **both** guards (or through the same guard twice): a lie applied to a truth, or a truth applied to a lie, is a lie; a lie about a lie is the truth.
+ANSWER:
+Ask either guard: "Would the other guard say that your door leads to the offer?" If he says yes, take the other door; if he says no, take his door.
+REFRESH:
+**Double negation**: negating a statement twice gives back the original; negating it once (in either order along a chain) flips it.
+EXPLANATION:
+There are two unknowns: which door is right, and which guard is the liar. A good question has to cancel the second unknown. If the answer goes through both guards, exactly one lie is always applied, whichever guard you ask; so the answer is always the **opposite** of the truth, and you just reverse it. Alternatively, ask one guard about himself twice ("would you say..."): the liar lies about his own lie, which is the truth, and the truth-teller simply tells the truth; so the answer is always the truth.
+SOLUTION: Ask about the other guard
+Question to either guard: "Would the other guard say that you are guarding the door to the offer?"
+
+Let the true answer to "is this guard's door the offer?" be $Q$ (yes or no).
+- If you ask the truth-teller: the liar would falsely answer "not $Q$", and the truth-teller reports that faithfully: answer "not $Q$".
+- If you ask the liar: the truth-teller would answer "$Q$", and the liar misreports it: answer "not $Q$".
+
+Either way you hear "not $Q$". So if the answer is **yes**, his door is not the offer: take the **other** door. If the answer is **no**, take **his** door.
+
+(Check with a direct question: "Is your door the offer?" If the truth-teller guards the offer, both guards say yes; if the liar guards the offer, both say no. The answer carries no information about which door is right, because you do not know who is lying.)
+SOLUTION: Ask the guard about himself
+Question: "If I asked you whether your door leads to the offer, would you say yes?"
+- The truth-teller answers truthfully: yes iff his door is the offer.
+- The liar would answer the inner question falsely, and then lies about what he would say; the two lies cancel, so he also answers yes iff his door is the offer.
+
+So take his door if he says yes, and the other door if he says no.
+===END===
+===TEASER===
+SLUG: message-delivery-two-padlocks
+IDS: G2-14
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Secure message delivery
+QUESTION:
+You need to send a document to a colleague in Greenwich through a messenger service. Documents travel in a box that can take padlocks. The service is not secure: anything in a box that is **not locked** is lost in transit (including any lock or key you put inside). You and your colleague each have your own high-security padlock, and each padlock has a single key, kept by its owner. How can you send the document securely?
+HINT1:
+You cannot send a key, and you cannot send an unlocked box. But nothing forbids a box from travelling several times, or from carrying more than one lock.
+HINT2:
+Your colleague cannot open your lock. What if he adds his own lock and sends the box back?
+ANSWER:
+Lock the box with your padlock and send it; your colleague adds his padlock and sends it back; you remove your padlock and send it again; he removes his and reads the document.
+REFRESH:
+NONE
+EXPLANATION:
+The box must be locked on every trip, yet each person can only open their own lock. The trick is that the box can carry two locks at once: while it is in transit, there is always at least one lock on it, and the locks are added and removed in an order that never requires anyone to open someone else's lock. This is the physical picture behind the three-pass protocol in cryptography (commutative encryption: $E_B(E_A(m))$, then remove $A$'s layer, then $B$'s).
+SOLUTION: Three trips with two locks
+1. Put the document in the box, lock it with **your** padlock and send it. (Locked: safe.)
+2. Your colleague cannot open it. He adds **his** padlock and sends the box back. (Two locks: safe.)
+3. You remove your padlock with your key and send the box again. (His lock is still on: safe.)
+4. Your colleague opens his own padlock and takes the document.
+
+The box never travels unlocked, and no key ever travels.
+===END===
+===TEASER===
+SLUG: last-ball-color-parity
+IDS: G2-15
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: medium
+TITLE: Colour of the last ball
+QUESTION:
+A bag contains 20 blue balls and 14 red balls. At each step you draw two balls at random (each ball equally likely) and do not put them back. Then:
+
+- if the two balls have the **same** colour, you add one **blue** ball to the bag;
+- if they have **different** colours, you add one **red** ball to the bag.
+
+You have an unlimited supply of extra blue and red balls. Repeating this, what is the colour of the last ball left in the bag? What if the bag starts with 20 blue balls and 13 red balls?
+HINT1:
+The draws are random, but the answer is asked as if it were certain. Look for a quantity that never changes, whatever you draw.
+HINT2:
+Track how the number of red balls $R$ changes in each of the three possible draws (blue-blue, red-red, red-blue). What stays the same about $R$?
+ANSWER:
+Blue when starting with 14 red balls; red when starting with 13 red balls (with certainty in both cases).
+REFRESH:
+**Invariant**: a quantity that is unchanged by every allowed move. If the final state is forced to have a certain value of it, the answer follows without following the random path.
+EXPLANATION:
+Each step removes two balls and adds one, so the total drops by one per step and the process ends with a single ball after $B+R-1$ steps. The randomness only affects the path. The number of red balls either stays the same or drops by exactly 2, so its **parity** never changes. The last ball is red exactly when $R=1$ at the end, which is odd. So the answer is decided at the start: even $R$ gives a blue last ball, odd $R$ gives a red last ball.
+SOLUTION: Parity of the number of red balls
+Let $(B,R)$ be the numbers of blue and red balls. The three possible moves are:
+- blue + blue drawn, blue added: $(B,R)\to(B-1,R)$;
+- red + red drawn, blue added: $(B,R)\to(B+1,R-2)$;
+- red + blue drawn, red added: $(B,R)\to(B-1,R)$.
+
+In every case $R$ is unchanged or decreases by 2, so $R \bmod 2$ is invariant. Each move reduces $B+R$ by exactly 1, so after $B+R-1$ moves one ball remains (a move is always possible while at least 2 balls remain).
+
+- Start $(20,14)$: $R$ is even, so it is even at the end; with one ball left, $R\in\{0,1\}$ must be $0$. The last ball is **blue**.
+- Start $(20,13)$: $R$ is odd at the end, so $R=1$. The last ball is **red**.
+===END===
+===TEASER===
+SLUG: light-switches-hot-bulb
+IDS: G2-16, H1A-29
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Light switches
+QUESTION:
+There is a light bulb inside a closed room and four switches outside. All switches are currently off, and exactly one of them controls the bulb. You may flip any switches on or off as many times as you like while outside. How many times do you need to enter the room to determine which switch controls the bulb?
+
+(Classic variant: three switches outside control three bulbs inside, one each; you may play with the switches, then enter the room once. How do you match switches to bulbs?)
+HINT1:
+On/off only gives two possible observations per visit. Is there anything else about a bulb you can observe besides whether it is lit?
+HINT2:
+A bulb that has been on for a while is **hot**, even after it is switched off. Combine on/off with hot/cold.
+ANSWER:
+Once: turn on switches 1 and 2, wait, turn off 2 and turn on 3, then go in; on and hot = 1, off and hot = 2, on and cold = 3, off and cold = 4.
+REFRESH:
+NONE
+EXPLANATION:
+If the only observation is "lit or not", one visit distinguishes only 2 switches, so you would need several visits. But a bulb carries a second binary signal: temperature. A bulb that has been lit for several minutes stays warm for a while after being switched off. Two binary signals give $2\times2=4$ combinations, exactly enough for 4 switches in a single visit. The same idea solves the three-switch, three-bulb version: each bulb shows one of the combinations (on), (off, warm), (off, cold).
+SOLUTION: Light and heat
+1. Turn on switches 1 and 2 and wait several minutes, so that any bulb that is on gets hot.
+2. Turn off switch 2 and turn on switch 3 (switch 4 stays off). Enter the room straight away and touch the bulb.
+3. Read the result:
+   - on and hot: switch 1 (on the whole time);
+   - off and hot: switch 2 (was on, then off);
+   - on and cold: switch 3 (only just turned on);
+   - off and cold: switch 4 (never on).
+
+**One visit** suffices.
+
+**Three switches, three bulbs.** Turn switch 1 on for a few minutes, then turn it off and turn switch 2 on, and enter. The lit bulb belongs to switch 2, the dark but warm bulb to switch 1, and the dark cold bulb to switch 3.
+===END===
+===TEASER===
+SLUG: average-salary-privately
+IDS: G2-17
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Average salary without revealing salaries
+QUESTION:
+Eight quants from different banks meet for drinks. They all want to know the average salary of the group, but nobody wants to reveal his or her own salary to the others. Design a procedure that lets them compute the average salary without anyone learning anyone else's salary.
+HINT1:
+Only the **sum** of the salaries is needed. Can a salary be hidden inside a running total?
+HINT2:
+Let the first quant start the running total with a secret random number instead of zero.
+ANSWER:
+Quant 1 adds a secret random number to his salary and passes the total around; each quant adds his salary; quant 1 subtracts his random number at the end and divides by 8.
+REFRESH:
+NONE
+EXPLANATION:
+Everyone only ever sees a number that is "some random offset plus a sum of other salaries", which reveals nothing about any individual salary, because the offset is unknown to them. The offset is removed only at the very end, by the one person who knows it, and at that point only the total remains. This is the simplest example of secure multi-party computation: computing a function (here the sum) of private inputs without revealing the inputs.
+SOLUTION: Masked running total
+1. Quant 1 picks a secret random number $M$ (large compared to salaries), computes $M+S_1$ and passes it privately to quant 2.
+2. Quant $k$ ($k=2,\dots,8$) receives $M+S_1+\dots+S_{k-1}$, adds $S_k$ and passes the result to quant $k+1$ (quant 8 passes it back to quant 1).
+3. Quant 1 receives $M+S_1+\dots+S_8$, subtracts $M$ and announces the average
+$$\bar S=\frac{S_1+\dots+S_8}{8}.$$
+
+Each intermediate number is masked by $M$, which only quant 1 knows, so no one can deduce another person's salary. (Limitation: two quants could collude; for example quants 2 and 4 together learn $S_3$ as the difference of what 3 received and passed on.)
+SOLUTION: Splitting each salary into random shares
+Each quant $i$ splits his salary into 8 random numbers that add up to it: $S_i = s_{i,1}+s_{i,2}+\dots+s_{i,8}$, and privately gives share $s_{i,j}$ to quant $j$ (keeping $s_{i,i}$). Then each quant $j$ announces the sum of the shares he holds, $T_j=\sum_{i} s_{i,j}$. Adding the announcements,
+$$\sum_j T_j=\sum_j\sum_i s_{i,j}=\sum_i S_i,$$
+so the average is $\frac18\sum_j T_j$. Any single share, or any partial set of shares short of all 8 shares of one person, looks random, so this is robust even against small groups of colluding quants.
+===END===
+===TEASER===
+SLUG: coin-piles-blindfolded
+IDS: G2-18
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: Blindfolded coin piles
+QUESTION:
+You are blindfolded in a room with 1000 coins on the floor. You are told that 980 of them show tails and 20 show heads. You cannot tell which side is up by touch, but you may turn over any coins you like. Can you split the coins into two piles so that both piles are **guaranteed** to contain the same number of heads?
+HINT1:
+You cannot control how many heads land in a pile. But flipping **every** coin in a pile turns its heads into tails and vice versa. How is that useful?
+HINT2:
+Make one pile of $n$ coins and suppose it has $m$ heads (unknown). Write the number of heads in the other pile, and the number of heads in the first pile after flipping all its coins, then choose $n$ to make them equal for every $m$.
+ANSWER:
+Yes: take any 20 coins as the first pile and flip all of them; both piles then have the same number of heads.
+REFRESH:
+NONE
+EXPLANATION:
+The number $m$ of heads in a randomly chosen pile is unknown, so you need a construction that works for every $m$. Flipping a whole pile swaps its heads and tails counts, which turns an unknown $m$ into $n-m$. On the other side, the remaining pile has $20-m$ heads. Both depend on $m$ in the same way ($-m$) exactly when $n=20$: then the unknown cancels.
+SOLUTION: Choose a pile of size 20 and flip it
+Pick any $n$ coins to form pile 1; the other $1000-n$ form pile 2. If pile 1 contains $m$ heads (we do not know $m$), it contains $n-m$ tails, and pile 2 contains $20-m$ heads.
+
+Flip every coin in pile 1: it now has $n-m$ heads. We want
+$$n-m = 20-m \quad\text{for every } m,$$
+which holds if and only if $n=20$.
+
+So: take **any 20 coins**, flip them all, and put them in one pile; the other 980 coins form the second pile. If the 20 coins originally had $m$ heads, after flipping they have $20-m$ heads, which is exactly the number of heads among the other 980 coins.
+===END===
+===TEASER===
+SLUG: mislabeled-fruit-bags
+IDS: G2-19
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Mislabeled bags
+QUESTION:
+You have three bags of fruit: one contains only apples, one only oranges, and one a mix of apples and oranges. Each bag carries a label ("apple", "orange" or "mix"), but your manager tells you that **every** bag is mislabeled. You may take fruits out of any bag, one at a time, without looking inside. What is the minimum number of fruits you must take out to identify all three bags, and how?
+HINT1:
+Use the fact that **all** labels are wrong. Which bag's label tells you the most about its contents?
+HINT2:
+Drawing from the bag labelled "apple" or "orange" can leave two possibilities. The bag labelled "mix" cannot be the mix, so a single fruit from it tells you what it really is.
+ANSWER:
+One fruit, drawn from the bag labelled "mix".
+REFRESH:
+**Derangement of three objects**: a permutation of 3 items with no fixed point is one of the two 3-cycles; once one item's image is known, the whole permutation is determined.
+EXPLANATION:
+Since every label is wrong, the true contents are a permutation of the labels with no bag in its own place. With three bags there are only two such permutations, and they differ in every position, so knowing the true contents of any single bag determines everything. The only question is which bag can be identified with one draw. The "mix" bag is pure (it cannot be the mix), so any fruit from it reveals its type. Drawing from the "apple" bag is not decisive: an orange could come from the orange bag or from the mix bag.
+SOLUTION: Draw from the bag labelled "mix"
+Take one fruit from the bag labelled "mix". That bag is not the mix, so it contains only one kind of fruit, and the fruit you drew tells you which.
+
+- **If it is an orange**: the "mix" bag is the orange bag. The bag labelled "apple" is not apples, and it is not oranges (already found), so it is the mix. The bag labelled "orange" is then the apple bag.
+- **If it is an apple**: the "mix" bag is the apple bag. The bag labelled "orange" is not oranges and not apples, so it is the mix, and the bag labelled "apple" is the orange bag.
+
+One fruit is enough, and zero is not: without drawing, both possible arrangements are consistent with "all labels are wrong".
+===END===
+===TEASER===
+SLUG: wise-men-and-glass
+IDS: G2-20
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: Fifty wise men and a glass
+QUESTION:
+A sultan has captured 50 wise men. He has a glass, currently standing bottom down. Every minute he calls one of the wise men at random; the called man may either turn the glass over (upside down or bottom down) or leave it as it is. The wise men are called at random, possibly infinitely many times each. At any call, the man called may declare that all 50 wise men have already been called at least once. If he is right, everyone goes free; if he is wrong, everyone is put to death.
+
+The wise men may agree on a strategy once, before they are locked in separate rooms (one per room). They cannot communicate afterwards and only see the glass when called. Design a strategy that guarantees they go free.
+HINT1:
+The glass stores one bit of information. Someone has to act as a counter. Should all wise men behave the same way?
+HINT2:
+Appoint one spokesman. Let each of the other 49 use the glass to send a single signal, **once**, and let the spokesman reset the glass each time he sees a signal and count the signals.
+ANSWER:
+One spokesman counts; each of the other 49 turns the glass upside down the first time he finds it bottom down (and never again); the spokesman turns it back each time he finds it upside down, and declares after his 49th reset.
+REFRESH:
+NONE
+EXPLANATION:
+The glass is a one-bit mailbox. If everyone used it in the same way, no one could ever count distinct visitors. So break the symmetry: one man is the counter, the other 49 are identical senders, each allowed to raise the flag exactly once in his life. Only the counter lowers the flag, so each lowering corresponds to exactly one new sender. When the counter has lowered it 49 times, every other man has been called. Since each man is called infinitely often (with probability 1 under random calls), every sender eventually finds the flag down and raises it, and the counter eventually sees all 49 signals.
+SOLUTION: Spokesman and one-time signals
+Before separating, choose one spokesman. Call "bottom down" the rest state and "upside down" the signal state.
+
+**Rule for each of the other 49 men.** If you are called, the glass is bottom down, and you have **never** turned it before: turn it upside down. In every other situation, do nothing.
+
+**Rule for the spokesman.** If you are called and the glass is upside down, turn it bottom down and add 1 to your count. Otherwise do nothing. When your count reaches 49, declare that everyone has been called.
+
+**Correctness.** The glass starts bottom down. Only the 49 men turn it upside down, each at most once, and only the spokesman turns it back. So the glass is never turned upside down twice in a row without a reset (a man only signals when it is bottom down), and each reset counted by the spokesman corresponds to one distinct man who has been called. When the count reaches 49, all 49 others have been called, and the spokesman himself has obviously been called: the declaration is correct.
+
+**Termination.** Each man is called again and again, so any man who has not yet signalled will eventually be called at a moment when the glass is bottom down (the spokesman resets it whenever he is called after a signal). Hence the count eventually reaches 49.
+===END===
+===TEASER===
+SLUG: broken-clock-equal-sums
+IDS: G2-21, H1A-05
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Broken clock face
+QUESTION:
+An analogue clock, numbered 1 to 12 clockwise, falls off the wall and its face breaks into three pieces. The numbers on each piece add up to the same total. What numbers are on each piece? (The pieces are ordinary pieces of a broken dial, with no strangely shaped fragments.)
+HINT1:
+First find the total that each piece must have.
+HINT2:
+Each piece sums to 26. Look for runs of consecutive numbers around the dial (remember that 12 is next to 1) that add up to 26. If there are not enough of them, one piece must be a band across the middle of the dial.
+ANSWER:
+5, 6, 7, 8; then 11, 12, 1, 2; and a band across the middle with 9, 10, 3, 4.
+REFRESH:
+**Sum of the first $N$ integers**: $1+2+\dots+N=\dfrac{N(N+1)}{2}$ (pair the first and last terms: each pair sums to $N+1$).
+EXPLANATION:
+The sum of all numbers is $78$, so each piece sums to $26$. The common trap is to look only at runs like $5,6,7,8$ in the order $1,\dots,12$, and forget that the dial is a circle where 12 and 1 are neighbours: $11+12+1+2=26$. After these two runs, the leftover numbers are $3,4$ and $9,10$, which are on opposite sides of the dial; they form a band across the middle of the face, which also sums to 26.
+SOLUTION: Total, then runs around the dial
+$$1+2+\dots+12=\frac{12\times13}{2}=78,\qquad \frac{78}{3}=26.$$
+
+Runs of consecutive numbers around the dial with sum 26: checking each starting point, only
+$$5+6+7+8=26 \quad\text{and}\quad 11+12+1+2=26$$
+work (for example $3+4+5+6+7=25$, $6+7+8+9=30$, $12+1+2+3+4=22$, $2+3+4+5+6+7=27$).
+
+So the three pieces cannot all be wedges of consecutive numbers. Take the two runs above as two pieces; the third piece holds the remaining numbers $3,4,9,10$, with sum $3+4+9+10=26$. It is a band across the dial (numbers 9, 10 on the left and 3, 4 on the right), between the piece at the bottom (5–8) and the piece at the top (11–2).
+
+**The pieces: $\{5,6,7,8\}$, $\{11,12,1,2\}$ and $\{9,10,3,4\}$.**
+===END===
+===TEASER===
+SLUG: two-missing-integers
+IDS: G2-22, H1B-27
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Two missing integers
+QUESTION:
+You are given 98 distinct integers taken from $\{1,2,\dots,100\}$ (in no particular order). What is an efficient way to find the two missing integers?
+HINT1:
+With one missing number, the sum of the array would give it immediately. With two missing numbers, one equation is not enough. What second equation can you get?
+HINT2:
+Compute both $\sum z_i$ and $\sum z_i^2$ over the array. Comparing with $\sum_{n=1}^{100} n$ and $\sum_{n=1}^{100} n^2$ gives $x+y$ and $x^2+y^2$ for the missing $x,y$.
+ANSWER:
+Compute $s=x+y=5050-\sum z_i$ and $q=x^2+y^2=338350-\sum z_i^2$; then $x,y=\dfrac{s\pm\sqrt{2q-s^2}}{2}$ (one pass, $O(n)$ time).
+REFRESH:
+**Sums of powers**: $\sum_{n=1}^{N} n=\dfrac{N(N+1)}{2}$ and $\sum_{n=1}^{N} n^2=\dfrac{N(N+1)(2N+1)}{6}$.
+
+**Vieta**: two numbers with sum $s$ and product $p$ are the roots of $t^2-st+p=0$.
+EXPLANATION:
+The array tells you everything about the missing numbers through aggregate statistics: whatever function you sum over $\{1,\dots,100\}$, the missing numbers account for the difference between the full sum and the array's sum. One unknown needs one equation (the plain sum); two unknowns need two independent equations, and the sum of squares is the natural second one. From $x+y$ and $x^2+y^2$ you get $xy$, and $x,y$ are the roots of a quadratic. Each sum is computed in a single pass, so the method is linear in $n$ with constant memory, much better than sorting ($O(n\log n)$).
+SOLUTION: Sum and sum of squares
+Let $z_1,\dots,z_{98}$ be the array and $x<y$ the missing numbers. With $N=100$:
+$$\sum_{n=1}^{100}n=\frac{100\cdot101}{2}=5050,\qquad \sum_{n=1}^{100}n^2=\frac{100\cdot101\cdot201}{6}=338350.$$
+Hence
+$$s:=x+y=5050-\sum_{i=1}^{98}z_i,\qquad q:=x^2+y^2=338350-\sum_{i=1}^{98}z_i^2.$$
+Then $2xy=s^2-q$, and
+$$(y-x)^2=x^2+y^2-2xy=q-(s^2-q)=2q-s^2,$$
+so
+$$x=\frac{s-\sqrt{2q-s^2}}{2},\qquad y=\frac{s+\sqrt{2q-s^2}}{2}.$$
+
+**Example.** If 3 and 10 are missing: $s=13$, $q=9+100=109$, $2q-s^2=218-169=49$, so $x=(13-7)/2=3$ and $y=(13+7)/2=10$.
+
+Both sums are computed in one pass: $O(n)$ time and $O(1)$ memory for numbers $1$ to $n$.
+SOLUTION: Sum, then split at the average
+Compute $s=x+y=5050-\sum z_i$ as before. Since $x<y$ and $x+y=s$, we have $x<s/2<y$ (so $x \le \lfloor (s-1)/2\rfloor$). Now take the sum over only the array elements that are at most $m:=\lfloor s/2\rfloor$; the only missing number in $\{1,\dots,m\}$ is $x$, so
+$$x=\frac{m(m+1)}{2}-\sum_{z_i\le m}z_i,\qquad y=s-x.$$
+This uses two passes and only sums (no squares, hence smaller numbers and no square root).
+FOLLOWUP: One missing integer
+An array contains 99 distinct integers from $\{1,2,\dots,100\}$. How would you write a program to find the missing integer?
+FOLLOWUP_ANSWER:
+Add up the array and subtract from the full sum:
+$$\text{missing}=\sum_{n=1}^{100}n-\sum_{i=1}^{99}z_i=5050-\sum_{i=1}^{99}z_i.$$
+This is one pass, $O(n)$ time and $O(1)$ memory. (An equivalent overflow-free trick: XOR all numbers $1,\dots,100$ with all array elements; every present number cancels and the missing one remains.)
+===END===
+===TEASER===
+SLUG: counterfeit-coin-bag-one-weighing
+IDS: G2-23, H1B-25
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: easy
+TITLE: Counterfeit bag in one weighing
+QUESTION:
+There are 10 bags with 100 identical-looking coins in each. In nine bags every coin weighs 10 grams. In the counterfeit bag, all coins weigh the same wrong amount, either 9 grams or 11 grams (you do not know which). You have a digital scale that shows the exact weight. Can you find the counterfeit bag with a single weighing?
+
+(Classic variant: a king receives 10 bags of 1000 gold coins from 10 tax collectors; one collector cheats with coins that are all 10% lighter than the correct one ounce. Find the cheat with one weighing.)
+HINT1:
+Weighing whole bags or equal numbers of coins from each bag cannot work: two bags treated identically cannot be told apart. How can you make each bag leave a different "signature" in the total?
+HINT2:
+Take a different number of coins from each bag, e.g. $i$ coins from bag $i$. How far from the normal weight is the total if bag $i$ is counterfeit?
+ANSWER:
+Yes: take $i$ coins from bag $i$ ($i=1,\dots,10$) and weigh the 55 coins; the weight is $550\pm i$ grams, which identifies the bag $i$ and whether its coins are heavy (+) or light (−).
+REFRESH:
+**Sum of the first $N$ integers**: $1+2+\dots+N=\dfrac{N(N+1)}{2}$.
+EXPLANATION:
+One reading of the scale is a single number, so each possible answer must produce a different number. Taking $i$ coins from bag $i$ makes the error in the total equal to $i$ times the error per coin: the size of the discrepancy gives the bag, and its sign gives heavy or light. The 20 possible outcomes ($i=1,\dots,10$, heavy or light) produce 20 different readings $550\pm i$, so one weighing suffices.
+SOLUTION: Different number of coins from each bag
+Take $i$ coins from bag $i$, for $i=1,\dots,10$. That is $1+2+\dots+10=55$ coins, which would weigh $55\times10=550$ grams if all were genuine.
+
+If bag $k$ is counterfeit, the $k$ coins from it each weigh $10\pm1$ grams, so the reading is
+$$W=550\pm k \text{ grams}.$$
+Hence $k=|W-550|$ identifies the bag, and the sign tells you whether its coins are heavy ($W>550$) or light ($W<550$). The values $550\pm k$, $k=1,\dots,10$, are all different, so there is no ambiguity.
+
+Any choice of distinct numbers of coins per bag works (e.g. $0,1,\dots,9$: the bag with 0 coins is the counterfeit one if the weight is exactly right).
+
+**King's variant.** Take $i$ coins from collector $i$'s bag; the correct weight is 55 ounces. If collector $k$ cheats, each of his $k$ coins is $0.1$ ounce light, so the shortfall is $0.1k$ ounces: e.g. $0.4$ ounces short means collector 4 is the cheat.
+===END===
+===TEASER===
+SLUG: two-glass-balls-100-floors
+IDS: G2-24
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: medium
+TITLE: Two glass balls, 100 floors
+QUESTION:
+You have two identical glass balls and a 100-storey building. A ball dropped from a floor lower than some unknown floor $X$ does not break; dropped from floor $X$ or higher, it always breaks. A ball that does not break can be reused. You want to determine $X$. What strategy minimises the number of drops in the worst case, and what is that number?
+HINT1:
+Once the first ball breaks, the second ball can only be used carefully, one floor at a time from the highest safe floor upward. So the first ball should be used to cut the building into intervals. Should the intervals be of equal size?
+HINT2:
+Suppose you allow at most $N$ drops. If the first drop of ball 1 is from floor $N$ and it breaks, ball 2 needs at most $N-1$ more drops. If it survives, you have $N-1$ drops left, so the next jump for ball 1 can be only $N-1$ floors, then $N-2$, and so on. How many floors can you cover with $N$ drops in total?
+ANSWER:
+14 drops in the worst case: drop ball 1 from floors 14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99, 100, and when it breaks, test the floors in between one by one with ball 2.
+REFRESH:
+**Sum of the first $N$ integers**: $1+2+\dots+N=\dfrac{N(N+1)}{2}$.
+EXPLANATION:
+With a single ball you must go up one floor at a time. With two balls, the first one can take big jumps, and when it breaks the second ball scans the gap linearly. With equal gaps of size $k$ the worst case is roughly $100/k+k$, minimised at $k=10$ (about 19 drops). You can do better by **shrinking** the gaps: every jump of ball 1 already cost one drop, so the gap to be scanned afterwards should be one floor shorter. With $N$ drops the gaps are $N, N-1, \dots, 1$, covering $N(N+1)/2$ floors. The smallest $N$ with $N(N+1)/2\ge 100$ is $N=14$.
+SOLUTION: Decreasing jumps
+**Floors coverable with $N$ drops.** Let $F(N)$ be the largest number of floors for which $X$ can always be determined with at most $N$ drops and two balls. Drop ball 1 from some floor $h$.
+- If it breaks, $X\le h$, and with one ball left you must test floors $1,\dots,h-1$ one at a time, using up to $h-1$ more drops. So $h-1\le N-1$, i.e. $h\le N$.
+- If it survives, $X>h$, and the problem is the same above floor $h$ with $N-1$ drops left: at most $F(N-1)$ more floors.
+
+So $F(N)=N+F(N-1)$ with $F(0)=0$, i.e.
+$$F(N)=N+(N-1)+\dots+1=\frac{N(N+1)}{2}.$$
+
+**Minimum number of drops.** We need $N(N+1)/2\ge100$: $F(13)=91<100$ and $F(14)=105\ge100$. So the optimum worst case is **14 drops**.
+
+**The strategy.** Drop ball 1 from floors
+$$14,\ 14+13=27,\ 27+12=39,\ 50,\ 60,\ 69,\ 77,\ 84,\ 90,\ 95,\ 99,\ 100.$$
+When it first breaks, say at floor $h_j$ after surviving floor $h_{j-1}$, drop ball 2 from $h_{j-1}+1, h_{j-1}+2,\dots$ until it breaks (or until $h_j-1$). For example, if ball 1 breaks at floor 14, ball 2 tests floors $1,\dots,13$: at most $1+13=14$ drops. If it breaks at 27 (after surviving 14), ball 2 tests $15,\dots,26$: at most $2+12=14$ drops. Each later interval is one floor shorter, so the total never exceeds 14.
+===END===
+===TEASER===
+SLUG: red-black-card-stopping-game
+IDS: H1B-14, H1B-15
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Red/black card stopping game
+QUESTION:
+You have a shuffled deck of 52 playing cards: 26 red and 26 black. You turn the cards over one at a time, without replacement. Each red card pays you \$1 and each black card fines you \$1. You may stop whenever you like (including before drawing any card), and you keep your running total at that moment.
+
+What stopping rule maximises your expected payoff, and what is the expected payoff when you follow it?
+HINT1:
+Your current score is just a record of the past; what matters for the future is only how many red and black cards are left. Think of it as an American option: at each moment, compare "stop now" with "draw one more and then play optimally".
+HINT2:
+Let $E(r,b)$ be the best expected **additional** gain when $r$ red and $b$ black cards remain. Write the one-step recursion for $E(r,b)$ in terms of $E(r-1,b)$ and $E(r,b-1)$, with the boundary values $E(0,b)$ and $E(r,0)$, and solve it backwards from small decks. Try the 2-card and 4-card decks by hand first.
+ANSWER:
+Stop as soon as your lead reaches a threshold that depends only on the number of black cards drawn (6, then 5, 4, 3, 2, 1 as blacks come out; otherwise draw to the end); the expected payoff is $\frac{41{,}984{,}711{,}742{,}427}{15{,}997{,}372{,}030{,}584}\approx \$2.62$.
+REFRESH:
+**Law of total expectation**: $\mathbb{E}[X]=\sum_i \mathbb{P}(A_i)\,\mathbb{E}[X\mid A_i]$ for a partition $(A_i)$; here, condition on the colour of the next card.
+
+**Dynamic programming / backward induction for optimal stopping**: the value of a state is $\max(\text{payoff from stopping},\ \text{expected value of continuing})$, computed from the terminal states backwards (the same scheme as pricing an American option on a binomial tree).
+EXPLANATION:
+The game is worth something because you have the **option to stop**. If you had to draw all 52 cards you would always finish at exactly $0$ (26 reds minus 26 blacks). But you can quit while you are ahead, and you can never be forced to quit while behind: if things go badly, you simply draw every card and end at $0$. So your payoff is at least $0$ and sometimes positive, and the game has strictly positive value.
+
+The key simplification is that the future depends only on what is left in the deck. If $r$ reds and $b$ blacks remain, your score so far is $(26-r)-(26-b)=b-r$, and your extra gain from here on depends only on $(r,b)$. So define $E(r,b)$ = the best expected extra gain from state $(r,b)$. At each state you compare two numbers: $0$ (stop) and the expected value of drawing one more card and then continuing optimally. This is exactly the early-exercise decision for an American option on a binomial tree, and it is solved the same way: from the terminal states backwards.
+
+Doing the computation reveals a clean shape for the rule. You only stop right after a red card (stopping after a black is never optimal: you would have been better off stopping one card earlier, or you should keep going). You never stop with a negative score. And the lead you require before stopping shrinks as black cards come out: early on there are many cards left, so a lead can still grow a lot and you hold out for $+6$; near the end there is little room for fluctuation and you settle for $+2$ or $+1$.
+SOLUTION: Backward induction on the remaining deck
+**State and recursion.** Let $r,b$ be the numbers of red and black cards still in the deck, and $E(r,b)$ the optimal expected additional gain. Boundary values:
+$$E(0,b)=0 \quad(\text{only blacks left: stop}),\qquad E(r,0)=r \quad(\text{only reds left: draw them all}).$$
+Otherwise, conditioning on the colour of the next card,
+$$E(r,b)=\max\Big\{0,\ \tfrac{r}{r+b}\big[1+E(r-1,b)\big]+\tfrac{b}{r+b}\big[-1+E(r,b-1)\big]\Big\}.$$
+The first term is "stop now", the second is "draw one more card and then play optimally". The value of the game is $E(26,26)$, and you stop in state $(r,b)$ exactly when the second term is $\le 0$.
+
+**Small decks by hand.**
+- $E(1,0)=1$, $E(0,1)=0$, so $E(1,1)=\max\{0,\tfrac12(1+0)+\tfrac12(-1+1)\}=\tfrac12$.
+- $E(2,0)=2$, $E(1,2)$: continuing gives $\tfrac13(1+E(0,2))+\tfrac23(-1+E(1,1))=\tfrac13-\tfrac13=0$, so $E(1,2)=0$ (indifferent). $E(2,1)=\max\{0,\tfrac23(1+E(1,1))+\tfrac13(-1+E(2,0))\}=\tfrac23\cdot\tfrac32+\tfrac13=\tfrac43$.
+- $E(2,2)=\tfrac12\big(1+E(1,2)\big)+\tfrac12\big(-1+E(2,1)\big)=\tfrac12+\tfrac16=\tfrac23$.
+
+Continuing in the same way: $E(3,3)=\tfrac{17}{20}$, $E(4,4)=1$, $E(5,5)=\tfrac{47}{42}$, $E(6,6)=\tfrac{284}{231}$, $E(7,7)=\tfrac{4583}{3432}$, and so on. The table is filled like Pascal's triangle, from $(0,0)$ outwards.
+
+**Full deck.** Filling the $27\times 27$ table exactly (by computer, with exact fractions) gives
+$$E(26,26)=\frac{41{,}984{,}711{,}742{,}427}{15{,}997{,}372{,}030{,}584}\approx 2.6245.$$
+So the game is worth about **\$2.62**.
+
+**The optimal rule.** Reading off the states where the continuation value is $\le 0$: you never stop with a negative score, you only stop right after a red card, and the threshold depends only on the number $k$ of black cards drawn so far. Stop as soon as your score reaches
+- $6$ if $k\in\{0,1,2\}$;
+- $5$ if $3\le k\le 9$;
+- $4$ if $10\le k\le 15$;
+- $3$ if $16\le k\le 20$;
+- $2$ if $21\le k\le 23$;
+- $1$ if $k=24$ (there you are exactly indifferent between stopping and continuing);
+- otherwise, draw to the end (finishing at $0$).
+
+**Why the rule has this shape.** Never stop at a negative score, since drawing everything guarantees $0$. The table also shows that the stopping states, for a given number $k$ of blacks drawn, are exactly those with score $\ge$ threshold$(k)$; since the score only rises on a red card, you always reach the threshold right after a red, so the last card you draw is red. The threshold decreases with $k$ because fewer cards remain, so the potential future gain from continuing (the "time value" of the option) shrinks.
+
+For the 8-card deck (4 red, 4 black) the same recursion gives the value $E(4,4)=\$1$, with the rule: stop at score $2$ if $0$ or $1$ black cards have appeared, at score $1$ if $2$ black cards have appeared (indifferent), otherwise draw to the end.
+FOLLOWUP: Red/black stopping game with four cards
+Same game with only four cards: 2 red and 2 black. What is the optimal rule and the expected payoff?
+FOLLOWUP_ANSWER:
+**Answer: \$2/3.** Draw the first card.
+- **Red** (probability $\tfrac12$): score $+1$, left 1 red and 2 black. Continuing is worth $\tfrac13(+1)+\tfrac23\big(-1+E(1,1)\big)=\tfrac13+\tfrac23(-\tfrac12)=0$ extra, so you are indifferent; stop at $+1$.
+- **Black** (probability $\tfrac12$): score $-1$, left 2 red and 1 black. Keep drawing. Next card red (prob. $\tfrac23$): score $0$ with 1 red, 1 black left; draw again: red (prob. $\tfrac12$) and you stop at $+1$, black and the last card brings you back to $0$, so this branch is worth $\tfrac12$. Next card black (prob. $\tfrac13$): score $-2$ with 2 reds left, draw both, finish at $0$. Value after a first black: $\tfrac23\cdot\tfrac12+\tfrac13\cdot 0=\tfrac13$.
+
+Expected payoff: $\tfrac12\cdot 1+\tfrac12\cdot\tfrac13=\tfrac23\approx\$0.67$. (With two cards, 1 red and 1 black, the value is $\tfrac12$.)
+===END===

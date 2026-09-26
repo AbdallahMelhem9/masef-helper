@@ -21,7 +21,8 @@ export function renderMathMarkdown(src: string): string {
   text = text.replace(/\$\$([\s\S]*?)\$\$/g, (_m, tex) =>
     stash(katex.renderToString(tex, { ...katexOpts, displayMode: true }))
   );
-  text = text.replace(/(^|[^\\$])\$([^$\n]+?)\$/g, (_m, pre, tex) =>
+  // An escaped \$ (a dollar amount) may sit inside inline math.
+  text = text.replace(/(^|[^\\$])\$((?:\\\$|[^$\n])+?)\$/g, (_m, pre, tex) =>
     pre + stash(katex.renderToString(tex, { ...katexOpts, displayMode: false }))
   );
 

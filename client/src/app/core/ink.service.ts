@@ -127,6 +127,19 @@ export class InkService {
     return this.saveTarget(this.lessonTarget(pdfId, kind), doc);
   }
 
+  // The board of one brain teaser.
+  loadTeaser(slug: string): Promise<InkDoc> {
+    return this.loadTarget(this.teaserTarget(slug));
+  }
+
+  saveTeaser(slug: string, doc: InkDoc): Promise<boolean> {
+    return this.saveTarget(this.teaserTarget(slug), doc);
+  }
+
+  private teaserTarget(slug: string): InkTarget {
+    return { url: `/api/teasers/${slug}/ink`, key: `${this.auth.email() || 'anon'}:teaser:${slug}` };
+  }
+
   // The notes page attached to one block.
   loadSection(sectionId: number): Promise<InkDoc> {
     return this.loadTarget(this.sectionTarget(sectionId));

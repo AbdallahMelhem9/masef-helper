@@ -1,0 +1,757 @@
+===TEASER===
+SLUG: broken-stick-triangle
+IDS: G4B-02, H4B-16, R3B-26, R3B-27, R3B-28, R3B-29
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Broken stick triangle
+QUESTION:
+A stick of length 1 is cut at two points $x$ and $y$, chosen independently and uniformly on $[0,1]$. This splits it into three pieces. What is the probability that the three pieces can be assembled into a triangle?
+HINT1:
+Three lengths form a triangle exactly when each one is shorter than the sum of the other two. Since the lengths add up to 1, what does that say about each piece individually?
+HINT2:
+The condition is "every piece is shorter than $\tfrac12$". Draw the unit square of $(x,y)$, treat the cases $x<y$ and $x>y$ separately, and write the three pieces in terms of $x$ and $y$. The answer is an area.
+ANSWER:
+$\tfrac14$
+REFRESH:
+- **Triangle inequality**: positive lengths $a,b,c$ form a (non-degenerate) triangle iff $a<b+c$, $b<a+c$ and $c<a+b$.
+- **Uniform on a square**: if $x,y$ are independent $U[0,1]$, then $(x,y)$ is uniform on the unit square, so $P((x,y)\in A)=\text{area}(A)$.
+EXPLANATION:
+With total length $1$, the condition $a<b+c$ is the same as $a<1-a$, i.e. $a<\tfrac12$. So the three pieces form a triangle exactly when **no piece is at least half the stick**. That turns the question into a pure geometry question: the pair $(x,y)$ is a uniform point in the unit square, and we just need the area of the set of points for which all three pieces are shorter than $\tfrac12$.
+
+Intuitively, both cuts must fall in different halves of the stick (otherwise the piece on the other side contains a whole half), and moreover they must be less than $\tfrac12$ apart (otherwise the middle piece is too long). Each of these two requirements "costs" a factor $\tfrac12$, giving $\tfrac14$.
+SOLUTION: Area in the unit square
+Suppose first $x<y$. The pieces are $x$, $y-x$ and $1-y$. Each must be $<\tfrac12$:
+$$x<\tfrac12,\qquad y-x<\tfrac12,\qquad 1-y<\tfrac12\iff y>\tfrac12.$$
+In the square these three constraints cut out the triangle with vertices $(0,\tfrac12)$, $(\tfrac12,\tfrac12)$, $(\tfrac12,1)$: it is half of the small square $[0,\tfrac12]\times[\tfrac12,1]$, so its area is $\tfrac12\cdot\tfrac14=\tfrac18$.
+
+By symmetry (swap the roles of $x$ and $y$), the case $x>y$ gives the triangle with vertices $(\tfrac12,0)$, $(\tfrac12,\tfrac12)$, $(1,\tfrac12)$, also of area $\tfrac18$. The event $x=y$ has probability $0$.
+
+Total favourable area: $\tfrac18+\tfrac18=\tfrac14$. Since the square has area $1$,
+$$P(\text{triangle})=\tfrac14.$$
+SOLUTION: Complement: one piece too long (circle trick)
+The triangle fails iff some piece is $\ge\tfrac12$, and at most one piece can be that long (two such pieces would already use up the whole stick, which has probability $0$). So
+$$P(\text{no triangle})=\sum_{i=1}^{3}P(\text{piece } i\ge\tfrac12).$$
+Place 3 points uniformly and independently on a circle of circumference 1, and cut the circle at the third point: the other two points are then independent uniform points on a stick of length 1, so the three arcs have exactly the law of our three pieces. By rotational symmetry the three arcs are exchangeable, so each has the same probability of being $\ge\tfrac12$. For the first piece (from $0$ to the first cut) to be $\ge\tfrac12$, both cuts must lie in $[\tfrac12,1]$: probability $(\tfrac12)^2=\tfrac14$. Hence
+$$P(\text{no triangle})=3\cdot\tfrac14=\tfrac34,\qquad P(\text{triangle})=\tfrac14.$$
+The same argument with $n$ pieces gives $1-\dfrac{n}{2^{n-1}}$ (see the follow-up).
+SOLUTION: Barycentric (simplex) picture
+Write the pieces as $(a,b,1-a-b)$. The point $(a,b)$ is uniform on the triangle $\{a\ge0,b\ge0,a+b\le1\}$ of area $\tfrac12$ (this is the joint law of the spacings of two uniform points). The triangle condition is $a<\tfrac12$, $b<\tfrac12$, $a+b>\tfrac12$: the "middle" triangle with vertices $(0,\tfrac12)$, $(\tfrac12,0)$, $(\tfrac12,\tfrac12)$, obtained by removing three corner triangles of area $\tfrac18$ each. Its area is $\tfrac12-3\cdot\tfrac18=\tfrac18$, and the probability is $\dfrac{1/8}{1/2}=\tfrac14$.
+FOLLOWUP: Break the longer piece
+A unit stick is broken at a uniform point. Then the **longer** of the two pieces is broken at a point chosen uniformly along it. What is the probability that the three pieces form a triangle?
+FOLLOWUP_ANSWER:
+$2\ln 2-1\approx 0.386$.
+
+Let $L=\max(X,1-X)$ be the longer piece; since $X\sim U[0,1]$, $L$ is uniform on $[\tfrac12,1]$ (density $2$). The short piece $1-L\le\tfrac12$ is automatically fine. Break the long piece at $U\sim U[0,L]$ into $U$ and $L-U$; we need $U<\tfrac12$ and $L-U<\tfrac12$, i.e. $U\in(L-\tfrac12,\tfrac12)$, an interval of length $1-L$. So
+$$P(\text{triangle}\mid L)=\frac{1-L}{L},$$
+$$P(\text{triangle})=\int_{1/2}^{1}2\,\frac{1-L}{L}\,dL=2\big[\ln L-L\big]_{1/2}^{1}=2\left(-1+\ln 2+\tfrac12\right)=2\ln2-1\approx0.386.$$
+Breaking the longer piece helps a lot compared with $\tfrac14$, since it never wastes the second cut on the short piece.
+FOLLOWUP: Right-angled triangle
+In the broken-stick problem, what is the probability that the three pieces form a right-angled triangle?
+FOLLOWUP_ANSWER:
+$0$. A right angle requires an exact equation $a^2+b^2=c^2$ between the pieces (with $c$ the longest). In the $(x,y)$ square this equation defines a curve, a set of zero area, and $(x,y)$ has a density, so the probability is $0$. (Right triangles exist, but you hit one with probability zero, just as you hit any specific point.)
+FOLLOWUP: Broken stick n-gon
+Now $n-1$ independent uniform points cut the unit stick into $n$ pieces ($n>3$). What is the probability that the pieces form an $n$-gon?
+FOLLOWUP_ANSWER:
+$1-\dfrac{n}{2^{n-1}}$.
+
+A polygon can be built from lengths summing to $1$ iff every piece is $<\tfrac12$ (the generalised triangle inequality: each side shorter than the sum of the others). At most one piece can be $\ge\tfrac12$, so the events "piece $i$ is too long" are disjoint and
+$$P(\text{no polygon})=\sum_{i=1}^{n}P(\text{piece } i\ge\tfrac12).$$
+Using the circle trick ($n$ uniform points on a circle, cut at one of them), the $n$ pieces are exchangeable, and the first piece is $\ge\tfrac12$ iff all $n-1$ cuts are in $[\tfrac12,1]$, probability $2^{-(n-1)}$. Therefore $P(n\text{-gon})=1-n/2^{n-1}$: $\tfrac14$ for $n=3$, $\tfrac12$ for $n=4$, $\tfrac{11}{16}$ for $n=5$, tending to $1$. (If one reads "$n$ points", there are $n+1$ pieces and the answer is $1-(n+1)/2^{n}$.)
+===END===
+===TEASER===
+SLUG: poisson-bus-waiting-time
+IDS: G4B-03
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: Waiting for a Poisson bus
+QUESTION:
+Buses arrive at a station according to a Poisson process with rate $\lambda=0.1$ per minute (on average one bus every 10 minutes). The buses have been running for a long time, and you arrive at the station at a random time. What is your expected waiting time for the next bus? On average, how many minutes ago did the last bus leave?
+HINT1:
+What is special about the exponential distribution when you have already waited some time? Can the same property be used looking backwards in time?
+HINT2:
+Use memorylessness: $P(\tau>s+t\mid\tau>s)=P(\tau>t)$. Also, a Poisson process run backwards in time is again a Poisson process with the same rate. Don't be surprised if the two answers add up to more than 10.
+ANSWER:
+Expected wait 10 minutes; the last bus left on average 10 minutes ago (so the gap you land in averages 20 minutes).
+REFRESH:
+- **Exponential law** with rate $\lambda$: density $\lambda e^{-\lambda t}$ on $t\ge0$, $P(\tau>t)=e^{-\lambda t}$, mean $1/\lambda$, variance $1/\lambda^2$.
+- **Memorylessness**: $P(\tau>s+t\mid\tau>s)=\dfrac{e^{-\lambda(s+t)}}{e^{-\lambda s}}=e^{-\lambda t}=P(\tau>t)$.
+- **Poisson process**: inter-arrival times are i.i.d. $\text{Exp}(\lambda)$; the number of arrivals in an interval of length $t$ is $\text{Poisson}(\lambda t)$, independent across disjoint intervals.
+EXPLANATION:
+The inter-arrival times are exponential with mean $1/\lambda=10$ minutes, and the exponential law has no memory: however long it has been since the last bus, the remaining wait is still exponential with mean 10. So when you arrive at a random time the expected wait is 10 minutes, not 5.
+
+The same is true backwards: arrivals in disjoint time intervals are independent and the process looks the same when time is reversed, so the time since the last bus is also exponential with mean 10.
+
+This looks paradoxical: the interval containing your arrival then has expected length $10+10=20$ minutes, while the average gap between buses is 10. The resolution is the **inspection paradox**: a random arrival time is more likely to fall into a long gap than into a short one (a 30-minute gap "catches" you six times more often than a 5-minute gap). The gaps you observe are length-biased.
+SOLUTION: Memorylessness forward and backward
+Let $\tau$ be the time from your arrival at $t_0$ until the next bus. Since you arrive independently of the process, the event "no bus in $(t_0,t_0+t]$" has probability $P(N(t)=0)=e^{-\lambda t}$ by the Poisson counting law, whatever happened before $t_0$. So $P(\tau>t)=e^{-\lambda t}$, i.e. $\tau\sim\text{Exp}(\lambda)$ and
+$$E[\tau]=\frac1\lambda=10\text{ min}.$$
+Similarly, let $\sigma$ be the time since the last bus. The event $\{\sigma>t\}$ is "no arrival in $(t_0-t,t_0]$", which has probability $e^{-\lambda t}$ as long as the process has run for more than $t$ (it has run "for a long time"). So $\sigma\sim\text{Exp}(\lambda)$ and
+$$E[\sigma]=10\text{ min}.$$
+The two are independent (disjoint intervals), and the gap containing you has length $\sigma+\tau$, a Gamma$(2,\lambda)$ variable with mean 20 minutes.
+SOLUTION: Length-biased sampling (renewal argument)
+For a general renewal process with i.i.d. gaps $X$, a random arrival falls into a gap with probability proportional to its length, so the gap you land in has the size-biased density $\dfrac{x f(x)}{E[X]}$. Given that gap, your position in it is uniform, so the expected residual wait is half its length:
+$$E[\text{wait}]=\frac12\cdot\frac{E[X^2]}{E[X]}=\frac{E[X^2]}{2E[X]}.$$
+For $X\sim\text{Exp}(\lambda)$: $E[X]=\tfrac1\lambda$, $E[X^2]=\tfrac{2}{\lambda^2}$, so $E[\text{wait}]=\dfrac{2/\lambda^2}{2/\lambda}=\dfrac1\lambda=10$ min. By symmetry the expected time since the last bus is the same, 10 min. (For buses exactly every 10 minutes, $E[X^2]=100$ and the formula gives the familiar 5 minutes.)
+===END===
+===TEASER===
+SLUG: moments-of-normal-and-mgf
+IDS: G4B-04, R3B-67, R3B-68, R3B-69, R3B-70, H4B-07
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Moments of the normal distribution
+QUESTION:
+(a) If $X\sim N(0,1)$, what is $E[X^n]$ for $n=1,2,3,4$?
+
+(b) If $X\sim N(\mu,\sigma^2)$ (mean $\mu$, standard deviation $\sigma$) and $\lambda>0$, compute $E[X^2]$ and $E[e^{\lambda X}]$.
+
+(c) In particular, if $X\sim N(0,\sigma^2)$, what is $E[e^X]$?
+HINT1:
+Odd moments of a symmetric distribution are easy. For the rest, think of the moment generating function $M(t)=E[e^{tX}]$ and how its derivatives at $0$ relate to moments.
+HINT2:
+Compute $E[e^{tX}]$ by writing $tx-\frac{(x-\mu)^2}{2\sigma^2}$ as a single square plus a constant (complete the square); the remaining integral is that of another normal density. Then differentiate $M$ four times at $t=0$.
+ANSWER:
+$E[X],E[X^2],E[X^3],E[X^4]=0,1,0,3$; for $N(\mu,\sigma^2)$: $E[X^2]=\mu^2+\sigma^2$ and $E[e^{\lambda X}]=e^{\mu\lambda+\sigma^2\lambda^2/2}$, so $E[e^X]=e^{\sigma^2/2}$ when $\mu=0$.
+REFRESH:
+- **Normal density**: $f(x)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/(2\sigma^2)}$; it integrates to 1 for every $\mu$ and $\sigma>0$.
+- **Variance identity**: $\operatorname{Var}(X)=E[X^2]-(E[X])^2$.
+- **MGF**: $M(t)=E[e^{tX}]$; if it is finite near $0$, then $M^{(n)}(0)=E[X^n]$.
+- **Completing the square**: $x^2-2bx=(x-b)^2-b^2$.
+EXPLANATION:
+Two ideas do all the work. First, the standard normal density is symmetric about $0$, so every odd moment vanishes: $x^n f(x)$ is an odd function. Second, the exponential kernel of the normal density combines nicely with $e^{tx}$: multiplying $e^{-x^2/2}$ by $e^{tx}$ just shifts the centre of the bell curve to $t$ and leaves an extra factor $e^{t^2/2}$ outside. That gives the MGF in closed form, $M(t)=e^{t^2/2}$, and its Taylor expansion
+$$e^{t^2/2}=1+\frac{t^2}{2}+\frac{t^4}{8}+\cdots=\sum_n E[X^n]\frac{t^n}{n!}$$
+reads off all the moments at once: $E[X^2]=2!\cdot\tfrac12=1$, $E[X^4]=4!\cdot\tfrac18=3$. The general normal is $\mu+\sigma Z$, which turns $E[e^{\lambda X}]$ into $e^{\lambda\mu}M_Z(\sigma\lambda)$. That quantity, the mean of a lognormal, appears constantly in Black–Scholes.
+SOLUTION: Moment generating function
+**Standard normal MGF.**
+$$M(t)=\int_{-\infty}^{\infty}e^{tx}\frac{e^{-x^2/2}}{\sqrt{2\pi}}\,dx=e^{t^2/2}\int_{-\infty}^{\infty}\frac{e^{-(x-t)^2/2}}{\sqrt{2\pi}}\,dx=e^{t^2/2},$$
+since $tx-\tfrac{x^2}{2}=-\tfrac{(x-t)^2}{2}+\tfrac{t^2}{2}$ and the last integrand is the $N(t,1)$ density.
+
+**Derivatives.** With $M(t)=e^{t^2/2}$:
+$$\begin{aligned}
+M'(t)&=t\,e^{t^2/2}, & M'(0)&=0,\\
+M''(t)&=(1+t^2)e^{t^2/2}, & M''(0)&=1,\\
+M'''(t)&=(3t+t^3)e^{t^2/2}, & M'''(0)&=0,\\
+M^{(4)}(t)&=(3+6t^2+t^4)e^{t^2/2}, & M^{(4)}(0)&=3.
+\end{aligned}$$
+So $E[X]=0$, $E[X^2]=1$, $E[X^3]=0$, $E[X^4]=3$ (mean 0, variance 1, skewness 0, kurtosis 3).
+
+**General normal.** For $X\sim N(\mu,\sigma^2)$: $E[X^2]=\operatorname{Var}(X)+(E[X])^2=\sigma^2+\mu^2$. For the exponential moment, complete the square in the exponent:
+$$\lambda x-\frac{(x-\mu)^2}{2\sigma^2}=-\frac{\big(x-(\mu+\sigma^2\lambda)\big)^2}{2\sigma^2}+\mu\lambda+\frac{\sigma^2\lambda^2}{2},$$
+so
+$$E[e^{\lambda X}]=e^{\mu\lambda+\sigma^2\lambda^2/2}\int_{-\infty}^{\infty}\frac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu-\sigma^2\lambda)^2/(2\sigma^2)}dx=e^{\mu\lambda+\sigma^2\lambda^2/2},$$
+the integrand being the $N(\mu+\sigma^2\lambda,\sigma^2)$ density.
+
+**Special case.** With $\mu=0$ and $\lambda=1$: $E[e^X]=e^{\sigma^2/2}$. Note it is larger than $e^{E[X]}=1$, as Jensen's inequality demands.
+SOLUTION: Integration by parts (recursion on moments)
+Let $m_n=E[Z^n]$ for $Z\sim N(0,1)$ and $\varphi(x)=e^{-x^2/2}/\sqrt{2\pi}$. Since $\varphi'(x)=-x\varphi(x)$,
+$$m_{n}=\int x^{n-1}\cdot x\varphi(x)\,dx=\Big[-x^{n-1}\varphi(x)\Big]_{-\infty}^{\infty}+(n-1)\int x^{n-2}\varphi(x)\,dx=(n-1)\,m_{n-2}.$$
+With $m_0=1$ and $m_1=0$ (odd integrand): $m_2=1\cdot m_0=1$, $m_3=2m_1=0$, $m_4=3m_2=3$. In general $m_{2k}=(2k-1)(2k-3)\cdots3\cdot1$ and the odd moments vanish.
+FOLLOWUP: Poisson MGF
+Compute the moment generating function of $Y\sim\text{Poisson}(\alpha)$, i.e. $P(Y=k)=\dfrac{e^{-\alpha}\alpha^k}{k!}$, $k=0,1,2,\dots$
+FOLLOWUP_ANSWER:
+$M_Y(\lambda)=\exp\big(\alpha(e^\lambda-1)\big)$.
+$$M_Y(\lambda)=\sum_{k\ge0}e^{\lambda k}\frac{e^{-\alpha}\alpha^k}{k!}=e^{-\alpha}\sum_{k\ge0}\frac{(\alpha e^\lambda)^k}{k!}=e^{-\alpha}e^{\alpha e^\lambda}=e^{\alpha(e^\lambda-1)}.$$
+Check: $M'(\lambda)=\alpha e^\lambda e^{\alpha(e^\lambda-1)}$ gives $E[Y]=\alpha$, and $M''(\lambda)=(\alpha e^\lambda+\alpha^2e^{2\lambda})e^{\alpha(e^\lambda-1)}$ gives $E[Y^2]=\alpha+\alpha^2$, so $\operatorname{Var}(Y)=\alpha$.
+FOLLOWUP: Moments from the MGF
+Show that if $X$ has moment generating function $M(\lambda)=E[e^{\lambda X}]$, finite for $\lambda$ in a neighbourhood of $0$, then $E[X^n]=\dfrac{d^nM}{d\lambda^n}\Big|_{\lambda=0}$.
+FOLLOWUP_ANSWER:
+Formally, differentiate under the expectation: $\dfrac{d^n}{d\lambda^n}e^{\lambda X}=X^ne^{\lambda X}$, so $M^{(n)}(\lambda)=E[X^ne^{\lambda X}]$, and at $\lambda=0$ this is $E[X^n]$.
+
+Justification: suppose $M$ is finite on $(-2\delta,2\delta)$. Since $|x|^n\le C_n e^{\delta|x|}$ for some constant $C_n$, for $|\lambda|<\delta$ we get $|X|^ne^{\lambda X}\le C_n e^{2\delta|X|}\le C_n\big(e^{2\delta X}+e^{-2\delta X}\big)$, which is integrable. By dominated convergence we may differentiate under $E$ as many times as we like. Equivalently, $M(\lambda)=E\big[\sum_n \frac{(\lambda X)^n}{n!}\big]=\sum_n E[X^n]\frac{\lambda^n}{n!}$ (the exchange of sum and expectation being justified by $E[e^{|\lambda X|}]<\infty$), so the $n$-th Taylor coefficient of $M$ at $0$ is $E[X^n]/n!$.
+FOLLOWUP: Normal MGF via standardisation
+If $Y\sim N(0,1)$ then $X=\sigma Y+\mu\sim N(\mu,\sigma^2)$. Compute the MGF of $Y$ and use it to recover $E[e^{\lambda X}]$.
+FOLLOWUP_ANSWER:
+$M_Y(\lambda)=e^{\lambda^2/2}$ (complete the square: $\lambda y-\tfrac{y^2}{2}=-\tfrac{(y-\lambda)^2}{2}+\tfrac{\lambda^2}{2}$, and the $N(\lambda,1)$ density integrates to 1). Then
+$$E[e^{\lambda X}]=E[e^{\lambda\mu+\lambda\sigma Y}]=e^{\lambda\mu}M_Y(\lambda\sigma)=e^{\lambda\mu}e^{\lambda^2\sigma^2/2}=\exp\!\Big(\mu\lambda+\frac{\sigma^2\lambda^2}{2}\Big),$$
+which matches the direct computation.
+===END===
+===TEASER===
+SLUG: connecting-noodles
+IDS: G4B-05
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Connecting noodles
+QUESTION:
+There are 100 noodles in your soup bowl. Blindfolded, you pick two free noodle ends at random (every free end equally likely) and tie them together. You repeat until there are no free ends left. Each time you tie together the two ends of the same strand, a loop (circle) is closed. What is the expected number of loops at the end?
+HINT1:
+Look at what one tying step does to the number of noodles. Try $n=1$, $n=2$, $n=3$ noodles first.
+HINT2:
+With $n$ noodles there are $2n$ free ends. After the first tie you always have $n-1$ "noodles" left (one of them may be made of joined pieces), and you gained a loop only if the two ends belonged to the same noodle. Compute that probability and write a recursion for $E_n$.
+ANSWER:
+$\displaystyle\sum_{k=1}^{100}\frac{1}{2k-1}=1+\frac13+\frac15+\cdots+\frac1{199}\approx 3.28$
+REFRESH:
+- **Linearity of expectation**: $E[\sum_i I_i]=\sum_i P(A_i)$ for indicators $I_i=\mathbf 1_{A_i}$, whether or not the events are dependent.
+- **Law of total expectation**: $E[X]=\sum_k E[X\mid B_k]P(B_k)$ for a partition $(B_k)$.
+- **Harmonic sums**: $H_m=\sum_{k=1}^m\frac1k\approx\ln m+0.5772$.
+EXPLANATION:
+The key observation is that every tie reduces the number of free strands by exactly one, whatever happens. If you tie two ends of the same noodle, that noodle becomes a loop and leaves the game; if you tie ends of two different noodles, they merge into one longer noodle. Either way, from $n$ noodles you go to $n-1$ noodles, and the process "restarts" with one fewer.
+
+So the whole process is $n$ steps, at noodle counts $n,n-1,\dots,1$, and at the step with $k$ noodles a loop is created with probability $\frac{1}{2k-1}$: once you pick the first end, the second end is one of the $2k-1$ others, and exactly one of them is the other end of the same noodle. The expected number of loops is the sum of these probabilities, a sum of odd reciprocals, which grows like $\tfrac12\ln n$: very slowly.
+SOLUTION: Recursion
+Let $E_n$ be the expected number of loops starting with $n$ noodles, so $E_1=1$. With $2n$ free ends there are $\binom{2n}{2}=n(2n-1)$ equally likely pairs; $n$ of them are the two ends of one noodle. Hence
+$$P(\text{loop at first tie})=\frac{n}{n(2n-1)}=\frac1{2n-1}.$$
+In either case we are left with $n-1$ noodles whose free ends are again equally likely to be picked. By total expectation:
+$$E_n=\frac1{2n-1}\,(1+E_{n-1})+\frac{2n-2}{2n-1}\,E_{n-1}=E_{n-1}+\frac1{2n-1}.$$
+Check: $E_2=1+\tfrac13$, $E_3=1+\tfrac13+\tfrac15$. Unrolling from $E_1=1$:
+$$E_n=\sum_{k=1}^n\frac1{2k-1},\qquad E_{100}=1+\frac13+\cdots+\frac1{199}.$$
+Numerically, $\sum_{k=1}^{100}\frac1{2k-1}=H_{200}-\tfrac12H_{100}\approx 5.878-2.594\approx3.284$.
+SOLUTION: Indicators
+Let $I_k=1$ if a loop is closed at the step where $k$ noodles remain ($k=n,n-1,\dots,1$). The number of loops is $\sum_k I_k$, and $P(I_k=1)=\frac1{2k-1}$: fix one of the two chosen ends; the other is uniform among the $2k-1$ remaining free ends, exactly one of which closes a loop. By linearity,
+$$E[\#\text{loops}]=\sum_{k=1}^{100}\frac1{2k-1}\approx3.284.$$
+===END===
+===TEASER===
+SLUG: optimal-hedge-ratio
+IDS: G4B-06
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Optimal hedge ratio
+QUESTION:
+You just bought one share of stock $A$ and want to hedge it by shorting stock $B$. How many shares of $B$ should you short to minimise the variance of the hedged position? The variance of $A$'s return is $\sigma_A^2$, the variance of $B$'s return is $\sigma_B^2$, and their correlation coefficient is $\rho$.
+HINT1:
+Write the hedged position as $r_A-h\,r_B$ and expand its variance.
+HINT2:
+$\operatorname{Var}(r_A-hr_B)$ is a quadratic in $h$ with a positive leading coefficient. Minimise it by setting the derivative in $h$ to zero.
+ANSWER:
+$h^*=\rho\,\dfrac{\sigma_A}{\sigma_B}$
+REFRESH:
+- **Variance of a linear combination**: $\operatorname{Var}(X-hY)=\operatorname{Var}X-2h\operatorname{Cov}(X,Y)+h^2\operatorname{Var}Y$.
+- **Covariance and correlation**: $\operatorname{Cov}(X,Y)=\rho\,\sigma_X\sigma_Y$.
+- **Minimum of a quadratic** $ah^2+bh+c$ with $a>0$: at $h=-b/(2a)$.
+EXPLANATION:
+Shorting $B$ removes the part of $A$'s risk that moves together with $B$. The hedged variance is a parabola in $h$: too little hedge leaves the common risk in, too much hedge adds $B$'s own risk back in with the opposite sign. The best $h$ is the regression coefficient of $r_A$ on $r_B$, $\beta=\operatorname{Cov}(r_A,r_B)/\operatorname{Var}(r_B)=\rho\sigma_A/\sigma_B$: you short exactly the "beta" of $A$ with respect to $B$. What remains is the idiosyncratic risk, with variance $\sigma_A^2(1-\rho^2)$.
+
+(Here $h$ is measured in units of $B$ exposure per unit of $A$ exposure; with prices $P_A\ne P_B$ the number of shares is $h\,P_A/P_B$. The book, like most interviewers, implicitly treats one share of each as the same notional.)
+SOLUTION: Minimise the quadratic
+Short $h$ units of $B$. The hedged return is $r_A-hr_B$, with variance
+$$V(h)=\sigma_A^2-2h\rho\sigma_A\sigma_B+h^2\sigma_B^2.$$
+First-order condition:
+$$V'(h)=-2\rho\sigma_A\sigma_B+2h\sigma_B^2=0\iff h^*=\rho\frac{\sigma_A}{\sigma_B}.$$
+Second-order condition: $V''(h)=2\sigma_B^2>0$, so this is the minimum. The minimal variance is
+$$V(h^*)=\sigma_A^2-2\rho^2\sigma_A^2+\rho^2\sigma_A^2=\sigma_A^2(1-\rho^2).$$
+SOLUTION: Regression / projection view
+Decompose $r_A=\beta r_B+\varepsilon$ with $\beta=\dfrac{\operatorname{Cov}(r_A,r_B)}{\operatorname{Var}(r_B)}$, so that $\operatorname{Cov}(\varepsilon,r_B)=0$. Then
+$$\operatorname{Var}(r_A-hr_B)=\operatorname{Var}\big((\beta-h)r_B+\varepsilon\big)=(\beta-h)^2\sigma_B^2+\operatorname{Var}(\varepsilon),$$
+minimised at $h=\beta=\dfrac{\rho\sigma_A\sigma_B}{\sigma_B^2}=\rho\dfrac{\sigma_A}{\sigma_B}$.
+===END===
+===TEASER===
+SLUG: dice-game-roll-again-on-high
+IDS: G4B-07, H4B-14
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Dice game: roll again on 4, 5, 6
+QUESTION:
+You roll a fair die and are paid its face value for every roll. If the roll is 4, 5 or 6, you roll again; as soon as you roll 1, 2 or 3 (and are paid for it), the game stops. What is the expected total payoff?
+HINT1:
+After a high roll, the game you face is exactly the game you started with.
+HINT2:
+Condition on the first roll. Given a low roll you get its value and stop; given a high roll you get its value plus a fresh copy of the game. Write an equation for $E$.
+ANSWER:
+$7$
+REFRESH:
+- **Law of total expectation**: $E[X]=E\big[E[X\mid Y]\big]=\sum_y E[X\mid Y=y]P(Y=y)$.
+- **Geometric law**: the number of trials until the first success with probability $p$ has mean $1/p$.
+- **Wald's identity**: if $X_1,X_2,\dots$ are i.i.d. with finite mean and $N$ is a stopping time with $E[N]<\infty$, then $E\big[\sum_{i=1}^N X_i\big]=E[N]\,E[X_1]$.
+EXPLANATION:
+The game is self-similar: whenever you roll a 4, 5 or 6 you collect that amount and then face exactly the same game again. So its value $E$ satisfies a one-line equation: half the time you get an average of 2 and stop, half the time you get an average of 5 plus another $E$.
+
+Another way to see it: you roll a geometric number of times (on average 2 rolls, since each roll stops the game with probability $\tfrac12$), and each roll pays 3.5 on average. That gives $2\times3.5=7$ directly, and Wald's identity makes this rigorous even though the number of rolls depends on the faces.
+SOLUTION: First-step analysis
+Let $E$ be the expected payoff and $Y$ the first roll. With probability $\tfrac12$, $Y\in\{1,2,3\}$ and the game ends: $E[X\mid Y\le3]=\tfrac{1+2+3}{3}=2$. With probability $\tfrac12$, $Y\in\{4,5,6\}$: you earn on average $5$ and restart, so $E[X\mid Y\ge4]=5+E$. Hence
+$$E=\tfrac12\cdot2+\tfrac12(5+E)\iff \tfrac12E=\tfrac72\iff E=7.$$
+SOLUTION: Wald's identity
+Let $N$ be the number of rolls. Each roll ends the game with probability $\tfrac12$, independently, so $N$ is geometric and $E[N]=2$. $N$ is a stopping time for the sequence of faces $X_1,X_2,\dots$ (whether we stop after roll $n$ depends only on $X_1,\dots,X_n$), and $E[X_i]=3.5$. The payoff is $\sum_{i=1}^N X_i$, so by Wald
+$$E\Big[\sum_{i=1}^N X_i\Big]=E[N]\,E[X_1]=2\times3.5=7.$$
+(Sanity check: the last roll averages 2 and the $N-1$ earlier ones average 5 each, $E[N-1]=1$, total $5+2=7$.)
+
+A different game with the same flavour (Heard on the Street) is given as a follow-up below; its answer is $\tfrac23$, not 7.
+FOLLOWUP: Paid the count, unless you stop on a 6
+You roll a fair die until you get a 4, 5 or 6, which stops the game. Each 1, 2 or 3 rolled before that adds $+1$ to your score. If the game stops on a 4 or a 5 you are paid your accumulated score; if it stops on a 6 you get nothing. What is the expected payoff?
+FOLLOWUP_ANSWER:
+$\tfrac23$.
+
+Let $N$ be the number of 1–3 rolls before the first 4–6. Each roll is low with probability $\tfrac12$, so $P(N=j)=(\tfrac12)^{j+1}$ and $E[N]=\sum_{j\ge0}j(\tfrac12)^{j+1}=1$ (or by first step: $E[N]=\tfrac12\cdot0+\tfrac12(1+E[N])$, so $E[N]=1$). The stopping roll is uniform on $\{4,5,6\}$ and independent of $N$ (it is the first high roll, whatever came before), so you are paid with probability $\tfrac23$ independently of $N$:
+$$E[\text{payoff}]=\tfrac23\,E[N]=\tfrac23.$$
+===END===
+===TEASER===
+SLUG: cards-until-first-ace
+IDS: G4B-08
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Cards until the first ace
+QUESTION:
+A standard 52-card deck is shuffled. What is the expected number of cards you have to turn over, one at a time, in order to see the first ace?
+HINT1:
+Rather than computing the distribution of the position of the first ace, count the non-aces that come before it.
+HINT2:
+For each of the 48 non-aces, let $X_i=1$ if it comes before all four aces. The answer is $1+\sum E[X_i]$. The four aces cut the deck into five slots: where does a given non-ace land?
+ANSWER:
+$\dfrac{53}{5}=10.6$
+REFRESH:
+- **Linearity of expectation**: $E[\sum X_i]=\sum E[X_i]$, even for dependent $X_i$.
+- **Indicator trick**: $E[\mathbf 1_A]=P(A)$.
+EXPLANATION:
+The first ace sits right after all the non-aces that precede it, so its position is $1+(\text{number of non-aces before every ace})$. Now look at one particular non-ace, say the 7 of clubs, together with the four aces: in a random shuffle, these five cards are in a uniformly random relative order, so the 7 of clubs is first among them with probability $\tfrac15$. By linearity, on average $48/5$ non-aces precede the first ace, and the first ace is at position $1+48/5=10.6$.
+
+Equivalently, the 4 aces split the 48 other cards into 5 gaps (before the first ace, between aces, after the last), and by symmetry every gap has the same expected size $48/5$.
+SOLUTION: Indicators
+Label the non-aces $1,\dots,48$ and let $X_i=1$ if card $i$ appears before all four aces. The position of the first ace is
+$$X=1+\sum_{i=1}^{48}X_i.$$
+Among card $i$ and the four aces, each of the five is equally likely to come first, so $E[X_i]=P(\text{card } i\text{ before all aces})=\tfrac15$. Therefore
+$$E[X]=1+48\cdot\tfrac15=\tfrac{53}{5}=10.6.$$
+General formula: with $m$ ordinary cards and $n$ special cards randomly ordered, the first special card is at expected position $1+\frac{m}{n+1}=\frac{m+n+1}{n+1}$.
+SOLUTION: Symmetry of gaps
+Write the deck as $G_1\,A\,G_2\,A\,G_3\,A\,G_4\,A\,G_5$ where $G_j$ is the (possibly empty) block of non-aces in gap $j$. The vector of gap sizes $(|G_1|,\dots,|G_5|)$ is exchangeable (reversing or permuting the roles of the gaps does not change the law of a uniform shuffle), and the sizes add to 48. So $E|G_j|=\tfrac{48}{5}$ for every $j$, and the first ace is at position $|G_1|+1$, with expectation $\tfrac{48}{5}+1=10.6$.
+===END===
+===TEASER===
+SLUG: sum-of-uniforms-at-most-one
+IDS: G4B-09
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Sum of uniforms at most 1
+QUESTION:
+Let $X_1,X_2,\dots,X_n$ be i.i.d. uniform on $[0,1]$. What is the probability that $S_n=X_1+X_2+\cdots+X_n\le1$?
+HINT1:
+Work out $n=1,2,3$ geometrically (a length, an area, a volume) and guess the pattern.
+HINT2:
+Prove the guess by induction, conditioning on $X_{n+1}$: the event $\{S_n\le 1-x\}$ is a simplex scaled by the factor $1-x$ in each of its $n$ dimensions.
+ANSWER:
+$\dfrac1{n!}$
+REFRESH:
+- **Probability as volume**: for i.i.d. $U[0,1]$ variables, $P((X_1,\dots,X_n)\in A)=\operatorname{vol}(A\cap[0,1]^n)$.
+- **Scaling of volume**: multiplying all $n$ coordinates by $c$ multiplies $n$-dimensional volume by $c^n$.
+- **Conditioning on a continuous variable**: $P(A)=\int P(A\mid X=x)f_X(x)\,dx$.
+EXPLANATION:
+$P(S_n\le1)$ is the volume of the corner simplex $\{x_i\ge0,\ \sum x_i\le1\}$ inside the unit cube: a segment of length 1, a triangle of area $\tfrac12$, a tetrahedron of volume $\tfrac16$, and so on. The pattern $1/n!$ has a beautiful explanation: the map from $(x_1,\dots,x_n)$ to the partial sums $(s_1,s_2,\dots,s_n)=(x_1,x_1+x_2,\dots)$ preserves volume and sends the simplex to the set $\{0\le s_1\le s_2\le\cdots\le s_n\le1\}$. That is one of the $n!$ possible orderings of $n$ points in the cube, and by symmetry all orderings have the same volume, $1/n!$.
+SOLUTION: Induction on n
+$n=1$: $P(X_1\le1)=1$. $n=2$: the region $x_1+x_2\le1$ in the unit square is a right triangle of area $\tfrac12$. $n=3$: the corner tetrahedron has volume $\int_0^1\tfrac12z^2\,dz=\tfrac16$ (cross-sections at level $z=1-x_3$ are triangles of area $\tfrac12z^2$).
+
+Claim: $P(S_n\le t)=\dfrac{t^n}{n!}$ for $0\le t\le1$. True for $n=1$. If it holds for $n$, then for $t\in[0,1]$, conditioning on $X_{n+1}=x$ (only $x\le t$ contributes, and then $t-x\in[0,1]$):
+$$P(S_{n+1}\le t)=\int_0^t P(S_n\le t-x)\,dx=\int_0^t\frac{(t-x)^n}{n!}\,dx=\frac1{n!}\cdot\frac{t^{n+1}}{n+1}=\frac{t^{n+1}}{(n+1)!}.$$
+Taking $t=1$: $P(S_n\le1)=\dfrac1{n!}$.
+SOLUTION: Ordering symmetry
+Change variables to partial sums $s_k=x_1+\cdots+x_k$. The map $(x_1,\dots,x_n)\mapsto(s_1,\dots,s_n)$ is linear with a triangular matrix of ones on the diagonal, so its Jacobian is 1 and it preserves volume. It maps $\{x_i\ge0,\ \sum x_i\le1\}$ bijectively onto $\{0\le s_1\le s_2\le\cdots\le s_n\le1\}$.
+
+Now take $n$ i.i.d. uniforms $U_1,\dots,U_n$: the probability that they come out in the order $U_1\le U_2\le\cdots\le U_n$ is $\tfrac1{n!}$, since all $n!$ orderings are equally likely and ties have probability 0. That probability is exactly the volume of the ordered region, so
+$$P(S_n\le1)=\operatorname{vol}\{0\le s_1\le\cdots\le s_n\le1\}=\frac1{n!}.$$
+===END===
+===TEASER===
+SLUG: coupon-collector
+IDS: G4B-10, G4B-11
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Coupon collector
+QUESTION:
+There are $N$ distinct types of coupons in cereal boxes, and each box contains one coupon whose type is, independently of the others, equally likely to be any of the $N$ types.
+
+A. How many boxes does a child need to buy, on average, to collect at least one coupon of every type?
+
+B. If the child has collected $n$ coupons, what is the expected number of distinct types among them?
+HINT1:
+For A, split the collection into stages: the wait for the 1st new type, then the 2nd, and so on. For B, think about each type separately.
+HINT2:
+A: once $i-1$ types are in hand, each new box brings a new type with probability $\frac{N-i+1}{N}$, so the wait is geometric. B: let $I_j=1$ if type $j$ appears among the $n$ coupons; compute $P(I_j=0)$ and use linearity.
+ANSWER:
+A: $N\left(1+\frac12+\cdots+\frac1N\right)=N H_N$. B: $N\left[1-\left(\frac{N-1}{N}\right)^n\right]$.
+REFRESH:
+- **Geometric law**: number of trials to the first success, success probability $p$, has mean $\frac1p$.
+- **Linearity of expectation** and $E[\mathbf 1_A]=P(A)$.
+- **Harmonic number**: $H_N=\sum_{k=1}^N\frac1k\approx\ln N+0.5772$.
+EXPLANATION:
+Both parts avoid the (hard) distribution of the answer by writing it as a sum.
+
+In A the total waiting time is a sum of stage waits. Early on almost every box is new, so stages are short; at the end, with only one type missing, you wait on average $N$ boxes for it. Adding $\frac{N}{N}+\frac{N}{N-1}+\cdots+\frac{N}{1}$ gives $NH_N\approx N\ln N$, which is why the last few coupons dominate.
+
+In B the number of distinct types is a sum of indicators "type $j$ appeared". A given type is missed by each coupon with probability $1-\frac1N$, so it is missed by all $n$ with probability $(1-\frac1N)^n$; by linearity the expected number of types seen is $N$ times the probability of seeing one given type.
+SOLUTION: Stages and indicators
+**A.** Let $X_i$ be the number of boxes needed to go from $i-1$ to $i$ distinct types ($i=1,\dots,N$). Given $i-1$ types collected, each new box shows a new type with probability $p_i=\frac{N-i+1}{N}$, independently, so $X_i$ is geometric and $E[X_i]=\frac{N}{N-i+1}$. The total is $X=\sum_{i=1}^N X_i$, so
+$$E[X]=\sum_{i=1}^N\frac{N}{N-i+1}=N\Big(\frac1N+\frac1{N-1}+\cdots+\frac11\Big)=NH_N.$$
+For example, $N=6$ gives $6\cdot2.45=14.7$ boxes.
+
+**B.** Let $I_j=1$ if at least one of the $n$ coupons is of type $j$. Each coupon avoids type $j$ with probability $\frac{N-1}{N}$, independently, so $P(I_j=0)=\left(\frac{N-1}{N}\right)^n$. The number of distinct types is $Y=\sum_{j=1}^N I_j$, hence
+$$E[Y]=\sum_{j=1}^N P(I_j=1)=N\left[1-\left(\frac{N-1}{N}\right)^n\right].$$
+FOLLOWUP: Empty boxes
+You put 18 balls into 10 boxes, each ball independently into a uniformly random box. What is the expected number of empty boxes?
+FOLLOWUP_ANSWER:
+$10\cdot(0.9)^{18}\approx1.50$.
+
+Let $J_k=1$ if box $k$ is empty. Each ball misses box $k$ with probability $\tfrac{9}{10}$, independently, so $P(J_k=1)=0.9^{18}$. By linearity,
+$$E[\#\text{empty}]=\sum_{k=1}^{10}P(J_k=1)=10\cdot0.9^{18}\approx10\times0.1501\approx1.50.$$
+(This is part B read backwards: $10-E[\#\text{non-empty boxes}]$ with $N=10$, $n=18$.)
+===END===
+===TEASER===
+SLUG: joint-default-probability
+IDS: G4B-12
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Joint default probability
+QUESTION:
+Bond $A$ defaults next year with probability 50% and bond $B$ with probability 30%. What is the range of possible values for the probability that at least one bond defaults, and what is the range of possible values of the correlation between the two default events (i.e. between their indicator variables)?
+HINT1:
+Only the joint probability $P(A\cap B)$ is unknown. What values can it take, given the two marginal probabilities?
+HINT2:
+$P(A\cup B)=P(A)+P(B)-P(A\cap B)$ with $0\le P(A\cap B)\le\min(P(A),P(B))$. For the correlation, use indicators: $\operatorname{Cov}(I_A,I_B)=P(A\cap B)-P(A)P(B)$ and $\operatorname{Var}(I_A)=p_A(1-p_A)$. Do not assume the correlation can reach $\pm1$.
+ANSWER:
+$P(\text{at least one})\in[50\%,80\%]$; $\rho\in\left[-\sqrt{3/7},\sqrt{3/7}\right]\approx[-0.655,\,0.655]$.
+REFRESH:
+- **Inclusion–exclusion**: $P(A\cup B)=P(A)+P(B)-P(A\cap B)$.
+- **Bernoulli indicator** $I_A$: $E[I_A]=p_A$, $\operatorname{Var}(I_A)=p_A(1-p_A)$, $E[I_AI_B]=P(A\cap B)$.
+- **Correlation**: $\rho=\dfrac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}$, with $\operatorname{Cov}(X,Y)=E[XY]-E[X]E[Y]$.
+EXPLANATION:
+Everything is driven by one number, the joint default probability $q=P(A\cap B)$. It cannot exceed the smaller marginal ($B\subseteq A$ at best, $q=0.3$) and cannot be negative (the defaults are mutually exclusive at worst, $q=0$, possible since $0.5+0.3\le1$). The probability of at least one default is $0.8-q$, so it ranges from $0.5$ to $0.8$.
+
+The correlation of the indicators is an increasing affine function of $q$, so its extremes are attained at the same two extreme configurations. The important lesson is that for two Bernoulli variables with different probabilities the correlation cannot be $\pm1$: perfect correlation would force $I_A=I_B$, impossible when $P(A)\ne P(B)$. Here the achievable range is only about $\pm0.65$.
+SOLUTION: Bounds on the joint probability
+Let $q=P(A\cap B)$. Constraints: $q\ge0$, $q\le P(B)=0.3$, and also $P(A\cup B)=0.8-q\le1$ (automatic). All $q\in[0,0.3]$ are feasible (e.g. put $A=[0,0.5)$, $B=[0.5-q,0.8-q)$ on a uniform space).
+
+**Probability of at least one default:** $P(A\cup B)=0.5+0.3-q=0.8-q\in[0.5,0.8]$: maximum 80% when defaults are mutually exclusive, minimum 50% when $B$ defaults only if $A$ does.
+
+**Correlation:** $\sigma_A=\sqrt{0.5\cdot0.5}=0.5$, $\sigma_B=\sqrt{0.3\cdot0.7}=\sqrt{0.21}$, so $\sigma_A\sigma_B=\tfrac{\sqrt{0.21}}2$. Then
+$$\rho=\frac{q-0.15}{\sqrt{0.21}/2}.$$
+At $q=0$: $\rho=-\dfrac{0.15}{\sqrt{0.21}/2}=-\dfrac{0.3}{\sqrt{0.21}}=-\sqrt{\dfrac{0.09}{0.21}}=-\sqrt{\tfrac37}\approx-0.655$.
+At $q=0.3$: $\rho=+\sqrt{\tfrac37}\approx0.655$.
+
+So $\rho\in[-\sqrt{3/7},\sqrt{3/7}]$ and, equivalently, $P(A\cup B)=0.65-\tfrac{\sqrt{0.21}}2\rho$ ranges over $[0.5,0.8]$. Plugging $\rho=\pm1$ into this formula would give impossible probabilities ($0.42$ and $0.88$), which is exactly the trap.
+===END===
+===TEASER===
+SLUG: expected-max-min-uniforms
+IDS: G4B-13, R3B-34, R3B-35, R3B-36, R3B-37
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: easy
+TITLE: Max and min of uniforms
+QUESTION:
+Let $X_1,\dots,X_n$ be i.i.d. uniform on $[0,1]$, $Z_n=\max(X_1,\dots,X_n)$ and $Y_n=\min(X_1,\dots,X_n)$.
+
+(a) Find the CDF, the density and the expected value of $Z_n$.
+
+(b) Find the CDF, the density and the expected value of $Y_n$.
+
+(c) What is the expected range $E[Z_n-Y_n]$?
+HINT1:
+"The maximum is at most $x$" is the same as "every $X_i$ is at most $x$". What is the analogous statement for the minimum?
+HINT2:
+Use independence: $P(Z_n\le x)=\prod_i P(X_i\le x)$ and $P(Y_n\ge x)=\prod_i P(X_i\ge x)$. Differentiate to get densities, then integrate $x f(x)$. For the range use linearity.
+ANSWER:
+$F_{Z}(x)=x^n$, $f_Z=nx^{n-1}$, $E[Z_n]=\frac{n}{n+1}$; $F_Y(x)=1-(1-x)^n$, $f_Y=n(1-x)^{n-1}$, $E[Y_n]=\frac1{n+1}$; $E[Z_n-Y_n]=\frac{n-1}{n+1}$.
+REFRESH:
+- **Independence and CDFs**: $P(\text{all }X_i\le x)=\prod_i P(X_i\le x)$.
+- **Density from CDF**: $f=F'$; $E[X]=\int xf(x)\,dx$, or $E[X]=\int_0^1P(X>x)\,dx$ for $X\in[0,1]$.
+- **Beta integral**: $\int_0^1x^{a}(1-x)^{b}dx=\frac{a!\,b!}{(a+b+1)!}$ for integers $a,b\ge0$.
+EXPLANATION:
+The maximum is easy to handle through its CDF because "max $\le x$" is an intersection of independent events, each of probability $x$; so $P(Z_n\le x)=x^n$. The minimum is handled through its survival function in the same way: "min $\ge x$" means all $X_i\ge x$, probability $(1-x)^n$.
+
+A good intuition for the answers: $n$ uniform points split $[0,1]$ into $n+1$ gaps, and by symmetry each gap has the same expected length $\frac1{n+1}$. The minimum is the first gap, $\frac1{n+1}$; the maximum is $1$ minus the last gap, $\frac{n}{n+1}$; and the range is everything but the two end gaps, $\frac{n-1}{n+1}$. The symmetry $X_i\mapsto1-X_i$ also swaps max and min, which is why $E[Y_n]=1-E[Z_n]$.
+SOLUTION: CDF, density, expectation
+**Maximum.** For $x\in[0,1]$, by independence
+$$F_{Z_n}(x)=P(X_1\le x,\dots,X_n\le x)=x^n,\qquad f_{Z_n}(x)=nx^{n-1},$$
+$$E[Z_n]=\int_0^1x\cdot nx^{n-1}\,dx=\frac{n}{n+1}.$$
+**Minimum.** $P(Y_n\ge x)=P(X_1\ge x,\dots,X_n\ge x)=(1-x)^n$, so
+$$F_{Y_n}(x)=1-(1-x)^n,\qquad f_{Y_n}(x)=n(1-x)^{n-1},$$
+$$E[Y_n]=\int_0^1nx(1-x)^{n-1}dx\overset{y=1-x}{=}\int_0^1n(1-y)y^{n-1}dy=1-\frac{n}{n+1}=\frac1{n+1}.$$
+**Range.** By linearity, $E[Z_n-Y_n]=\dfrac{n}{n+1}-\dfrac1{n+1}=\dfrac{n-1}{n+1}$.
+SOLUTION: Tail integrals and symmetry
+For a variable in $[0,1]$, $E[X]=\int_0^1P(X>x)\,dx$. So
+$$E[Z_n]=\int_0^1(1-x^n)\,dx=1-\frac1{n+1}=\frac{n}{n+1},\qquad E[Y_n]=\int_0^1(1-x)^n\,dx=\frac1{n+1}.$$
+Alternatively, $1-X_i$ are also i.i.d. uniform and $\min_i X_i=1-\max_i(1-X_i)$, so $E[Y_n]=1-E[Z_n]=\frac1{n+1}$ without further integration.
+FOLLOWUP: Expected absolute difference
+If $x_1,x_2$ are independent uniform on $[0,1]$, what is $E|x_1-x_2|$?
+FOLLOWUP_ANSWER:
+$\tfrac13$. Since $|x_1-x_2|=\max-\min$ for $n=2$, the range formula gives $\frac{2-1}{2+1}=\frac13$. Directly: by symmetry $E|x_1-x_2|=2\int_0^1\int_0^{x_1}(x_1-x_2)\,dx_2\,dx_1=2\int_0^1\frac{x_1^2}{2}dx_1=\frac13$.
+FOLLOWUP: Density of the sum of two uniforms
+If $x_1,x_2$ are independent uniform on $[0,1]$, what is the density of $x_1+x_2$?
+FOLLOWUP_ANSWER:
+The triangular density
+$$f(s)=\begin{cases}s,&0\le s\le1,\\2-s,&1\le s\le2,\\0,&\text{otherwise.}\end{cases}$$
+By convolution, $f(s)=\int_0^1\mathbf 1_{\{0\le s-u\le1\}}\,du$ is the length of $[0,1]\cap[s-1,s]$, which is $s$ for $s\in[0,1]$ and $2-s$ for $s\in[1,2]$. Geometrically, $P(x_1+x_2\le s)$ is the area under the line $x_1+x_2=s$ in the unit square: $\frac{s^2}2$ for $s\le1$ and $1-\frac{(2-s)^2}{2}$ for $s\ge1$; differentiating gives the same density.
+FOLLOWUP: Expected min plus max
+If $x_1,\dots,x_n$ are i.i.d. uniform on $[0,1]$, what is $E[\min_j x_j+\max_j x_j]$?
+FOLLOWUP_ANSWER:
+$1$. By linearity, $E[\min]+E[\max]=\frac1{n+1}+\frac{n}{n+1}=1$. Or by symmetry: replacing each $x_j$ by $1-x_j$ preserves the joint law and maps $\min+\max$ to $2-(\min+\max)$, so $E[\min+\max]=2-E[\min+\max]$, i.e. it equals 1.
+===END===
+===TEASER===
+SLUG: correlation-of-max-and-min
+IDS: G4B-14
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: Correlation of max and min
+QUESTION:
+Let $X_1,X_2$ be i.i.d. uniform on $[0,1]$, $Y=\min(X_1,X_2)$ and $Z=\max(X_1,X_2)$. For $y,z\in[0,1]$, what is $P(Y\ge y\mid Z\le z)$? What is the correlation of $Y$ and $Z$?
+HINT1:
+Draw the unit square of $(X_1,X_2)$. Which region is $\{Z\le z\}$, and which part of it also has $Y\ge y$?
+HINT2:
+Both events together mean both coordinates lie in $[y,z]$. For the correlation you need $E[YZ]$: notice that the product of the min and the max of two numbers is simply the product of the two numbers.
+ANSWER:
+$P(Y\ge y\mid Z\le z)=\dfrac{(z-y)^2}{z^2}$ for $0\le y\le z$ (and $0$ if $y>z$); $\operatorname{corr}(Y,Z)=\tfrac12$.
+REFRESH:
+- **Uniform on the square**: probabilities are areas.
+- **Order statistics of 2 uniforms**: $f_Y(y)=2(1-y)$, $f_Z(z)=2z$, $E[Y]=\frac13$, $E[Z]=\frac23$.
+- **Correlation**: $\operatorname{corr}(Y,Z)=\dfrac{E[YZ]-E[Y]E[Z]}{\sqrt{\operatorname{Var}Y\,\operatorname{Var}Z}}$.
+EXPLANATION:
+$\{Z\le z\}$ says both numbers are at most $z$: the square $[0,z]^2$, of area $z^2$. Adding $\{Y\ge y\}$ says both are at least $y$ too: the smaller square $[y,z]^2$, of area $(z-y)^2$. The conditional probability is the ratio of the two areas.
+
+For the correlation, the neat trick is $YZ=X_1X_2$ (the min times the max is the product of the pair, in whatever order), so $E[YZ]=E[X_1]E[X_2]=\frac14$. The min and max have the same variance $\frac1{18}$ (they are mirror images under $x\mapsto1-x$), and the covariance is $\frac14-\frac13\cdot\frac23=\frac1{36}$, giving $\frac12$. The positive sign is natural: a large minimum forces a large maximum.
+SOLUTION: Areas and the product trick
+**Conditional probability.** $P(Z\le z)=P(X_1\le z,X_2\le z)=z^2$. If $y>z$ the event $\{Y\ge y, Z\le z\}$ is empty since $Y\le Z$. For $0\le y\le z$,
+$$P(Y\ge y,\ Z\le z)=P(y\le X_1\le z,\ y\le X_2\le z)=(z-y)^2,$$
+so
+$$P(Y\ge y\mid Z\le z)=\frac{(z-y)^2}{z^2}\quad(0\le y\le z,\ z>0),\qquad 0\text{ if }y>z.$$
+**Moments.** With $f_Y(y)=2(1-y)$ and $f_Z(z)=2z$:
+$$E[Y^2]=\int_0^12(1-y)y^2\,dy=\frac23-\frac12=\frac16,\qquad E[Z^2]=\int_0^12z^3\,dz=\frac12,$$
+$$\operatorname{Var}Y=\frac16-\frac19=\frac1{18},\qquad\operatorname{Var}Z=\frac12-\frac49=\frac1{18}.$$
+**Cross moment.** Whatever the order, $\{Y,Z\}=\{X_1,X_2\}$, so $YZ=X_1X_2$ and
+$$E[YZ]=E[X_1]E[X_2]=\frac14.$$
+**Correlation.** $\operatorname{Cov}(Y,Z)=\frac14-\frac13\cdot\frac23=\frac14-\frac29=\frac1{36}$, hence
+$$\operatorname{corr}(Y,Z)=\frac{1/36}{\sqrt{\frac1{18}\cdot\frac1{18}}}=\frac{18}{36}=\frac12.$$
+SOLUTION: Joint density
+For $0\le y\le z\le1$, $F(y,z)=P(Y\le y,Z\le z)=P(Z\le z)-P(Y>y,Z\le z)=z^2-(z-y)^2=2yz-y^2$. Hence the joint density is $f(y,z)=\dfrac{\partial^2F}{\partial y\,\partial z}=2$ on $\{0\le y\le z\le1\}$, and
+$$E[YZ]=\int_0^1\!\!\int_0^z2yz\,dy\,dz=\int_0^1z\cdot z^2\,dz=\frac14,$$
+as before; the rest of the computation is identical.
+===END===
+===TEASER===
+SLUG: random-ants-on-a-string
+IDS: G4B-15, H1A-23
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: Random ants on a string
+QUESTION:
+500 ants are placed on a string 1 foot long, each at an independent uniform position. Each ant independently picks a direction (left or right, with probability $\tfrac12$ each) and walks at a constant speed of 1 foot per minute until it falls off an end. The ants are infinitely small; when two ants meet head-on, both instantly reverse direction and keep walking at 1 foot per minute. What is the expected time until all the ants have fallen off the string?
+HINT1:
+The collisions look like the hard part. What would an observer who cannot tell the ants apart see at a collision?
+HINT2:
+Swapping the labels of two ants at each collision turns the dynamics into ants that walk straight through each other. Then each "ghost" ant's exit time is a simple function of its starting point, and you need the expectation of the largest of them.
+ANSWER:
+$\dfrac{500}{501}$ minute $\approx0.998$ min
+REFRESH:
+- **Maximum of i.i.d. uniforms**: if $T_1,\dots,T_n$ are i.i.d. $U[0,1]$, $P(\max T_i\le t)=t^n$ and $E[\max T_i]=\frac{n}{n+1}$.
+- **Symmetry of the uniform**: if $U\sim U[0,1]$ then $1-U\sim U[0,1]$.
+EXPLANATION:
+When two ants bump and turn around, the picture (a set of unlabelled dots moving on the string) is exactly the same as if they had passed through each other: one dot comes out going left, one going right, from the same place at the same time. Since we only care about when the **last** ant leaves, labels are irrelevant, and we may pretend there are no collisions at all.
+
+Without collisions, an ant starting at $x$ walks straight off: it takes $x$ minutes if it goes left and $1-x$ minutes if it goes right. Either way its exit time is uniform on $[0,1]$, and the 500 exit times are independent. The time for the string to be empty is the maximum of 500 i.i.d. uniforms, with expectation $\frac{500}{501}$.
+SOLUTION: Pass-through trick and order statistics
+1. **Collisions don't matter.** At a head-on collision, ant $A$ (moving right) and ant $B$ (moving left) meet at a point and both reverse. If we swap their names at that instant, "$A$" continues right and "$B$" continues left, as if nothing happened. The set of positions occupied at each time, and hence the set of exit times, is the same as in the collision-free system where every ant walks straight.
+
+2. **Exit times.** In the collision-free system, the ant starting at $U_i$ with direction $D_i$ exits at time $T_i=U_i$ (left) or $T_i=1-U_i$ (right). Given either direction, $T_i\sim U[0,1]$; since $D_i$ is independent of $U_i$, $T_i\sim U[0,1]$ unconditionally, and the $T_i$ are independent across ants.
+
+3. **Maximum.** The string is empty at time $M=\max_{i\le500}T_i$, with $P(M\le t)=t^{500}$, density $500t^{499}$, and
+$$E[M]=\int_0^1t\cdot500t^{499}\,dt=\frac{500}{501}\text{ min}\approx0.998\text{ min}.$$
+
+Note: the book states the answer as $\frac{499}{500}$ min; the correct value is $\frac{500}{501}$ min, since the expected maximum of $n$ i.i.d. uniforms on $[0,1]$ is $\frac{n}{n+1}$ with $n=500$.
+FOLLOWUP: How long until you're sure? (ants on a ruler)
+10,000 very small ants are dropped at random onto a ruler 100 cm long. Each walks at a steady 1 cm/s along the ruler, initially north or south at random, and two ants meeting head-on both instantly turn around. How long must you wait to be **sure** that every ant has walked off the ruler?
+FOLLOWUP_ANSWER:
+100 seconds. By the same pass-through argument, collisions only exchange the identities of the ants, so the set of exit times equals that of ants walking straight through each other. A straight-walking ant starting anywhere on the ruler leaves within at most $100$ cm $/\,1$ cm/s $=100$ s. So after 100 s the ruler is certainly empty (and no smaller bound works in general, since an ant may start arbitrarily close to one end facing the other).
+===END===
+===TEASER===
+SLUG: clock-hands-at-3-15
+IDS: R8-01, R8-02, R8-03, R8-04, H1A-12
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Clock hands at 3:15
+QUESTION:
+At 3:15 pm, how many degrees separate the hour hand and the minute hand of a clock?
+HINT1:
+The minute hand is exactly on the 3. Is the hour hand?
+HINT2:
+The hour hand moves $30^\circ$ per hour, i.e. $0.5^\circ$ per minute. How far has it gone past the 3 in 15 minutes?
+ANSWER:
+$7.5^\circ$
+REFRESH:
+- **Hand speeds**: minute hand $360^\circ$ per hour $=6^\circ$/min; hour hand $30^\circ$ per hour $=0.5^\circ$/min; relative speed $5.5^\circ$/min.
+EXPLANATION:
+The trap is to answer $0^\circ$ because "both hands point to the 3". The minute hand is exactly on the 3, but the hour hand moves continuously: at a quarter past, it has covered a quarter of the way from the 3 to the 4. The gap between consecutive hour marks is $360^\circ/12=30^\circ$, so the angle is a quarter of that.
+SOLUTION: Positions measured from 12 o'clock
+Measure angles clockwise from 12.
+
+Minute hand at 15 minutes: $15\times6^\circ=90^\circ$.
+
+Hour hand at 3:15: $3\times30^\circ+15\times0.5^\circ=90^\circ+7.5^\circ=97.5^\circ$.
+
+Difference: $97.5^\circ-90^\circ=7.5^\circ$ (that is $\frac{\pi}{24}$ radians).
+FOLLOWUP: Quarter to four
+What is the angle between the hands at 3:45?
+FOLLOWUP_ANSWER:
+$157.5^\circ$. Minute hand: $45\times6^\circ=270^\circ$. Hour hand: $3\times30^\circ+45\times0.5^\circ=112.5^\circ$. Difference $270^\circ-112.5^\circ=157.5^\circ$ (the other way round it is $202.5^\circ$; the angle between the hands is the smaller one).
+FOLLOWUP: Last overlap before 3:15
+What is the last time before a quarter past three at which the two hands lie exactly on top of each other?
+FOLLOWUP_ANSWER:
+At $2{:}10\tfrac{10}{11}$, i.e. about 2:10:55.
+
+The minute hand gains $5.5^\circ$ per minute on the hour hand, so it laps it every $\frac{360}{5.5}=\frac{720}{11}$ minutes $=65\tfrac5{11}$ minutes. Starting from the overlap at 12:00, the overlaps are at $k\cdot\frac{12}{11}$ hours: 12:00, $1{:}05\tfrac5{11}$, $2{:}10\tfrac{10}{11}$, $3{:}16\tfrac4{11}$, … The last one before 3:15 is $\frac{24}{11}$ h $=2$ h $10\tfrac{10}{11}$ min $\approx$ 2:10:54.5.
+FOLLOWUP: First overlap after 3:15
+What is the first time after a quarter past three at which the two hands lie exactly on top of each other?
+FOLLOWUP_ANSWER:
+At $3{:}16\tfrac4{11}$, i.e. about 3:16:22.
+
+At 3:15 the hour hand is $7.5^\circ$ ahead of the minute hand, and the minute hand gains $5.5^\circ$/min, so it catches up after $\frac{7.5}{5.5}=\frac{15}{11}=1\tfrac4{11}$ min. Check: $\frac{36}{11}$ h $=3$ h $16\tfrac4{11}$ min, the third overlap after noon in the list above.
+===END===
+===TEASER===
+SLUG: fifteen-cubed
+IDS: R8-05, R8-06, R8-07
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: 15 cubed in your head
+QUESTION:
+Without a calculator: what is $15^3$?
+HINT1:
+Square first, then multiply by 15. Multiplying by 15 is "multiply by 10, then add half of that".
+HINT2:
+$15^2=225$. Then $15\times225=10\times225+5\times225$. Before computing, estimate: 15 is halfway between 10 and 20, whose cubes are 1000 and 8000.
+ANSWER:
+$3375$
+REFRESH:
+- **Binomial cube**: $(a+b)^3=a^3+3a^2b+3ab^2+b^3$.
+- **Squares ending in 5**: $(10k+5)^2=100\,k(k+1)+25$, e.g. $15^2=100\cdot2+25=225$.
+EXPLANATION:
+Interviewers ask this to see whether you can do quick, reliable mental arithmetic and sanity-check it. The fastest route is to use a square you know ($15^2=225$) and a friendly multiplication: times 10 is 2250, times 5 is half of that, 1125, total 3375.
+
+A sanity check: $10^3=1000$ and $20^3=8000$ average to 4500, and since $x\mapsto x^3$ is convex the true value at the midpoint must be below that average. An answer somewhat below 4000 is plausible; 3375 fits.
+SOLUTION: Square then multiply
+$15^2=225$, and
+$$15^3=15\times225=2250+1125=3375.$$
+SOLUTION: Binomial expansion
+$$15^3=(10+5)^3=1000+3\cdot100\cdot5+3\cdot10\cdot25+125=1000+1500+750+125=3375.$$
+FOLLOWUP: 16 cubed
+What is $16^3$? Express it as a power of 2.
+FOLLOWUP_ANSWER:
+$16^3=(2^4)^3=2^{12}=4096$. (Knowing $2^{10}=1024$ makes this immediate: $2^{12}=4\times1024=4096$. Check: $16^2=256$, $256\times16=2560+1536=4096$.)
+FOLLOWUP: Cube root of 5000
+Estimate $\sqrt[3]{5000}$ in your head.
+FOLLOWUP_ANSWER:
+About $17.1$ (true value $17.0998$).
+
+$17^3=17\times289=4913$, just below 5000, and $18^3=5832$. Linearise around 17: $(17+\varepsilon)^3\approx4913+3\cdot289\,\varepsilon=4913+867\varepsilon$. Setting this to 5000 gives $\varepsilon\approx\frac{87}{867}\approx0.10$, so $\sqrt[3]{5000}\approx17.10$.
+===END===
+===TEASER===
+SLUG: painted-cube-4x4x4
+IDS: R8-08, R8-09, R8-10, R8-11, R8-12, H1A-10
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Painted 4×4×4 cube
+QUESTION:
+A $4\times4\times4$ cube is built from $1\times1\times1$ unit cubes. The outside of the big cube is painted. How many of the unit cubes have some paint on them?
+HINT1:
+Counting cubes face by face means correcting for double counting on edges and corners. Is there something easier to count?
+HINT2:
+Count the unit cubes with **no** paint: they form a smaller cube inside. How big is it?
+ANSWER:
+$56$
+REFRESH:
+NONE
+EXPLANATION:
+The unpainted cubes are exactly those that do not touch the surface: removing one layer on each side of a $4\times4\times4$ cube leaves a $2\times2\times2$ core of 8 cubes. Everything else is painted: $64-8=56$. Note that one layer is removed on **each** side, so the side shrinks by 2, not by 1.
+SOLUTION: Count the complement
+Total cubes: $4^3=64$. The interior cubes (touching no face) form a cube of side $4-2=2$, so there are $2^3=8$ of them. Painted cubes: $64-8=56$.
+SOLUTION: Direct count by type
+Classify the painted cubes: the 8 corners (3 painted faces); the edge cubes that are not corners, $12$ edges $\times(4-2)=24$ (2 painted faces); the face cubes that are not on an edge, $6$ faces $\times(4-2)^2=24$ (1 painted face). Total $8+24+24=56$.
+FOLLOWUP: 5×5×5 cube
+Same question for a $5\times5\times5$ cube.
+FOLLOWUP_ANSWER:
+$98$. Total $125$, unpainted core $3^3=27$, painted $125-27=98$. (Check by type: $8$ corners $+\,12\times3=36$ edge cubes $+\,6\times9=54$ face cubes $=98$.)
+FOLLOWUP: Paint on more than one face
+In the $4\times4\times4$ cube, how many unit cubes have paint on more than one face?
+FOLLOWUP_ANSWER:
+$32$. Cubes with at least two painted faces are those on an edge of the big cube: the 8 corners (3 faces) plus $12\times(4-2)=24$ non-corner edge cubes (2 faces), total $32$.
+FOLLOWUP: Paint on more than two faces
+In the $4\times4\times4$ cube, how many unit cubes have paint on more than two faces?
+FOLLOWUP_ANSWER:
+$8$: only the corner cubes have three painted faces, and no unit cube can have more than three (it would need two opposite faces on the surface, impossible for $n\ge2$).
+FOLLOWUP: The limit
+For an $n\times n\times n$ cube painted on the outside, what happens to the fraction of unit cubes with paint as $n\to\infty$?
+FOLLOWUP_ANSWER:
+It tends to $0$. The painted fraction is
+$$\frac{n^3-(n-2)^3}{n^3}=1-\Big(1-\frac2n\Big)^3=\frac6n-\frac{12}{n^2}+\frac8{n^3}\sim\frac6n\to0.$$
+Surface scales like $n^2$ while volume scales like $n^3$.
+FOLLOWUP: Outer layer of a 10×10×10 cube
+A $10\times10\times10$ cube of glued unit cubes loses its entire outermost layer, which falls to the ground. How many unit cubes are on the ground?
+FOLLOWUP_ANSWER:
+$488$. What remains is an $8\times8\times8$ cube (one layer lost on each side), so $10^3-8^3=1000-512=488$ cubes fell. Mentally, $8^3=2^9=\frac{1024}{2}=512$. The common mistake is $10^3-9^3=271$.
+===END===
+===TEASER===
+SLUG: ant-on-a-cube-shortest-path
+IDS: R8-13, R8-14, R8-15, R8-16, H1A-08
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Ant crossing a cube
+QUESTION:
+An ant wants to walk on the surface of a cube of volume $1\ \text{m}^3$ from one corner to the diagonally opposite corner (the farthest one). What is the length of the shortest path, and what does the path look like?
+HINT1:
+On a flat surface the shortest path is a straight line. Can you make the relevant part of the cube's surface flat?
+HINT2:
+Unfold two adjacent faces into a flat $1\times2$ rectangle; the two corners become opposite corners of that rectangle.
+ANSWER:
+$\sqrt5\approx2.236$ m, a straight line on the unfolded pair of faces, crossing the shared edge at its midpoint.
+REFRESH:
+- **Pythagoras**: the diagonal of an $a\times b$ rectangle has length $\sqrt{a^2+b^2}$.
+- **Nets**: unfolding faces of a polyhedron along an edge preserves lengths of paths drawn on them.
+EXPLANATION:
+The ant must cross at least two faces (the two corners share no face). Any path over two adjacent faces becomes, after unfolding them into one flat $1\times2$ rectangle, a path between opposite corners of that rectangle, and there the straight diagonal is shortest: $\sqrt{1^2+2^2}=\sqrt5$.
+
+Folding back, the diagonal crosses the common edge exactly at its midpoint (by symmetry of the rectangle). So the ant walks diagonally across one face to the midpoint of an edge not touching its start or end corner, then diagonally across the next face to the target. There are 6 such shortest paths (one for each of the 6 edges that avoid both corners). Paths through three faces are longer.
+SOLUTION: Unfold the cube
+Take the start corner $S=(0,0,0)$ and target $T=(1,1,1)$. Consider the path over the bottom face ($z=0$) and then the face $x=1$. Unfolding the face $x=1$ into the plane of the bottom face, around their common edge $x=1$, sends $T$ to the point $(2,1)$ in the plane while $S=(0,0)$. The straight segment has length
+$$\sqrt{2^2+1^2}=\sqrt5\ \text{m}\approx2.236\ \text{m}.$$
+It crosses the folding line $x=1$ at height $y=\tfrac12$: the midpoint of the edge. Each half is the diagonal of a $1\times\tfrac12$ rectangle, of length $\sqrt{1+\tfrac14}=\tfrac{\sqrt5}2$, and the two halves add to $\sqrt5$. By symmetry the same length is obtained over any pair of adjacent faces meeting along an edge that avoids both $S$ and $T$.
+FOLLOWUP: Edges only
+If the ant may only walk along the edges of the cube, what is the shortest distance?
+FOLLOWUP_ANSWER:
+$3$ m. Each edge changes exactly one coordinate by 1, and all three coordinates must change from 0 to 1, so at least 3 edges are needed, and 3 suffice (e.g. along $x$, then $y$, then $z$).
+FOLLOWUP: One edge, then across a face
+If the ant walks along one edge and then straight across a face to the opposite corner, how far does it go?
+FOLLOWUP_ANSWER:
+$1+\sqrt2\approx2.414$ m: one edge of length 1, then the diagonal of a unit square, $\sqrt2$. (Longer than $\sqrt5\approx2.236$, as it should be.)
+FOLLOWUP: Burrowing through
+If the ant can burrow straight through the cube, what is the distance?
+FOLLOWUP_ANSWER:
+The space diagonal: $\sqrt{1^2+1^2+1^2}=\sqrt3\approx1.732$ m.
+===END===
+===TEASER===
+SLUG: racetrack-average-speed
+IDS: R8-20, R8-21, R8-22
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Racetrack average speed
+QUESTION:
+One lap of a racetrack is 1 mile long. A car drives the first lap at an average speed of 30 mph. How fast must it drive the second lap so that its average speed over the two laps is 60 mph?
+HINT1:
+Average speed is total distance divided by total time. Don't average the two speeds.
+HINT2:
+How much time is allowed in total for 2 miles at 60 mph? How much time has the first lap already used?
+ANSWER:
+It is impossible: the car would need infinite speed on the second lap.
+REFRESH:
+- **Average speed**: $\bar v=\dfrac{\text{total distance}}{\text{total time}}$.
+- **Harmonic mean**: over equal distances at speeds $v_1,v_2$, $\bar v=\dfrac{2}{1/v_1+1/v_2}$.
+EXPLANATION:
+The tempting answer is 90 mph, since $(30+90)/2=60$. But average speed is weighted by time, not by distance, and the slow lap eats a lot of time. To average 60 mph over 2 miles you have 2 minutes in total. Driving the first mile at 30 mph already took exactly 2 minutes. There is no time left, so no finite speed on the second lap achieves the target; as $v_2\to\infty$ the average only approaches 60 mph.
+SOLUTION: Count the time
+Target: 2 miles at 60 mph takes $\frac{2}{60}$ h $=2$ min. First lap: 1 mile at 30 mph takes $\frac1{30}$ h $=2$ min. The second lap would have to take $2-2=0$ minutes, which requires infinite speed.
+
+In formula form, with second-lap speed $v$:
+$$\bar v=\frac{2}{\frac1{30}+\frac1v}<\frac{2}{1/30}=60\quad\text{for every finite }v,$$
+so 60 mph is never reached.
+FOLLOWUP: With a top speed of 120 mph
+If the car's top speed is 120 mph, what is the fastest average speed it can attain over the two laps (first lap still at 30 mph)?
+FOLLOWUP_ANSWER:
+$48$ mph. The second lap at 120 mph takes $\frac1{120}$ h $=0.5$ min, so the 2 miles take $2+0.5=2.5$ min $=\frac1{24}$ h, and the average speed is $\frac{2}{1/24}=48$ mph. (Harmonic mean: $\frac{2}{1/30+1/120}=\frac{2}{5/120}=48$.)
+FOLLOWUP: Why averaging speeds fails
+Why doesn't averaging the two speeds give the average speed?
+FOLLOWUP_ANSWER:
+Average speed is total distance over total time, i.e. the average of the instantaneous speed **weighted by time**. The arithmetic mean $\frac{v_1+v_2}2$ weights the two laps equally, which is right only if equal **times** are spent at each speed. Here the laps have equal **distances**, so the slow lap takes longer and gets more weight: the correct average is the harmonic mean $\frac{2}{1/v_1+1/v_2}$, which is always at most the arithmetic mean (with equality only if $v_1=v_2$). For example, 30 and 90 mph over equal distances give $\frac{2}{1/30+1/90}=45$ mph, not 60.
+===END===

@@ -1,0 +1,929 @@
+===TEASER===
+SLUG: guess-my-number-win-n
+IDS: R3A-13, R3A-14, R3A-15
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Guess my number, win n
+QUESTION:
+We play a game: I pick a number $n$ from $1$ to $100$. If you guess it correctly, I pay you $n$ dollars; otherwise you get nothing. How much would you pay to play this game?
+HINT1:
+This is not a question about risk aversion: it is a two-player zero-sum game. I will not pick my number uniformly, and you should not guess uniformly either. Ask what randomised strategy makes the other player's choice irrelevant.
+HINT2:
+If I pick $n$ with probability $p_n$ and you guess $n$, your expected gain is $n\,p_n$. Choose the $p_n$ so that $n\,p_n$ is the same constant for every $n$, then check that you (the guesser) can guarantee the same constant by a symmetric argument.
+ANSWER:
+The game is worth $v=\left(\sum_{j=1}^{100}\frac1j\right)^{-1}\approx \frac{1}{5.187}\approx 0.193$ dollars, i.e. about 19 cents.
+REFRESH:
+Zero-sum game value (minimax): if player 1 has a mixed strategy guaranteeing payoff at most $v$ whatever player 2 does, and player 2 has a mixed strategy guaranteeing at least $v$ whatever player 1 does, then $v$ is the value of the game and both strategies are optimal.
+Harmonic numbers: $H_N=\sum_{j=1}^N \frac1j = \ln N + \gamma + \frac{1}{2N}+O(N^{-2})$ with $\gamma\approx 0.5772$.
+EXPLANATION:
+The payer wants to pay little, so he is tempted to pick small numbers; but if he always picks small numbers, the guesser will guess small numbers and win often. Conversely, a large number pays a lot but is rarely picked. The balance point is a mixed strategy in which **every** guess has the same expected payoff: the probability of picking $n$ must be inversely proportional to $n$, so that "probability times payout" is flat.
+
+If the payer picks $n$ with probability $p_n = v/n$, then whatever the guesser does, the expected payout is exactly $v$; normalising the probabilities forces $v = 1/H_{100}$. The guesser can use the very same distribution ($q_n = v/n$) to guarantee himself $v$ whatever the payer does. Since both sides can lock in $v$, that is the fair price: about 19 cents.
+SOLUTION: Equalising (minimax) strategies
+**The payer's side.** Suppose the payer picks $n$ with probability $p_n$. If the guesser guesses $k$, his expected gain is $k\,p_k$. The payer wants to minimise the largest of these numbers; the natural candidate makes them all equal:
+$$k\,p_k = v \quad\text{for all } k \;\Longrightarrow\; p_k=\frac{v}{k}.$$
+Normalising, $\sum_{k=1}^{100} \frac{v}{k}=1$, so
+$$v=\frac{1}{H_{100}},\qquad H_{100}=\sum_{k=1}^{100}\frac1k.$$
+With this strategy, any guess (pure or mixed) earns exactly $v$ in expectation, so the payer guarantees that he pays at most $v$.
+
+**The guesser's side.** Suppose the guesser guesses $k$ with probability $q_k = v/k$ (same $v$). If the payer picks $n$, the guesser wins $n$ with probability $q_n$, so the expected payout is $n\,q_n = v$, whatever $n$ is. So the guesser guarantees at least $v$.
+
+**Value.** Both players can guarantee $v$, so $v$ is the value of the game and the fair price to play. Numerically,
+$$H_{100}\approx \ln 100+\gamma+\frac{1}{200}\approx 4.6052+0.5772+0.0050=5.1874,$$
+so
+$$v\approx\frac{1}{5.1874}\approx 0.1928 .$$
+You should pay at most about **19 cents**.
+FOLLOWUP: Paid the square of the number
+Same game (I pick $n\in\{1,\dots,100\}$), but if you guess correctly I pay you $n^2$ dollars. What is the game worth?
+FOLLOWUP_ANSWER:
+Exactly the same equalising argument works with payout $n^2$: the payer picks $n$ with probability $p_n=v/n^2$ so that $n^2p_n=v$ for every guess, and the guesser guesses $k$ with probability $v/k^2$ so that any pick costs the payer $v$. Normalising,
+$$v=\left(\sum_{n=1}^{100}\frac1{n^2}\right)^{-1}.$$
+Since $\sum_{n\ge1}1/n^2=\pi^2/6\approx1.64493$ and the tail $\sum_{n>100}1/n^2\approx 1/100.5\approx0.00995$, the sum is about $1.63498$, so
+$$v\approx 0.612 \text{ dollars}.$$
+Interesting contrast: as the range $N\to\infty$ the value tends to $6/\pi^2\approx0.608$, not to $0$, because $\sum 1/n^2$ converges while $\sum 1/n$ diverges.
+FOLLOWUP: Why the value decreases with N
+In the original game with numbers $1,\dots,N$ (payout $n$), why should the value decrease as $N$ increases?
+FOLLOWUP_ANSWER:
+Going from $N$ to $N+1$ numbers gives the payer more options, and he can always ignore the new one: if he keeps his optimal $N$-strategy (never picking $N+1$), the guesser's extra option "guess $N+1$" wins nothing, so the payer still pays at most $v_N$. Hence $v_{N+1}\le v_N$. Quantitatively $v_N=1/H_N$ and $H_N$ increases strictly, so the value strictly decreases, like $1/\ln N$, and tends to $0$ because the harmonic series diverges. Intuitively, the payer can spread his mass over more and more numbers, so each specific guess becomes rarer faster than the payouts grow (only logarithmically on aggregate).
+===END===
+===TEASER===
+SLUG: doubling-halving-coin
+IDS: R3A-16, R3A-17, R3A-18
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Doubling and halving forever
+QUESTION:
+You have a fair coin. You start with one dollar; every time you toss a head ($H$) your position doubles, and every time you toss a tail ($T$) it halves. What is the expected value of your money if you toss the coin infinitely many times?
+HINT1:
+Work out what one toss does to your expected wealth, then $n$ tosses, then let $n\to\infty$.
+HINT2:
+Your wealth after $n$ tosses is a product $X_1X_2\cdots X_n$ of independent factors, each equal to $2$ or $\tfrac12$ with probability $\tfrac12$. For independent variables the expectation of the product is the product of the expectations.
+ANSWER:
+$\mathbb{E}[W_n]=(5/4)^n\to\infty$: the expected wealth is infinite (even though a typical path does not grow: $\log_2 W_n$ is a symmetric random walk).
+REFRESH:
+Independence and products: if $X_1,\dots,X_n$ are independent and integrable, $\mathbb{E}[X_1\cdots X_n]=\mathbb{E}[X_1]\cdots\mathbb{E}[X_n]$.
+Strong law of large numbers: for i.i.d. $Y_j$ with finite mean $\mu$, $\frac1n\sum_{j=1}^n Y_j\to\mu$ almost surely.
+AM–GM: for $x,y>0$, $\frac{x+y}{2}\ge\sqrt{xy}$, with equality iff $x=y$.
+EXPLANATION:
+Each toss multiplies your wealth by a factor whose **average** is $\frac12\cdot2+\frac12\cdot\frac12=\frac54>1$. Because the tosses are independent, the averages multiply: after $n$ tosses the expected wealth is $(5/4)^n$, which explodes.
+
+The subtle point (worth mentioning in an interview) is that expectation and "typical outcome" disagree here. Taking logarithms, $\log_2 W_n$ goes up or down by $1$ with equal probability: it is a symmetric random walk, so on a typical path your wealth wanders between arbitrarily large and arbitrarily small values and does not grow. The huge expectation is carried by rare paths with many more heads than tails, whose payoffs are exponentially large. The expected value is driven by the arithmetic mean of the factors, the typical path by their geometric mean $\sqrt{2\cdot\frac12}=1$.
+SOLUTION: Product of independent factors
+Let $X_j$ be the factor applied at toss $j$: $X_j=2$ or $\tfrac12$ with probability $\tfrac12$ each, independent across $j$. Then
+$$\mathbb{E}[X_j]=\tfrac12\cdot 2+\tfrac12\cdot\tfrac12=\tfrac54 .$$
+Starting from one dollar, wealth after $n$ tosses is $W_n=\prod_{j=1}^n X_j$, and by independence
+$$\mathbb{E}[W_n]=\prod_{j=1}^n\mathbb{E}[X_j]=\left(\tfrac54\right)^n\xrightarrow[n\to\infty]{}\infty .$$
+So the expected value of the money after infinitely many tosses is infinite (in the sense $\lim_n\mathbb{E}[W_n]=\infty$).
+
+**What actually happens on a path.** $\log_2 W_n=\sum_{j=1}^n \varepsilon_j$ with $\varepsilon_j=\pm1$ equally likely, a symmetric simple random walk. It is recurrent and has $\limsup=+\infty$, $\liminf=-\infty$ almost surely, so $W_n$ has no limit: it oscillates between arbitrarily large and arbitrarily small values. The statement "infinite expected value" is about $\lim \mathbb{E}[W_n]$, not about the wealth of a typical path.
+FOLLOWUP: Growth factor x on heads
+Start with one dollar and toss a fair coin repeatedly; a tail halves your position, but a head multiplies it by $x>0$ instead of $2$. Classify the long-term behaviour as a function of $x$.
+FOLLOWUP_ANSWER:
+**Expectation.** $\mathbb{E}[X_j]=\frac{x+\frac12}{2}$, so $\mathbb{E}[W_n]=\left(\frac{2x+1}{4}\right)^n$:
+- $x>3/2$: $\mathbb{E}[W_n]\to\infty$;
+- $x=3/2$: $\mathbb{E}[W_n]=1$ for all $n$;
+- $x<3/2$: $\mathbb{E}[W_n]\to0$.
+
+**Typical path.** $\ln W_n=\sum_j \ln X_j$ with $\mathbb{E}[\ln X_j]=\frac12(\ln x-\ln 2)$. By the strong law, $\frac1n\ln W_n\to\frac12\ln(x/2)$ almost surely:
+- $x>2$: $W_n\to\infty$ a.s.;
+- $x=2$: $\ln W_n$ is a symmetric random walk, $W_n$ oscillates (limsup $\infty$, liminf $0$);
+- $x<2$: $W_n\to0$ a.s.
+
+So for $3/2<x<2$ the expected wealth explodes while almost every path goes to zero: the mean is carried by exponentially rare lucky paths.
+FOLLOWUP: Factors x and y
+A head multiplies your position by $x$, a tail multiplies it by $y$ with $0<y<1$. Classify the long-term behaviour as a function of $x$ and $y$.
+FOLLOWUP_ANSWER:
+Same two computations.
+
+**Expectation:** $\mathbb{E}[W_n]=\left(\frac{x+y}{2}\right)^n$, which tends to $\infty$ if $x+y>2$, stays at $1$ if $x+y=2$, and tends to $0$ if $x+y<2$.
+
+**Almost sure behaviour:** $\frac1n\ln W_n\to\frac12\ln(xy)$ a.s., so $W_n\to\infty$ a.s. if $xy>1$, oscillates (limsup $\infty$, liminf $0$) if $xy=1$, and $W_n\to0$ a.s. if $xy<1$.
+
+By AM–GM, $\frac{x+y}{2}\ge\sqrt{xy}$, so $xy\ge1$ implies $x+y\ge2$ (strictly, since $x\ne y$). The interesting region is $xy<1<\frac{x+y}{2}$: expectation grows to infinity although wealth dies on almost every path. This is the arithmetic-versus-geometric-mean gap behind the Kelly criterion.
+===END===
+===TEASER===
+SLUG: tosses-until-first-head
+IDS: R3A-19, R3A-20, R3A-21, R3A-22
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Tosses until first head
+QUESTION:
+Toss a fair coin repeatedly and let $N$ be the number of tosses until the first head, **including** the toss that gives the head. Derive $\mathbb{E}(N)$ and $\mathrm{Var}(N)$ from first principles.
+HINT1:
+First write down $\mathbb{P}(N=k)$: what must the first $k$ tosses look like?
+HINT2:
+Either sum the series $\sum k\,2^{-k}$ with the "multiply by $\tfrac12$ and subtract" trick, or condition on the first toss: with probability $\tfrac12$ you are done after one toss, otherwise you have used one toss and the problem restarts.
+ANSWER:
+$\mathbb{E}(N)=2$ and $\mathrm{Var}(N)=2$.
+REFRESH:
+Geometric series: $\sum_{k=0}^\infty r^k=\frac1{1-r}$ for $|r|<1$.
+Law of total expectation: $\mathbb{E}[Y]=\sum_i \mathbb{E}[Y\mid A_i]\mathbb{P}(A_i)$ for a partition $(A_i)$.
+Variance: $\mathrm{Var}(N)=\mathbb{E}[N^2]-\mathbb{E}[N]^2$, and $\mathrm{Var}(N+c)=\mathrm{Var}(N)$ for a constant $c$.
+EXPLANATION:
+$N$ is geometric with success probability $p=\tfrac12$, on $\{1,2,3,\dots\}$ (careful: some books count only the failures, on $\{0,1,2,\dots\}$). The event $\{N=k\}$ means $k-1$ tails followed by a head, so $\mathbb{P}(N=k)=2^{-k}$.
+
+The cleanest idea is **renewal**: the coin has no memory, so after a tail you are exactly where you started, one toss later. That gives $\mathbb{E}N=1+\tfrac12\mathbb{E}N$, i.e. $\mathbb{E}N=2$, and the same trick applied to $N^2$ gives the variance. In general $\mathbb{E}N=1/p$ and $\mathrm{Var}N=(1-p)/p^2$.
+SOLUTION: Summing the series
+$\{N=k\}$ is "$k-1$ tails then a head", so $\mathbb{P}(N=k)=(\tfrac12)^{k-1}\tfrac12=2^{-k}$, $k\ge1$.
+
+**Mean.** $E:=\mathbb{E}(N)=\sum_{k\ge1}k2^{-k}$. Then
+$$E=\tfrac12+2\cdot\tfrac14+3\cdot\tfrac18+\cdots,\qquad \tfrac12E=\tfrac14+2\cdot\tfrac18+\cdots$$
+Subtracting term by term,
+$$\tfrac12E=\tfrac12+\tfrac14+\tfrac18+\cdots=\sum_{k\ge1}\mathbb{P}(N=k)=1,$$
+so $E=2$.
+
+**Second moment.** $S:=\sum_{k\ge1}k^22^{-k}$. Then (shifting the index in $\tfrac12 S$)
+$$S-\tfrac12S=\sum_{k\ge1}\big(k^2-(k-1)^2\big)2^{-k}=\sum_{k\ge1}(2k-1)2^{-k}=2E-1=3,$$
+so $S=6$. Hence
+$$\mathrm{Var}(N)=\mathbb{E}(N^2)-\mathbb{E}(N)^2=6-4=2.$$
+SOLUTION: Conditioning on the first toss
+Let $N'$ be the number of further tosses needed after a first tail; by independence $N'$ has the same law as $N$. So $N=1$ with probability $\tfrac12$, and $N=1+N'$ with probability $\tfrac12$.
+
+Mean: $\mathbb{E}N=\tfrac12\cdot1+\tfrac12(1+\mathbb{E}N)$, so $\tfrac12\mathbb{E}N=1$ and $\mathbb{E}N=2$.
+
+Second moment:
+$$\mathbb{E}N^2=\tfrac12\cdot1+\tfrac12\,\mathbb{E}(1+N)^2=\tfrac12+\tfrac12\big(1+2\,\mathbb{E}N+\mathbb{E}N^2\big)=3+\tfrac12\mathbb{E}N^2,$$
+so $\mathbb{E}N^2=6$ and $\mathrm{Var}N=6-4=2$.
+FOLLOWUP: Value of an increasing annuity
+I pay you 1 dollar at the end of this year, 2 dollars at the end of next year, and so on ($k$ dollars at the end of year $k$, forever). The effective annual interest rate is $i>0$. Derive from first principles the present value of this payment stream.
+FOLLOWUP_ANSWER:
+Let $v=\frac1{1+i}$ be the one-year discount factor. The value is $V=\sum_{k\ge1}k v^k$. Same trick as for $\mathbb{E}N$:
+$$V-vV=\sum_{k\ge1}\big(k-(k-1)\big)v^k=\sum_{k\ge1}v^k=\frac{v}{1-v}.$$
+So $V=\frac{v}{(1-v)^2}$. Since $1-v=\frac{i}{1+i}$,
+$$V=\frac{1}{1+i}\cdot\frac{(1+i)^2}{i^2}=\frac{1+i}{i^2}.$$
+(For $i=5\%$: $V=1.05/0.0025=420$ dollars.)
+FOLLOWUP: Poisson mean and variance
+Derive the expectation and variance of a Poisson random variable with parameter $\lambda>0$.
+FOLLOWUP_ANSWER:
+$\mathbb{P}(X=k)=e^{-\lambda}\lambda^k/k!$, $k\ge0$.
+
+Mean: $\mathbb{E}X=\sum_{k\ge1}k e^{-\lambda}\frac{\lambda^k}{k!}=\lambda e^{-\lambda}\sum_{k\ge1}\frac{\lambda^{k-1}}{(k-1)!}=\lambda e^{-\lambda}e^{\lambda}=\lambda.$
+
+Factorial moment: $\mathbb{E}[X(X-1)]=\sum_{k\ge2}k(k-1)e^{-\lambda}\frac{\lambda^k}{k!}=\lambda^2e^{-\lambda}\sum_{k\ge2}\frac{\lambda^{k-2}}{(k-2)!}=\lambda^2.$
+
+So $\mathbb{E}X^2=\lambda^2+\lambda$ and $\mathrm{Var}X=\lambda^2+\lambda-\lambda^2=\lambda$. (Alternatively, the generating function $\mathbb{E}s^X=e^{\lambda(s-1)}$ gives the same by differentiating at $s=1$.)
+FOLLOWUP: Tails before the first head
+With a fair coin, let $M$ be the number of tails before the first head. What are its mean and variance?
+FOLLOWUP_ANSWER:
+$M=N-1$, where $N$ is the number of tosses including the head. Shifting by a constant lowers the mean by $1$ and leaves the variance unchanged:
+$$\mathbb{E}M=2-1=1,\qquad \mathrm{Var}M=\mathrm{Var}N=2.$$
+Direct check: $\mathbb{P}(M=m)=2^{-(m+1)}$, $m\ge0$, and $\mathbb{E}M=\sum_m m2^{-(m+1)}=\tfrac12\sum_m m2^{-m}=\tfrac12\cdot 2=1$.
+===END===
+===TEASER===
+SLUG: two-consecutive-identical-tosses
+IDS: R3A-23, R3A-24, R3A-25
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Two consecutive identical tosses
+QUESTION:
+We play a game with a fair coin. The game stops as soon as two heads or two tails appear consecutively ($HH$ or $TT$). What is the expected number of tosses until the game stops?
+HINT1:
+The first toss can be anything. What has to happen on each toss after that?
+HINT2:
+From the second toss on, each toss either matches the previous one (game over) or not, with probability $\tfrac12$ each, independently. So the number of tosses after the first has a familiar distribution.
+ANSWER:
+$\mathbb{E}(N)=3$.
+REFRESH:
+Geometric distribution: if each trial succeeds independently with probability $p$, the number of trials up to and including the first success has mean $1/p$ and variance $(1-p)/p^2$.
+EXPLANATION:
+The first toss only sets a reference. After that, each new toss "succeeds" (matches the previous toss and ends the game) with probability $\tfrac12$, independently of the past: whether toss $j$ equals toss $j-1$ is a fair coin independent of the earlier comparisons. So the number of tosses after the first is geometric with mean $2$, and the total is $1+2=3$.
+SOLUTION: Distribution of N and series
+$N\in\{2,3,\dots\}$. For $N=k$, the first toss is free and the next $k-1$ tosses are forced: they must alternate for $k-2$ tosses and then repeat (e.g. starting with $H$, ending at toss 4 requires $THH$). So
+$$\mathbb{P}(N=k)=\left(\tfrac12\right)^{k-1},\quad k\ge2.$$
+Then
+$$\mathbb{E}N=\sum_{k\ge2}k2^{-(k-1)}=2\cdot\tfrac12+3\cdot\tfrac14+4\cdot\tfrac18+\cdots$$
+$$\tfrac12\mathbb{E}N=2\cdot\tfrac14+3\cdot\tfrac18+\cdots$$
+Subtracting,
+$$\tfrac12\mathbb{E}N=1+\tfrac14+\tfrac18+\cdots=1+\tfrac12=\tfrac32,$$
+so $\mathbb{E}N=3$.
+SOLUTION: Geometric after the first toss
+Let $M=N-1$ be the number of tosses after the first. Each of these ends the game with probability $\tfrac12$ (it equals its predecessor), independently, so $M\sim\text{Geometric}(\tfrac12)$ on $\{1,2,\dots\}$ with $\mathbb{E}M=2$. Hence $\mathbb{E}N=1+2=3$.
+FOLLOWUP: Variance of the game length
+In the same game, what is $\mathrm{Var}(N)$?
+FOLLOWUP_ANSWER:
+$N=1+M$ with $M$ geometric($\tfrac12$) on $\{1,2,\dots\}$, so $\mathrm{Var}N=\mathrm{Var}M=\frac{1-p}{p^2}=\frac{1/2}{1/4}=2$.
+Check: $\mathbb{E}N^2=\mathbb{E}(1+M)^2=1+2\cdot2+6=11$, and $11-3^2=2$.
+FOLLOWUP: Three in a row
+How does the expectation change if the game only stops after three consecutive identical tosses ($HHH$ or $TTT$)?
+FOLLOWUP_ANSWER:
+Track the length of the current run. After the first toss the run has length 1. Let $E_1$, $E_2$ be the expected number of further tosses when the current run has length 1 or 2. Each toss extends the run (probability $\tfrac12$) or resets it to length 1:
+$$E_2=1+\tfrac12\cdot0+\tfrac12E_1,\qquad E_1=1+\tfrac12E_2+\tfrac12E_1.$$
+The second gives $E_1=2+E_2$; substituting the first, $E_1=3+\tfrac12E_1$, so $E_1=6$. Including the first toss, $\mathbb{E}N=1+6=7$.
+In general, needing $k$ identical tosses in a row gives $\mathbb{E}N=2^k-1$ (3 for $k=2$, 7 for $k=3$).
+===END===
+===TEASER===
+SLUG: coin-from-my-pocket-bayes
+IDS: R3A-37, R3A-38, R3A-39, R3A-40
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Coin from my pocket
+QUESTION:
+I take an ordinary-looking coin out of my pocket and flip it three times. Each time it comes up heads. What do you think is the probability that the next flip is also a head? What if I had flipped the coin 100 times and every flip had been a head?
+HINT1:
+If you are sure the coin is fair, past flips are irrelevant. But are you sure? What other explanation is there for a long run of heads?
+HINT2:
+Put a prior probability $p$ on "the coin is double-headed" (and $1-p$ on "fair"), update it with Bayes' theorem after $N$ heads, then compute the probability of a head on the next flip by conditioning on the type of coin.
+ANSWER:
+With prior $p$ on a double-headed coin, $\mathbb{P}(\text{next }H)=\frac{1+q_N}{2}$ with $q_N=\frac{p}{p+(1-p)2^{-N}}$: after 3 heads this is still close to $\tfrac12$ (about $0.54$ for $p=1\%$); after 100 heads it is essentially $1$.
+REFRESH:
+Bayes' theorem: $\mathbb{P}(A\mid B)=\dfrac{\mathbb{P}(B\mid A)\mathbb{P}(A)}{\mathbb{P}(B\mid A)\mathbb{P}(A)+\mathbb{P}(B\mid A^c)\mathbb{P}(A^c)}$.
+Law of total probability: $\mathbb{P}(B)=\sum_i\mathbb{P}(B\mid A_i)\mathbb{P}(A_i)$ for a partition $(A_i)$.
+EXPLANATION:
+The naive answer "$\tfrac12$, coins have no memory" is right **if** you know the coin is fair. The interviewer wants you to notice that the data can change your belief about which coin you are holding. A fair coin gives 100 heads with probability $2^{-100}\approx 8\times10^{-31}$; a trick double-headed coin does it with probability $1$. Unless your prior belief in trick coins is absurdly small, Bayes' theorem makes "double-headed" overwhelmingly likely after 100 heads, so you predict a head with near certainty.
+
+After only 3 heads, the likelihood ratio is only $2^3=8$, which is not enough to overturn a strong prior that coins from pockets are fair: the answer stays close to $\tfrac12$, nudged slightly upwards.
+SOLUTION: Bayesian updating with two hypotheses
+Hypotheses: $D$ = "double-headed" with prior $p$, $F$ = "fair" with prior $1-p$. Data $A_N$: $N$ heads in $N$ flips. Likelihoods: $\mathbb{P}(A_N\mid D)=1$, $\mathbb{P}(A_N\mid F)=2^{-N}$.
+
+**Posterior.**
+$$q_N:=\mathbb{P}(D\mid A_N)=\frac{p}{p+(1-p)2^{-N}}.$$
+
+**Predictive probability.** Conditioning on the coin type (given the data),
+$$\mathbb{P}(H_{N+1}\mid A_N)=q_N\cdot1+(1-q_N)\cdot\tfrac12=\frac{1+q_N}{2}.$$
+
+**Numbers with $p=1\%$.**
+- $N=3$: $q_3=\dfrac{0.01}{0.01+0.99/8}=\dfrac{0.01}{0.13375}\approx0.075$, so $\mathbb{P}(H)\approx0.537$. Essentially "a half, slightly more".
+- $N=100$: $1-q_{100}=\dfrac{0.99\cdot2^{-100}}{0.01+0.99\cdot 2^{-100}}\approx 99\cdot2^{-100}\approx8\times10^{-29}$, so $\mathbb{P}(H)$ is $1$ to within $4\times10^{-29}$.
+
+The conclusion after 100 heads holds for any remotely reasonable prior: even $p=10^{-9}$ gives $1-q_{100}\approx 10^{9}\cdot 2^{-100}\approx 10^{-21}$.
+FOLLOWUP: Are people Bayesians?
+Do you think that people are Bayesians?
+FOLLOWUP_ANSWER:
+Only partly; this is a discussion question. People do update beliefs in the right direction when evidence arrives (after a long run of heads everyone suspects the coin), which is qualitatively Bayesian. But experiments (Kahneman and Tversky and others) show systematic departures: **base-rate neglect** (ignoring the prior, e.g. in medical-test problems), **conservatism** (updating too little when evidence is strong), the **gambler's fallacy** (believing a tail is "due" after several heads, which no Bayesian with a fair-or-biased model would think) and the **hot-hand** belief. A good answer: people behave like approximate, biased Bayesians with poorly calibrated priors and likelihoods.
+FOLLOWUP: When would you get suspicious?
+At what number $N$ of consecutive heads would you get suspicious? For instance, when would you be 99% sure that the coin is fixed?
+FOLLOWUP_ANSWER:
+With prior $p$ on "double-headed", we need
+$$q_N=\frac{p}{p+(1-p)2^{-N}}\ge0.99\iff 0.01\,p\ge0.99(1-p)2^{-N}\iff 2^N\ge\frac{99(1-p)}{p}.$$
+- $p=1\%$: $2^N\ge 99\cdot99=9801$, and $2^{13}=8192<9801\le 16384=2^{14}$, so $N=14$.
+- $p=0.1\%$: $2^N\ge 98901$, so $N=17$ ($2^{17}=131072$).
+Each extra head doubles the odds in favour of the trick coin, so the required $N$ grows only like $\log_2(1/p)$. "Suspicious" (odds becoming comparable to the prior odds against) comes at around $N\approx\log_2(1/p)$, i.e. about 7 heads for $p=1\%$.
+FOLLOWUP: An alternating coin
+Suppose that, instead of always showing heads, the coin produces the sequence $HTHTHTHTHT\ldots$. What then?
+FOLLOWUP_ANSWER:
+Under the fair-coin hypothesis, $HTHTHTHTHT$ has exactly the same probability $2^{-10}$ as ten heads, so the likelihood ratio against a hypothesis that deterministically produces it is again $2^{N}$. What differs is the alternative and its prior: double-headed coins exist as trick coins, whereas a coin that "alternates" needs a mechanism (a trick in the tossing, not in the coin). If you give that alternative prior $r$, the same formula applies: posterior $r/(r+(1-r)2^{-N})$, and the prediction is "the next flip continues the pattern" with probability $\tfrac12+\tfrac12\times$posterior. Also note that a test based only on the **number** of heads would not detect anything here (5 heads out of 10 is perfectly typical); you would need a test sensitive to the order, such as a runs test (10 runs in 10 flips versus about 5.5 expected).
+===END===
+===TEASER===
+SLUG: six-heads-then-six-tails
+IDS: R3A-41, R3A-42, R3A-43
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Six heads then six tails
+QUESTION:
+You toss a fair coin one million times. What is the expected number of occurrences of the string of 6 heads followed by 6 tails ($HHHHHHTTTTTT$)?
+HINT1:
+You do not need the distribution of the count, only its mean. Is there a way to write the count as a sum of simple pieces?
+HINT2:
+Write the count as a sum of indicators $I_j$, one per possible starting position $j$ of the 12-toss string, and use linearity of expectation (which does not require independence).
+ANSWER:
+$\dfrac{10^6-11}{2^{12}}=\dfrac{999\,989}{4096}\approx244.14$.
+REFRESH:
+Linearity of expectation: $\mathbb{E}\left[\sum_j Y_j\right]=\sum_j\mathbb{E}[Y_j]$ for any integrable $Y_j$, dependent or not.
+Indicator: $\mathbb{E}[\mathbf 1_A]=\mathbb{P}(A)$.
+EXPLANATION:
+The occurrences at neighbouring positions are highly dependent (in fact this pattern cannot overlap with itself), which makes the distribution of the count messy. The expectation ignores all of that: it is just the number of places the pattern could start times the probability it starts there. A 12-toss string fits in $10^6-11$ starting positions, and each specific 12-toss string has probability $2^{-12}=1/4096$.
+
+Quick mental arithmetic: $10^6/4000=250$, and $4096$ is about $2.4\%$ larger than $4000$, so the answer is about $250\times(1-0.024)\approx244$.
+SOLUTION: Indicators and linearity
+For $j=1,\dots,10^6-11$, let $I_j=1$ if tosses $j,\dots,j+11$ read $HHHHHHTTTTTT$, and $0$ otherwise. The number of occurrences is $C=\sum_{j=1}^{10^6-11}I_j$. Each $I_j$ concerns 12 specified tosses, so $\mathbb{E}[I_j]=2^{-12}$. By linearity,
+$$\mathbb{E}[C]=\sum_{j=1}^{10^6-11}2^{-12}=\frac{999\,989}{4096}.$$
+Since $4096\times244=999\,424$ and $999\,989-999\,424=565$, $\mathbb{E}[C]=244+\frac{565}{4096}\approx244.14$.
+FOLLOWUP: Non-overlapping runs of six tails
+In one million tosses, what is the expected number of runs of six tails if overlaps are not allowed (i.e. after counting a block $TTTTTT$, counting restarts from scratch)?
+FOLLOWUP_ANSWER:
+Overlapping count first: by the same indicator argument, $(10^6-5)/64\approx15\,625$.
+
+Non-overlapping: a block is counted at toss $j$ exactly when the current run of tails ending at $j$ has length $6,12,18,\dots$. Away from the start, the run length $L$ at a given toss satisfies $\mathbb{P}(L=\ell)=2^{-(\ell+1)}$ ($\ell$ tails preceded by a head). So
+$$\mathbb{P}(\text{count at }j)=\sum_{m\ge1}2^{-(6m+1)}=\frac12\cdot\frac{2^{-6}}{1-2^{-6}}=\frac1{126}.$$
+Summing over $j$ gives $\mathbb{E}\approx\frac{10^6}{126}\approx7\,937$ (boundary corrections at the first few tosses are negligible). Consistency check: the expected waiting time for six tails in a row is $2^7-2=126$, and by renewal theory the number of completed blocks in $n$ tosses is about $n/126$.
+FOLLOWUP: Probability of at least one occurrence
+In one million tosses, what is the probability of seeing at least one $HHHHHHTTTTTT$?
+FOLLOWUP_ANSWER:
+Essentially $1$. A rigorous lower bound: cut the million tosses into $\lfloor10^6/12\rfloor=83\,333$ disjoint blocks of 12. The blocks are independent and each equals the pattern with probability $2^{-12}$, so
+$$\mathbb{P}(\text{no occurrence})\le(1-2^{-12})^{83\,333}\le e^{-83\,333/4096}=e^{-20.3}\approx1.5\times10^{-9}.$$
+A sharper estimate: the pattern cannot overlap itself (a proper prefix starts with $H$, a proper suffix ends with $T$, and prefix $H^6T^{k-6}$ equals suffix $H^{k-6}T^6$ only for $k=12$), so occurrences are close to a Poisson process with mean $\lambda\approx244.1$, and
+$$\mathbb{P}(\text{at least one})\approx1-e^{-244}\approx1-10^{-106}.$$
+===END===
+===TEASER===
+SLUG: darts-circular-board
+IDS: R3A-44, R3A-45, R3A-46, R3A-47
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: Darts at a circular board
+QUESTION:
+You throw a dart at a circular board of radius $R$. What is your expected distance from the centre? Make any necessary assumptions.
+
+Now suppose you win one dollar if you hit inside the circle of radius $R/2$ ten times in a row, and you pay 10 cents for every try (a try being a sequence of ten throws). If you try 100 times, how much do you expect to lose or make? Does the answer change if you are a professional whose probability of hitting inside $R/2$ is double the probability of hitting outside $R/2$?
+HINT1:
+Assume the dart always hits the board and lands uniformly over its area. Then the probability of landing within distance $s$ of the centre is a ratio of areas.
+HINT2:
+From $\mathbb{P}(D\le s)=(s/R)^2$, differentiate to get the density of the distance $D$ and integrate $s$ against it. For the game, compute the probability of 10 hits in a row per try, and compare 100 times the expected prize with the 10 dollars of fees.
+ANSWER:
+$\mathbb{E}[D]=\tfrac23R$. The amateur (per-throw probability $\tfrac14$) expects to lose about $10$ dollars (winnings $\approx100\cdot2^{-20}\approx0.0001$ dollars); the professional (probability $\tfrac23$) wins about $1.73$ dollars and still loses about $8.27$ dollars.
+REFRESH:
+Density from distribution function: $f_D(s)=\frac{d}{ds}\mathbb{P}(D\le s)$.
+Expectation of a continuous variable: $\mathbb{E}[D]=\int s f_D(s)\,ds$.
+Independent trials: the probability that $k$ independent events of probability $p$ all occur is $p^k$.
+EXPLANATION:
+Uniform over the **area** does not mean uniform in the **distance**: there is more area far from the centre (a thin ring at radius $s$ has area proportional to $s$). So the distance has density proportional to $s$, and the mean is pushed outwards to $\tfrac23R$ rather than $\tfrac12R$.
+
+For the game, the inner disc of radius $R/2$ has only a quarter of the area, and needing it ten times in a row gives $4^{-10}\approx10^{-6}$ per try: hopeless against a 10-cent fee. Even a strong player with $\tfrac23$ per throw only has $(2/3)^{10}\approx1/58$ per try, i.e. an expected prize of about 1.7 cents for a 10-cent ticket.
+SOLUTION: Areas, then a density
+**Assumption.** The dart always lands on the board, uniformly over its area.
+
+**Distance.** For $0\le s\le R$, $\mathbb{P}(D\le s)=\dfrac{\pi s^2}{\pi R^2}=\dfrac{s^2}{R^2}$, so $f_D(s)=\dfrac{2s}{R^2}$ on $[0,R]$ and
+$$\mathbb{E}[D]=\int_0^R s\cdot\frac{2s}{R^2}\,ds=\frac{2}{R^2}\cdot\frac{R^3}{3}=\frac{2R}{3}.$$
+
+**The game, random thrower.** $\mathbb{P}(D\le R/2)=\tfrac14$, so a try (ten throws) wins with probability $4^{-10}=2^{-20}\approx9.54\times10^{-7}$. Over 100 tries, expected prize money $\approx100\times9.54\times10^{-7}\approx9.5\times10^{-5}$ dollars; fees are $100\times0.10=10$ dollars. Expected result: a loss of essentially $10$ dollars.
+
+**Professional.** If $p=\mathbb{P}(\text{inside})=2\,\mathbb{P}(\text{outside})=2(1-p)$ then $p=\tfrac23$, and
+$$\mathbb{P}(\text{10 in a row})=\left(\tfrac23\right)^{10}=\frac{1024}{59049}\approx0.01734\approx\frac1{58}.$$
+Expected winnings over 100 tries $\approx1.73$ dollars against 10 dollars of fees: an expected loss of about $8.27$ dollars. Still a bad deal.
+SOLUTION: Integrating the tail
+For a nonnegative variable, $\mathbb{E}[D]=\int_0^\infty\mathbb{P}(D>s)\,ds$. Here
+$$\mathbb{E}[D]=\int_0^R\left(1-\frac{s^2}{R^2}\right)ds=R-\frac{R}{3}=\frac{2R}{3}.$$
+FOLLOWUP: Break-even radius
+For the random thrower, if the game uses a target circle of radius $r$ instead of $R/2$ (still ten hits in a row for one dollar, 10 cents per try), which $r$ makes the game fair?
+FOLLOWUP_ANSWER:
+Fair means expected prize per try equals the 10-cent fee: $1\cdot\left(\frac{r^2}{R^2}\right)^{10}=0.1$, i.e. $(r/R)^{20}=0.1$, so
+$$r=R\cdot10^{-1/20}=R\cdot10^{-0.05}\approx0.891\,R.$$
+The target must cover about $79\%$ of the board's area ($0.1^{1/10}\approx0.794$).
+FOLLOWUP: Fair price for the professional
+What is a fair price per try in the original game for the professional player (probability $\tfrac23$ of hitting inside $R/2$)?
+FOLLOWUP_ANSWER:
+The fair price is the expected prize per try: $\left(\tfrac23\right)^{10}=\frac{1024}{59049}\approx0.0173$ dollars, i.e. about $1.7$ cents per try (versus the 10 cents charged).
+FOLLOWUP: Three-dimensional version
+Formulate and solve the three-dimensional analogue: a "dart" lands uniformly in a ball of radius $R$. Find the expected distance from the centre and the value of the ten-in-a-row game with target radius $R/2$.
+FOLLOWUP_ANSWER:
+Now $\mathbb{P}(D\le s)=(s/R)^3$, density $3s^2/R^3$, so
+$$\mathbb{E}[D]=\int_0^R s\cdot\frac{3s^2}{R^3}\,ds=\frac34R.$$
+(In $d$ dimensions, $\mathbb{E}[D]=\frac{d}{d+1}R$: mass concentrates near the boundary as $d$ grows.)
+The inner ball of radius $R/2$ has probability $\tfrac18$, so ten in a row has probability $8^{-10}=2^{-30}\approx9.3\times10^{-10}$; over 100 tries you still lose essentially the full $10$ dollars. The break-even radius solves $(r/R)^{30}=0.1$, i.e. $r=10^{-1/30}R\approx0.926R$. The professional's per-throw probability $\tfrac23$ is a modelling assumption that does not depend on dimension, so his numbers are unchanged.
+===END===
+===TEASER===
+SLUG: two-children-girl-named-clarissa
+IDS: R3A-49, R3A-50, R3A-51, R3A-52, R3A-53
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Two children, a girl called Clarissa
+QUESTION:
+A family has two children, and you know that at least one of them is a girl. What is the probability that both are girls? What if you know instead that the eldest is a girl? What if you know that they have a girl called Clarissa?
+
+(Assume each child is independently a boy or a girl with probability $\tfrac12$.)
+HINT1:
+List the equally likely sample points, ordered by age: $BB$, $BG$, $GB$, $GG$. Each piece of information removes some of them.
+HINT2:
+Compute each answer as $\mathbb{P}(GG)/\mathbb{P}(\text{information})$. For Clarissa, the information is not "at least one girl": model the name as a rare event with probability $\varepsilon$ per girl and see how likely the information is in each family type.
+ANSWER:
+At least one girl: $\tfrac13$. Eldest is a girl: $\tfrac12$. A girl called Clarissa: $\frac{2-\varepsilon}{4-\varepsilon}\approx\tfrac12$ under the natural model (the book's $\tfrac13$ only holds if knowing the name adds no information beyond "there is a girl").
+REFRESH:
+Conditional probability: $\mathbb{P}(A\mid B)=\mathbb{P}(A\cap B)/\mathbb{P}(B)$.
+Complement: $\mathbb{P}(\text{at least one})=1-\mathbb{P}(\text{none})$.
+EXPLANATION:
+"At least one girl" rules out only $BB$, leaving three equally likely cases of which one is $GG$: the answer is $\tfrac13$, not $\tfrac12$. "The eldest is a girl" pins down a specific child, leaving $GB$ and $GG$: now $\tfrac12$.
+
+The Clarissa part is a classic trap. The book says the name is irrelevant and the answer stays $\tfrac13$. That is only true if the name carries no information (e.g. every family calls a daughter Clarissa). In reality, a rare name identifies a **specific** child, just like "the eldest", and a family with two girls has roughly twice as many chances to have a Clarissa as a family with one girl. That doubling exactly compensates the $2{:}1$ ratio of mixed families to $GG$ families, and the answer moves to about $\tfrac12$.
+SOLUTION: Counting sample points
+Sample points (eldest first) $BB,BG,GB,GG$, each with probability $\tfrac14$.
+
+**At least one girl.** $\mathbb{P}(\ge1\,G)=\tfrac34$ and $GG\subset\{\ge1\,G\}$, so
+$$\mathbb{P}(GG\mid\ge1\,G)=\frac{1/4}{3/4}=\frac13.$$
+
+**Eldest is a girl.** $\{\text{eldest }G\}=\{GB,GG\}$ has probability $\tfrac12$, so
+$$\mathbb{P}(GG\mid\text{eldest }G)=\frac{1/4}{1/2}=\frac12.$$
+
+**A girl called Clarissa.** Suppose each girl is named Clarissa with small probability $\varepsilon$, independently. Let $C$ = "the family has a girl called Clarissa". Then
+$$\mathbb{P}(C\mid BB)=0,\quad \mathbb{P}(C\mid BG)=\mathbb{P}(C\mid GB)=\varepsilon,\quad \mathbb{P}(C\mid GG)=1-(1-\varepsilon)^2=2\varepsilon-\varepsilon^2.$$
+Bayes:
+$$\mathbb{P}(GG\mid C)=\frac{\tfrac14(2\varepsilon-\varepsilon^2)}{\tfrac14(2\varepsilon-\varepsilon^2)+\tfrac14\varepsilon+\tfrac14\varepsilon}=\frac{2-\varepsilon}{4-\varepsilon}\approx\frac12.$$
+(If parents never give both daughters the same name, $\mathbb{P}(C\mid GG)=2\varepsilon$ and the answer is exactly $\tfrac12$.)
+
+Note: the book states that the Clarissa case is the same as "at least one girl" (answer $\tfrac13$); that is correct only under the degenerate model where the name gives no extra information. Under any model where the name is a rare, per-child attribute, the answer is close to $\tfrac12$. In an interview, state your model explicitly.
+FOLLOWUP: The dictator's rule
+A dictator decides that, to increase the number of sons in his realm, a family that has had a girl is allowed no more children. Would this work?
+FOLLOWUP_ANSWER:
+No. Every birth is still a boy or a girl with probability $\tfrac12$ independently of the past, so each birth adds on average $\tfrac12$ boy and $\tfrac12$ girl, whatever stopping rule families use. Concretely, if families keep going until the first girl, the number of boys per family is the number of failures before the first success of a fair coin: mean $1$; the number of girls is exactly $1$. So the expected numbers of boys and girls are equal and the sex ratio stays $1{:}1$. (Formally: the running count "boys minus girls" is a martingale, and optional stopping gives expectation $0$ at the stopping time. With a cap on family size, girls are expected slightly fewer than 1 and boys equally fewer, still equal.)
+FOLLOWUP: Three children, at least one girl
+A family has three children, at least one of whom is a girl. What is the probability all three are girls?
+FOLLOWUP_ANSWER:
+Eight equally likely ordered outcomes; "at least one girl" excludes only $BBB$, so it has probability $\tfrac78$. Hence
+$$\mathbb{P}(GGG\mid\ge1\,G)=\frac{1/8}{7/8}=\frac17.$$
+FOLLOWUP: Three children, middle one a boy
+A family has three children and the middle child is a boy. What is the probability that all three are girls?
+FOLLOWUP_ANSWER:
+Zero: if the middle child is a boy, not all three can be girls. (A deliberately trivial question to check you read it.)
+FOLLOWUP: Two girls given the middle child is a boy
+A family has three children and the middle child is a boy. What is the probability that exactly two of them are girls?
+FOLLOWUP_ANSWER:
+With the middle child a boy, "two girls" means the eldest and the youngest are both girls. These are independent fair events, so the probability is $\tfrac12\cdot\tfrac12=\tfrac14$.
+===END===
+===TEASER===
+SLUG: fourth-business-day-thursday
+IDS: R3A-54, R3A-55, R3A-56, R3A-57
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Fourth business day a Thursday
+QUESTION:
+What is the probability that the fourth business day of the month is a Thursday?
+HINT1:
+Business days are Monday to Friday (ignore public holidays, but mention them). Everything depends on which day of the week the month starts on.
+HINT2:
+Assume the first day of the month is equally likely to be any of the seven weekdays. For each of the seven cases, find the weekday of the fourth business day.
+ANSWER:
+$\tfrac37$ (the month must start on a Saturday, Sunday or Monday), ignoring public holidays.
+REFRESH:
+Classical probability: with $n$ equally likely outcomes, $\mathbb{P}(A)=\#A/n$.
+EXPLANATION:
+The trap is to answer $\tfrac15$ or $\tfrac17$ by symmetry. Weekends break the symmetry: a month starting on Saturday or Sunday has its first business day on Monday, exactly like a month starting on Monday. So the first business day is a Monday with probability $\tfrac37$, and the fourth business day (three business days later) is a Thursday with the same probability.
+SOLUTION: Case analysis on the first day
+Assume the first of the month is uniformly distributed over the seven days of the week and there are no holidays. The first four business days are:
+- starts Monday: Mon, Tue, Wed, **Thu**;
+- starts Tuesday: Tue, Wed, Thu, **Fri**;
+- starts Wednesday: Wed, Thu, Fri, **Mon**;
+- starts Thursday: Thu, Fri, Mon, **Tue**;
+- starts Friday: Fri, Mon, Tue, **Wed**;
+- starts Saturday: Mon, Tue, Wed, **Thu**;
+- starts Sunday: Mon, Tue, Wed, **Thu**.
+The fourth business day is a Thursday in 3 of the 7 cases: probability $\tfrac37$. (Distribution of the fourth business day: Thursday $\tfrac37$; Monday, Tuesday, Wednesday, Friday $\tfrac17$ each.)
+
+In an interview, mention the caveats: public holidays (bank holidays, Good Friday, Christmas) shift business days; US Thanksgiving is always a Thursday; the first-of-month weekday is not exactly uniform over a finite calendar, though very nearly so over the 400-year Gregorian cycle.
+FOLLOWUP: Avoiding Mondays
+An event happens on business day $k$ of the month. We want to minimise how often it falls on a Monday. Which $k$ should we choose (preferring the smaller $k$ in case of ties)?
+FOLLOWUP_ANSWER:
+The first business day is a Monday with probability $\tfrac37$ (month starts Sat, Sun or Mon) and each of Tue–Fri with probability $\tfrac17$. Business day $k$ is $k-1$ business days later, so its weekday is the first business day's weekday shifted by $k-1$ in the 5-day business week. Hence business day $k$ is a Monday with probability $\tfrac37$ if $k\equiv1\pmod5$ and $\tfrac17$ otherwise. The smallest minimiser is $k=2$.
+FOLLOWUP: The third of January 2011
+What is the probability that the third of January 2011 is a business day?
+FOLLOWUP_ANSWER:
+It is not random: it is a fixed date, so the answer is $0$ or $1$. The 1st of January 2011 was a Saturday, so the 3rd was a Monday, normally a business day. But because New Year's Day fell on a Saturday, the UK (and Australia) observed the substitute bank holiday on Monday 3 January 2011, so there it was **not** a business day (probability $0$). In the US the New Year holiday was observed on Friday 31 December 2010, so there the 3rd was a business day (probability $1$). The point: recognise that a specific date is deterministic, and remember holidays.
+FOLLOWUP: Which weekday avoids the fourth business day?
+Which day of the week should we schedule something on to minimise the chance that it falls on the fourth business day of the month?
+FOLLOWUP_ANSWER:
+From the case analysis, the fourth business day is Thursday with probability $\tfrac37$ and Monday, Tuesday, Wednesday or Friday with probability $\tfrac17$ each, and never Saturday or Sunday. So a weekend day gives probability $0$; if it must be a weekday, choose any weekday except Thursday (each $\tfrac17$).
+===END===
+===TEASER===
+SLUG: my-card-beats-yours
+IDS: R3A-61, R3A-62, R3A-63
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: My card beats yours
+QUESTION:
+Take a standard deck of 52 cards, ranked $A>K>Q>\dots>2$ (suits do not matter for the ranking). I draw one card, then you draw one card from the remaining 51. What is the probability that my card is strictly higher than yours?
+HINT1:
+There are three possibilities: mine is higher, yours is higher, or they tie. Two of these have the same probability.
+HINT2:
+Compute the probability of a tie (same rank) first; by symmetry the rest splits equally.
+ANSWER:
+$\dfrac{24}{51}=\dfrac{8}{17}\approx0.471$.
+REFRESH:
+Exchangeability: when two cards are drawn without replacement, the ordered pair (first, second) has the same distribution as (second, first).
+EXPLANATION:
+The two draws are exchangeable, so "mine beats yours" and "yours beats mine" have the same probability. The only asymmetry-free leftover is a tie: after my card, 3 of the remaining 51 cards share its rank. So the answer is half of what remains after removing ties.
+SOLUTION: Symmetry
+$\mathbb{P}(\text{same rank})=\frac{3}{51}$, so $\mathbb{P}(\text{different ranks})=\frac{48}{51}$. By exchangeability of the two draws, $\mathbb{P}(\text{mine}>\text{yours})=\mathbb{P}(\text{yours}>\text{mine})$, and these two add up to $\frac{48}{51}$. Hence
+$$\mathbb{P}(\text{mine}>\text{yours})=\frac12\cdot\frac{48}{51}=\frac{24}{51}=\frac{8}{17}.$$
+SOLUTION: Direct count
+Condition on my rank. If my card has the $r$-th lowest rank ($r=1$ for a 2, $r=13$ for an ace), the number of cards strictly lower remaining in the deck is $4(r-1)$. Each rank has probability $\tfrac1{13}$, so
+$$\mathbb{P}=\frac1{13}\sum_{r=1}^{13}\frac{4(r-1)}{51}=\frac{4}{13\cdot51}\cdot\frac{12\cdot13}{2}=\frac{24}{51}.$$
+FOLLOWUP: Same suit
+I draw a card, then you draw a card. What is the probability that your card has the same suit as mine?
+FOLLOWUP_ANSWER:
+Whatever my card, 12 of the remaining 51 cards share its suit: $\frac{12}{51}=\frac{4}{17}\approx0.235$.
+FOLLOWUP: A trump suit
+One suit is trumps. I lead a card, then you draw a card. Your card beats mine if it is a trump and mine is not, or if it is of the same suit as mine and higher. What is the probability that your card beats mine?
+FOLLOWUP_ANSWER:
+Given my card, the number of cards of my suit higher than it is uniform on $\{0,1,\dots,12\}$ (mean $6$).
+- My card is a trump (probability $\tfrac14$): you must play a higher trump. Probability $\mathbb{E}[\#\text{higher}]/51=\frac{6}{51}$.
+- My card is not a trump (probability $\tfrac34$): you win with any of the 13 trumps or with a higher card of my suit: $\frac{13+6}{51}=\frac{19}{51}$.
+
+Total:
+$$\frac14\cdot\frac{6}{51}+\frac34\cdot\frac{19}{51}=\frac{6+57}{204}=\frac{63}{204}=\frac{21}{68}\approx0.309.$$
+===END===
+===TEASER===
+SLUG: matching-socks
+IDS: R3B-01, R3B-02, R3B-03, R3B-04
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Matching socks
+QUESTION:
+A drawer contains 2 red socks and 2 black socks. You pull out 2 socks at random. What is the probability that they match?
+HINT1:
+You do not need to list all pairs: look at the problem one sock at a time.
+HINT2:
+Whatever the first sock is, how many of the remaining socks match it?
+ANSWER:
+$\tfrac13$.
+REFRESH:
+Multiplication rule: $\mathbb{P}(A\cap B)=\mathbb{P}(A)\,\mathbb{P}(B\mid A)$.
+Pigeonhole principle: if $m+1$ objects are placed in $m$ boxes, some box contains at least two objects.
+EXPLANATION:
+The colour of the first sock does not matter; what matters is that, of the three socks left, exactly one has the same colour. Many people answer $\tfrac12$ by thinking "two colours, so half the time"; that ignores that drawing the first sock depletes its own colour.
+SOLUTION: One sock at a time
+After the first sock, 3 socks remain, exactly 1 of which matches it. So $\mathbb{P}(\text{match})=\tfrac13$.
+SOLUTION: Counting pairs
+There are $\binom42=6$ equally likely pairs; the matching ones are {red, red} and {black, black}. So $\mathbb{P}=\tfrac26=\tfrac13$.
+FOLLOWUP: n colours, two socks
+The drawer contains 2 socks of each of $n$ different colours ($2n$ socks). You pull out two at random. What is the probability they match?
+FOLLOWUP_ANSWER:
+After the first sock, $2n-1$ remain and exactly one matches: $\mathbb{P}=\dfrac{1}{2n-1}$. (For $n=2$ this gives $\tfrac13$.)
+FOLLOWUP: n colours, three socks
+Same drawer (2 socks of each of $n$ colours). You pull out three socks. What is the probability that at least two of them match?
+FOLLOWUP_ANSWER:
+Complement: all three colours distinct. The second sock avoids the first's colour with probability $\frac{2n-2}{2n-1}$; the third avoids both colours with probability $\frac{2n-4}{2n-2}$. So
+$$\mathbb{P}(\text{all distinct})=\frac{2n-2}{2n-1}\cdot\frac{2n-4}{2n-2}=\frac{2n-4}{2n-1},\qquad \mathbb{P}(\text{a pair})=1-\frac{2n-4}{2n-1}=\frac{3}{2n-1}.$$
+Check: each of the 3 pairs among the three socks matches with probability $\frac{1}{2n-1}$, and at most one pair can match (only two socks per colour), so the probability of the union is exactly $\frac{3}{2n-1}$. For $n=2$ it is $1$, as it must be.
+FOLLOWUP: Guaranteed matching pair
+A drawer contains 20 red socks and 20 black socks. How many must you pull out to be sure of having a matching pair?
+FOLLOWUP_ANSWER:
+Three. With two colours, any three socks contain two of the same colour (pigeonhole), whereas two socks can be one red and one black. (21 would be the answer to "sure of two red socks" or of "a pair of a given colour".)
+===END===
+===TEASER===
+SLUG: two-aces-with-without-replacement
+IDS: R3B-05, R3B-06, R3B-07, R3B-08
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two aces
+QUESTION:
+I draw two cards from an ordinary 52-card deck. What is the probability that both are aces if I draw **with replacement** (put the first card back and reshuffle)? And **without replacement**?
+HINT1:
+With replacement, the two draws are independent and identical. Without replacement, the first ace changes the deck for the second draw.
+HINT2:
+Use $\mathbb{P}(A_1\cap A_2)=\mathbb{P}(A_1)\,\mathbb{P}(A_2\mid A_1)$ and count how many aces and cards are left after the first ace.
+ANSWER:
+With replacement $\tfrac1{169}$; without replacement $\tfrac1{221}$.
+REFRESH:
+Multiplication rule: $\mathbb{P}(A_1\cap A_2)=\mathbb{P}(A_1)\,\mathbb{P}(A_2\mid A_1)$; for independent events $\mathbb{P}(A_2\mid A_1)=\mathbb{P}(A_2)$.
+Binomial coefficient: $\binom nk=\frac{n!}{k!(n-k)!}$ counts unordered $k$-subsets of an $n$-set.
+EXPLANATION:
+An ace has probability $\tfrac4{52}=\tfrac1{13}$ on any single draw. With replacement the second draw is a fresh copy of the first, so you square. Without replacement, once an ace is gone only 3 aces remain among 51 cards, which makes a second ace less likely ($\tfrac1{17}$ instead of $\tfrac1{13}$).
+SOLUTION: Sequential conditioning
+With replacement: $\mathbb{P}=\frac1{13}\cdot\frac1{13}=\frac1{169}$.
+
+Without replacement: $\mathbb{P}(\text{first ace})=\frac{4}{52}=\frac1{13}$ and $\mathbb{P}(\text{second ace}\mid\text{first ace})=\frac{3}{51}=\frac1{17}$, so
+$$\mathbb{P}=\frac1{13}\cdot\frac1{17}=\frac1{221}.$$
+SOLUTION: Counting subsets
+Without replacement, the unordered pair of cards is uniform among $\binom{52}{2}=1326$ pairs, of which $\binom42=6$ are two aces: $\frac{6}{1326}=\frac1{221}$.
+FOLLOWUP: Two aces at Pontoon
+What is the probability that I am dealt two aces at Pontoon (British blackjack: each player is dealt two cards from a single shuffled deck)?
+FOLLOWUP_ANSWER:
+My two cards are a uniformly random pair from the 52 cards (cards dealt to other players do not matter, since I have seen none of them), so the probability is $\frac{4}{52}\cdot\frac{3}{51}=\frac1{221}\approx0.45\%$. With several decks shuffled together it would be slightly higher, e.g. with 6 decks $\frac{24}{312}\cdot\frac{23}{311}\approx0.57\%$.
+FOLLOWUP: Three aces
+What is the probability of drawing three aces in three draws, with and without replacement?
+FOLLOWUP_ANSWER:
+With replacement: $\left(\frac1{13}\right)^3=\frac1{2197}$.
+Without replacement: $\frac4{52}\cdot\frac3{51}\cdot\frac2{50}=\frac{24}{132\,600}=\frac1{5525}$ (equivalently $\binom43/\binom{52}3=4/22\,100$).
+FOLLOWUP: An ace and a king
+Drawing two cards without replacement, what is the probability of getting one ace and one king (in either order)?
+FOLLOWUP_ANSWER:
+Two orders, each $\frac4{52}\cdot\frac4{51}$:
+$$\mathbb{P}=2\cdot\frac{16}{2652}=\frac{32}{2652}=\frac{8}{663}\approx1.21\%.$$
+Equivalently $\frac{4\cdot4}{\binom{52}2}=\frac{16}{1326}$.
+===END===
+===TEASER===
+SLUG: ant-on-a-cube-return-time
+IDS: R3B-09, R3B-10, R3B-11
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Ant on a cube
+QUESTION:
+An ant walks along the edges of a cube, from vertex to vertex. It never stops, and it takes one minute to traverse an edge. At each vertex it picks one of the three edges uniformly at random. We put the ant on a chosen vertex. What is the expected number of minutes until it first returns to that vertex?
+HINT1:
+By the symmetry of the cube, what matters is not which vertex the ant is on but how far (in edges) it is from the start: 0, 1, 2 or 3.
+HINT2:
+Let $f(n)$ be the expected time to reach the start from distance $n$. Write a first-step equation for each $n$ (from distance 1: back to 0 with probability $\tfrac13$, to distance 2 with probability $\tfrac23$; and so on), with $f(0)$ the return time from the start.
+ANSWER:
+$8$ minutes.
+REFRESH:
+First-step analysis: for a Markov chain, the expected hitting time from state $i$ satisfies $h_i=1+\sum_j p_{ij}h_j$, with $h=0$ on the target.
+Kac's formula: for an irreducible finite Markov chain with stationary distribution $\pi$, the expected return time to state $i$ is $1/\pi_i$.
+Random walk on a regular graph: the stationary distribution is uniform on the vertices.
+EXPLANATION:
+The cube's 8 vertices are grouped by distance from the start: 1 vertex at distance 0, 3 at distance 1, 3 at distance 2, 1 at distance 3. From distance 1, one of the three edges goes back and two go further; from distance 2, two go back towards the start and one goes to the opposite corner; from distance 3, all edges go to distance 2. First-step analysis on this 4-state chain gives $8$.
+
+The elegant way: the walk is on a regular graph, so in the long run the ant spends equal time at all 8 vertices. A vertex visited a fraction $\tfrac18$ of the time must be revisited, on average, every $8$ steps (Kac's formula).
+SOLUTION: First-step analysis on distances
+Let $f(n)$ be the expected time to reach the start from a vertex at distance $n$ ($n=1,2,3$), and $f(0)$ the expected return time from the start. Then
+$$f(0)=1+f(1),$$
+$$f(1)=1+\tfrac13\cdot0+\tfrac23f(2),$$
+$$f(2)=1+\tfrac23f(1)+\tfrac13f(3),$$
+$$f(3)=1+f(2).$$
+Substitute the last into the third: $f(2)=1+\tfrac23f(1)+\tfrac13(1+f(2))$, so $\tfrac23f(2)=\tfrac43+\tfrac23f(1)$, i.e. $f(2)=2+f(1)$.
+Then $f(1)=1+\tfrac23(2+f(1))$, so $\tfrac13f(1)=\tfrac73$ and $f(1)=7$.
+Hence $f(0)=1+7=8$ (and $f(2)=9$, $f(3)=10$).
+SOLUTION: Stationary distribution (Kac)
+The walk is irreducible on the 8 vertices, and since every vertex has degree 3 the uniform distribution $\pi_v=\tfrac18$ is stationary ($\sum_u\pi_u p_{uv}=3\cdot\tfrac18\cdot\tfrac13=\tfrac18$). Kac's formula gives expected return time $1/\pi_v=8$.
+FOLLOWUP: A tired ant
+Each minute, the ant now rests where it is with probability $\tfrac14$; otherwise (probability $\tfrac34$) it moves along a uniformly chosen edge. What is the expected time until it returns to its starting vertex after leaving it?
+FOLLOWUP_ANSWER:
+The sequence of vertices visited by actual moves is the same random walk as before, so the expected number of **moves** until return is $8$. Each move takes a geometric number of minutes with success probability $\tfrac34$, i.e. $\tfrac43$ minutes on average, independent of the path. By Wald's identity the expected time is
+$$8\cdot\frac43=\frac{32}{3}\approx10.7\text{ minutes}.$$
+(If instead resting at the start in the first minute counts as "being back at the start", the lazy chain still has uniform stationary distribution and Kac gives an expected return time of $8$; state which convention you use.)
+FOLLOWUP: Ant on a tetrahedron
+Same question for an ant walking on a regular tetrahedron (4 vertices, each joined to the other 3).
+FOLLOWUP_ANSWER:
+The first move takes the ant away (1 minute). From any other vertex, each move goes back to the start with probability $\tfrac13$, so the number of further moves is geometric with mean $3$. Expected return time $1+3=4$ minutes. Kac agrees: uniform stationary distribution on 4 vertices, return time $4$.
+===END===
+===TEASER===
+SLUG: walking-the-plank
+IDS: R3B-12, R3B-13, R3B-14, R3B-15
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Walking the plank
+QUESTION:
+Pirates have captured and blindfolded you and placed you somewhere on a five-metre-long plank. Sharks wait at one end, freedom at the other. Disoriented, each step you take is one metre long, equally likely to be towards the sharks or towards freedom. If you start $x$ metres from the safe end ($x$ an integer between $0$ and $5$), what is the probability that you survive, as a function of $x$?
+HINT1:
+This is the gambler's ruin for a fair game. The probability of survival from a position depends only on that position.
+HINT2:
+Let $f(x)$ be the survival probability from $x$. Condition on the first step: $f(x)=\tfrac12f(x-1)+\tfrac12f(x+1)$ for $1\le x\le4$, with $f(0)=1$ and $f(5)=0$.
+ANSWER:
+$f(x)=1-\dfrac{x}{5}$.
+REFRESH:
+First-step analysis: condition on the first step and use the Markov property.
+A function with $f(x)=\frac12(f(x-1)+f(x+1))$ has constant increments, hence is linear.
+Optional stopping theorem: if $(M_t)$ is a martingale and $\tau$ a stopping time with $(M_{t\wedge\tau})$ bounded and $\tau<\infty$ a.s., then $\mathbb{E}[M_\tau]=M_0$.
+EXPLANATION:
+The survival probability satisfies "value here = average of the values at the two neighbours". Such a function has equal increments, so it is a straight line between the boundary values $1$ (at the safe end) and $0$ (at the shark end). A fair random walk cannot drift, so your chance of exiting at a given end is simply proportional to how close you are to it.
+
+Martingale view: your position is a fair game (a martingale). You will surely exit at one end, and on average you must end where you started, so $x=5\cdot\mathbb{P}(\text{sharks})$.
+SOLUTION: Recursion (first-step analysis)
+With $f(0)=1$, $f(5)=0$ and $f(x)=\tfrac12f(x-1)+\tfrac12f(x+1)$ for $x=1,\dots,4$:
+$$f(1)=\tfrac12+\tfrac12f(2),\quad f(2)=\tfrac12f(1)+\tfrac12f(3),\quad f(3)=\tfrac12f(2)+\tfrac12f(4),\quad f(4)=\tfrac12f(3).$$
+The recurrence says $f(x+1)-f(x)=f(x)-f(x-1)$, so the increments are a constant $d$ and $f(x)=1+dx$. The condition $f(5)=0$ gives $d=-\tfrac15$. Therefore
+$$f(x)=1-\frac x5:\qquad f(1)=\tfrac45,\ f(2)=\tfrac35,\ f(3)=\tfrac25,\ f(4)=\tfrac15.$$
+Sanity check: surviving from $1$ has the same probability as being eaten from $4$, by symmetry.
+SOLUTION: Martingale and optional stopping
+Let $X_t$ be the distance from the safe end after $t$ steps, $X_0=x$. Since steps are $\pm1$ with probability $\tfrac12$, $X_t$ is a martingale. Let $\tau$ be the first time $X_t\in\{0,5\}$. Then $\tau<\infty$ a.s. (any 5 consecutive steps in the same direction end the walk, and this happens eventually with probability 1) and $0\le X_{t\wedge\tau}\le5$ is bounded, so optional stopping applies:
+$$x=\mathbb{E}[X_\tau]=0\cdot\mathbb{P}(X_\tau=0)+5\cdot\mathbb{P}(X_\tau=5).$$
+So $\mathbb{P}(\text{eaten})=x/5$ and $\mathbb{P}(\text{survive})=1-x/5$.
+FOLLOWUP: The martingale approach
+Solve the plank problem using a martingale argument.
+FOLLOWUP_ANSWER:
+Position $X_t$ (distance from the safe end) is a martingale since each step is $\pm1$ with equal probability. The exit time $\tau$ from $\{1,\dots,4\}$ is a.s. finite and $X_{t\wedge\tau}\in[0,5]$ is bounded, so by optional stopping $\mathbb{E}[X_\tau]=x$. As $X_\tau\in\{0,5\}$, $5\,\mathbb{P}(X_\tau=5)=x$, hence survival probability $\mathbb{P}(X_\tau=0)=1-x/5$.
+FOLLOWUP: An n-metre plank
+Extend the result to a plank of length $n$ metres (start $x$ metres from the safe end), using both the recursion and the martingale approach.
+FOLLOWUP_ANSWER:
+Recursion: $f(0)=1$, $f(n)=0$, $f(x)=\tfrac12(f(x-1)+f(x+1))$ for $0<x<n$. Constant increments give $f(x)=1+dx$, and $f(n)=0$ gives $d=-1/n$: $f(x)=1-\frac{x}{n}$.
+Martingale: optional stopping at the exit time from $\{1,\dots,n-1\}$ gives $x=\mathbb{E}[X_\tau]=n\,\mathbb{P}(X_\tau=n)$, so $\mathbb{P}(\text{survive})=1-\frac xn$.
+(Bonus: $X_t^2-t$ is also a martingale, which gives the expected number of steps $\mathbb{E}[\tau]=x(n-x)$.)
+FOLLOWUP: Shorter or longer plank?
+When would you prefer a shorter plank, and when a longer one?
+FOLLOWUP_ANSWER:
+Survival is $1-\frac{x}{n}$ where $x$ is your distance from the safe end. It depends on what stays fixed when the plank changes:
+- If your distance $x$ to the safe end is fixed (the plank is extended on the shark side), survival $1-x/n$ **increases** with $n$: prefer a longer plank, which pushes the sharks away.
+- If your distance $y=n-x$ to the sharks is fixed (the plank is extended on the safe side), survival $y/n$ **decreases** with $n$: prefer a shorter plank.
+- If you are placed uniformly at random on the plank, the average survival is $\tfrac12$ whatever $n$: indifferent (though a longer plank means a longer walk, $\mathbb{E}[\tau]=x(n-x)$).
+===END===
+===TEASER===
+SLUG: feasible-correlations-three-assets
+IDS: R3B-23, R3B-24, R3B-25
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Feasible correlations
+QUESTION:
+Three assets $A$, $B$, $C$ are such that the correlation between $A$ and $B$ is $0.9$ and the correlation between $B$ and $C$ is $0.8$. Is it possible for $A$ and $C$ to have correlation $0.1$?
+HINT1:
+Not every symmetric matrix with ones on the diagonal and entries in $[-1,1]$ is a correlation matrix. What property must a correlation matrix have?
+HINT2:
+A correlation matrix must be positive semi-definite. Check the principal minors of the $3\times3$ matrix, in particular its determinant. Alternatively, think of correlations as cosines of angles between vectors.
+ANSWER:
+No: the matrix has determinant $-0.316<0$, so it is not a valid correlation matrix. Given $0.9$ and $0.8$, $\rho_{AC}$ must lie in $[0.459,\,0.982]$.
+REFRESH:
+Covariance matrices are positive semi-definite: $\mathrm{Var}(w^\top X)=w^\top\Sigma w\ge0$ for every vector $w$.
+Sylvester-type criterion: a symmetric matrix is positive semi-definite iff all its principal minors are $\ge0$ (positive definite iff all leading principal minors are $>0$).
+Determinant of $\begin{pmatrix}1&a&b\\a&1&c\\b&c&1\end{pmatrix}$ is $1+2abc-a^2-b^2-c^2$.
+EXPLANATION:
+Correlation is not an arbitrary number per pair: the three correlations must be jointly consistent. If $A$ is very close to $B$ ($0.9$) and $B$ is fairly close to $C$ ($0.8$), then $A$ cannot be almost unrelated to $C$. Geometrically, standardised random variables are unit vectors and correlations are cosines of the angles between them: $\arccos0.9\approx25.8^\circ$ and $\arccos0.8\approx36.9^\circ$, so by the triangle inequality for angles the angle between $A$ and $C$ is at most $62.7^\circ$, i.e. $\rho_{AC}\ge\cos62.7^\circ\approx0.459$. A correlation of $0.1$ (angle $84^\circ$) is impossible.
+
+Algebraically: the proposed correlation matrix has negative determinant, so some portfolio of $A,B,C$ would have negative variance.
+SOLUTION: Positive semi-definiteness
+The candidate correlation matrix is
+$$M=\begin{pmatrix}1&0.9&0.1\\0.9&1&0.8\\0.1&0.8&1\end{pmatrix}.$$
+Any correlation matrix is positive semi-definite, so all its principal minors must be nonnegative. The $1\times1$ and $2\times2$ minors are fine ($1-0.81=0.19$, $1-0.64=0.36$, $1-0.01=0.99$). The determinant is
+$$\det M=1+2(0.9)(0.8)(0.1)-0.81-0.64-0.01=1+0.144-1.46=-0.316<0.$$
+So $M$ is not positive semi-definite: there is a vector $w$ with $w^\top Mw<0$, which would be a portfolio with negative variance. Hence $A$ and $C$ cannot have correlation $0.1$.
+SOLUTION: Regression decomposition
+Standardise all three variables. Write $A=0.9B+\sqrt{1-0.81}\,U$ and $C=0.8B+\sqrt{1-0.64}\,V$, where $U,V$ have variance 1 and are uncorrelated with $B$. Then
+$$\rho_{AC}=0.9\cdot0.8+\sqrt{0.19}\sqrt{0.36}\,\rho_{UV}=0.72+0.2615\,\rho_{UV}.$$
+Since $\rho_{UV}\in[-1,1]$, $\rho_{AC}\in[0.4585,\,0.9815]$. The value $0.1$ is outside this range.
+FOLLOWUP: The allowable range
+Given the correlations $0.9$ for $(A,B)$ and $0.8$ for $(B,C)$, what is the allowable range for the correlation of $(A,C)$?
+FOLLOWUP_ANSWER:
+With $z=\rho_{AC}$, positive semi-definiteness requires $\det=1+1.44z-0.81-0.64-z^2\ge0$, i.e. $z^2-1.44z+0.45\le0$, i.e. $(z-0.72)^2\le0.0684$. So
+$$z\in\left[0.72-\sqrt{0.0684},\ 0.72+\sqrt{0.0684}\right]\approx[0.4585,\ 0.9815].$$
+Both endpoints are attainable (degenerate, singular matrices), matching the angle argument: $\cos(36.87^\circ\pm25.84^\circ)$.
+FOLLOWUP: General x and y
+If $\rho_{AB}=x$ and $\rho_{BC}=y$, which values can $\rho_{AC}$ take?
+FOLLOWUP_ANSWER:
+The $2\times2$ minors are automatically nonnegative for correlations in $[-1,1]$, so the constraint is the determinant:
+$$1+2xyz-x^2-y^2-z^2\ge0\iff (z-xy)^2\le(1-x^2)(1-y^2).$$
+Hence
+$$xy-\sqrt{(1-x^2)(1-y^2)}\ \le\ \rho_{AC}\ \le\ xy+\sqrt{(1-x^2)(1-y^2)}.$$
+Writing $x=\cos\alpha$, $y=\cos\beta$ with $\alpha,\beta\in[0,\pi]$, this is $\cos(\alpha+\beta)\le\rho_{AC}\le\cos(\alpha-\beta)$. For example $x=y=0$ allows any $\rho_{AC}\in[-1,1]$, while $x=1$ forces $\rho_{AC}=y$.
+===END===
+===TEASER===
+SLUG: uniform-distribution-function
+IDS: R3B-30, R3B-31, R3B-32, R3B-33
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Uniform distribution function
+QUESTION:
+What is the (cumulative) distribution function of a uniform $U(a,b)$ random variable, $a<b$?
+HINT1:
+Start from the density, or from the defining property that probability is spread evenly over $[a,b]$.
+HINT2:
+The density is constant on $[a,b]$ and zero outside; integrate it from $-\infty$ to $x$, treating $x<a$, $a\le x\le b$ and $x>b$ separately.
+ANSWER:
+$F(x)=0$ for $x<a$, $F(x)=\dfrac{x-a}{b-a}$ for $a\le x\le b$, $F(x)=1$ for $x>b$.
+REFRESH:
+Distribution function: $F(x)=\mathbb{P}(X\le x)=\int_{-\infty}^x f(t)\,dt$; it is nondecreasing, right-continuous, with limits $0$ at $-\infty$ and $1$ at $+\infty$.
+EXPLANATION:
+"Uniform" means the probability of an interval inside $[a,b]$ is proportional to its length. The whole interval has probability $1$, so the constant of proportionality is $1/(b-a)$, and $\mathbb{P}(X\le x)$ is the fraction of $[a,b]$ lying to the left of $x$. Don't forget the pieces outside $[a,b]$: an interviewer checking fundamentals wants the full piecewise definition.
+SOLUTION: Integrating the density
+The density is $f(t)=\frac1{b-a}$ for $a\le t\le b$ and $0$ otherwise. Hence
+- for $x<a$: $F(x)=\int_{-\infty}^x0\,dt=0$;
+- for $a\le x\le b$: $F(x)=\int_a^x\frac{dt}{b-a}=\frac{x-a}{b-a}$;
+- for $x>b$: $F(x)=\int_a^b\frac{dt}{b-a}=1$.
+SOLUTION: From the uniformity property
+Uniformity means $\mathbb{P}(s\le X\le t)=k(t-s)$ for $a\le s\le t\le b$. Taking $s=a$, $t=b$ gives $1=k(b-a)$, so $k=\frac1{b-a}$. Then for $a\le x\le b$, $F(x)=\mathbb{P}(a\le X\le x)=\frac{x-a}{b-a}$, and $F=0$ below $a$, $F=1$ above $b$ since $X\in[a,b]$ almost surely.
+FOLLOWUP: Exponential distribution function
+What is the distribution function of an exponential random variable with rate $\lambda>0$?
+FOLLOWUP_ANSWER:
+The density is $\lambda e^{-\lambda t}$ for $t\ge0$ and $0$ for $t<0$. So $F(x)=0$ for $x<0$ and, for $x\ge0$,
+$$F(x)=\int_0^x\lambda e^{-\lambda t}\,dt=1-e^{-\lambda x}.$$
+Equivalently the survival function is $\mathbb{P}(X>x)=e^{-\lambda x}$, which gives memorylessness: $\mathbb{P}(X>s+t\mid X>s)=e^{-\lambda t}$.
+FOLLOWUP: Cauchy distribution function
+What is the distribution function of a standard Cauchy random variable?
+FOLLOWUP_ANSWER:
+The density is $\frac{1}{\pi(1+t^2)}$ on $\mathbb{R}$, and $\frac{d}{dt}\arctan t=\frac1{1+t^2}$, with $\arctan(-\infty)=-\frac\pi2$. So
+$$F(x)=\int_{-\infty}^x\frac{dt}{\pi(1+t^2)}=\frac1\pi\left(\arctan x+\frac\pi2\right)=\frac12+\frac{\arctan x}{\pi}.$$
+(It is the law of $\tan\Theta$ for $\Theta\sim U(-\frac\pi2,\frac\pi2)$, and of the ratio of two independent $N(0,1)$ variables.)
+FOLLOWUP: Standard normal density
+What is the probability density function of a $N(0,1)$ random variable?
+FOLLOWUP_ANSWER:
+$$\varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2},\qquad x\in\mathbb{R}.$$
+The constant comes from the Gaussian integral: $I=\int e^{-x^2/2}dx$ satisfies $I^2=\iint e^{-(x^2+y^2)/2}dx\,dy=\int_0^{2\pi}\int_0^\infty e^{-r^2/2}r\,dr\,d\theta=2\pi$, so $I=\sqrt{2\pi}$. The distribution function $\Phi(x)=\int_{-\infty}^x\varphi(t)\,dt$ has no closed form.
+===END===
+===TEASER===
+SLUG: infinite-variance-example
+IDS: R3B-38, R3B-39, R3B-40, R3B-41
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: medium
+TITLE: A distribution with infinite variance
+QUESTION:
+Give an example of a distribution with infinite variance.
+HINT1:
+Variance is infinite when $\mathbb{E}[X^2]=\int x^2f(x)\,dx$ diverges. What kind of tails make this happen?
+HINT2:
+Try a density with polynomial tails, $f(x)\sim c/|x|^{p}$. The integral of $x^2f(x)$ converges at infinity only if $p>3$. A famous density decays like $1/x^2$.
+ANSWER:
+The Cauchy distribution, density $\frac{1}{\pi(1+x^2)}$, has infinite second moment (and no mean either); a Pareto density $2/x^3$ on $[1,\infty)$ has finite mean $2$ and infinite variance.
+REFRESH:
+Comparison test for integrals: $\int_1^\infty x^{-q}\,dx$ converges iff $q>1$.
+Existence of $\mathbb{E}[X]$ (Lebesgue sense): requires $\mathbb{E}|X|<\infty$.
+Jensen's inequality: for convex $\phi$, $\phi(\mathbb{E}Y)\le\mathbb{E}\phi(Y)$.
+EXPLANATION:
+Variance measures the average squared distance from the mean; if the tails are heavy enough, rare huge values make this average infinite. For a density decaying like $|x|^{-p}$, $x^2f(x)\sim|x|^{2-p}$, which is integrable at infinity only if $p>3$. The Cauchy density decays like $x^{-2}$, far too slowly; it is so heavy-tailed that even $\mathbb{E}|X|$ is infinite (the integrand $|x|f(x)\sim1/|x|$). Taking a tail exponent between 2 and 3 gives a finite mean but infinite variance.
+SOLUTION: Cauchy distribution
+Density $f(x)=\frac1\pi\frac1{1+x^2}$. Second moment:
+$$\int_{-\infty}^\infty\frac{x^2}{\pi(1+x^2)}\,dx=\infty,$$
+because the integrand tends to $\frac1\pi$ as $x\to\pm\infty$. So the variance is infinite.
+
+Subtlety: the mean is not defined either. $\int_0^R\frac{x}{\pi(1+x^2)}dx=\frac{1}{2\pi}\ln(1+R^2)\to\infty$, so $\mathbb{E}|X|=\infty$ and $\mathbb{E}X$ does not exist in the Lebesgue sense. The symmetric integral $\int_{-R}^R$ is $0$ for every $R$, so the principal value is $0$, but that is not an expectation (and the sample mean of Cauchy variables is again Cauchy: it does not converge).
+SOLUTION: Pareto distribution
+Take $f(x)=\alpha x^{-\alpha-1}$ on $[1,\infty)$ with $\alpha>0$. Then
+$$\mathbb{E}X=\int_1^\infty\alpha x^{-\alpha}dx=\frac{\alpha}{\alpha-1}\ (\alpha>1),\qquad \mathbb{E}X^2=\int_1^\infty\alpha x^{1-\alpha}dx<\infty\iff\alpha>2.$$
+So any $\alpha\in(0,2]$ gives infinite variance; with $\alpha=2$, density $2/x^3$, the mean is $2$ and $\mathbb{E}X^2=\int_1^\infty\frac{2}{x}dx=\infty$.
+FOLLOWUP: Finite mean, infinite variance
+Give an example where the expectation exists properly (i.e. $\mathbb{E}|X|<\infty$) but the variance is infinite.
+FOLLOWUP_ANSWER:
+Pareto with $\alpha=2$: density $f(x)=2x^{-3}$ on $[1,\infty)$. $\mathbb{E}X=\int_1^\infty2x^{-2}dx=2$, while $\mathbb{E}X^2=\int_1^\infty2x^{-1}dx=\infty$. Other examples: Student's $t$ with 2 degrees of freedom (density $\frac{1}{(2+x^2)^{3/2}}$, tails $\sim|x|^{-3}$), or the discrete law $\mathbb{P}(X=k)=\frac{c}{k^3}$, $k\ge1$, for which $\sum k\cdot k^{-3}<\infty$ but $\sum k^2\cdot k^{-3}=\sum\frac1k=\infty$.
+FOLLOWUP: Constructing more examples
+Do you know of, or can you construct, other densities with infinite variance?
+FOLLOWUP_ANSWER:
+Any density whose tails decay like $|x|^{-p}$ with $p\le3$ works: for instance $f(x)=\frac{c_p}{(1+|x|)^p}$ with $1<p\le3$ (normalise with $c_p=\frac{p-1}{2}$). Named examples: Student's $t$ with $\nu\le2$ degrees of freedom; Pareto with $\alpha\le2$; the Lévy distribution; all $\alpha$-stable laws with $\alpha<2$. A quick construction from a uniform: if $U\sim U(0,1)$, then $X=U^{-1/2}$ has $\mathbb{P}(X>x)=x^{-2}$ for $x\ge1$ (Pareto with $\alpha=2$): finite mean, infinite variance; $X=1/U$ even has infinite mean.
+FOLLOWUP: Lower moments exist
+If $\mathbb{E}|X|^k<\infty$, does $\mathbb{E}|X|^m$ exist for $0\le m\le k$? Prove it.
+FOLLOWUP_ANSWER:
+Yes. Pointwise, $|X|^m\le1+|X|^k$: if $|X|\le1$ then $|X|^m\le1$; if $|X|>1$ then $|X|^m\le|X|^k$ because $m\le k$. Taking expectations, $\mathbb{E}|X|^m\le1+\mathbb{E}|X|^k<\infty$.
+A sharper statement (Lyapunov's inequality): for $0<m\le k$, $(\mathbb{E}|X|^m)^{1/m}\le(\mathbb{E}|X|^k)^{1/k}$, obtained from Jensen's inequality with the convex function $\phi(y)=y^{k/m}$ applied to $Y=|X|^m$. (The statement needs a probability measure; it fails for general measures.)
+===END===
+===TEASER===
+SLUG: density-of-function-of-random-variable
+IDS: R3B-42, R3B-43, R3B-44, R3B-45
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Density of g(X)
+QUESTION:
+A random variable $X$ has density $f_X$. What is the density of $Y=g(X)$?
+HINT1:
+Densities are awkward to transform directly; distribution functions are easy. Start from $\mathbb{P}(Y\le y)$.
+HINT2:
+If $g$ is increasing with a differentiable inverse, $\{g(X)\le y\}=\{X\le g^{-1}(y)\}$. Then differentiate using the chain rule. Think about what changes if $g$ is decreasing or not one-to-one.
+ANSWER:
+For $g$ strictly monotone and differentiable: $f_Y(y)=f_X\big(g^{-1}(y)\big)\left|\dfrac{d}{dy}g^{-1}(y)\right|$; in general $f_Y(y)=\sum_{x:\,g(x)=y}\dfrac{f_X(x)}{|g'(x)|}$.
+REFRESH:
+Density as derivative: $f_Y(y)=\frac{d}{dy}F_Y(y)$ wherever $F_Y$ is differentiable.
+Chain rule: $\frac{d}{dy}F(h(y))=F'(h(y))\,h'(y)$.
+Inverse function derivative: $(g^{-1})'(y)=\frac{1}{g'(g^{-1}(y))}$.
+EXPLANATION:
+Probability is conserved under a change of variables: the mass that $X$ puts in a small interval $[x,x+dx]$ is carried by $g$ to a small interval around $y=g(x)$ of length $|g'(x)|\,dx$. So the density at $y$ is the density at $x$ divided by the stretching factor $|g'(x)|$. The cleanest derivation goes through the distribution function, which transforms by simple substitution; the density then comes from the chain rule. If several $x$ map to the same $y$, their contributions add.
+SOLUTION: Through the distribution function
+**Increasing $g$** with differentiable inverse:
+$$F_Y(y)=\mathbb{P}(g(X)\le y)=\mathbb{P}\big(X\le g^{-1}(y)\big)=F_X\big(g^{-1}(y)\big),$$
+so
+$$f_Y(y)=f_X\big(g^{-1}(y)\big)\,\frac{d}{dy}g^{-1}(y).$$
+**Decreasing $g$**: $\{g(X)\le y\}=\{X\ge g^{-1}(y)\}$, so $F_Y(y)=1-F_X(g^{-1}(y))$ (for continuous $X$) and $f_Y(y)=-f_X(g^{-1}(y))\frac{d}{dy}g^{-1}(y)$, which is positive since $g^{-1}$ is decreasing. Both cases combine into
+$$f_Y(y)=f_X\big(g^{-1}(y)\big)\left|\frac{d}{dy}g^{-1}(y)\right|=\frac{f_X(x)}{|g'(x)|}\Big|_{x=g^{-1}(y)}.$$
+**Non-monotone $g$** (piecewise monotone): split into monotone pieces and add: $f_Y(y)=\sum_{x:\,g(x)=y}\frac{f_X(x)}{|g'(x)|}$.
+
+Example: $X\sim N(0,1)$, $Y=X^2$. For $y>0$ the preimages are $\pm\sqrt y$ with $|g'|=2\sqrt y$, so $f_Y(y)=2\cdot\frac{\varphi(\sqrt y)}{2\sqrt y}=\frac{e^{-y/2}}{\sqrt{2\pi y}}$, the $\chi^2_1$ density.
+FOLLOWUP: Distribution function of g(X)
+What is the distribution function of $Y=g(X)$?
+FOLLOWUP_ANSWER:
+From the derivation: if $g$ is increasing, $F_Y(y)=F_X\big(g^{-1}(y)\big)$; if $g$ is decreasing, $F_Y(y)=\mathbb{P}(X\ge g^{-1}(y))=1-F_X\big(g^{-1}(y)\big)$ (for continuous $X$). In general $F_Y(y)=\mathbb{P}\big(X\in g^{-1}((-\infty,y])\big)=\int_{\{x:\,g(x)\le y\}}f_X(x)\,dx$.
+FOLLOWUP: Is E[g(X)] equal to g(E[X])?
+With $Y=g(X)$, can you conclude $\mathbb{E}(Y)=g(\mathbb{E}(X))$? Give a counter-example. What approximation can be used instead?
+FOLLOWUP_ANSWER:
+No, only for affine $g$. Counter-example: $X=\pm1$ with probability $\tfrac12$ each and $g(x)=x^2$: $\mathbb{E}[g(X)]=1$ but $g(\mathbb{E}X)=g(0)=0$. (More generally $\mathbb{E}[X^2]-(\mathbb{E}X)^2=\mathrm{Var}X$.)
+Approximation (delta method): Taylor-expand $g$ around $\mu=\mathbb{E}X$,
+$$g(X)\approx g(\mu)+g'(\mu)(X-\mu)+\tfrac12g''(\mu)(X-\mu)^2,$$
+and take expectations: $\mathbb{E}[g(X)]\approx g(\mu)+\tfrac12g''(\mu)\,\mathrm{Var}(X)$. The first-order term vanishes; the correction is a convexity adjustment.
+FOLLOWUP: Jensen's inequality
+What is Jensen's inequality?
+FOLLOWUP_ANSWER:
+If $\phi$ is convex and $X$ and $\phi(X)$ are integrable, then
+$$\phi(\mathbb{E}X)\le\mathbb{E}[\phi(X)],$$
+with the reverse inequality for concave $\phi$ (and equality for affine $\phi$, or when $X$ is constant, if $\phi$ is strictly convex).
+Proof: a convex function lies above its tangent (supporting) line at $\mu=\mathbb{E}X$: there is $c$ with $\phi(x)\ge\phi(\mu)+c(x-\mu)$ for all $x$. Put $x=X$ and take expectations: $\mathbb{E}\phi(X)\ge\phi(\mu)+c\cdot0$.
+Examples: $(\mathbb{E}X)^2\le\mathbb{E}X^2$; $\mathbb{E}\ln X\le\ln\mathbb{E}X$; in finance, a convex payoff (an option) is worth more under volatility than its payoff at the mean.
+===END===
+===TEASER===
+SLUG: kth-order-statistic-distribution
+IDS: R3B-46, R3B-47, R3B-48
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: medium
+TITLE: The k-th order statistic
+QUESTION:
+Let $X_1,\dots,X_n$ be i.i.d. with distribution function $F$ and density $f$, and let $X_{(1)}\le X_{(2)}\le\dots\le X_{(n)}$ be the sorted sample. What are the distribution function and the density of the $k$-th order statistic $X_{(k)}$?
+HINT1:
+Translate the event $\{X_{(k)}\le x\}$ into a statement about how many of the $X_i$ are $\le x$.
+HINT2:
+The number of $X_i$ that are $\le x$ is binomial with parameters $n$ and $F(x)$. For the density, either differentiate the sum (it telescopes), or think about which configuration of the $n$ points puts the $k$-th smallest in $[x,x+dx]$.
+ANSWER:
+$F_{(k)}(x)=\sum_{j=k}^n\binom nj F(x)^j(1-F(x))^{n-j}$ and $f_{(k)}(x)=\dfrac{n!}{(k-1)!\,(n-k)!}\,F(x)^{k-1}(1-F(x))^{n-k}f(x)$.
+REFRESH:
+Binomial distribution: the number of successes in $n$ independent trials with success probability $p$ has $\mathbb{P}(S=j)=\binom nj p^j(1-p)^{n-j}$.
+Identity: $j\binom nj=n\binom{n-1}{j-1}$ and $(n-j)\binom nj=n\binom{n-1}{j}$.
+Multinomial coefficient: the number of ways to split $n$ labelled items into groups of sizes $a,b,c$ ($a+b+c=n$) is $\frac{n!}{a!\,b!\,c!}$.
+EXPLANATION:
+The $k$-th smallest value is at most $x$ exactly when at least $k$ of the sample points fall at or below $x$. Each point does so independently with probability $F(x)$, so the count is binomial, and the distribution function is a binomial tail.
+
+For the density, the heuristic picture is the fastest: for the $k$-th smallest to be in $[x,x+dx]$, we need $k-1$ points below $x$, one point in $[x,x+dx]$, and $n-k$ points above. The probability is a multinomial term: $\frac{n!}{(k-1)!\,1!\,(n-k)!}F(x)^{k-1}\,f(x)\,dx\,(1-F(x))^{n-k}$. Differentiating the binomial tail directly gives the same result after a telescoping sum.
+SOLUTION: Binomial tail, then differentiate
+**Distribution.** Let $S(x)=\#\{i:X_i\le x\}\sim\mathrm{Bin}(n,F(x))$. Then $\{X_{(k)}\le x\}=\{S(x)\ge k\}$, so
+$$F_{(k)}(x)=\sum_{j=k}^n\binom nj F^j(1-F)^{n-j}\qquad(F=F(x)).$$
+**Density.** Differentiate each term using $F'=f$:
+$$\frac{d}{dx}\Big[\binom njF^j(1-F)^{n-j}\Big]=f\Big[j\binom njF^{j-1}(1-F)^{n-j}-(n-j)\binom njF^j(1-F)^{n-j-1}\Big].$$
+With $j\binom nj=n\binom{n-1}{j-1}$ and $(n-j)\binom nj=n\binom{n-1}{j}$, set $a_j=\binom{n-1}{j}F^j(1-F)^{n-1-j}$ (with $a_n=0$). The derivative of the $j$-th term is $nf\,(a_{j-1}-a_j)$. Summing from $j=k$ to $n$ telescopes:
+$$f_{(k)}(x)=nf\sum_{j=k}^n(a_{j-1}-a_j)=nf\,(a_{k-1}-a_n)=nf\binom{n-1}{k-1}F^{k-1}(1-F)^{n-k}.$$
+Since $n\binom{n-1}{k-1}=\frac{n!}{(k-1)!(n-k)!}$,
+$$f_{(k)}(x)=\frac{n!}{(k-1)!\,(n-k)!}F(x)^{k-1}\big(1-F(x)\big)^{n-k}f(x).$$
+SOLUTION: Multinomial heuristic
+For small $dx$, $\{X_{(k)}\in[x,x+dx]\}$ happens (up to $o(dx)$) when exactly $k-1$ points are below $x$, one point is in $[x,x+dx]$ and $n-k$ are above $x+dx$. Choosing which points play which role gives $\frac{n!}{(k-1)!\,1!\,(n-k)!}$ configurations, each with probability $F(x)^{k-1}\cdot f(x)dx\cdot(1-F(x))^{n-k}$. Dividing by $dx$ gives the same density. Special cases: $f_{(n)}=nF^{n-1}f$ (maximum), $f_{(1)}=n(1-F)^{n-1}f$ (minimum).
+FOLLOWUP: Exponential samples
+Simplify the distribution and density of $X_{(k)}$ when the $X_i$ are exponential with rate $\lambda$.
+FOLLOWUP_ANSWER:
+With $F(x)=1-e^{-\lambda x}$ and $f(x)=\lambda e^{-\lambda x}$ for $x\ge0$:
+$$F_{(k)}(x)=\sum_{j=k}^n\binom nj(1-e^{-\lambda x})^je^{-\lambda x(n-j)},\qquad f_{(k)}(x)=\frac{n!}{(k-1)!(n-k)!}\lambda\,(1-e^{-\lambda x})^{k-1}e^{-\lambda(n-k+1)x}.$$
+Much nicer structure via memorylessness (Rényi representation): the minimum of $n$ exponentials is $\mathrm{Exp}(n\lambda)$; after it, the remaining $n-1$ are again i.i.d. exponential, so the next gap is $\mathrm{Exp}((n-1)\lambda)$, and so on. Hence
+$$X_{(k)}\overset{d}{=}\sum_{i=1}^k\frac{E_i}{(n-i+1)\lambda},\quad E_i\text{ i.i.d. }\mathrm{Exp}(1),\qquad \mathbb{E}X_{(k)}=\frac1\lambda\sum_{i=1}^k\frac1{n-i+1}.$$
+In particular $X_{(1)}\sim\mathrm{Exp}(n\lambda)$ and $\mathbb{E}X_{(n)}=\frac{1}{\lambda}\left(1+\frac12+\dots+\frac1n\right)$.
+FOLLOWUP: Two order statistics jointly
+For $k_1<k_2$, what is the joint distribution function of $(X_{(k_1)},X_{(k_2)})$?
+FOLLOWUP_ANSWER:
+Let $G(x,y)=\mathbb{P}(X_{(k_1)}\le x,\ X_{(k_2)}\le y)$.
+- If $y\le x$: since $X_{(k_1)}\le X_{(k_2)}$, the first condition is implied, so $G(x,y)=F_{(k_2)}(y)=\sum_{j=k_2}^n\binom njF(y)^j(1-F(y))^{n-j}$.
+- If $x<y$: we need at least $k_1$ points in $(-\infty,x]$ and at least $k_2$ points in $(-\infty,y]$. With $i$ points in $(-\infty,x]$, $j$ in $(x,y]$ and $n-i-j$ above $y$ (a trinomial split),
+$$G(x,y)=\sum_{i=k_1}^n\ \sum_{j=\max(0,k_2-i)}^{n-i}\frac{n!}{i!\,j!\,(n-i-j)!}F(x)^i\big(F(y)-F(x)\big)^j\big(1-F(y)\big)^{n-i-j}.$$
+The joint density (by the multinomial heuristic) is, for $x<y$,
+$$f_{(k_1,k_2)}(x,y)=\frac{n!}{(k_1-1)!\,(k_2-k_1-1)!\,(n-k_2)!}F(x)^{k_1-1}f(x)\big(F(y)-F(x)\big)^{k_2-k_1-1}f(y)\big(1-F(y)\big)^{n-k_2},$$
+and $0$ for $x\ge y$.
+===END===

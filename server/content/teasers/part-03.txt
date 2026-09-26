@@ -1,0 +1,742 @@
+===TEASER===
+SLUG: cube-ending-in-11
+IDS: G4A-12
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Cube of an integer ending in 11
+QUESTION:
+Let $x$ be an integer chosen uniformly at random between $1$ and $10^{12}$. What is the probability that $x^3$ ends with the digits $11$?
+HINT1:
+Which digits of $x$ can possibly influence the last two digits of $x^3$?
+HINT2:
+Write $x = a + 10b$ with $a$ the units digit. Expand $(a+10b)^3$ and look first at the units digit, then at the tens digit.
+ANSWER:
+$1/100$ — exactly the integers ending in $71$ work.
+REFRESH:
+- **Binomial theorem:** $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$.
+- **Working modulo 100:** the last two digits of an integer $n$ are $n \bmod 100$, and $(n \bmod 100)$ of a product/power depends only on the factors mod 100.
+EXPLANATION:
+The last two digits of $x^3$ depend only on the last two digits of $x$ (everything else is a multiple of $100$). So the question is really: among the $100$ possible endings $00,01,\dots,99$, how many give a cube ending in $11$? Since $10^{12}$ is a multiple of $100$, every ending occurs equally often among $1,\dots,10^{12}$, so the probability is (number of good endings)$/100$.
+
+Finding the good endings is a two-step digit chase: the units digit of $x^3$ is the units digit of $a^3$, which forces $a = 1$; then the tens digit is controlled by the term $30a^2 b = 30b$, which forces the tens digit of $x$ to be $7$. There is exactly one good ending, $71$ (and indeed $71^3 = 357911$).
+SOLUTION: Digit-by-digit expansion
+Write $x = a + 10b$ where $a \in \{0,\dots,9\}$ is the units digit and $b \ge 0$. Then
+$$x^3 = a^3 + 30a^2 b + 300 a b^2 + 1000 b^3.$$
+The last two terms are multiples of $100$ and do not affect the last two digits.
+
+*Units digit.* $30a^2b$ is a multiple of $10$, so the units digit of $x^3$ is the units digit of $a^3$. The cubes of $0,\dots,9$ are $0,1,8,27,64,125,216,343,512,729$, with units digits $0,1,8,7,4,5,6,3,2,9$ — all distinct, and only $a = 1$ gives $1$.
+
+*Tens digit.* With $a=1$: $x^3 \equiv 1 + 30b \pmod{100}$. We need $1 + 30b \equiv 11 \pmod{100}$, i.e. $30 b \equiv 10 \pmod{100}$, i.e. $3b \equiv 1 \pmod{10}$. Only the units digit of $b$ matters, and $3 \cdot 7 = 21$ is the only multiple of $3$ (with factor $0..9$) ending in $1$. So the units digit of $b$ (= tens digit of $x$) is $7$.
+
+Hence $x^3$ ends in $11$ iff $x$ ends in $71$. Check: $71^3 = 357911$.
+
+*Counting.* Among $1,\dots,10^{12}$, each two-digit ending occurs exactly $10^{12}/100 = 10^{10}$ times. So
+$$P = \frac{10^{10}}{10^{12}} = \frac{1}{100}.$$
+SOLUTION: Group theory modulo 100
+$11$ is coprime to $100$, and $x^3$ is coprime to $100$ iff $x$ is, so we only need to look at the group of units $(\mathbb Z/100\mathbb Z)^\times$, which has $\varphi(100) = 40$ elements and exponent $\operatorname{lcm}(\lambda(4),\lambda(25)) = \operatorname{lcm}(2,20) = 20$. Since $\gcd(3,20) = 1$, the map $u \mapsto u^3$ is a bijection of this group (its inverse is $u\mapsto u^{7}$, because $3\cdot 7 = 21 \equiv 1 \pmod{20}$). So exactly one residue class mod $100$ cubes to $11$, namely $11^7 \bmod 100 = 71$. Each residue class has probability $1/100$, so the answer is $1/100$.
+===END===
+
+===TEASER===
+SLUG: boys-and-girls-at-least-one-son
+IDS: G4A-13, H4B-19, R3A-48
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Two children, at least one boy
+QUESTION:
+A company is holding a dinner for working mothers who have **at least one son**. Ms. Jackson, a mother of two children, is invited. What is the probability that both of her children are boys?
+
+Assume each child is a boy or a girl with probability $1/2$, independently of the other.
+HINT1:
+List all the equally likely two-child families before you use the information you were given. What exactly does the invitation rule out?
+HINT2:
+Order the children (older, younger): the four outcomes $bb, bg, gb, gg$ are equally likely. Condition on the event "at least one boy" and count.
+ANSWER:
+$1/3$
+REFRESH:
+- **Conditional probability:** $P(A\mid B) = P(A\cap B)/P(B)$ for $P(B) > 0$.
+- **Bayes' formula:** $P(A\mid B) = \dfrac{P(B\mid A)P(A)}{\sum_j P(B\mid A_j)P(A_j)}$ for a partition $(A_j)$.
+EXPLANATION:
+The information "at least one son" does not tell you *which* child is a boy. It only rules out the family $gg$. The remaining three families $bb$, $bg$, $gb$ were equally likely before, and they remain equally likely after (conditioning on an event just renormalises the probabilities inside it). Only one of the three is $bb$, so the answer is $1/3$, not the intuitive $1/2$.
+
+The intuitive $1/2$ would be right if you had learnt something about a *specific* child (e.g. "the older one is a boy", or "the child I see is a boy") — see the next puzzle. The difference is in *how* the information was generated.
+SOLUTION: Direct conditioning
+Label outcomes by (older, younger): $\Omega = \{bb, bg, gb, gg\}$, each with probability $1/4$. Let $B = \{\text{at least one boy}\} = \{bb, bg, gb\}$ and $A = \{bb\}$. Since $A \subset B$,
+$$P(A\mid B) = \frac{P(A\cap B)}{P(B)} = \frac{P(A)}{P(B)} = \frac{1/4}{3/4} = \frac13.$$
+SOLUTION: Bayes with an explicit information mechanism
+Let the mechanism be "the mother is invited iff she has at least one son". Then $P(\text{invited}\mid bb) = 1$, $P(\text{invited}\mid \text{one of each}) = 1$, $P(\text{invited}\mid gg) = 0$, with priors $1/4$, $1/2$, $1/4$. So
+$$P(bb \mid \text{invited}) = \frac{1\cdot\frac14}{1\cdot \frac14 + 1\cdot\frac12 + 0\cdot\frac14} = \frac13.$$
+
+Variants in other books. Heard on the Street asks the mirror question: "I have two children and one of them is a girl; what is the probability I have two girls?" — by the same computation, $1/3$. The red book asks: "A woman has two babies, one of them is a girl; what is the probability that the other is a boy?" Reading "one of them is a girl" as "at least one is a girl", the families $gb$, $bg$, $gg$ remain and two of them contain a boy, so the answer is $2/3$. (If instead a *specific* baby was identified as a girl, the answer would be $1/2$ — the wording is ambiguous, and in an interview you should say which interpretation you use.)
+===END===
+
+===TEASER===
+SLUG: boys-and-girls-child-seen
+IDS: G4A-14, H4B-20
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Two children, you see one boy
+QUESTION:
+Your new colleague Ms. Parker is known to have two children. You see her walking with one of her children, and that child is a boy. What is the probability that both of her children are boys?
+
+Assume each child is a boy or a girl with probability $1/2$, independently, and that the child walking with her is equally likely to be either of her two children. Compare with the previous puzzle (a mother known to have *at least one* son), where the answer was $1/3$.
+HINT1:
+You have now learnt the sex of one *particular* child. What is left uncertain?
+HINT2:
+Use Bayes with the likelihood of *observing* a boy: in a mixed family you see the boy only half the time, while in a $bb$ family you always see a boy.
+ANSWER:
+$1/2$
+REFRESH:
+- **Bayes' formula:** $P(A\mid B) = \dfrac{P(B\mid A)P(A)}{\sum_j P(B\mid A_j)P(A_j)}$ for a partition $(A_j)$.
+- **Independence:** if $X$ and $Y$ are independent, conditioning on $X$ does not change the law of $Y$.
+EXPLANATION:
+Here the information is about a *specific* child: the one you are looking at. The other child's sex is independent of this one, so it is a boy with probability $1/2$, and both are boys with probability $1/2$.
+
+Why is it different from "at least one son" ($1/3$)? Because of how the information is produced. In a mixed family, the statement "she has at least one son" is true with certainty, but the event "the child I happen to see is a boy" happens only half the time. So seeing a boy is twice as strong evidence for $bb$ (likelihood $1$) as for a mixed family (likelihood $1/2$), which exactly cancels the fact that mixed families are twice as common a priori.
+SOLUTION: The other child is independent
+Call the child you see child 1 and the other child 2. Child 2's sex is independent of child 1's and is a boy with probability $1/2$. "Both boys" given "child 1 is a boy" is "child 2 is a boy", so the probability is $1/2$.
+SOLUTION: Bayes with the observation mechanism
+Priors: $P(bb) = 1/4$, $P(\text{mixed}) = 1/2$, $P(gg) = 1/4$. Likelihood of "the child seen is a boy" (the child is picked at random from the two): $1$, $1/2$, $0$. Therefore
+$$P(bb\mid \text{see a boy}) = \frac{1\cdot\frac14}{1\cdot\frac14 + \frac12\cdot\frac12 + 0\cdot\frac14} = \frac{1/4}{1/2} = \frac12.$$
+Compare with "told there is at least one boy": the only change is $P(\text{info}\mid\text{mixed})$, which is $1$ there and $1/2$ here, giving $1/3$ versus $1/2$.
+
+Heard on the Street states the same puzzle with girls: a parent of two says one is a girl, and a girl (correctly identified as the parent's daughter) opens the door; the probability of two girls is again $1/2$.
+===END===
+
+===TEASER===
+SLUG: all-girl-world
+IDS: G4A-15
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: All-girl world?
+QUESTION:
+In a primitive society, every couple prefers to have a baby girl. Each child is a girl with probability $50\%$, independently of all other children. Each couple keeps having children until they get a girl, and stops as soon as they have one. What will eventually happen to the fraction of girls in this society?
+HINT1:
+Can a stopping rule change the probability that the *next* baby born is a girl?
+HINT2:
+Compute the expected number of girls and the expected number of boys per family (the number of boys before the first girl is geometric).
+ANSWER:
+Nothing changes: the fraction of girls stays at $50\%$.
+REFRESH:
+- **Geometric distribution:** if $N$ is the number of trials up to and including the first success with success probability $p$, then $E[N] = 1/p$.
+- **Law of large numbers:** over many families, the total number of girls (boys) divided by the number of families tends to the expected number per family.
+EXPLANATION:
+The couples' rule decides *when to stop*, but every single birth is still a fair coin flip independent of the past. Across the whole society, the births form a long sequence of independent fair flips, so half of them are girls: no stopping rule can bias a fair coin. Concretely, every family has exactly one girl, and on average exactly one boy (half the families have zero boys, a quarter have one, an eighth have two, ...), so boys and girls balance.
+SOLUTION: Expected counts per family
+For one family, let $N$ be the number of children. Each child is a girl with probability $1/2$ and the family stops at the first girl, so $N \sim \text{Geometric}(1/2)$ on $\{1,2,\dots\}$ and $E[N] = 2$.
+
+Each family has exactly one girl, and $N - 1$ boys, so
+$$E[\#\text{girls}] = 1, \qquad E[\#\text{boys}] = E[N] - 1 = 1.$$
+With many independent families, by the law of large numbers the total girls and total boys are both approximately (number of families)$\times 1$, so the fraction of girls tends to $\frac{1}{1+1} = \frac12$.
+SOLUTION: Births as fair coin flips
+List all births in the society in the order they occur. Whether a birth happens at all depends only on the past (a couple has another child only if all previous children were boys), but its sex is independent of the past and is a girl with probability $1/2$. Hence the number of girls minus half the number of births is a martingale-type sum of centred independent terms, and the proportion of girls among births converges to $1/2$. Since everyone who is born is counted, the fraction of girls in the society stays at $50\%$.
+===END===
+
+===TEASER===
+SLUG: two-headed-coin-bayes
+IDS: G4A-16, H4B-02, R3A-34, R3A-35, R3A-36
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Unfair coin among fair ones
+QUESTION:
+You are given $1000$ coins. One of them has heads on both sides; the other $999$ are fair. You choose one coin at random and toss it $10$ times. It comes up heads every time. What is the probability that the coin you chose is the two-headed one?
+HINT1:
+Two explanations compete for "10 heads": a rare coin that always gives heads, or a common coin that got lucky. How rare is each?
+HINT2:
+Apply Bayes' formula with the prior $1/1000$ for the two-headed coin and the likelihoods $1$ and $(1/2)^{10}$.
+ANSWER:
+$\dfrac{1024}{2023} \approx 0.506$ — about one half.
+REFRESH:
+- **Bayes' formula:** for a partition $A, A^c$: $P(A\mid B) = \dfrac{P(B\mid A)P(A)}{P(B\mid A)P(A) + P(B\mid A^c)P(A^c)}$.
+- $2^{10} = 1024$.
+EXPLANATION:
+Before tossing, the two-headed coin has probability $1/1000$. Ten heads is certain for it, and happens with probability $1/1024$ for a fair coin. So the prior odds (two-headed : fair) are $1 : 999$, and the evidence multiplies them by the likelihood ratio $1 : \frac{1}{1024}$, i.e. by $1024$. Posterior odds $1024 : 999$ — almost exactly even. The punchline is that $2^{10} \approx 1000$: the rarity of the special coin is almost exactly compensated by the rarity of ten heads with a fair coin.
+SOLUTION: Bayes' formula
+Let $A$ = "the chosen coin is two-headed", $B$ = "ten heads in ten tosses". Then $P(A) = \frac{1}{1000}$, $P(A^c) = \frac{999}{1000}$, $P(B\mid A) = 1$, $P(B\mid A^c) = 2^{-10} = \frac{1}{1024}$.
+$$P(A\mid B) = \frac{1\cdot\frac{1}{1000}}{1\cdot\frac1{1000} + \frac{1}{1024}\cdot\frac{999}{1000}} = \frac{1}{1 + \frac{999}{1024}} = \frac{1024}{2023} \approx 0.506.$$
+SOLUTION: Odds form
+Posterior odds $=$ prior odds $\times$ likelihood ratio:
+$$\frac{P(A\mid B)}{P(A^c\mid B)} = \frac{1}{999}\times\frac{1}{2^{-10}} = \frac{1024}{999},$$
+so $P(A\mid B) = \frac{1024}{1024+999} = \frac{1024}{2023}$.
+
+Variant (red book): a bag of $9$ fair coins and $1$ double-headed coin; the drawn coin gives $3$ heads in $3$ flips. Then the odds are $\frac{1}{9}\times 2^3 = \frac{8}{9}$ and
+$$P(\text{double-header}\mid HHH) = \frac{1\cdot\frac1{10}}{1\cdot\frac1{10} + \frac18\cdot\frac{9}{10}} = \frac{8}{17}.$$
+FOLLOWUP: Two double-headed coins
+A bag contains $8$ fair coins and $2$ double-headed coins. You draw one coin at random and flip it three times; it comes up heads each time. What is the probability that it is double-headed?
+FOLLOWUP_ANSWER:
+$2/3$. Prior $P(\text{DH}) = 2/10$, $P(\text{fair}) = 8/10$; likelihoods $1$ and $1/8$:
+$$P(\text{DH}\mid HHH) = \frac{\frac{2}{10}}{\frac{2}{10} + \frac{8}{10}\cdot\frac18} = \frac{0.2}{0.2+0.1} = \frac23.$$
+(Odds form: prior odds $2:8$, times likelihood ratio $8$, gives $16:8 = 2:1$.)
+FOLLOWUP: Tosses for 95% confidence
+A bag contains $9$ fair coins and $1$ double-headed coin. You draw one at random and keep flipping it; it shows heads every time. How many consecutive heads do you need before you are at least $95\%$ sure that the coin is double-headed?
+FOLLOWUP_ANSWER:
+$8$ tosses. After $n$ heads, the posterior is
+$$P_n = \frac{\frac1{10}}{\frac1{10} + \frac{9}{10}2^{-n}} = \frac{2^n}{2^n + 9}.$$
+We need $\frac{2^n}{2^n+9} \ge 0.95 \iff 2^n \ge 0.95\,(2^n + 9) \iff 0.05\cdot 2^n \ge 8.55 \iff 2^n \ge 171$. Since $2^7 = 128 < 171 \le 256 = 2^8$, the smallest $n$ is $8$ (then $P_8 = 256/265 \approx 0.966$, while $P_7 = 128/137 \approx 0.934$).
+===END===
+
+===TEASER===
+SLUG: fair-odds-from-biased-coin
+IDS: G4A-17
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Fair odds from an unfair coin
+QUESTION:
+You have an unfair coin, biased toward heads or tails with an unknown probability. Can you use it to generate an event with probability exactly $1/2$ (even odds)?
+HINT1:
+With one toss you cannot, since $p$ is unknown. Look for two outcomes of several tosses that must have the same probability whatever $p$ is.
+HINT2:
+Toss twice. Compare $P(HT)$ and $P(TH)$. What do you do with $HH$ and $TT$?
+ANSWER:
+Yes: toss twice; $HT$ = win, $TH$ = lose, and on $HH$ or $TT$ start again (von Neumann's trick).
+REFRESH:
+- **Independence:** for independent tosses, $P(HT) = P(H)P(T)$.
+- **Geometric series:** $\sum_{k\ge 0} r^k = \frac{1}{1-r}$ for $|r|<1$.
+EXPLANATION:
+The bias $p$ is unknown, so no event defined by one toss can have probability exactly $1/2$ for all $p$. But two independent tosses produce the pairs $HT$ and $TH$ with the same probability $p(1-p)$ — the order of one head and one tail is symmetric regardless of the bias. So declare $HT$ a win and $TH$ a loss, and ignore (re-toss) the pairs $HH$, $TT$. Conditioned on the round being decisive, the win probability is exactly $1/2$, and since each round is decisive with positive probability $2p(1-p)$, the procedure ends almost surely.
+SOLUTION: Von Neumann's procedure
+Let $p\in(0,1)$ be the probability of heads. Toss the coin in pairs. For one pair,
+$$P(HH) = p^2,\quad P(HT) = p(1-p),\quad P(TH) = (1-p)p,\quad P(TT) = (1-p)^2.$$
+Rule: $HT$ → win, $TH$ → lose, $HH$ or $TT$ → discard and toss a new pair.
+
+Let $r = p^2 + (1-p)^2 < 1$ be the probability of a discarded pair. The probability of winning is
+$$\sum_{k\ge 0} r^k\, p(1-p) = \frac{p(1-p)}{1-r} = \frac{p(1-p)}{2p(1-p)} = \frac12.$$
+The number of pairs needed is geometric with success probability $2p(1-p)$, so it is finite almost surely, with mean $\frac{1}{2p(1-p)}$ pairs (i.e. $\frac{1}{p(1-p)}$ tosses). This is inefficient for a strongly biased coin (e.g. $p = 0.99$ needs about $101$ tosses on average); more efficient schemes recycle the discarded outcomes (Stout and Warren, *Annals of Probability*, 1984).
+===END===
+
+===TEASER===
+SLUG: dart-game-third-throw
+IDS: G4A-18
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Dart game
+QUESTION:
+Jason throws two darts at a dartboard, aiming for the centre. The second dart lands farther from the centre than the first. He then throws a third dart, aiming for the centre. What is the probability that the third dart is farther from the centre than the first? Assume Jason's skill is constant (the three distances are i.i.d. with a continuous distribution, so ties have probability zero).
+HINT1:
+Only the *ranking* of the three distances matters, and with i.i.d. continuous throws all rankings are equally likely.
+HINT2:
+Rephrase: given that throw 1 beat throw 2, the third throw is worse than the first unless the third throw is the best of all three. Is "throw 3 is the best" independent of the order of throws 1 and 2?
+ANSWER:
+$2/3$
+REFRESH:
+- **Exchangeability:** if $X_1,\dots,X_n$ are i.i.d. continuous, all $n!$ orderings are equally likely, so each $X_i$ is the minimum with probability $1/n$.
+- **Conditional probability:** $P(A\mid B) = P(A\cap B)/P(B)$.
+EXPLANATION:
+Replace the distances by their ranks: best (closest), middle, worst. The six orderings of the three throws are equally likely. The information "throw 2 is worse than throw 1" keeps three of them. Throw 3 is worse than throw 1 unless throw 3 is the best of all three. And the event "throw 3 is the best" has probability $1/3$ and is independent of how throws 1 and 2 are ordered between themselves, so the answer is $1 - 1/3 = 2/3$.
+
+It is tempting to say $1/2$ ("the third throw is either better or worse than the first"), but the conditioning matters: knowing that throw 1 beat throw 2 tells you throw 1 was probably a good throw, so throw 3 is more likely than not to fall short of it. That is why the probability rises from the unconditional $1/2$ to $2/3$.
+SOLUTION: Enumerating the orderings
+Rank the three throws $A$ (closest), $B$, $C$ (farthest). The six assignments (throw 1, throw 2, throw 3) are equally likely:
+$(A,B,C)$, $(B,A,C)$, $(A,C,B)$, $(C,A,B)$, $(B,C,A)$, $(C,B,A)$.
+"Throw 2 farther than throw 1" keeps $(A,B,C)$, $(A,C,B)$, $(B,C,A)$ — three equally likely cases. Throw 3 is farther than throw 1 in $(A,B,C)$ and $(A,C,B)$. So the probability is $2/3$.
+SOLUTION: Independence of "best of all" from the earlier order
+Let $E$ = "throw 3 is the best of the three". By symmetry $P(E) = 1/3$. Given $E$, throws 1 and 2 are still exchangeable, so the event $F$ = "throw 1 better than throw 2" has $P(F\mid E) = 1/2 = P(F)$: $E$ and $F$ are independent. On $F$, throw 3 is worse than throw 1 iff $E$ fails. Hence
+$$P(\text{3 worse than 1}\mid F) = P(E^c\mid F) = P(E^c) = \frac23.$$
+Generalisation: if the first of $n$ throws is the best among them, the probability that throw $n+1$ is worse than throw 1 equals the probability that it is not the best of all $n+1$ throws, i.e. $\frac{n}{n+1}$.
+===END===
+
+===TEASER===
+SLUG: birthday-line-free-ticket
+IDS: G4A-19
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Birthday line
+QUESTION:
+At a movie theatre, a whimsical manager announces that she will give a free ticket to the first person in line whose birthday is the same as that of someone who has already bought a ticket (someone ahead of them in line). You may choose any position in line. You don't know anyone else's birthday, and birthdays are independent and uniformly distributed over $365$ days. Which position gives you the largest chance of getting the free ticket?
+HINT1:
+If you stand in position $n$, two things must happen: nobody before you won, and you match someone before you.
+HINT2:
+Write $P(n) = \dfrac{365\cdot 364\cdots(365-n+2)}{365^{n-1}}\cdot\dfrac{n-1}{365}$ and find where the ratio $P(n+1)/P(n)$ drops below $1$.
+ANSWER:
+Position $20$ (winning probability $\approx 3.2\%$).
+REFRESH:
+- **Birthday problem:** the probability that $m$ people all have distinct birthdays is $\prod_{k=0}^{m-1}\frac{365-k}{365}$.
+- **Unimodal sequences:** if $P(n+1)/P(n) > 1$ for $n < n^*$ and $< 1$ for $n \ge n^*$, the maximum is at $n^*$.
+EXPLANATION:
+Standing far back has a benefit and a cost. The benefit: with $n-1$ people ahead of you, your birthday matches one of theirs with probability $(n-1)/365$ (given theirs are distinct), which grows with $n$. The cost: the first $n-1$ people must all have distinct birthdays (otherwise someone ahead of you already won), and this probability decays quickly (it is the classic birthday problem). The optimum is where the marginal gain stops beating the marginal loss, which a ratio test locates at $n = 20$.
+SOLUTION: Ratio test
+If you are $n$-th in line, you win iff the first $n-1$ birthdays are distinct and yours is one of them:
+$$P(n) = \left(\prod_{k=0}^{n-2}\frac{365-k}{365}\right)\cdot\frac{n-1}{365}.$$
+Then, for $n\ge 2$,
+$$\frac{P(n+1)}{P(n)} = \frac{365-(n-1)}{365}\cdot\frac{n}{n-1}.$$
+This is $>1$ iff $(366-n)\,n > 365(n-1)$, i.e. $366n - n^2 > 365n - 365$, i.e.
+$$n^2 - n - 365 < 0 \iff n < \frac{1+\sqrt{1461}}{2} \approx 19.61.$$
+So $P(n+1) > P(n)$ for $n \le 19$ and $P(n+1) < P(n)$ for $n \ge 20$: the sequence increases up to $n=20$ and decreases afterwards. The best position is $n = 20$.
+
+Numerically, the probability that $19$ people have distinct birthdays is about $0.621$, so $P(20) \approx 0.621\times\frac{19}{365} \approx 0.032$.
+===END===
+
+===TEASER===
+SLUG: dice-strictly-increasing
+IDS: G4A-20
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Dice in increasing order
+QUESTION:
+We throw $3$ fair dice one after the other. What is the probability that the three results are in strictly increasing order?
+HINT1:
+Strictly increasing forces the three values to be different. How many orderings does a set of three different values have?
+HINT2:
+Compute $P(\text{all different})$, then multiply by the probability that a random permutation of three distinct numbers is the increasing one.
+ANSWER:
+$5/54$
+REFRESH:
+- **Binomial coefficient:** $\binom{6}{3} = 20$ subsets of size $3$ of $\{1,\dots,6\}$.
+- **Symmetry of permutations:** given three distinct i.i.d. values, each of the $3! = 6$ orders is equally likely.
+EXPLANATION:
+Every strictly increasing triple corresponds to choosing $3$ distinct values out of $6$ — once you know the set, there is exactly one increasing way to write it. So the count is $\binom63 = 20$ out of $6^3 = 216$ equally likely outcomes. Equivalently: the three values are all distinct with probability $\frac56\cdot\frac46$, and then the increasing order is one of the $6$ equally likely orders.
+SOLUTION: Conditioning on distinct values
+$$P(\text{all distinct}) = 1\cdot\frac56\cdot\frac46 = \frac{20}{36} = \frac59.$$
+Given three distinct values, by symmetry each of the $3! = 6$ orders is equally likely, so
+$$P = \frac59\cdot\frac16 = \frac{5}{54}.$$
+SOLUTION: Direct counting
+The outcomes $(a,b,c)\in\{1,\dots,6\}^3$ are equally likely, $216$ of them. Strictly increasing triples $a<b<c$ are in bijection with $3$-element subsets of $\{1,\dots,6\}$: $\binom63 = 20$. So $P = \frac{20}{216} = \frac{5}{54}$.
+===END===
+
+===TEASER===
+SLUG: monty-hall
+IDS: G4A-21, H4A-14
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Monty Hall problem
+QUESTION:
+You are on a game show with $3$ doors. Behind one door is a car; behind the other two, goats. The car was placed uniformly at random. You pick a door and announce it. The host, who knows where the car is, then **must** open one of the other two doors that has a goat behind it; if both other doors hide goats (i.e. you picked the car), he chooses between them uniformly at random. He then offers you the option to keep your door or switch to the remaining closed door.
+
+For instance, you choose Door 3 and he opens Door 2, revealing a goat. Should you switch to Door 1? What is your probability of winning the car if you switch?
+HINT1:
+The host's action is not random noise: he is forced to avoid the car. When does switching win?
+HINT2:
+Switching wins exactly when your first pick was a goat. Alternatively, apply Bayes with $P(\text{host opens 2}\mid\text{car at 1}) = 1$ and $P(\text{host opens 2}\mid\text{car at 3}) = 1/2$.
+ANSWER:
+Switch: you win with probability $2/3$ by switching (versus $1/3$ by staying).
+REFRESH:
+- **Bayes' formula:** $P(A_i\mid B) = \dfrac{P(B\mid A_i)P(A_i)}{\sum_j P(B\mid A_j)P(A_j)}$.
+- **Law of total probability:** $P(B) = \sum_j P(B\mid A_j)P(A_j)$ for a partition $(A_j)$.
+EXPLANATION:
+Your first pick is right with probability $1/3$, and nothing the host does can change that, because he can always open a goat door whatever you picked. So staying wins with probability $1/3$. If you switch, you win precisely when your first pick was a goat: the host then has to reveal the other goat, and the remaining door is the car. That happens with probability $2/3$.
+
+The common mistake is "two doors are left, so it is $1/2$ each". That would be true if the host opened a door at random and it happened to show a goat. But he chose the door knowing where the car is: if the car is behind Door 1 he was *forced* to open Door 2, whereas if the car is behind your Door 3 he opened Door 2 only half the time. Seeing Door 2 opened is therefore twice as likely under "car at 1" as under "car at 3".
+SOLUTION: Strategy view
+Fix the strategy "always switch". If your initial door hides the car (probability $1/3$), switching loses. If it hides a goat (probability $2/3$), the host must open the other goat door, and the remaining door has the car, so switching wins. Hence $P(\text{win}\mid\text{switch}) = 2/3$ and $P(\text{win}\mid\text{stay}) = 1/3$.
+SOLUTION: Bayes' formula for the specific doors
+You picked Door 3. Let $C_k$ = "car behind Door $k$", $P(C_k) = 1/3$, and $H_2$ = "host opens Door 2". The host must avoid your door and the car:
+$$P(H_2\mid C_1) = 1,\qquad P(H_2\mid C_2) = 0,\qquad P(H_2\mid C_3) = \tfrac12.$$
+Total probability: $P(H_2) = \frac13\left(1 + 0 + \frac12\right) = \frac12$. Then
+$$P(C_1\mid H_2) = \frac{1\cdot\frac13}{\frac12} = \frac23,\qquad P(C_3\mid H_2) = \frac{\frac12\cdot\frac13}{\frac12} = \frac13.$$
+Switching to Door 1 wins with probability $2/3$.
+
+Remark: the assumptions matter. If the host were not obliged to open a door (and might only do so when you picked the car), or if he opened one of the other doors at random and it happened to show a goat, the answer would change (in the latter case it becomes $1/2$).
+===END===
+
+===TEASER===
+SLUG: amoeba-extinction
+IDS: G4A-22
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Amoeba population
+QUESTION:
+There is one amoeba in a pond. Every minute, each amoeba independently either dies, stays the same, splits into two, or splits into three, each with probability $1/4$. All its offspring behave the same way, independently of each other. What is the probability that the amoeba population eventually dies out?
+HINT1:
+Condition on what happens to the first amoeba during the first minute. Each new amoeba starts an independent copy of the same process.
+HINT2:
+Let $p$ be the extinction probability. A population of $k$ amoebas dies out iff each of the $k$ independent sub-populations dies out, which has probability $p^k$. Write a cubic equation for $p$.
+ANSWER:
+$\sqrt2 - 1 \approx 0.414$
+REFRESH:
+- **Law of total probability:** $P(E) = \sum_i P(E\mid F_i)P(F_i)$ for a partition $(F_i)$.
+- **Galton–Watson extinction:** with offspring generating function $G(s) = E[s^{\xi}]$, the extinction probability is the smallest root of $s = G(s)$ in $[0,1]$; it is $<1$ iff the mean offspring $E[\xi] > 1$ (excluding the trivial case $\xi \equiv 1$).
+EXPLANATION:
+The key observation is self-similarity: after one minute, each surviving amoeba starts a fresh, independent copy of the original process. So "the population dies out" given $k$ amoebas at time $1$ means "all $k$ independent copies die out", which has probability $p^k$. This gives a fixed-point equation for $p$. It has the trivial root $p = 1$; but each amoeba has on average $1.5$ offspring (more than $1$), so the population has a positive chance of growing forever, and the correct extinction probability is the other root in $[0,1]$.
+SOLUTION: First-step analysis
+Let $p = P(\text{extinction})$. Conditioning on the first minute (each case with probability $1/4$):
+- dies: extinction certain, contributes $1$;
+- stays: same situation as the start, contributes $p$;
+- splits into $2$: two independent copies, contributes $p^2$;
+- splits into $3$: contributes $p^3$.
+
+So
+$$p = \frac14\left(1 + p + p^2 + p^3\right) \iff p^3 + p^2 - 3p + 1 = 0.$$
+Since $p = 1$ is a root, factor: $p^3 + p^2 - 3p + 1 = (p-1)(p^2 + 2p - 1)$. The quadratic gives $p = -1 \pm \sqrt2$. The roots are $1$, $\sqrt2 - 1 \approx 0.414$ and $-1-\sqrt2 < 0$.
+
+Which root? Let $G(s) = \frac14(1+s+s^2+s^3)$ and $q_n = P(\text{extinct by time } n)$. Then $q_0 = 0$ and $q_{n+1} = G(q_n)$ (condition on the first minute again). $G$ is increasing on $[0,1]$, and if $r\ge 0$ is any root of $s = G(s)$, then $q_0 = 0 \le r$ implies $q_{n+1} = G(q_n) \le G(r) = r$ by induction. Hence $p = \lim q_n$ is the *smallest* non-negative root:
+$$p = \sqrt2 - 1 \approx 0.414.$$
+(Consistently, the mean offspring number is $\frac{0+1+2+3}{4} = 1.5 > 1$, so extinction is not certain.)
+===END===
+
+===TEASER===
+SLUG: candies-in-a-jar
+IDS: G4A-23
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Candies in a jar
+QUESTION:
+A jar contains $10$ red, $20$ blue and $30$ green candies. You take the candies out one by one, uniformly at random. What is the probability that, at the moment you have taken out all the red candies, there is still at least $1$ blue candy and at least $1$ green candy left in the jar?
+HINT1:
+Think about the *last* candy of each colour in the random sequence of all $60$ candies. Which colour's last candy must come first?
+HINT2:
+You need the last red to come before the last blue and before the last green. Split according to which colour is the very last candy of the whole sequence, and use the fact that each candy is equally likely to be last.
+ANSWER:
+$7/12$
+REFRESH:
+- **Symmetry in random permutations:** in a uniformly random ordering, each item is equally likely to be last; restricted to any subset of items, the induced order is also uniform.
+- **Inclusion–exclusion:** $P(A\cap B) = P(A) + P(B) - P(A\cup B)$.
+EXPLANATION:
+The draw order is a uniformly random permutation of the $60$ candies. Let $T_r, T_b, T_g$ be the positions of the last red, last blue, last green. We want $T_r < T_b$ and $T_r < T_g$ — red "runs out" first. Questions about which colour runs out last reduce to "which candy is last", and by symmetry the last candy of any sub-collection is uniform on that sub-collection. So: the whole sequence ends in green with probability $30/60$, and given that, among red and blue the last is blue with probability $20/30$. Or it ends in blue ($20/60$), and among red and green the last is green with probability $30/40$.
+SOLUTION: Conditioning on the last candy
+$\{T_r < T_b,\ T_r < T_g\}$ is the disjoint union of $\{T_r < T_b < T_g\}$ and $\{T_r < T_g < T_b\}$.
+
+$T_r < T_b < T_g$ means the last candy overall is green ($P = 30/60$) and, among the $30$ red and blue candies (whose relative order is uniform and independent of which green candy ends the sequence), the last one is blue ($P = 20/30$):
+$$P(T_r < T_b < T_g) = \frac{30}{60}\cdot\frac{20}{30} = \frac13.$$
+Similarly, the last overall is blue ($20/60$) and among the $40$ red and green the last is green ($30/40$):
+$$P(T_r < T_g < T_b) = \frac{20}{60}\cdot\frac{30}{40} = \frac14.$$
+Total: $\frac13 + \frac14 = \frac{7}{12}$.
+SOLUTION: Inclusion–exclusion
+Let $A = \{T_r < T_b\}$ (among red and blue candies, the last is blue): $P(A) = \frac{20}{30} = \frac23$.
+Let $B = \{T_r < T_g\}$: $P(B) = \frac{30}{40} = \frac34$.
+$A\cup B$ fails only if red is last among everything, i.e. the last candy is red: $P(A\cup B) = 1 - \frac{10}{60} = \frac56$.
+$$P(A\cap B) = \frac23 + \frac34 - \frac56 = \frac{8+9-10}{12} = \frac{7}{12}.$$
+===END===
+
+===TEASER===
+SLUG: coin-toss-game-ht
+IDS: G4A-24
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Coin toss game (first HT)
+QUESTION:
+Two players $A$ and $B$ alternately toss a fair coin ($A$ tosses first, then $B$, then $A$, ...). The sequence of heads and tails is recorded. As soon as a head is immediately followed by a tail (the pattern $HT$ appears), the game ends and the player who tossed that tail wins. What is the probability that $A$ wins?
+HINT1:
+Condition on $A$'s first toss. A tail at the very start is "wasted": what does the game look like afterwards?
+HINT2:
+After an initial $T$, the roles swap, so $P(A\mid T) = 1 - P(A)$. After an initial $H$, the game ends at the next tail; write an equation for $P(A\mid H)$ by conditioning on $B$'s toss.
+ANSWER:
+$4/9$
+REFRESH:
+- **Geometric distribution:** $N\sim\text{Geom}(1/2)$ on $\{1,2,\dots\}$ has $P(N = k) = 2^{-k}$, and $P(N\text{ odd}) = \sum_{j\ge0}2^{-(2j+1)} = 2/3$.
+- **Law of total probability:** $P(E) = \sum_i P(E\mid F_i)P(F_i)$.
+EXPLANATION:
+The pattern $HT$ appears at the first tail that follows the first head. Before the first head, tails do nothing — they only pass the turn to the other player. Once a head has appeared, the next tail ends the game, and heads in between again only pass the turn. So the game is "wait for a head, then wait for a tail", and $A$ wins iff the total number of tosses is odd. $A$ is at a disadvantage: he cannot win on toss $1$, while $B$ wins on toss $2$ with probability $1/4$.
+SOLUTION: Conditioning and symmetry
+Let $P = P(A\text{ wins})$.
+
+*$A$ opens with $T$* (prob. $1/2$): nothing has started, and $B$ is now effectively the first player. So $P(A\mid T) = 1 - P$.
+
+*$A$ opens with $H$* (prob. $1/2$): now the next tail ends the game. Let $x = P(\text{the player who just tossed a head wins})$. The opponent tosses: with prob. $1/2$ a tail, and the opponent wins; with prob. $1/2$ a head, and now the opponent is the one who just tossed a head, so the original player wins with probability $1-x$:
+$$x = \tfrac12\cdot 0 + \tfrac12(1-x) \Rightarrow x = \tfrac13.$$
+Combining:
+$$P = \tfrac12\cdot\tfrac13 + \tfrac12(1 - P) \Rightarrow \tfrac32 P = \tfrac23 \Rightarrow P = \tfrac49.$$
+Sanity check: $P < 1/2$, as expected.
+SOLUTION: Parity of a sum of two geometrics
+Let $N_1$ be the index of the first head and $N_2$ the number of further tosses up to and including the first tail after it. $N_1, N_2$ are independent $\text{Geom}(1/2)$ on $\{1,2,\dots\}$, and the game ends at toss $N = N_1 + N_2$. $A$ makes the odd-numbered tosses, so $A$ wins iff $N$ is odd, iff $N_1$ and $N_2$ have different parities. With $P(\text{Geom odd}) = \sum_{j\ge 0}2^{-(2j+1)} = \frac{1/2}{1 - 1/4} = \frac23$,
+$$P(A\text{ wins}) = 2\cdot\frac23\cdot\frac13 = \frac49.$$
+===END===
+
+===TEASER===
+SLUG: russian-roulette-one-bullet
+IDS: G4A-25, G4A-26
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Russian roulette, first or second?
+QUESTION:
+A traditional Russian roulette: a single bullet is put into a $6$-chamber revolver, and the barrel is spun once so that each chamber is equally likely to be under the hammer. Two players take turns pulling the trigger (with the gun pointed at their own head), **without spinning again**, until the gun goes off; the player who is shot loses. If you can choose to go first or second, which do you choose? What is your probability of losing?
+HINT1:
+After the single spin, is anything random left?
+HINT2:
+Once the barrel has been spun, the position of the bullet among the $6$ successive pulls is fixed and uniform. Which pulls belong to the first player?
+ANSWER:
+It doesn't matter: each player loses with probability $1/2$.
+REFRESH:
+- **Uniform distribution on a finite set:** $P(X\in S) = |S|/n$ for $X$ uniform on $\{1,\dots,n\}$.
+EXPLANATION:
+The intuition "the first player faces the first $1/6$ danger" ignores that the second player's later pulls are more dangerous (the gun has not fired yet, so fewer chambers are left). The cleanest view: the spin fixes which pull (1st to 6th) will fire, uniformly. The first player makes pulls 1, 3, 5 and the second makes pulls 2, 4, 6, so each loses with probability $3/6$.
+SOLUTION: Fixed bullet position
+After the spin, let $K\in\{1,\dots,6\}$ be the pull on which the gun fires; $K$ is uniform. Player 1 pulls on 1, 3, 5, player 2 on 2, 4, 6. Hence
+$$P(\text{player 1 loses}) = P(K\in\{1,3,5\}) = \frac36 = \frac12 = P(\text{player 2 loses}).$$
+The order does not matter.
+FOLLOWUP: Re-spin after every pull
+Same game, but the barrel is spun again before every trigger pull (so each pull fires with probability $1/6$, independently). Would you go first or second, and what is your probability of losing?
+FOLLOWUP_ANSWER:
+Go second; you lose with probability $5/11$. Let $p$ be the first player's probability of losing. On his first pull he loses with probability $1/6$; otherwise (probability $5/6$) the game restarts with him as the second player, who loses with probability $1-p$:
+$$p = \frac16 + \frac56(1-p) \Rightarrow \frac{11}{6}p = 1 \Rightarrow p = \frac{6}{11}.$$
+Directly: player 1 loses on pulls $1,3,5,\dots$: $\sum_{j\ge 0}\frac16\left(\frac56\right)^{2j} = \frac{1/6}{1 - 25/36} = \frac{6}{11}$. So the second player loses with probability $\frac{5}{11}$.
+===END===
+
+===TEASER===
+SLUG: russian-roulette-two-random-bullets
+IDS: G4A-27
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Russian roulette, two random bullets
+QUESTION:
+Two bullets are put into two randomly chosen chambers of a $6$-chamber revolver (the two positions are a uniformly random pair of distinct chambers), and the barrel is spun. Your opponent pulls the trigger first and survives. Now it is your turn, and you may choose whether or not to spin the barrel before pulling the trigger. Should you spin?
+HINT1:
+Compare the danger of a fresh spin with the danger of the next chamber, given that the current chamber was empty.
+HINT2:
+Given that the chamber just fired was empty, where can the two bullets be?
+ANSWER:
+Spin: the probability of being shot is $1/3$ with a spin versus $2/5$ without.
+REFRESH:
+- **Conditional probability with uniform subsets:** if a uniformly random $2$-subset of $6$ chambers avoids a given chamber, it is a uniformly random $2$-subset of the remaining $5$.
+EXPLANATION:
+Spinning resets the gun: $2$ loaded chambers out of $6$, danger $1/3$. Not spinning uses the information that the chamber just fired was empty. With randomly placed bullets, that information only removes one empty chamber from consideration, so the $2$ bullets are now among the other $5$ chambers and the next chamber is loaded with probability $2/5 > 1/3$. The survival of your opponent made the remaining chambers *more* dangerous, so you should spin.
+SOLUTION: Direct comparison
+*Spin:* the chamber under the hammer is uniform among $6$, of which $2$ are loaded: $P(\text{shot}) = 2/6 = 1/3$.
+
+*No spin:* given that the first chamber was empty, the pair of loaded chambers is uniform among the $\binom52 = 10$ pairs of the other $5$ chambers. The next chamber is in $4$ of these pairs, so $P(\text{shot}) = 4/10 = 2/5$.
+
+Since $1/3 < 2/5$, you should spin.
+===END===
+
+===TEASER===
+SLUG: russian-roulette-adjacent-bullets
+IDS: G4A-28, R3A-58, R3A-59, R3A-60, H4B-01
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Russian roulette, adjacent bullets
+QUESTION:
+A $6$-chamber revolver is loaded with two bullets in **two adjacent chambers**. The barrel is spun, the gun is pointed at your opponent (or at you), the trigger is pulled, and the gun does not fire. The trigger is now going to be pulled once more at you. The chambers advance in order, so without a spin the next chamber in the cycle comes up. Would you rather the barrel be spun again, or should the trigger just be pulled?
+HINT1:
+The empty click tells you something about where in the cycle you are. Draw the six chambers in a circle.
+HINT2:
+Label the chambers $1,\dots,6$ around the circle with bullets in $5$ and $6$. The click means the current chamber is one of $1,2,3,4$, each equally likely. Which of these is followed by a bullet?
+ANSWER:
+Don't spin: the probability of being shot is $1/4$ without spinning versus $1/3$ with a spin.
+REFRESH:
+- **Conditional probability given a uniform variable:** if $X$ is uniform on $\{1,\dots,6\}$ and we learn $X\in S$, then $X$ is uniform on $S$.
+EXPLANATION:
+Spinning puts both bullets back into play: danger $2/6 = 1/3$. Not spinning: the empty chamber just fired is one of the four empty ones, uniformly. Since the two bullets are adjacent, only one empty chamber (the one right before the first bullet) leads to a bullet; the second bullet can only be reached from the first bullet's chamber, which we know was not the one fired. So the danger is $1/4 < 1/3$. The adjacency of the bullets is what makes the next chamber *safer* than a fresh spin — in contrast with randomly placed bullets, where you should spin.
+SOLUTION: Counting the positions
+Label the chambers $1,2,3,4,5,6$ in firing order around the circle, bullets in $5$ and $6$ (after $6$ comes $1$).
+
+*Spin:* $P(\text{shot}) = 2/6 = 1/3$.
+
+*No spin:* the spin placed a uniformly random chamber under the hammer; the click means it was one of $1,2,3,4$, uniformly. The next chamber is $2,3,4,5$ respectively, and only $5$ is loaded. So $P(\text{shot}) = 1/4$.
+
+Since $1/4 < 1/3$, do not spin (survival $3/4$ versus $2/3$).
+FOLLOWUP: Three contiguous bullets
+Same situation, but three **contiguous** chambers of the six are loaded. After an empty click, should you spin before the next pull?
+FOLLOWUP_ANSWER:
+Don't spin. Loaded chambers $4,5,6$; the click means the current chamber is $1$, $2$ or $3$, uniformly; the next chamber is $2$, $3$ or $4$, and only $4$ is loaded, so $P(\text{shot}) = 1/3$ without spinning, versus $3/6 = 1/2$ with a spin.
+FOLLOWUP: Three alternating bullets
+Same situation, but three bullets are placed in **alternating** chambers (e.g. $2,4,6$). After an empty click, should you spin?
+FOLLOWUP_ANSWER:
+Spin! The click means the current chamber is one of the empty chambers $1,3,5$, and the next chamber is always loaded: without spinning you are shot with probability $1$. With a spin, the probability is $3/6 = 1/2$.
+===END===
+
+===TEASER===
+SLUG: aces-one-per-player
+IDS: G4A-29
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: One ace each
+QUESTION:
+A standard deck of $52$ cards is randomly dealt to $4$ players, $13$ cards each. What is the probability that each player gets exactly one ace?
+HINT1:
+You only need to track where the four aces go; the other cards are irrelevant.
+HINT2:
+Place the aces one at a time among the $52$ card slots ($4$ piles of $13$). Given the first aces are in different piles, how many slots are left in "new" piles for the next ace?
+ANSWER:
+$\dfrac{39}{51}\cdot\dfrac{26}{50}\cdot\dfrac{13}{49} = \dfrac{2197}{20825} \approx 0.105$
+REFRESH:
+- **Multinomial coefficient:** the number of ways to split $n$ distinct objects into labelled groups of sizes $n_1,\dots,n_k$ is $\dfrac{n!}{n_1!\cdots n_k!}$.
+- **Chain rule:** $P(A_1\cap\dots\cap A_n) = P(A_1)P(A_2\mid A_1)\cdots P(A_n\mid A_1\cap\dots\cap A_{n-1})$.
+EXPLANATION:
+A random deal is the same as putting the $52$ cards into $52$ slots (13 per player) uniformly at random. The four aces occupy a uniformly random set of $4$ slots. The first ace lands somewhere; the second must avoid the $12$ remaining slots of the first ace's pile, so $39$ good slots out of $51$; the third must avoid two piles, $26$ good out of $50$; the fourth must land in the last pile, $13$ good out of $49$. Multiply.
+SOLUTION: Sequential placement (chain rule)
+Place the aces one after another into the remaining free slots.
+- Ace 1: anywhere, probability $1$.
+- Ace 2: $51$ slots left, $39$ of them in other piles: $\frac{39}{51}$.
+- Ace 3: $50$ left, $26$ in the two untouched piles: $\frac{26}{50}$.
+- Ace 4: $49$ left, $13$ in the last pile: $\frac{13}{49}$.
+
+$$P = \frac{39}{51}\cdot\frac{26}{50}\cdot\frac{13}{49} = \frac{13182}{124950} = \frac{2197}{20825} \approx 0.1055.$$
+SOLUTION: Counting deals
+The number of deals is $\dfrac{52!}{(13!)^4}$. Favourable deals: give one ace to each player ($4!$ ways), then deal the other $48$ cards $12$ each: $\dfrac{48!}{(12!)^4}$. So
+$$P = \frac{4!\,48!/(12!)^4}{52!/(13!)^4} = \frac{4!\cdot 13^4\cdot 48!}{52!} = \frac{24\cdot 13^4}{52\cdot 51\cdot 50\cdot 49} = \frac{2197}{20825}.$$
+===END===
+
+===TEASER===
+SLUG: gamblers-ruin
+IDS: G4A-30, R3S-04, R3S-05, R3S-06
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Gambler's ruin
+QUESTION:
+A gambler starts with $i$ dollars. On each game he wins \$1 with probability $p$ ($0<p<1$) or loses \$1 with probability $q = 1-p$, independently. He stops when he either reaches $N$ dollars or loses all his money ($0 \le i \le N$). What is the probability that he ends up with $N$ dollars?
+
+In particular (red book version): a symmetric random walk ($p = 1/2$) on $\{0,1,\dots,1000\}$ starts at $80$ and stops at the first time it hits $0$ or $1000$. What is the probability that it stops at $0$?
+HINT1:
+Let $P_i$ be the answer when starting from $i$. What happens after one game? What are $P_0$ and $P_N$?
+HINT2:
+First-step analysis gives $P_i = pP_{i+1} + qP_{i-1}$, i.e. $P_{i+1} - P_i = \frac{q}{p}(P_i - P_{i-1})$. Telescope. (For $p=1/2$, you can instead use that the position is a martingale.)
+ANSWER:
+$P_i = \dfrac{1-(q/p)^i}{1-(q/p)^N}$ if $p\ne\frac12$, and $P_i = \dfrac iN$ if $p = \frac12$; for the walk from $80$ on $[0,1000]$, $P(\text{hit }0) = 0.92$.
+REFRESH:
+- **Finite geometric sum:** $1 + r + \dots + r^{m-1} = \dfrac{1-r^m}{1-r}$ for $r\ne1$.
+- **Optional stopping theorem:** if $(M_t)$ is a martingale and $\tau$ a stopping time with $M_{t\wedge\tau}$ bounded and $\tau<\infty$ a.s., then $E[M_\tau] = E[M_0]$.
+- **Martingale:** $E[M_{t+1}\mid \mathcal F_t] = M_t$.
+EXPLANATION:
+The gambler's fortune is a random walk with absorbing barriers at $0$ and $N$. Conditioning on the first game links $P_i$ to its neighbours, and the resulting linear recursion has an explicit solution: the successive differences $P_{i+1}-P_i$ form a geometric sequence with ratio $q/p$, and the boundary conditions $P_0 = 0$, $P_N = 1$ pin everything down.
+
+In the fair case there is a slicker argument: the fortune is a martingale (a fair game), so the expected final fortune equals the initial fortune. The final fortune is $N$ with probability $P_i$ and $0$ otherwise, so $N P_i = i$. For the biased case the same trick works with the martingale $(q/p)^{X_t}$.
+SOLUTION: First-step analysis
+Let $P_i$ be the probability of reaching $N$ before $0$ from $i$. Then $P_0 = 0$, $P_N = 1$, and for $1\le i\le N-1$, conditioning on the first game,
+$$P_i = pP_{i+1} + qP_{i-1}.$$
+Since $p + q = 1$, write $P_i = pP_i + qP_i$ to get $p(P_{i+1} - P_i) = q(P_i - P_{i-1})$, hence with $r = q/p$:
+$$P_{i+1} - P_i = r(P_i - P_{i-1}) = \dots = r^i (P_1 - P_0) = r^i P_1.$$
+Summing the differences:
+$$P_i = \sum_{k=0}^{i-1}(P_{k+1}-P_k) = \left(1 + r + \dots + r^{i-1}\right)P_1.$$
+Using $P_N = 1$:
+- if $r\ne 1$ ($p\ne\frac12$): $1 = \dfrac{1-r^N}{1-r}P_1$, so $P_1 = \dfrac{1-r}{1-r^N}$ and
+$$P_i = \frac{1-(q/p)^i}{1-(q/p)^N};$$
+- if $r = 1$ ($p = \frac12$): $1 = NP_1$, so $P_i = \dfrac iN$.
+
+Red book instance: $p=\frac12$, $i = 80$, $N = 1000$: $P(\text{reach }1000) = \frac{80}{1000} = 0.08$, so $P(\text{hit }0) = 0.92$.
+SOLUTION: Martingales and optional stopping
+Let $X_t$ be the fortune and $\tau$ the first time $X$ hits $0$ or $N$. $\tau$ is a.s. finite (from any state, $N$ consecutive wins, which have probability $p^N>0$, end the game; so $P(\tau > kN)\le (1-p^N)^k$ and in fact $E[\tau]<\infty$), and $X_{t\wedge\tau}\in[0,N]$ is bounded.
+
+*Fair case $p=\frac12$:* $X_t$ is a martingale. By optional stopping, $E[X_\tau] = X_0 = i$. But $X_\tau = N$ with probability $P_i$ and $0$ otherwise, so $NP_i = i$ and $P_i = i/N$. For the walk on $[0,1000]$ from $80$: $1000\,P = 80$, $P(\text{hit }1000) = 0.08$, $P(\text{hit }0) = 0.92$.
+
+*Biased case:* $M_t = (q/p)^{X_t}$ is a martingale, since
+$$E[M_{t+1}\mid\mathcal F_t] = (q/p)^{X_t}\left(p\cdot\frac qp + q\cdot\frac pq\right) = (q/p)^{X_t}(q+p) = M_t.$$
+It is bounded up to $\tau$, so $E[M_\tau] = (q/p)^i$, i.e. $P_i (q/p)^N + (1-P_i)\cdot 1 = (q/p)^i$, which gives $P_i = \dfrac{1-(q/p)^i}{1-(q/p)^N}$ again.
+FOLLOWUP: General symmetric case
+A symmetric random walk ($\pm1$ with probability $1/2$ each) starts at $k$ and stops when it first hits $0$ or $L$ ($0\le k\le L$). What is the probability that it stops at $0$?
+FOLLOWUP_ANSWER:
+$1 - \dfrac kL = \dfrac{L-k}{L}$. The position is a martingale and the stopped walk is bounded in $[0,L]$ with $\tau<\infty$ a.s., so optional stopping gives $E[X_\tau] = k$. With $P(X_\tau = L) = a$: $La = k$, so $a = k/L$ and $P(X_\tau = 0) = 1 - k/L$. (Equivalently, first-step analysis gives a linear $P_i$ with $P_0 = 0$, $P_L = 1$.) As a bonus, $X_t^2 - t$ is also a martingale, which gives $E[\tau] = k(L-k)$.
+FOLLOWUP: Biased walk on [0, 1000]
+The walk on $\{0,\dots,1000\}$ starts at $80$ but now moves up with probability $u\in(0,1)$ and down with probability $1-u$. What is the probability that it stops at $0$?
+FOLLOWUP_ANSWER:
+With $r = \dfrac{1-u}{u}$ and $u\ne\frac12$:
+$$P(\text{hit }0) = 1 - \frac{1-r^{80}}{1-r^{1000}} = \frac{r^{80} - r^{1000}}{1 - r^{1000}}.$$
+Derivation: $M_t = r^{X_t}$ is a martingale ($u\cdot r^{x+1} + (1-u)r^{x-1} = r^x\,(u r + (1-u)/r) = r^x(1-u+u) = r^x$), bounded up to the hitting time, so $E[r^{X_\tau}] = r^{80}$. With $a = P(\text{hit }1000)$: $a\,r^{1000} + (1-a) = r^{80}$, so $a = \frac{1-r^{80}}{1-r^{1000}}$. (For $u = \frac12$ this degenerates to the fair answer $0.92$.) Note how extreme this is: even a slight upward bias ($u = 0.51$, $r\approx 0.96$) gives $r^{80}\approx 0.04$, so the walk hits $0$ with probability only about $4\%$.
+===END===
+
+===TEASER===
+SLUG: basketball-free-throws-polya
+IDS: G4A-31
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: Basketball scores
+QUESTION:
+A basketball player takes $100$ free throws. She scores $1$ point if the ball goes through the hoop and $0$ if she misses. She scored on her first throw and missed her second. For each subsequent throw, the probability of scoring equals the fraction of throws she has made so far (e.g. with $23$ points after $40$ throws, she scores on throw $41$ with probability $23/40$). After $100$ throws (including the first two), what is the probability that she has scored exactly $50$ baskets?
+HINT1:
+Don't be scared by $100$: compute the distribution of the score after $3$ and after $4$ throws and look for a pattern.
+HINT2:
+Let $P_{n,k}$ be the probability of $k$ baskets after $n$ throws. Guess a formula from small $n$ and prove it by induction using $P_{n+1,k} = \left(1-\frac kn\right)P_{n,k} + \frac{k-1}{n}P_{n,k-1}$.
+ANSWER:
+$1/99$
+REFRESH:
+- **Law of total probability:** $P(E) = \sum_i P(E\mid F_i)P(F_i)$.
+- **Pólya's urn:** starting with one red and one black ball, drawing a ball and returning it with an extra ball of the same colour, the number of red balls drawn in $m$ draws is uniform on $\{0,1,\dots,m\}$.
+- **Beta integral:** $\int_0^1 x^a(1-x)^b\,dx = \dfrac{a!\,b!}{(a+b+1)!}$.
+EXPLANATION:
+This is Pólya's urn in disguise: think of an urn containing one "score" ball and one "miss" ball (her first two throws). Each throw draws a ball, with probability proportional to the counts, and adds another of the same kind. A remarkable fact of this urn is that the number of scores after $n$ throws is **uniform** on its possible values $1,\dots,n-1$. The "rich get richer" reinforcement exactly spreads the probability evenly. With $n = 100$ there are $99$ possible values, so each, in particular $50$, has probability $1/99$.
+SOLUTION: Induction
+Let $P_{n,k}$ = P($k$ baskets after $n$ throws), $1\le k\le n-1$, $n\ge 2$. Claim: $P_{n,k} = \frac{1}{n-1}$ for all $k = 1,\dots,n-1$.
+
+*Base case* $n=2$: $P_{2,1} = 1$. (true) (Also $n=3$: the third throw scores with probability $1/2$, so $P_{3,1} = P_{3,2} = \frac12$.)
+
+*Induction step.* Suppose $P_{n,k} = \frac1{n-1}$ for $k = 1,\dots,n-1$. To have $k$ baskets after $n+1$ throws, either she had $k$ and missed (probability $1 - \frac kn$) or had $k-1$ and scored (probability $\frac{k-1}{n}$):
+$$P_{n+1,k} = \left(1-\frac kn\right)P_{n,k} + \frac{k-1}{n}P_{n,k-1} = \frac1{n-1}\cdot\frac{(n-k) + (k-1)}{n} = \frac{1}{n}.$$
+For $k=1$ the second term vanishes ($\frac{k-1}n = 0$) and for $k = n$ the first vanishes ($1-\frac kn = 0$); the formula still holds (with $P_{n,0} = P_{n,n} = 0$). So $P_{n+1,k} = \frac1n$ for $k=1,\dots,n$.
+
+Hence $P_{100,50} = \frac{1}{99}$.
+SOLUTION: Probability of each sequence (exchangeability)
+Consider throws $3,\dots,100$ ($m = 98$ throws). Take any particular sequence with $a$ scores and $b$ misses ($a+b = m$). Before throw $j+3$ she has made $j+2$ throws. The numerators of the scoring probabilities along the sequence are $1,2,\dots,a$ (her score count increases from $1$), the numerators of the missing probabilities are $1,2,\dots,b$, and the denominators are $2,3,\dots,m+1$, whatever the order. So every such sequence has probability
+$$\frac{a!\,b!}{2\cdot 3\cdots(m+1)} = \frac{a!\,b!}{(m+1)!}.$$
+There are $\binom{m}{a}$ sequences, so
+$$P(a\text{ extra scores}) = \binom ma\frac{a!\,b!}{(m+1)!} = \frac{m!}{(m+1)!} = \frac{1}{m+1}.$$
+Exactly $50$ baskets means $a = 49$ extra scores among $m = 98$: probability $\frac{1}{99}$.
+===END===
+
+===TEASER===
+SLUG: cars-on-road
+IDS: G4A-32
+SECTION: probability
+CATEGORY: Distributions
+DIFFICULTY: easy
+TITLE: Cars on the road
+QUESTION:
+The probability of observing at least one car on a highway during any $20$-minute interval is $609/625$. What is the probability of observing at least one car during any $5$-minute interval? Assume the chance of seeing a car is constant over time (non-overlapping intervals are independent and identically behaved).
+HINT1:
+Work with the complementary event: seeing *no* car.
+HINT2:
+A $20$-minute interval is four independent $5$-minute intervals; no car in $20$ minutes means no car in each of the four.
+ANSWER:
+$3/5$
+REFRESH:
+- **Independence:** $P(A_1\cap\dots\cap A_n) = \prod P(A_i)$ for independent events.
+- **Poisson process:** $P(\text{no event in an interval of length } t) = e^{-\lambda t}$.
+EXPLANATION:
+"At least one" events do not combine nicely, but their complements do: no car in $20$ minutes is the intersection of "no car" in each of four independent, identical $5$-minute blocks. So $(1-p)^4 = 1 - \frac{609}{625} = \frac{16}{625} = \left(\frac25\right)^4$, and the probability of no car in $5$ minutes is $\frac25$.
+SOLUTION: Complement and independence
+Let $p$ be the probability of at least one car in $5$ minutes. Splitting $20$ minutes into $4$ disjoint $5$-minute blocks,
+$$(1-p)^4 = P(\text{no car in 20 min}) = 1 - \frac{609}{625} = \frac{16}{625}.$$
+Since $16 = 2^4$ and $625 = 5^4$, $1-p = \frac25$ and $p = \frac35$.
+SOLUTION: Poisson-process model
+Model arrivals as a Poisson process with rate $\lambda$ per minute. Then $P(\text{no car in } t\text{ min}) = e^{-\lambda t}$. From $e^{-20\lambda} = \frac{16}{625}$ we get $e^{-5\lambda} = \left(\frac{16}{625}\right)^{1/4} = \frac25$, so $P(\text{at least one car in 5 min}) = 1 - \frac25 = \frac35$.
+===END===
+
+===TEASER===
+SLUG: meeting-probability
+IDS: G4B-01, R3B-16, R3B-17, R3B-18, H4B-21
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Meeting probability
+QUESTION:
+Romeo and Juliet agree to meet sometime between 9pm and 10pm. Each of them arrives at an independent, uniformly random time in this hour and waits for the other for $15$ minutes (but no later than 10pm). What is the probability that they actually meet?
+HINT1:
+Represent the two arrival times as a point in a square. Which region of the square corresponds to a meeting?
+HINT2:
+They meet iff $|X - Y| \le 15$ (in minutes). The complement is two right triangles in the corners; compute their area.
+ANSWER:
+$7/16$
+REFRESH:
+- **Uniform distribution on a square:** if $X, Y$ are independent uniform on $[0,T]$, then $(X,Y)$ is uniform on $[0,T]^2$ and $P((X,Y)\in A) = \text{area}(A)/T^2$.
+- **Area of a right triangle** with legs $a, b$: $ab/2$.
+EXPLANATION:
+Two independent uniform times make a uniformly random point in the $60\times 60$ square. They meet iff their arrival times differ by at most $15$ minutes: that is a diagonal band between the lines $y = x - 15$ and $y = x + 15$. What is outside the band is two congruent right triangles with legs $60 - 15 = 45$, which together form a $45\times 45$ square. So the probability of *not* meeting is $(45/60)^2 = 9/16$, and of meeting $7/16$. Geometry replaces a double integral.
+SOLUTION: Geometry of the square
+Measure time in minutes after 9pm: $X, Y$ independent uniform on $[0,60]$, $(X,Y)$ uniform on $[0,60]^2$. They meet iff $|X - Y|\le 15$ (whoever comes first waits $15$ minutes; waiting past 10pm is never needed since the other arrives by 10pm anyway).
+
+The region $|X-Y| > 15$ consists of two right triangles $\{Y > X + 15\}$ and $\{X > Y + 15\}$, each with legs $45$, total area $2\cdot\frac12\cdot 45^2 = 45^2$. Hence
+$$P(\text{meet}) = 1 - \frac{45^2}{60^2} = 1 - \frac{9}{16} = \frac{7}{16}.$$
+SOLUTION: Integration
+$$P(|X-Y|\le 15) = \frac{1}{60^2}\int_0^{60}\big(\min(60, x+15) - \max(0, x-15)\big)\,dx.$$
+The length of the allowed interval for $Y$ is $x + 15$ for $x\in[0,15]$, $30$ for $x\in[15,45]$, and $75 - x$ for $x\in[45,60]$. So
+$$\int_0^{60}(\cdots)\,dx = \int_0^{15}(x+15)\,dx + 30\cdot 30 + \int_{45}^{60}(75-x)\,dx = 337.5 + 900 + 337.5 = 1575,$$
+and $P = \frac{1575}{3600} = \frac{7}{16}$.
+
+Variants: Heard on the Street has the same problem (meeting under a clock between 1PM and 2PM, waiting $15$ minutes): $7/16$. The green book has two bankers arriving between 5:00 and 6:00am who each stay exactly $5$ minutes: $P = 1 - \left(\frac{55}{60}\right)^2 = \frac{(60-55)(60+55)}{3600} = \frac{23}{144}$.
+FOLLOWUP: Both wait x minutes
+Romeo and Juliet each arrive uniformly between 9pm and 10pm and each waits $x$ minutes ($0\le x\le 60$). What is the probability that they meet?
+FOLLOWUP_ANSWER:
+$$P = 1 - \left(\frac{60-x}{60}\right)^2 = \frac{x(120-x)}{3600}.$$
+They meet iff $|X-Y|\le x$; the complement is two triangles with legs $60-x$, total area $(60-x)^2$. Checks: $x = 0$ gives $0$, $x = 15$ gives $\frac{7}{16}$, $x = 30$ gives $\frac34$, $x = 60$ gives $1$. (For example, waiting $60-\sqrt{1800}\approx 17.6$ minutes gives probability exactly $1/2$.)
+FOLLOWUP: Keen Romeo waits 2x
+Now Romeo waits $2x$ minutes and Juliet waits $x$ minutes. What is the probability that they meet?
+FOLLOWUP_ANSWER:
+Let $R, J$ be the arrival times (minutes after 9pm) and $a = x/60$. If Romeo comes first he waits $2x$: need $J - R\le 2x$. If Juliet comes first she waits $x$: need $R - J\le x$. So they meet iff $-x\le J - R\le 2x$. The complement is the triangle $\{J - R > 2x\}$ with legs $60 - 2x$ and the triangle $\{R - J > x\}$ with legs $60 - x$ (when $2x\le 60$). Hence, for $0\le x\le 30$,
+$$P = 1 - \frac{(1-2a)^2 + (1-a)^2}{2} = 3a - \frac{5a^2}{2} = \frac{x}{20} - \frac{x^2}{1440}.$$
+For $30 \le x\le 60$ the first triangle disappears and $P = 1 - \frac{(1-a)^2}{2}$; for $x\ge 60$, $P = 1$. Example: $x = 15$ gives $\frac34 - \frac{5}{32} = \frac{19}{32}$ (up from $\frac{7}{16} = \frac{14}{32}$). At $x = 30$ both formulas give $\frac78$.
+===END===

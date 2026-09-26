@@ -1,0 +1,936 @@
+===TEASER===
+SLUG: cubes-on-a-chessboard
+IDS: H1B-05
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Cubes on a chessboard
+QUESTION:
+You have a $20\times20$ chessboard and a huge box of identical cubes, each cube's face being exactly the size of one square. One edge of the board runs north–south. You put one cube on the northwest corner square. Every time you step one square south or one square east, the pile you place has one more cube than the pile on the square you came from.
+
+So the first row reads $1, 2, 3, \dots, 20$, the second row $2, 3, 4, \dots, 21$, and so on down to the last row $20, 21, \dots, 39$: the square in row $i$ and column $j$ holds $i+j-1$ cubes.
+
+How many cubes are on the board in total?
+HINT1:
+Picture the piles as a 3D solid. Is there a height at which you could cut it so that the part above the cut fits exactly into the gaps below?
+HINT2:
+Cut the solid horizontally at height $20$. The piles taller than $20$ sit in the southeast triangle; the piles shorter than $20$ sit in the northwest triangle. Compare the excess above 20 on square $(i,j)$ with the shortfall below 20 on the square reflected across the anti-diagonal. Alternatively, just compute $\sum_{i,j}(i+j-1)$.
+ANSWER:
+$20^3 = 8{,}000$ cubes.
+REFRESH:
+- Arithmetic sum: $\sum_{j=1}^{n} j = \dfrac{n(n+1)}{2}$.
+- A double sum of a sum splits: $\sum_{i}\sum_{j}(a_i + b_j) = n\sum_i a_i + n\sum_j b_j$ when both indices run over $n$ values.
+EXPLANATION:
+The heights $i+j-1$ grow linearly along both directions, so the solid is a "staircase ramp" that rises from $1$ in one corner to $39$ in the opposite corner. The average height is exactly the middle value $20$: indeed the height at $(i,j)$ plus the height at the "reflected" square $(21-j,\,21-i)$ is $(i+j-1)+(41-i-j)=40$. So every tall pile is paired with a short pile whose heights average to 20. Levelling the solid (moving the excess above 20 into the matching shortfall) gives a perfect $20\times20\times20$ block, i.e. $8{,}000$ cubes. For an $n\times n$ board the same argument gives $n^3$.
+SOLUTION: Cut and flip (pairing)
+Put square $(i,j)$ in row $i$ (counted from the north) and column $j$ (counted from the west); it carries $h(i,j)=i+j-1$ cubes, with $1\le i,j\le 20$.
+
+Pair square $(i,j)$ with $(i',j')=(21-j,\,21-i)$, its reflection across the anti-diagonal. This is a bijection of the board onto itself (applying it twice gives back $(i,j)$), and
+$$h(i,j)+h(i',j')=(i+j-1)+\big((21-j)+(21-i)-1\big)=40.$$
+So if a pile has $20+d$ cubes, its partner has $20-d$. Cutting every pile at height 20 and moving the $d$ excess cubes onto the partner (which lacks exactly $d$) makes every pile exactly $20$ high. The squares on the anti-diagonal ($i+j=21$) already have height 20 and are their own partners.
+
+The result is a $20\times20$ board with every pile of height 20, i.e. a solid cube of $20^3=8{,}000$ unit cubes. Since we only moved cubes, the total is $8{,}000$.
+SOLUTION: Direct summation
+For an $n\times n$ board,
+$$\sum_{i=1}^{n}\sum_{j=1}^{n}(i+j-1)=\sum_{i=1}^{n}\sum_{j=1}^{n} i+\sum_{i=1}^{n}\sum_{j=1}^{n} j-n^2 = n\cdot\frac{n(n+1)}{2}+n\cdot\frac{n(n+1)}{2}-n^2.$$
+This equals $n^2(n+1)-n^2=n^3$. For $n=20$ this is $8{,}000$ cubes.
+===END===
+
+===TEASER===
+SLUG: escaping-the-dog
+IDS: H1B-06
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: hard
+TITLE: Escaping the dog
+QUESTION:
+You stand at the centre of a circular field of radius $R$ enclosed by a low wire fence. A large, hungry dog is attached to the fence and can only run along the perimeter. You run at speed $v$; the dog runs at $4v$ and will always do its best to be where you reach the fence. Find a running strategy that lets you get out of the field without being caught.
+HINT1:
+Running straight to the fence doesn't work: compare the time you need ($R/v$) with the time the dog needs to run half the perimeter. So first try to get into a better position. Think about angular speed rather than linear speed.
+HINT2:
+On a circle of radius $r$ your angular speed is $v/r$, the dog's is $4v/R$. For which $r$ can you circle faster (in angle) than the dog? Use this to get diametrically opposite to it, then run straight for the fence and check the times.
+ANSWER:
+Run in circles of radius $r$ slightly less than $R/4$ (any $r$ with $R(1-\pi/4)<r<R/4$) until the dog is diametrically opposite you, then sprint straight to the fence away from it.
+REFRESH:
+- Angular speed: moving at speed $v$ on a circle of radius $r$ sweeps angle at rate $\omega=v/r$ (radians per unit time).
+- Half the circumference of a circle of radius $R$ is $\pi R$.
+EXPLANATION:
+The naive dash fails: you need $R/v$ to reach the fence, the dog needs at most $\pi R/(4v)\approx 0.785\,R/v$ to get to any point of the perimeter. You must start your dash closer to the fence *and* with the dog as far away as possible (on the opposite side).
+
+The key is angular speed. Near the centre you can change your angle very quickly by running a small circle, while the dog, stuck on the big circle, sweeps angle at rate $4v/R$. On a circle of radius $r<R/4$ your angular rate $v/r$ beats the dog's, so you can lap it in angle and put yourself exactly opposite to it. From radius $r$ the dash is only $R-r$ long, while the dog must still run half the fence, $\pi R$. The dash works as long as $R-r<\pi R/4$, i.e. $r>R(1-\pi/4)\approx 0.215R$. Since $1-\pi/4<1/4$ (because $\pi>3$), there is a window of radii that works — and it is narrow, which is what makes the puzzle cute.
+SOLUTION: Circle, then dash
+**Why the naive strategy fails.** Running straight from the centre takes $R/v$. The dog is at worst half the perimeter away, which takes it $\dfrac{\pi R}{4v}<\dfrac{R}{v}$ since $\pi<4$. It gets there first.
+
+**Gaining an angular advantage.** Let $r$ be a radius with $r<R/4$. Running round the circle of radius $r$ (centred at the field's centre) at full speed $v$, your angular speed is $v/r>4v/R$, the maximum angular speed of the dog. So whatever the dog does, the angle between you and the dog (seen from the centre) can be changed by you at a strictly positive net rate. After finite time you are at the point of your circle diametrically opposite the dog's position (angle difference $\pi$).
+
+**The dash.** At that moment run radially outwards, straight to the fence. You cover $R-r$ in time $\dfrac{R-r}{v}$. The dog must cover half the perimeter in either direction, $\pi R$, which takes $\dfrac{\pi R}{4v}$ at least. You escape if
+$$\frac{R-r}{v}<\frac{\pi R}{4v}\iff r>R\left(1-\frac{\pi}{4}\right)\approx 0.2146\,R.$$
+
+**Choosing $r$.** We need $R(1-\pi/4)<r<R/4$. This interval is non-empty because $1-\pi/4<1/4\iff\pi>3$. Writing $r=R/4-\varepsilon$, the condition is $0<\varepsilon<\dfrac{(\pi-3)R}{4}$, the book's form.
+
+So: move out to a circle of radius $r=R/4-\varepsilon$ with $0<\varepsilon<(\pi-3)R/4$ (e.g. $r=0.24R$), circle until the dog is directly opposite, then run straight for the fence on the side away from the dog.
+===END===
+
+===TEASER===
+SLUG: gaussian-integral
+IDS: H1B-07
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: The Gaussian integral
+QUESTION:
+Prove that
+$$\int_{-\infty}^{+\infty}e^{-x^2}\,dx=\sqrt{\pi}.$$
+HINT1:
+There is no elementary antiderivative of $e^{-x^2}$, so attack the square of the integral instead.
+HINT2:
+Write $I^2=\int e^{-x^2}dx\int e^{-y^2}dy$ as a double integral over the plane and switch to polar coordinates; don't forget the Jacobian $r$.
+ANSWER:
+$I^2=\pi$, so $I=\sqrt{\pi}$.
+REFRESH:
+- Polar coordinates: $x=r\cos\theta$, $y=r\sin\theta$, $dx\,dy=r\,dr\,d\theta$ (Jacobian $r$), with $r\in[0,\infty)$, $\theta\in[0,2\pi)$.
+- Fubini–Tonelli: for a non-negative function, a double integral equals the iterated integral in either order, and $\int f(x)dx\int g(y)dy=\iint f(x)g(y)\,dx\,dy$.
+- Standard normal density: $\varphi(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}$ integrates to 1.
+EXPLANATION:
+The function $e^{-x^2}$ has no closed-form antiderivative, so one cannot integrate it directly. The trick is to square the integral: the product of two copies is $\iint e^{-(x^2+y^2)}\,dx\,dy$, and $x^2+y^2=r^2$ is rotation-invariant. In polar coordinates the area element brings an extra factor $r$, and $re^{-r^2}$ *does* have an easy antiderivative, $-\tfrac12 e^{-r^2}$. The radial integral gives $\tfrac12$, the angular one gives $2\pi$, so $I^2=\pi$.
+
+If you are allowed to take as known that the normal density integrates to one, the result is just a change of variables — but that fact is usually proved by exactly this polar-coordinates argument, so the second method is the real proof.
+SOLUTION: Polar coordinates
+Let $I=\int_{-\infty}^{\infty}e^{-x^2}\,dx$; it is finite since $e^{-x^2}\le e^{1-2|x|}$ (because $x^2\ge 2|x|-1$), and $I>0$. By Tonelli (the integrand is non-negative),
+$$I^2=\int_{-\infty}^{\infty}e^{-x^2}dx\int_{-\infty}^{\infty}e^{-y^2}dy=\iint_{\mathbb R^2}e^{-(x^2+y^2)}\,dx\,dy.$$
+Change to polar coordinates $x=r\cos\theta$, $y=r\sin\theta$. The Jacobian is
+$$\frac{\partial(x,y)}{\partial(r,\theta)}=\begin{vmatrix}\cos\theta & -r\sin\theta\\ \sin\theta & r\cos\theta\end{vmatrix}=r\cos^2\theta+r\sin^2\theta=r,$$
+so
+$$I^2=\int_0^{2\pi}\int_0^{\infty}e^{-r^2}\,r\,dr\,d\theta=\int_0^{2\pi}\left[-\tfrac12e^{-r^2}\right]_{r=0}^{r=\infty}d\theta=\int_0^{2\pi}\tfrac12\,d\theta=\pi.$$
+Since $I>0$, $I=\sqrt{\pi}$.
+SOLUTION: From the normal density
+Assume known that $\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du=1$. Substitute $u=\sqrt2\,x$, $du=\sqrt2\,dx$:
+$$1=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}e^{-x^2}\sqrt2\,dx=\frac{1}{\sqrt{\pi}}\int_{-\infty}^{\infty}e^{-x^2}\,dx,$$
+hence $\int_{-\infty}^{\infty}e^{-x^2}dx=\sqrt\pi$. (This is circular if the normalisation of the normal density was itself proved via the Gaussian integral, which is the usual route.)
+===END===
+
+===TEASER===
+SLUG: integral-of-secant
+IDS: H1B-08, H1B-09
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Integral of sec
+QUESTION:
+What is $\displaystyle\int\sec\theta\,d\theta$?
+HINT1:
+Try to make the integrand look like $u'/u$ for some cleverly chosen $u$.
+HINT2:
+Multiply numerator and denominator by $\sec\theta+\tan\theta$. Then compute the derivative of $\sec\theta+\tan\theta$.
+ANSWER:
+$\displaystyle\int\sec\theta\,d\theta=\ln|\sec\theta+\tan\theta|+C$.
+REFRESH:
+- $\sec\theta=\dfrac1{\cos\theta}$, $\tan\theta=\dfrac{\sin\theta}{\cos\theta}$, $\csc\theta=\dfrac1{\sin\theta}$, $\cot\theta=\dfrac{\cos\theta}{\sin\theta}$.
+- $(\tan\theta)'=\sec^2\theta$ and $(\sec\theta)'=\sec\theta\tan\theta$ (quotient rule).
+- $\displaystyle\int\frac{u'(\theta)}{u(\theta)}\,d\theta=\ln|u(\theta)|+C$.
+EXPLANATION:
+The derivatives of $\sec$ and $\tan$ are "cross-linked": $(\sec)'=\sec\tan$ and $(\tan)'=\sec^2$. So the derivative of $\sec+\tan$ is $\sec\tan+\sec^2=\sec(\sec+\tan)$, i.e. $\sec$ times the function itself. That means $\sec\theta=\dfrac{(\sec\theta+\tan\theta)'}{\sec\theta+\tan\theta}$, a logarithmic derivative, and the integral is a log. It's a trick worth memorising; interviewers like it because it's the least obvious of the basic trig integrals.
+SOLUTION: Logarithmic derivative
+Let $u(\theta)=\sec\theta+\tan\theta$. Then
+$$u'(\theta)=\sec\theta\tan\theta+\sec^2\theta=\sec\theta\,(\tan\theta+\sec\theta)=\sec\theta\,u(\theta).$$
+Hence, wherever $u\neq0$,
+$$\int\sec\theta\,d\theta=\int\frac{\sec\theta(\sec\theta+\tan\theta)}{\sec\theta+\tan\theta}\,d\theta=\int\frac{u'(\theta)}{u(\theta)}\,d\theta=\ln|\sec\theta+\tan\theta|+C.$$
+Check by differentiating: $\dfrac{d}{d\theta}\ln|u|=\dfrac{u'}{u}=\sec\theta$. ✓
+SOLUTION: Substitution $s=\sin\theta$
+Write $\sec\theta=\dfrac{\cos\theta}{\cos^2\theta}=\dfrac{\cos\theta}{1-\sin^2\theta}$ and put $s=\sin\theta$, $ds=\cos\theta\,d\theta$:
+$$\int\frac{ds}{1-s^2}=\frac12\int\left(\frac1{1-s}+\frac1{1+s}\right)ds=\frac12\ln\left|\frac{1+s}{1-s}\right|+C.$$
+Now $\dfrac{1+s}{1-s}=\dfrac{(1+s)^2}{1-s^2}=\dfrac{(1+\sin\theta)^2}{\cos^2\theta}=(\sec\theta+\tan\theta)^2$, so $\frac12\ln\left|\frac{1+s}{1-s}\right|=\ln|\sec\theta+\tan\theta|$, the same answer.
+FOLLOWUP: The other trig functions
+Give the antiderivatives and derivatives of $\sin\theta$, $\cos\theta$, $\tan\theta$, $\cot\theta$, $\sec\theta$ and $\csc\theta$ (cosec).
+FOLLOWUP_ANSWER:
+Up to constants:
+
+| $f(\theta)$ | $\int f$ | $f'$ |
+|---|---|---|
+| $\sin\theta$ | $-\cos\theta$ | $\cos\theta$ |
+| $\cos\theta$ | $\sin\theta$ | $-\sin\theta$ |
+| $\tan\theta$ | $\ln\lvert\sec\theta\rvert=-\ln\lvert\cos\theta\rvert$ | $\sec^2\theta$ |
+| $\cot\theta$ | $\ln\lvert\sin\theta\rvert$ | $-\csc^2\theta$ |
+| $\sec\theta$ | $\ln\lvert\sec\theta+\tan\theta\rvert$ | $\sec\theta\tan\theta$ |
+| $\csc\theta$ | $\ln\lvert\tan\tfrac{\theta}{2}\rvert=-\ln\lvert\csc\theta+\cot\theta\rvert$ | $-\csc\theta\cot\theta$ |
+
+Derivations: $\tan=\frac{\sin}{\cos}=-\frac{(\cos)'}{\cos}$, so $\int\tan=-\ln|\cos|$; $\cot=\frac{(\sin)'}{\sin}$, so $\int\cot=\ln|\sin|$. For $\csc$, use the same trick as for $\sec$: $(\csc+\cot)'=-\csc\cot-\csc^2=-\csc(\csc+\cot)$, so $\int\csc=-\ln|\csc+\cot|$; and $\csc\theta+\cot\theta=\frac{1+\cos\theta}{\sin\theta}=\frac{2\cos^2(\theta/2)}{2\sin(\theta/2)\cos(\theta/2)}=\cot\frac\theta2$, giving $\ln|\tan\frac\theta2|$. The derivatives come from the quotient rule, e.g. $(\sec)'=\left(\frac1{\cos}\right)'=\frac{\sin}{\cos^2}=\sec\tan$.
+===END===
+
+===TEASER===
+SLUG: series-exp-minus-sqrt-n
+IDS: H1B-10
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Does $\sum e^{-\sqrt n}$ converge?
+QUESTION:
+Does the infinite series $\displaystyle\sum_{n=1}^{\infty}e^{-\sqrt n}$ converge?
+HINT1:
+The ratio and root tests are inconclusive here (both limits equal 1). Think of a test that compares the sum to something you can compute exactly, or to a series you know.
+HINT2:
+Either use the integral test with $\int_1^\infty e^{-\sqrt x}\,dx$ (substitute $u=\sqrt x$ and integrate by parts), or compare with $\sum 1/n^2$ by showing $e^{-\sqrt n}<1/n^2$ for $n$ large.
+ANSWER:
+Yes, it converges (its value is about $1.670$, between $4/e\approx1.47$ and $5/e\approx1.84$).
+REFRESH:
+- Integral test: if $f$ is positive, continuous and decreasing on $[1,\infty)$, then $\sum_{n\ge1}f(n)$ and $\int_1^\infty f(x)dx$ converge or diverge together; moreover $\int_1^\infty f\le\sum_{n\ge1}f(n)\le f(1)+\int_1^\infty f$.
+- Comparison test: if $0\le a_n\le b_n$ for all $n\ge N$ and $\sum b_n<\infty$ then $\sum a_n<\infty$.
+- $\sum_{n\ge1}1/n^2=\pi^2/6<\infty$ (more generally $\sum 1/n^p$ converges iff $p>1$).
+- Exponentials beat polynomials: $u^k e^{-u}\to0$ as $u\to\infty$ for every $k$.
+EXPLANATION:
+The terms go to zero, but only "sub-exponentially": $e^{-\sqrt n}$ decays more slowly than any $e^{-cn}$, which is why the ratio test fails ($a_{n+1}/a_n=e^{-(\sqrt{n+1}-\sqrt n)}\to1$). But it still decays much faster than any power of $n$: taking logs, $e^{-\sqrt n}<n^{-2}\iff\sqrt n>2\ln n$, which is true for large $n$ because $\sqrt n$ grows faster than $\ln n$. So the series is dominated by $\sum 1/n^2$ and converges. The integral test gives the same verdict and even a numerical bracket for the sum.
+SOLUTION: Integral test
+Let $f(x)=e^{-\sqrt x}$, positive, continuous and decreasing on $[1,\infty)$. Substitute $u=\sqrt x$, $x=u^2$, $dx=2u\,du$:
+$$\int_1^{\infty}e^{-\sqrt x}\,dx=\int_1^\infty 2u\,e^{-u}\,du.$$
+By parts, $\int 2ue^{-u}du=-2ue^{-u}+\int2e^{-u}du=-2(1+u)e^{-u}$. Therefore
+$$\int_1^\infty 2ue^{-u}\,du=\Big[-2(1+u)e^{-u}\Big]_1^\infty=0+2\cdot2\cdot e^{-1}=\frac4e,$$
+using $(1+u)e^{-u}\to0$. The integral is finite, so by the integral test the series converges.
+
+The integral test also brackets the sum: $\frac4e\le\sum_{n\ge1}e^{-\sqrt n}\le e^{-1}+\frac4e=\frac5e$, i.e. $1.47\le S\le1.84$; numerically $S\approx1.670$.
+
+Note: the book says the sum is "only slightly below $4/e$". That's wrong: for a decreasing positive $f$, $\sum_{n\ge1}f(n)\ge\int_1^\infty f$, so the sum is *above* $4/e$ (about $1.670$ vs $1.472$).
+SOLUTION: Comparison with $\sum 1/n^2$
+We have $e^{-\sqrt n}<\dfrac1{n^2}\iff\sqrt n>2\ln n$. The function $g(x)=\sqrt x-2\ln x$ has $g'(x)=\frac1{2\sqrt x}-\frac2x>0$ for $x>16$, so it is increasing there, and $g(75)=8.660-8.635>0$. So $e^{-\sqrt n}<1/n^2$ for all $n\ge75$ (it fails at $n=74$, where $\sqrt{74}\approx8.602<2\ln74\approx8.608$). Since $\sum1/n^2=\pi^2/6$ converges, the comparison test gives convergence of $\sum e^{-\sqrt n}$.
+
+(Any exponent works: $e^{-\sqrt n}\le C_k n^{-k}$ for every $k$, because $u^{2k}e^{-u}$ is bounded. So the series converges "very comfortably".)
+===END===
+
+===TEASER===
+SLUG: ages-of-three-children
+IDS: H1B-11
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Ages of three children
+QUESTION:
+At 2 a.m., while working on a deal book, John tells Mary that his sister has three children. "How old are they?" asks Mary. "The product of their ages is 36," says John. Mary thinks and says, "I need more information." John points to a number on the spreadsheet: "The sum of their ages is this figure." After thinking for a minute Mary says, "Still not enough information." John adds: "The eldest is dyslexic." How old are the children? (Ages are whole numbers.)
+HINT1:
+Each clue tells you something about what Mary could *not* deduce. List everything consistent with the first clue.
+HINT2:
+List all triples of positive integers with product 36 and compute their sums. Mary knows the sum and still can't decide: which sum must it be? Then use the last sentence only for what it implies about the ages, not for the dyslexia.
+ANSWER:
+$2, 2$ and $9$.
+REFRESH:
+NONE
+EXPLANATION:
+This is a puzzle about information: the content of the second clue (the sum) is hidden from us, but Mary's reaction to it is not. If the sum had pointed to a unique triple, she would have answered. So the sum must be shared by two or more triples with product 36 — and only one sum has this property. The last clue is not about dyslexia at all; it only tells us that there *is* a single eldest child, which rules out the triple with twin eldest children.
+SOLUTION: Enumerate and eliminate
+Triples (unordered) of positive integers with product 36, with their sums:
+
+| triple | sum |
+|---|---|
+| $1,1,36$ | $38$ |
+| $1,2,18$ | $21$ |
+| $1,3,12$ | $16$ |
+| $1,4,9$ | $14$ |
+| $1,6,6$ | $13$ |
+| $2,2,9$ | $13$ |
+| $2,3,6$ | $11$ |
+| $3,3,4$ | $10$ |
+
+(The book's list omits $1,1,36$; it does not change anything.)
+
+Every sum appears once except $13$, which appears twice. Mary knows the sum and still can't conclude, so the sum is $13$ and the triple is $(1,6,6)$ or $(2,2,9)$. "The eldest" implies a unique oldest child, which excludes $(1,6,6)$ (two six-year-olds; we ignore twins being minutes apart). So the children are $2$, $2$ and $9$.
+===END===
+
+===TEASER===
+SLUG: sums-of-squares-and-cubes
+IDS: H1B-13
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Sums of squares and cubes
+QUESTION:
+Find closed forms for $\displaystyle\sum_{k=1}^{n}k^2$ and $\displaystyle\sum_{k=1}^{n}k^3$.
+HINT1:
+You probably know $\sum k=\frac{n(n+1)}2$. Look for an identity that turns $k^2$ (or $k^3$) into something that telescopes.
+HINT2:
+Sum the identity $(k+1)^3-k^3=3k^2+3k+1$ from $k=1$ to $n$: the left side telescopes. Do the same with $(k+1)^4-k^4$ for cubes. (Or guess a polynomial of degree 3, resp. 4, and prove it by induction.)
+ANSWER:
+$\displaystyle\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}{6}$ and $\displaystyle\sum_{k=1}^n k^3=\frac{n^2(n+1)^2}{4}=\left(\frac{n(n+1)}{2}\right)^2$.
+REFRESH:
+- Telescoping: $\sum_{k=1}^n\big(g(k+1)-g(k)\big)=g(n+1)-g(1)$.
+- Binomial expansions: $(k+1)^3=k^3+3k^2+3k+1$, $(k+1)^4=k^4+4k^3+6k^2+4k+1$.
+- Induction: prove $P(1)$ and $P(n)\Rightarrow P(n+1)$.
+EXPLANATION:
+The sum of $k^p$ over $k\le n$ is a polynomial in $n$ of degree $p+1$ (think of it as a discrete integral of $x^p$). There are two standard ways to find it. The telescoping trick expresses $k^p$ through the difference $(k+1)^{p+1}-k^{p+1}$, whose sum collapses to two terms; you then solve for the unknown sum using the lower-order sums you already know. The other route is to guess the polynomial (from a few values, or from the rising-factorial pattern $\sum k(k+1)=\frac{n(n+1)(n+2)}3$) and check it by induction. A memorable fact: the sum of the first $n$ cubes is the square of the sum of the first $n$ integers.
+SOLUTION: Telescoping
+**Squares.** Summing $(k+1)^3-k^3=3k^2+3k+1$ for $k=1,\dots,n$:
+$$(n+1)^3-1=3\sum_{k=1}^n k^2+3\cdot\frac{n(n+1)}{2}+n.$$
+So
+$$3\sum k^2=(n+1)^3-(n+1)-\frac{3n(n+1)}{2}=(n+1)\left[(n+1)^2-1-\frac{3n}{2}\right].$$
+The bracket is $n^2+2n-\frac{3n}{2}=n^2+\frac n2=\frac{n(2n+1)}{2}$, hence $\displaystyle\sum_{k=1}^n k^2=\frac{n(n+1)(2n+1)}{6}$.
+
+**Cubes.** Summing $(k+1)^4-k^4=4k^3+6k^2+4k+1$:
+$$(n+1)^4-1=4\sum k^3+6\cdot\frac{n(n+1)(2n+1)}6+4\cdot\frac{n(n+1)}2+n.$$
+So $4\sum k^3=(n+1)^4-(n+1)-n(n+1)(2n+1)-2n(n+1)=(n+1)\left[(n+1)^3-1-n(2n+1)-2n\right]$. The bracket is $n^3+3n^2+3n-2n^2-n-2n=n^3+n^2=n^2(n+1)$. Hence
+$$\sum_{k=1}^n k^3=\frac{n^2(n+1)^2}{4}.$$
+SOLUTION: Guess and prove by induction
+Guess that $\sum_{k=1}^n k^2=an^3+bn^2+cn+d$ and fit it on $n=1,2,3,4$ (values $1,5,14,30$): solving the linear system gives $a=\frac13$, $b=\frac12$, $c=\frac16$, $d=0$, i.e. $f(n)=\frac{2n^3+3n^2+n}{6}=\frac{n(n+1)(2n+1)}6$.
+
+Induction: $f(1)=1$. If $f(n)=\sum_{k\le n}k^2$, then
+$$f(n)+(n+1)^2=\frac{2n^3+3n^2+n+6n^2+12n+6}{6}=\frac{2n^3+9n^2+13n+6}{6}=\frac{(n+1)(n+2)(2n+3)}{6}=f(n+1).$$
+For cubes, let $h(n)=\frac{n^2(n+1)^2}4$. Then $h(1)=1$ and
+$$h(n)+(n+1)^3=\frac{(n+1)^2\left(n^2+4(n+1)\right)}{4}=\frac{(n+1)^2(n+2)^2}{4}=h(n+1).$$
+SOLUTION: Rising-factorial sums
+The sums $\sum_{k=1}^n k(k+1)=\frac{n(n+1)(n+2)}3$ and $\sum_{k=1}^n k(k+1)(k+2)=\frac{n(n+1)(n+2)(n+3)}4$ are easy to prove by induction (the difference of consecutive right-hand sides is exactly the next term, e.g. $\frac{(N+1)(N+2)(N+3)-N(N+1)(N+2)}{3}=(N+1)(N+2)$). Then:
+$$\sum k^2=\sum k(k+1)-\sum k=\frac{n(n+1)(n+2)}3-\frac{n(n+1)}2=\frac{n(n+1)(2n+1)}6.$$
+For cubes use $k^3=k(k+1)(k+2)-3k(k+1)+k$:
+$$\sum k^3=\frac{n(n+1)(n+2)(n+3)}4-n(n+1)(n+2)+\frac{n(n+1)}2=\frac{n(n+1)}{4}\big[(n+2)(n+3)-4(n+2)+2\big]=\frac{n(n+1)}4\,(n^2+n)=\frac{n^2(n+1)^2}4.$$
+===END===
+
+===TEASER===
+SLUG: quarters-on-a-table
+IDS: H1B-16
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: medium
+TITLE: Quarters on a table
+QUESTION:
+We play a game on a table in the next room. Each of us has an unlimited bag of identical quarters. We take turns placing one quarter flat on the table; quarters may not overlap (and must lie on the table). When there is no room for another quarter, the last person to have placed one wins. I tell you that a winning strategy exists and that it does not depend on the size of the table.
+1. What is the shape of the table?
+2. Do you go first?
+3. What is your winning strategy?
+4. Is there any case where it does not work?
+HINT1:
+A strategy that works for every size of table can't rely on counting; it has to be a copying strategy. What property of the table would let you copy every move of your opponent?
+HINT2:
+Think of symmetry through a central point: if the table is symmetric about a point $O$, you can answer each move with its mirror image through $O$. What could stop you from doing that, and how does placing the first coin at $O$ help?
+ANSWER:
+The table must be centrally symmetric (rectangle, disc, ellipse, ...); go first, put your first quarter exactly at the centre, then always play the point-reflection of your opponent's move. It fails if the table isn't centrally symmetric; if the centre isn't available (e.g. an annulus, a table with a central hole) you should instead go second and mirror.
+REFRESH:
+- Point symmetry about $O$: the map $P\mapsto P'$ with $O$ the midpoint of $PP'$ (rotation by $180^\circ$). A region is centrally symmetric if this map sends it onto itself.
+EXPLANATION:
+This is a symmetry (copycat) strategy. If the table is symmetric about a point $O$ and after your move the set of coins is symmetric about $O$, then whenever your opponent finds a free spot $P$, the mirror spot $P'$ was free too, and it cannot be blocked by the coin they just placed unless that coin is close enough to $O$ to overlap its own mirror image — which happens exactly when it covers $O$. That's why you occupy the centre yourself with your first coin. From then on you always have a reply, so you are never the one who runs out of moves, and you place the last coin. No counting is involved, so the size of the table doesn't matter.
+SOLUTION: Central-symmetry mirroring
+**Shape.** Take the table centrally symmetric about a point $O$: for every point $P$ of the table, its reflection $P'$ through $O$ is on the table. Squares, rectangles, discs, ellipses, regular hexagons all qualify.
+
+**Opening.** Go first and place your quarter with its centre at $O$ (possible on any convex symmetric table big enough to hold a coin).
+
+**Invariant.** After each of your moves, the set of coins is symmetric about $O$. True after the first move. Suppose it holds and the opponent places a coin centred at $P$. Before their move $P$ was a legal spot, so by symmetry $P'$ was also legal. Could the new coin at $P$ overlap a coin at $P'$? Two coins of radius $\rho$ overlap iff their centres are less than $2\rho$ apart, and $|PP'|=2|OP|$. Now $|OP|\ge2\rho$ because the coin at $P$ doesn't overlap your central coin, so $|PP'|\ge4\rho$: no overlap. So you can place at $P'$, restoring symmetry.
+
+**Conclusion.** You always have a legal reply, so the game can only end right after one of your moves: you place the last quarter and win.
+
+**When it fails.**
+- If the table is not centrally symmetric, the copying argument breaks down.
+- If the centre is not part of the table, e.g. an annulus (a disc with a hole, like a CD), you can't take the centre. Then let your opponent go first and mirror their moves. This works because a coin overlaps its own mirror image only if it covers $O$, which is impossible when $O$ lies in the hole. (The book states this for a hole bigger than a quarter; in fact it suffices that the centre point is not on the table.)
+- Likewise, on a symmetric table that is pinched at the centre so that no quarter can cover $O$ (a "bow-tie"), go second and mirror.
+===END===
+
+===TEASER===
+SLUG: mutilated-chessboard
+IDS: H1B-17, H1B-18
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Mutilated chessboard
+QUESTION:
+You have an $8\times8$ chessboard and a big box of $2\times1$ dominoes, each covering exactly two adjacent squares. Two diagonally opposite corner squares, $(1,1)$ and $(8,8)$, are marked as forbidden. Can you cover the remaining $62$ squares with dominoes, with no overlaps and nothing sticking out over the edge (and no tricks like standing dominoes on end)?
+HINT1:
+Instead of trying tilings, look for a quantity to which every domino contributes in the same way, whatever its position.
+HINT2:
+Colour the board as a chessboard. How many black and how many white squares does one domino cover? What colour are the two removed corners?
+ANSWER:
+No: every domino covers one black and one white square, but the two removed corners have the same colour, leaving 30 squares of one colour and 32 of the other.
+REFRESH:
+- Invariant method: find a quantity that each piece contributes to in a fixed way; if the target doesn't match, the task is impossible.
+EXPLANATION:
+Any domino, horizontal or vertical, sits on two adjacent squares, and adjacent squares always have opposite colours. So any set of dominoes covers as many black as white squares. The full board has 32 of each; the two opposite corners are the same colour (both on the main diagonal). Removing them leaves 30 of one colour and 32 of the other, which no domino tiling can match. The colouring invariant makes any search over tilings unnecessary.
+SOLUTION: Colouring argument
+Colour square $(x,y)$ black if $x+y$ is even and white if $x+y$ is odd. Adjacent squares differ by 1 in exactly one coordinate, so they have opposite colours: each domino covers exactly one black and one white square. Hence $k$ non-overlapping dominoes cover $k$ black and $k$ white squares.
+
+The board has $32$ black and $32$ white squares. The removed squares $(1,1)$ and $(8,8)$ have $x+y=2$ and $16$, both even: both black. The remaining board has $30$ black and $32$ white squares. A tiling would need $31$ dominoes covering $31$ black and $31$ white squares — impossible.
+SOLUTION: Coordinate-sum parity
+A domino covers $(x,y),(x+1,y)$ or $(x,y),(x,y+1)$; the sum of all four coordinates is $2x+2y+1$, which is odd. A tiling of 62 squares uses $31$ dominoes, so the total coordinate sum of the covered squares would be a sum of 31 odd numbers: odd.
+
+But the full board's coordinate sum is $\sum_{x,y}(x+y)=2\cdot8\cdot(1+\dots+8)=2\cdot8\cdot36=576$, even; removing $(1,1)$ and $(8,8)$ subtracts $2+16=18$, leaving $558$, even. Contradiction, so no tiling exists.
+FOLLOWUP: Remove one black and one white square
+Now mark two squares of *opposite* colours (one black, one white) anywhere on the $8\times8$ board. Can the remaining $62$ squares always be tiled by dominoes?
+FOLLOWUP_ANSWER:
+Yes, always (Gomory's theorem). Take a closed path through all 64 squares that moves only between orthogonally adjacent squares and returns to its start (a Hamiltonian cycle). One exists (writing squares as (column, row)): go up column 1 from $(1,1)$ to $(1,8)$; then snake through columns 2–8 row by row — row 8 from column 2 to 8, row 7 from column 8 back to 2, row 6 from 2 to 8, and so on — so that row 1 is traversed from column 8 to column 2; finally step from $(2,1)$ back to $(1,1)$. Along the cycle, colours alternate.
+
+Remove the two marked squares. If they are adjacent on the cycle, what remains is a single path of $62$ squares; pair consecutive squares along it into dominoes. Otherwise the cycle breaks into two arcs. Since the marked squares have opposite colours and colours alternate along the cycle, the number of squares strictly between them along either arc is even (from a black square to a white square takes an odd number of steps, so an even number of squares lie between). Each arc is a path of even length whose consecutive squares are adjacent, so it can be tiled by dominoes laid along it. Hence the 62 squares can always be tiled.
+===END===
+
+===TEASER===
+SLUG: prime-squared-minus-one-divisible-by-24
+IDS: H1B-19
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: $p^2-1$ is divisible by 24
+QUESTION:
+Explain why, for every prime $p>3$, the number $p^2-1$ is divisible by $24$.
+HINT1:
+Factor $p^2-1$, and note that $24=8\times3$ with $8$ and $3$ coprime.
+HINT2:
+$p^2-1=(p-1)(p+1)$: two consecutive even numbers (why even?), one of which is a multiple of 4. And among the three consecutive integers $p-1,p,p+1$ one is a multiple of 3 — which one can it not be?
+ANSWER:
+$p^2-1=(p-1)(p+1)$ is divisible by $8$ (product of two consecutive even numbers) and by $3$ (one of $p\pm1$ is a multiple of 3), hence by $24$.
+REFRESH:
+- If $a\mid N$ and $b\mid N$ with $\gcd(a,b)=1$, then $ab\mid N$.
+- Among any $k$ consecutive integers exactly one is divisible by $k$.
+EXPLANATION:
+Primality is only used through two facts: $p$ is odd and $p$ is not a multiple of 3. Then $p-1$ and $p+1$ are two consecutive even numbers, so one of them is a multiple of 4 and the other of 2, giving a factor $8$. And among $p-1,p,p+1$ one is a multiple of 3; it isn't $p$, so it's one of $p\pm1$. Since $8$ and $3$ are coprime, $24$ divides the product. In fact the statement holds for any integer coprime to 6, prime or not (e.g. $25^2-1=624=24\times26$).
+SOLUTION: Factor and count divisors
+Write $p^2-1=(p-1)(p+1)$.
+
+**Factor 8.** $p>3$ is prime, hence odd, so $p=2n+1$ and $(p-1)(p+1)=2n(2n+2)=4n(n+1)$. One of $n,n+1$ is even, so $8\mid p^2-1$.
+
+**Factor 3.** Among the consecutive integers $p-1,p,p+1$ exactly one is divisible by 3. It is not $p$ (a prime greater than 3), so $3\mid p-1$ or $3\mid p+1$, and $3\mid p^2-1$.
+
+**Combine.** $\gcd(8,3)=1$, so $24\mid p^2-1$.
+SOLUTION: Residues modulo 24
+A prime $p>3$ is coprime to $24$, so $p\bmod 24\in\{1,5,7,11,13,17,19,23\}$. Since $(24-r)^2\equiv r^2\pmod{24}$, it suffices to check $1^2=1$, $5^2=25\equiv1$, $7^2=49\equiv1$, $11^2=121=5\cdot24+1\equiv1$. So $p^2\equiv1\pmod{24}$, i.e. $24\mid p^2-1$.
+===END===
+
+===TEASER===
+SLUG: bidding-for-a-firm-value-doubles
+IDS: H1B-20
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Bidding for a firm
+QUESTION:
+You bid $B$ for a firm whose true value $S$ is unknown to you and uniformly distributed on $[0,1]$. As soon as people learn of your bid, the firm's value doubles to $2S$. Your bid is accepted only if it is at least the original value, i.e. if $B\ge S$ (you then pay $B$ and own a firm worth $2S$). How should you bid to maximise your expected payoff?
+HINT1:
+Write your payoff as a function of $S$ and $B$: it is zero when the bid is rejected. Think about what the event "my bid is accepted" tells you about $S$.
+HINT2:
+For $B\le1$, compute $E[\text{payoff}]=\int_0^{B}(2s-B)\,ds$; for $B>1$ the upper limit becomes 1. Then maximise over $B$.
+ANSWER:
+Any bid $B\in[0,1]$ gives expected payoff exactly $0$; bidding above $1$ gives $1-B<0$. So bid at most 1 — the best you can do is break even.
+REFRESH:
+- For $S\sim U[0,1]$ and a function $g$, $E[g(S)]=\int_0^1 g(s)\,ds$.
+- Conditioning a uniform: given $S\le B$ (with $B\le1$), $S\sim U[0,B]$, so $E[S\mid S\le B]=B/2$.
+EXPLANATION:
+The trap is to think "the firm is worth $2S$ to me and on average $S=1/2$, so bidding anything below 1 is profitable". But your bid is only accepted when $S\le B$, and in that event the firm is worth on average $E[2S\mid S\le B]=2\cdot\frac B2=B$ — exactly what you pay. Acceptance is bad news about the firm's value (the winner's curse). With a doubling, the conditional value exactly offsets the price for every $B\le 1$, so the expected profit is zero whatever you bid in $[0,1]$. Bidding above 1 is pure waste: every extra dollar is paid with certainty and buys nothing.
+
+(With a general multiplier $k$ the expected payoff for $B\le1$ is $B^2\left(\frac k2-1\right)$: for $k<2$, e.g. the classic "+50%" version, the best bid is $0$; for $k>2$ you'd bid $1$. Doubling is the knife-edge case.)
+SOLUTION: Direct expectation
+Payoff: $P=(2S-B)\,\mathbf 1_{\{S\le B\}}$, for a bid $B\ge0$.
+
+**Case $B\le1$:**
+$$E[P]=\int_0^{B}(2s-B)\,ds=\Big[s^2-Bs\Big]_0^B=B^2-B^2=0.$$
+**Case $B>1$:** the bid is always accepted:
+$$E[P]=\int_0^{1}(2s-B)\,ds=1-B<0.$$
+So the maximum expected payoff is $0$, attained by any $B\in[0,1]$ (including not bidding at all). Bid no more than 1 and expect to break even.
+SOLUTION: Conditioning on acceptance
+For $0<B\le1$: $P(\text{accept})=P(S\le B)=B$ and, given acceptance, $S\sim U[0,B]$, so $E[2S\mid\text{accept}]=B$. Hence
+$$E[P]=P(\text{accept})\cdot\big(E[2S\mid\text{accept}]-B\big)=B\cdot(B-B)=0.$$
+For $B>1$, acceptance is certain and $E[P]=E[2S]-B=1-B<0$.
+===END===
+
+===TEASER===
+SLUG: south-east-north-walk
+IDS: H1B-23
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: South, east, north walk
+QUESTION:
+How many places are there on Earth from which you can walk one mile south, then one mile east, then one mile north, and end up exactly where you started? Assume the Earth is a perfect sphere, that your compass bearing is constant on each leg, that every part of the Earth can be walked on, and that your feet are arbitrarily small.
+HINT1:
+The well-known answer is the North Pole. But is it the only one? Think about what "walking east" means very close to the *South* Pole.
+HINT2:
+The south and north legs cancel as long as the east leg brings you back to the same meridian. Walking east along a small circle of latitude, when do you end up on your starting meridian? Consider circles of latitude with circumference $1$, $\tfrac12$, $\tfrac13,\dots$ mile.
+ANSWER:
+Infinitely many: the North Pole, plus every point of each circle of latitude lying one mile north of a circle of circumference $1/n$ mile around the South Pole ($n=1,2,3,\dots$).
+REFRESH:
+- On a sphere of radius $E$, the circle of latitude at surface distance $d$ from a pole has radius $E\sin(d/E)$.
+- Arc length on a circle: length $=$ radius $\times$ angle in radians.
+EXPLANATION:
+South and north legs run along a meridian, so they cancel exactly provided the east leg starts and ends on the same meridian. The east leg follows a circle of latitude. At the North Pole this is automatic: from the pole, go one mile south, walk east any amount, and walking north one mile brings you back to the pole along whichever meridian you are on. Near the South Pole the circles of latitude become arbitrarily small. If the east leg runs along a circle of circumference exactly $1$ mile, walking one mile east takes you once around, back to the same point; the same works for circumference $1/2$ (twice around), $1/3$ (three times), and so on. Starting one mile north of any such circle gives a valid walk. Each such circle of starting points has infinitely many points, and there are infinitely many circles.
+SOLUTION: Classify the walks
+Let $A$ be the start, $B$ the point one mile south, $C$ the point one mile east of $B$, and $D$ one mile north of $C$. ($A$ can't be the South Pole, since no direction from it is south.)
+
+**The North Pole.** From $A=$ North Pole, $B$ is one mile from the pole; the east leg keeps you on the circle of latitude at that distance; so $C$ is one mile from the pole and walking one mile north returns you to it. So $D=A$.
+
+**Other points.** If $A$ is not the North Pole, then $A$ and $B$ lie on the same meridian, and $D$ lies on the meridian of $C$ at the latitude of $A$. So $D=A$ iff $C$ is on the meridian of $B$, i.e. iff the one-mile east leg is a whole number $n\ge1$ of laps around its circle of latitude. That circle must then have circumference $1/n$ mile, and $A$ is one mile north of it.
+
+**Locating the circles.** Let $E$ be the Earth's radius (about 3,959 miles). The circle of circumference $1/n$ has radius $r_n=\frac1{2\pi n}$; its angular distance $\theta_n$ from the South Pole satisfies $E\sin\theta_n=r_n$, so its distance from the pole along the surface is $E\theta_n=E\arcsin\!\left(\dfrac1{2\pi nE}\right)\approx\dfrac{1}{2\pi n}$ mile. The valid starting points are the circles of latitude at surface distance
+$$1+E\arcsin\!\left(\frac{1}{2\pi nE}\right)\ \text{miles from the South Pole},\qquad n=1,2,3,\dots$$
+**Answer.** The North Pole together with infinitely many circles near the South Pole (countably many circles, each containing uncountably many points).
+===END===
+
+===TEASER===
+SLUG: paying-with-a-gold-bar
+IDS: H1B-26
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Paying with a gold bar
+QUESTION:
+You hire a man to work in your yard for seven days and want to pay him one unit of gold per day, at the end of each day. You have one gold bar made of seven equal segments (like a chocolate bar), and you may break it in only two places. Where do you break it so you can pay him every day, given that on later days he can give back pieces you paid earlier as change?
+HINT1:
+Two breaks give three pieces. You don't need to hand over new gold every day — you can take pieces back.
+HINT2:
+Choose three piece sizes such that every total from 1 to 7 is a sum of some of them. Think in binary.
+ANSWER:
+Break it into pieces of 1, 2 and 4 segments.
+REFRESH:
+- Binary representation: every integer from $0$ to $2^k-1$ is a unique sum of distinct powers of two among $1,2,\dots,2^{k-1}$.
+EXPLANATION:
+At the end of day $d$ the worker must hold exactly $d$ units in total, and swapping pieces is allowed, so all that matters is that each amount $1,\dots,7$ can be made from some subset of the three pieces. Three pieces have $2^3=8$ subsets, exactly enough for the amounts $0,1,\dots,7$; the only sizes that work are the binary ones $1,2,4$, since $d$ is written in binary as a sum of distinct powers of two.
+SOLUTION: Binary pieces
+Break off one segment from an end, then two more segments, leaving pieces of $1$, $2$ and $4$ segments. On day $d$ the worker should hold the pieces whose sizes appear in the binary expansion of $d$:
+
+| day | he holds | exchange |
+|---|---|---|
+| 1 | 1 | give the 1 |
+| 2 | 2 | give the 2, take back the 1 |
+| 3 | 1+2 | give the 1 |
+| 4 | 4 | give the 4, take back 1 and 2 |
+| 5 | 4+1 | give the 1 |
+| 6 | 4+2 | give the 2, take back the 1 |
+| 7 | 4+2+1 | give the 1 |
+
+Each day his holding increases by exactly one unit, so he is paid correctly every day.
+
+Uniqueness: with pieces $a\le b\le c$ and $a+b+c=7$, paying on day 1 forces $a=1$. If $b=1$ then $c=5$ and the amount 3 cannot be formed; if $b=3$ then $c=3$ and the amount 2 cannot be formed; $b\ge4$ is impossible. So $b=2$ and $c=4$.
+===END===
+
+===TEASER===
+SLUG: mirror-flipping
+IDS: H1B-28
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Why does a mirror flip left and right?
+QUESTION:
+Why are images in a mirror flipped horizontally but not vertically? For example, I wear my watch on my left wrist and my reflection wears his on his right wrist — yet my reflection is not standing on his head.
+HINT1:
+Question the premise. Point to your left with the watch arm: in which direction (in the room) does the reflected arm point?
+HINT2:
+Set up axes: left–right parallel to the mirror, up–down parallel to the mirror, and front–back perpendicular to it. Which of the three coordinates does the reflection actually change? Then ask what mental movement you make when you imagine yourself "as" your reflection.
+ANSWER:
+A mirror flips neither left–right nor up–down: it reverses front–back (the direction perpendicular to the mirror); the "left–right" swap is an artefact of mentally rotating yourself about a vertical axis to stand in your reflection's place.
+REFRESH:
+- A plane mirror at $z=0$ maps $(x,y,z)\mapsto(x,y,-z)$: coordinates parallel to the mirror are unchanged, the perpendicular one changes sign.
+- A reflection reverses handedness (orientation); a rotation preserves it.
+EXPLANATION:
+Physically, a flat mirror is a reflection in its own plane: every point keeps its position along the two directions parallel to the mirror and has its distance to the mirror reversed. Your watch hand, on the east side of your body, is reflected to an image on the east side; your head is reflected to an image that is still up. What changes is depth: you face the mirror (say north), your reflection faces south.
+
+Why then do we say "left and right are swapped"? Because to compare yourself with your reflection you imagine walking round and turning to face you — a rotation of $180^\circ$ about a vertical axis (the natural way humans turn). After that rotation, your front matches its front and your head matches its head, but your watch hand is on the opposite side, so the mismatch shows up as left–right. Had you instead imagined flipping head over heels (rotation about a horizontal left–right axis) to face the mirror, fronts and hands would match but heads and feet would be swapped, and you'd say the mirror flips up and down. The reflection changes handedness, and no rotation can undo that; which axis "gets the blame" depends on how you mentally rotate.
+SOLUTION: Coordinates
+Put the mirror in the plane $z=0$ with $x$ pointing (say) east along the mirror, $y$ up, and $z$ perpendicular to the mirror, towards you. Reflection maps the point $(x,y,z)$ to $(x,y,-z)$.
+
+- Your watch at $x=-a$ (on the west side, your left when facing the mirror) is imaged at $x=-a$: still on the west side. No left–right swap in space.
+- Your head at height $y=h$ is imaged at $y=h$: no up–down swap.
+- Your nose, closer to the mirror than the back of your head, is imaged closer to the mirror too, so the image's nose points towards you: front and back are reversed.
+
+So the mirror reverses only the perpendicular axis. The image is a left-handed copy of a right-handed person: its orientation is reversed. A person is (roughly) left–right symmetric but not up–down or front–back symmetric, so we try to match the image to ourselves by a rotation that realigns head and front, i.e. a half-turn about the vertical axis. A half-turn about the vertical axis maps $(x,y,z)\mapsto(-x,y,-z)$; composing it with the reflection gives $(x,y,z)\mapsto(-x,y,z)$, a left–right reflection. That's the "left–right flip" we perceive. Rotating instead about the $x$-axis, $(x,y,z)\mapsto(x,-y,-z)$, would make the residual map $(x,y,z)\mapsto(x,-y,z)$, an up–down flip. A check: write a sentence on a transparent sheet so that you can read it, and hold it between you and the mirror; its image still reads normally from left to right, confirming that the mirror itself doesn't swap left and right.
+===END===
+
+===TEASER===
+SLUG: two-condoms-three-men
+IDS: H1B-29, H1B-30
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: medium
+TITLE: Two condoms, three partners
+QUESTION:
+(Reportedly asked in a trading interview.) How can three men and one woman each have mutually safe heterosexual intercourse using only two condoms? Assume no condom breaks or leaks, and a used condom cannot be washed. "Mutually safe" means no one's body touches a surface that has touched anyone else's body.
+HINT1:
+A condom has two sides, and condoms can be worn on top of one another.
+HINT2:
+Track, for each of the four surfaces (inside/outside of each condom), whose body it has touched. Start with the first man wearing both condoms at once; then think about turning one inside out.
+ANSWER:
+Man 1 wears condom A with condom B over it; man 2 wears B alone; man 3 wears A turned inside out with B over it.
+REFRESH:
+NONE
+EXPLANATION:
+The resource is not two condoms but four surfaces, and stacking lets a condom's surface be "used" without being contaminated by a person. Each surface should be touched by at most one person throughout. Wearing both condoms at once in the first round keeps A's outside and B's inside clean (they only touch each other). Those two clean surfaces then serve the next two men, while the woman is always met by B's outside.
+SOLUTION: Track the surfaces
+Label the condoms A and B, with surfaces $A_{in},A_{out},B_{in},B_{out}$, and the men $M_1,M_2,M_3$, the woman $W$.
+
+1. $M_1$ wears A, with B over it. Contacts: $M_1$–$A_{in}$, $A_{out}$–$B_{in}$ (condom to condom only), $B_{out}$–$W$. Now $A_{in}$ is "$M_1$", $B_{out}$ is "$W$", $A_{out}$ and $B_{in}$ are still clean.
+2. Remove A from inside B. $M_2$ wears B alone: $M_2$–$B_{in}$ (clean before), $B_{out}$–$W$ (only $W$ before). Safe.
+3. $M_3$ turns A inside out and wears it: $M_3$–$A_{out}$ (touched only $B_{in}$ before $M_2$ used B, so it is clean). Now $A_{in}$ ($M_1$) faces outward; cover it with B: $A_{in}$ ($M_1$) touches $B_{in}$ ($M_2$) — condom to condom only — and $B_{out}$ touches $W$ again.
+
+Each man touches only a surface no other person has touched, and the woman only ever touches $B_{out}$. So all encounters are mutually safe.
+FOLLOWUP: One man, three women
+Now it's one man and three women, again with two condoms, no breaking, leaking or washing. How can all encounters be mutually safe?
+FOLLOWUP_ANSWER:
+Same resource-of-surfaces idea, used differently. Label condoms A, B and women $W_1,W_2,W_3$.
+
+1. The man wears A with B over it, with $W_1$: man–$A_{in}$, $A_{out}$–$B_{in}$, $B_{out}$–$W_1$.
+2. He removes B and keeps A on, with $W_2$: $W_2$ touches $A_{out}$, which had touched only $B_{in}$ (clean) — safe.
+3. He keeps A on and puts B over it *inside out*, with $W_3$: now $B_{in}$ faces outward and touches $W_3$; $B_{in}$ had only touched $A_{out}$ back in step 1, before $W_2$, so it is clean. $B_{out}$ ($W_1$) now touches $A_{out}$ ($W_2$), condom to condom only.
+
+The man only ever touches $A_{in}$, and each woman touches a different surface ($B_{out}$, $A_{out}$, $B_{in}$) that nobody else touched.
+===END===
+
+===TEASER===
+SLUG: lattice-paths-to-5-5
+IDS: H1B-31
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Lattice paths to (5,5)
+QUESTION:
+On a grid you start at $(0,0)$ and move one step at a time, each step either one unit east or one unit north (never diagonally), until you reach $(5,5)$. How many different paths are there?
+HINT1:
+Every path has the same length. Describe a path as a word made of the letters E and N.
+HINT2:
+A path is a sequence of 10 steps, exactly 5 of which are E. How many ways to choose where the E's go?
+ANSWER:
+$\binom{10}{5}=252$.
+REFRESH:
+- $\binom{n}{k}=\dfrac{n!}{k!(n-k)!}$ counts the $k$-element subsets of an $n$-element set.
+- Pascal's rule: $\binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}$.
+EXPLANATION:
+Any path from $(0,0)$ to $(5,5)$ with unit east/north steps uses exactly 5 E-steps and 5 N-steps, 10 steps in all, and conversely any arrangement of 5 E's and 5 N's traces a valid path. So paths correspond one-to-one with the choices of which 5 of the 10 positions are E. In general there are $\binom{m+n}{m}$ paths to $(m,n)$.
+SOLUTION: Choose the east steps
+Encode a path as a word of length 10 in the letters E, N with five of each; this is a bijection. The number of such words is the number of ways to choose the 5 positions of the E's among 10:
+$$\binom{10}{5}=\frac{10\cdot9\cdot8\cdot7\cdot6}{5\cdot4\cdot3\cdot2\cdot1}=\frac{30{,}240}{120}=252.$$
+SOLUTION: Pascal's recursion
+Let $N(i,j)$ be the number of paths to $(i,j)$. The last step comes from $(i-1,j)$ or $(i,j-1)$, so $N(i,j)=N(i-1,j)+N(i,j-1)$ with $N(i,0)=N(0,j)=1$. Filling the grid row by row:
+
+- row $j=1$: $1,2,3,4,5,6$
+- row $j=2$: $1,3,6,10,15,21$
+- row $j=3$: $1,4,10,20,35,56$
+- row $j=4$: $1,5,15,35,70,126$
+- row $j=5$: $1,6,21,56,126,252$
+
+So $N(5,5)=252$ (these are Pascal's triangle entries $\binom{i+j}{i}$).
+===END===
+
+===TEASER===
+SLUG: splitting-the-lunch-bill
+IDS: H1B-32
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Splitting the lunch bill
+QUESTION:
+Six friends go out to lunch. The bill is \$132.67. They add a 20% tip and split the total evenly six ways. How much does each person pay? (Do it in your head.)
+HINT1:
+Don't compute the total first. Combine the "add 20%" and the "divide by 6" into one factor.
+HINT2:
+$\dfrac{1.2}{6}=?$
+ANSWER:
+Each pays $0.2\times132.67=26.534$, i.e. \$26.534, about \$26.53.
+REFRESH:
+NONE
+EXPLANATION:
+Multiplying by $1.2$ then dividing by $6$ is the same as multiplying by $1.2/6=0.2$, i.e. taking one fifth, i.e. doubling and shifting the decimal point one place left. Mental-arithmetic questions reward looking for structure before crunching numbers.
+SOLUTION: Combine the factors
+Each person pays
+$$\frac{1.2\times132.67}{6}=0.2\times132.67=\frac{2\times132.67}{10}=\frac{265.34}{10}=26.534.$$
+So each pays \$26.534, about \$26.53 (the total with tip is \$159.204, and six payments of \$26.53 fall about 2 cents short of it, so in practice someone rounds up).
+===END===
+
+===TEASER===
+SLUG: large-vs-medium-plus-small-pizza
+IDS: H1B-33
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Large pizza vs medium plus small
+QUESTION:
+A pizza shop sells small, medium and large pizzas; all are perfect discs of the same thickness and topping density, and the price of a large equals the price of a medium plus the price of a small: $P_L=P_M+P_S$. Your friends' table has one pizza of each size, each pre-cut into six perfect sixths, plus an empty perfectly square take-away box. You have no ruler. Using only what is on the table, how can you decide whether one large or one medium plus one small gives you more pizza for your money?
+HINT1:
+Since the prices are equal, compare areas. The area of a disc is proportional to the square of its diameter, which should remind you of a famous theorem.
+HINT2:
+Build a triangle whose sides are the three diameters (half-pizzas have straight diameter edges), or the three radii (the straight edges of a slice). What angle should you check, and what can you use as a reference right angle?
+ANSWER:
+Lay half of each pizza so the three diameters form a triangle and compare the angle between the small and medium diameters with the box's corner: a right angle means equal value, obtuse means the large is better, acute means medium plus small is better.
+REFRESH:
+- Area of a disc of diameter $d$: $\pi d^2/4$.
+- Law of cosines: in a triangle with sides $a,b,c$ and angle $\gamma$ opposite $c$, $c^2=a^2+b^2-2ab\cos\gamma$. So $\gamma=90^\circ\iff c^2=a^2+b^2$, $\gamma>90^\circ\iff c^2>a^2+b^2$.
+EXPLANATION:
+Equal price, so the better deal is the larger area: compare $L^2$ with $M^2+S^2$ (the factor $\pi/4$ cancels). That comparison is exactly what the converse of Pythagoras (or the law of cosines) decides when $L,M,S$ are the sides of a triangle: look at the angle opposite the longest side $L$. The half-pizzas provide straight segments of lengths $L$, $M$, $S$ (their cut diameters); the square box provides a right angle to compare with.
+SOLUTION: Triangle of diameters
+Let $L,M,S$ be the diameters. Areas are $\frac\pi4L^2$ and $\frac\pi4(M^2+S^2)$, so the large is better iff $L^2>M^2+S^2$.
+
+If $L\ge M+S$, the large is obviously better ($L^2\ge(M+S)^2>M^2+S^2$); you will notice this because the triangle can't be closed. Otherwise $L<M+S$ and a triangle with sides $L,M,S$ exists. Take three sixths (a half) of each pizza and lay them flat so that their straight diameter edges form a triangle. Let $\gamma$ be the angle between the medium's and the small's diameters (opposite the large's). By the law of cosines,
+$$L^2=M^2+S^2-2MS\cos\gamma.$$
+Compare $\gamma$ with a corner of the square box:
+- $\gamma=90^\circ$: $L^2=M^2+S^2$, equal value.
+- $\gamma>90^\circ$: $\cos\gamma<0$, $L^2>M^2+S^2$, buy the large.
+- $\gamma<90^\circ$: $L^2<M^2+S^2$, buy medium plus small.
+SOLUTION: Triangle of radii
+Equivalently, use one slice from each pizza: the straight edges of a sixth are radii $L/2$, $M/2$, $S/2$. Form a triangle with these three radii and compare the angle opposite the large radius with the box corner, exactly as above; scaling all sides by $\frac12$ doesn't change the angles.
+===END===
+
+===TEASER===
+SLUG: roots-of-x6-equals-64
+IDS: H1B-34
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Roots of $x^6=64$
+QUESTION:
+Find all roots of the equation $x^6=64$, including the complex ones.
+HINT1:
+A polynomial of degree 6 has 6 complex roots (with multiplicity). Where does the modulus of each root have to be?
+HINT2:
+Write $x=re^{i\theta}$ and $64=64e^{2\pi ik}$. Match moduli and arguments.
+ANSWER:
+$x=2e^{ik\pi/3}$, $k=0,\dots,5$, i.e. $\pm2$, $\pm1\pm i\sqrt3$.
+REFRESH:
+- Polar form: $re^{i\theta}=r(\cos\theta+i\sin\theta)$, and $(re^{i\theta})^n=r^ne^{in\theta}$ (De Moivre).
+- $e^{i\theta}=1\iff\theta\in2\pi\mathbb Z$.
+EXPLANATION:
+Every root has modulus $64^{1/6}=2$, and its argument times 6 must be a multiple of $2\pi$. So the roots are the six points $2e^{ik\pi/3}$, evenly spaced (every $60^\circ$) on the circle of radius 2 — the vertices of a regular hexagon with vertices at $\pm2$.
+SOLUTION: Polar form
+Write $x=re^{i\theta}$ with $r\ge0$. Then $x^6=r^6e^{6i\theta}=64$ requires $r^6=64$, so $r=2$, and $e^{6i\theta}=1$, so $6\theta=2\pi k$, $\theta=k\pi/3$. Distinct roots for $k=0,1,\dots,5$:
+$$2,\quad 1+i\sqrt3,\quad -1+i\sqrt3,\quad -2,\quad -1-i\sqrt3,\quad 1-i\sqrt3,$$
+using $2e^{i\pi/3}=2\left(\tfrac12+i\tfrac{\sqrt3}2\right)=1+i\sqrt3$, etc. There are exactly six because the polynomial has degree 6.
+SOLUTION: Factorisation
+$x^6-64=(x^3-8)(x^3+8)=(x-2)(x^2+2x+4)(x+2)(x^2-2x+4)$. The quadratics give $x=\frac{-2\pm\sqrt{4-16}}{2}=-1\pm i\sqrt3$ and $x=1\pm i\sqrt3$. Together with $\pm2$ these are the six roots.
+===END===
+
+===TEASER===
+SLUG: rock-off-the-empire-state-building
+IDS: H1B-35
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Rock off the Empire State Building
+QUESTION:
+A rock is dropped from the top of the Empire State Building. Roughly how fast is it going when it hits the ground, and how long does the fall take?
+HINT1:
+Start with a quick guess and a height estimate: how many floors, how tall is a floor? Then say what you are neglecting.
+HINT2:
+Ignore air resistance and use constant acceleration $g\approx10\text{ m/s}^2$: $v^2=2gh$ and $v=gt$.
+ANSWER:
+About 9 seconds and about 90 m/s (roughly 200 mph), ignoring air resistance — so an upper bound on speed and lower bound on time.
+REFRESH:
+- Uniform acceleration from rest: $v=gt$, $h=\frac12gt^2$, $v^2=2gh$.
+- 1 mile $\approx1{,}609$ m, 1 hour $=3{,}600$ s, so $1\text{ m/s}\approx2.24$ mph.
+EXPLANATION:
+This is an estimation question: the interviewer wants a sensible model, sensible numbers and a statement of the assumptions. The building has about 100 floors of about 4 m, so $h\approx400$ m (the roof is actually at about 381 m, 443 m to the tip of the antenna). In free fall without air resistance, $v=\sqrt{2gh}\approx\sqrt{8000}\approx90$ m/s and $t=v/g\approx9$ s. Air resistance is not negligible over this distance: a rock would approach its terminal velocity (a few tens of m/s depending on size and shape), so the real speed is lower and the real time longer.
+SOLUTION: Free-fall estimate
+Height: $\approx100$ floors $\times4$ m $=400$ m. With $u=0$, $g\approx10\text{ m/s}^2$:
+$$v^2=u^2+2gh\approx2\cdot10\cdot400=8{,}000\ \text{m}^2/\text{s}^2\ \Rightarrow\ v\approx90\ \text{m/s}\quad(90^2=8{,}100).$$
+Time: $v=gt\Rightarrow t\approx90/10=9$ s. (Check: $h=\frac12gt^2=\frac12\cdot10\cdot81=405$ m. ✓)
+
+In mph: $90\times3{,}600/1{,}609\approx324{,}000/1{,}609\approx200$ mph.
+
+With the true roof height $381$ m and $g=9.8$: $v=\sqrt{2\cdot9.8\cdot381}\approx86$ m/s $\approx193$ mph and $t=\sqrt{2\cdot381/9.8}\approx8.8$ s.
+
+Because air resistance is ignored, $\approx200$ mph is an upper bound on the impact speed and $\approx9$ s a lower bound on the time.
+===END===
+
+===TEASER===
+SLUG: gaussian-integral-in-terms-of-n
+IDS: H1B-36
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Integral in terms of $N(x)$
+QUESTION:
+Express
+$$f(x)=\int_{x}^{\infty}e^{-a\frac{t^2}{2}+bt}\,dt\qquad(a>0)$$
+in terms of the standard normal cumulative distribution function $N(\cdot)$.
+HINT1:
+Aim to make the integrand look like the standard normal density $\frac1{\sqrt{2\pi}}e^{-u^2/2}$.
+HINT2:
+Complete the square in the exponent: $-\frac a2t^2+bt=-\frac a2\left(t-\frac ba\right)^2+\frac{b^2}{2a}$. Then substitute $u=\sqrt a\left(t-\frac ba\right)$ and keep track of the constants and the new lower limit.
+ANSWER:
+$$f(x)=\sqrt{\frac{2\pi}{a}}\;e^{\frac{b^2}{2a}}\;N\!\left(\frac{b-ax}{\sqrt a}\right).$$
+REFRESH:
+- $N(z)=\displaystyle\int_{-\infty}^z\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du$, and by symmetry $1-N(z)=N(-z)$.
+- Completing the square: $\alpha t^2+\beta t=\alpha\left(t+\frac{\beta}{2\alpha}\right)^2-\frac{\beta^2}{4\alpha}$.
+EXPLANATION:
+The exponent is a quadratic in $t$ with negative leading coefficient, so the integrand is, up to a constant, a normal density with mean $b/a$ and variance $1/a$. Completing the square pulls out the constant $e^{b^2/(2a)}$; standardising via $u=\sqrt a(t-b/a)$ turns the integral into a normal tail probability $P(Z>\sqrt a(x-b/a))$, times $\sqrt{2\pi}$ (the density's normalisation) and $1/\sqrt a$ (from $dt=du/\sqrt a$). This is exactly the manipulation behind the Black–Scholes formula, where $E[(S_T-K)^+]$ is reduced to $N(d_1)$ and $N(d_2)$.
+SOLUTION: Complete the square and standardise
+**Complete the square.**
+$$-\frac a2t^2+bt=-\frac a2\left(t^2-\frac{2b}{a}t\right)=-\frac a2\left[\left(t-\frac ba\right)^2-\frac{b^2}{a^2}\right]=-\frac a2\left(t-\frac ba\right)^2+\frac{b^2}{2a}.$$
+**Substitute** $u=\sqrt a\left(t-\frac ba\right)$, so $dt=\frac{du}{\sqrt a}$ and $t=x\Rightarrow u=u_0:=\sqrt a\left(x-\frac ba\right)=\frac{ax-b}{\sqrt a}$:
+$$f(x)=e^{\frac{b^2}{2a}}\int_{u_0}^{\infty}e^{-u^2/2}\frac{du}{\sqrt a}=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}{a}}\int_{u_0}^\infty\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}{a}}\big(1-N(u_0)\big).$$
+Using $1-N(u_0)=N(-u_0)$:
+$$f(x)=\sqrt{\frac{2\pi}{a}}\;e^{\frac{b^2}{2a}}\;N\!\left(\frac{b-ax}{\sqrt a}\right).$$
+Sanity check: as $x\to-\infty$, $N(\cdot)\to1$ and $f\to\sqrt{2\pi/a}\,e^{b^2/(2a)}$, the full Gaussian integral; with $a=1$, $b=0$ this is $\sqrt{2\pi}$. ✓
+SOLUTION: Probabilistic reading
+Let $T\sim\mathcal N\!\left(\frac ba,\frac1a\right)$, with density $\sqrt{\frac a{2\pi}}\exp\!\left(-\frac a2\left(t-\frac ba\right)^2\right)$. By the completed square, $e^{-\frac a2t^2+bt}=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}a}\times(\text{density of }T\text{ at }t)$. Hence
+$$f(x)=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}a}\,P(T>x)=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}a}\,P\!\left(Z>\frac{x-b/a}{1/\sqrt a}\right)=e^{\frac{b^2}{2a}}\sqrt{\frac{2\pi}a}\,N\!\left(\frac{b-ax}{\sqrt a}\right),$$
+with $Z$ standard normal.
+===END===
+
+===TEASER===
+SLUG: limit-sqrt-x2-plus-x-minus-x
+IDS: H1B-37
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Limit of $\sqrt{x^2+x}-x$
+QUESTION:
+Compute $\displaystyle\lim_{x\to\infty}\left(\sqrt{x^2+x}-x\right)$.
+HINT1:
+It is an "$\infty-\infty$" form, and the answer is not $0$. Get rid of the square-root difference.
+HINT2:
+Multiply and divide by the conjugate $\sqrt{x^2+x}+x$, then divide numerator and denominator by $x$.
+ANSWER:
+$\dfrac12$.
+REFRESH:
+- $(A-B)(A+B)=A^2-B^2$.
+- Taylor: $\sqrt{1+h}=1+\frac h2+O(h^2)$ as $h\to0$.
+EXPLANATION:
+$\sqrt{x^2+x}$ is slightly more than $x$, and the question is by how much. Writing $\sqrt{x^2+x}=x\sqrt{1+1/x}\approx x\left(1+\frac1{2x}\right)=x+\frac12$ shows the gap tends to $\frac12$ — intuitively, $x^2+x=\left(x+\frac12\right)^2-\frac14$, so $\sqrt{x^2+x}$ is essentially $x+\frac12$.
+SOLUTION: Conjugate
+For $x>0$,
+$$\sqrt{x^2+x}-x=\frac{(\sqrt{x^2+x}-x)(\sqrt{x^2+x}+x)}{\sqrt{x^2+x}+x}=\frac{x^2+x-x^2}{\sqrt{x^2+x}+x}=\frac{x}{\sqrt{x^2+x}+x}=\frac{1}{\sqrt{1+\frac1x}+1}.$$
+As $x\to\infty$, $\sqrt{1+1/x}\to1$, so the limit is $\frac1{1+1}=\frac12$.
+SOLUTION: Expansion
+$\sqrt{x^2+x}=x\sqrt{1+\frac1x}=x\left(1+\frac1{2x}+O\!\left(\frac1{x^2}\right)\right)=x+\frac12+O\!\left(\frac1x\right)$. Subtracting $x$ gives $\frac12+O(1/x)\to\frac12$.
+===END===
+
+===TEASER===
+SLUG: derivative-of-x-to-the-x
+IDS: H1B-38
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Derivative of $x^x$
+QUESTION:
+How do you differentiate $x^x$ with respect to $x$ (for $x>0$)?
+HINT1:
+Neither the power rule ($x^n$) nor the exponential rule ($a^x$) applies, since both base and exponent vary.
+HINT2:
+Write $x^x=e^{x\ln x}$ (or take logs of $y=x^x$ and differentiate implicitly).
+ANSWER:
+$\dfrac{d}{dx}x^x=x^x(1+\ln x)$.
+REFRESH:
+- $a^b=e^{b\ln a}$ for $a>0$.
+- Chain rule $(e^{g})'=g'e^{g}$; product rule $(uv)'=u'v+uv'$; $(\ln x)'=1/x$.
+EXPLANATION:
+When the variable appears both in the base and in the exponent, rewrite the power as an exponential: $x^x=e^{x\ln x}$. Now it's a plain chain rule. Note the result is *not* $x\cdot x^{x-1}$ (power rule) nor $x^x\ln x$ (exponential rule) but their sum — each rule captures the variation from one of the two places $x$ appears.
+SOLUTION: Logarithmic differentiation
+Let $y=x^x$, $x>0$. Then $\ln y=x\ln x$. Differentiate both sides (product rule on the right):
+$$\frac{y'}{y}=\ln x+x\cdot\frac1x=\ln x+1.$$
+So $y'=x^x(1+\ln x)$.
+SOLUTION: Exponential form
+$x^x=e^{x\ln x}$, so by the chain rule $\dfrac{d}{dx}x^x=e^{x\ln x}\cdot\dfrac{d}{dx}(x\ln x)=x^x(\ln x+1)$.
+===END===
+
+===TEASER===
+SLUG: mean-of-consecutive-primes
+IDS: H1B-39
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Mean of consecutive primes
+QUESTION:
+Can the mean (average) of two consecutive prime numbers ever be prime?
+HINT1:
+Don't start listing primes. Where does the mean of two numbers lie relative to them?
+HINT2:
+"Consecutive primes" means there is no prime strictly between them.
+ANSWER:
+No: the mean lies strictly between the two primes, and consecutive primes have no prime between them.
+REFRESH:
+NONE
+EXPLANATION:
+The mean of two distinct numbers $p<q$ satisfies $p<\frac{p+q}2<q$. If $p$ and $q$ are consecutive primes, by definition no prime lies strictly between them, so the mean can't be prime. Nothing about primes is used: the same holds for consecutive squares, consecutive members of any increasing list. (For $2,3$ the mean $2.5$ isn't even an integer; for odd primes it's an integer, but composite.)
+SOLUTION: Betweenness
+Let $p<q$ be consecutive primes and $m=\frac{p+q}{2}$. Then $m-p=\frac{q-p}{2}>0$ and $q-m=\frac{q-p}2>0$, so $p<m<q$. Since $p$ and $q$ are consecutive primes, no prime lies in $(p,q)$; hence $m$ is not prime.
+===END===
+
+===TEASER===
+SLUG: product-of-two-uniforms-exceeds-half
+IDS: H4A-01
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: easy
+TITLE: Product of two uniforms exceeds 1/2
+QUESTION:
+Let $X$ and $Y$ be independent, each uniform on $[0,1]$. What is $P\left(XY>\frac12\right)$?
+HINT1:
+The pair $(X,Y)$ is uniform on the unit square, so a probability is an area. Sketch the region where $xy>\frac12$.
+HINT2:
+The region lies above the hyperbola $y=\frac1{2x}$ and needs $x>\frac12$. Integrate $1-\frac1{2x}$ over $x\in[\frac12,1]$.
+ANSWER:
+$P=\dfrac{1-\ln2}{2}\approx0.1534$.
+REFRESH:
+- For independent $X,Y\sim U[0,1]$, $P((X,Y)\in A)=\text{area}(A\cap[0,1]^2)$.
+- $\int\frac{dx}{x}=\ln|x|$; $\ln\frac12=-\ln2$.
+- If $U\sim U[0,1]$ then $-\ln U\sim\text{Exp}(1)$; the sum of two independent $\text{Exp}(1)$ has the Gamma$(2,1)$ density $se^{-s}$.
+EXPLANATION:
+Because the joint density is 1 on the unit square, the probability is just the area of $\{xy>\frac12\}$ inside the square: the corner region above the hyperbola $y=\frac1{2x}$, which meets the top edge at $x=\frac12$ and the right edge at $y=\frac12$. It's a small region near $(1,1)$, so expect a small answer (well below $\frac14$, the area of the square $[\frac12,1]^2$ containing it).
+SOLUTION: Area under a hyperbola
+$XY>\frac12$ requires $X>\frac12$ (since $Y\le1$), and for such $x$ it means $y>\frac1{2x}$, where $\frac1{2x}\in[\frac12,1]$. So
+$$P\left(XY>\tfrac12\right)=\int_{1/2}^{1}\left(1-\frac1{2x}\right)dx=\frac12-\frac12\Big[\ln x\Big]_{1/2}^{1}=\frac12-\frac12\ln2=\frac{1-\ln2}{2}\approx0.1534.$$
+SOLUTION: Logarithms and exponentials
+Let $A=-\ln X$, $B=-\ln Y$; they are independent $\text{Exp}(1)$, and $XY>\frac12\iff A+B<\ln2$. The sum $A+B$ has density $se^{-s}$ on $s>0$, so
+$$P(A+B<\ln2)=\int_0^{\ln2}se^{-s}ds=\Big[-(1+s)e^{-s}\Big]_0^{\ln2}=1-(1+\ln2)\cdot\frac12=\frac{1-\ln2}{2}.$$
+===END===
+
+===TEASER===
+SLUG: ticket-price-die-game
+IDS: H4A-02, R3A-01, R3A-02, R3A-03, R3A-04
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Ticket price for a die game
+QUESTION:
+A player tosses a fair die once and receives \$1 for each dot on the upturned face. At what level should you (the house) set the ticket price for this game?
+HINT1:
+What does the house pay out on average per game?
+HINT2:
+Compute $E[\text{payoff}]=\sum_{k=1}^6 k\cdot\frac16$. Then think about whether the house sells many tickets or just one, and what that means for risk.
+ANSWER:
+The fair price is the expected payoff, \$3.50; the house should charge somewhat more (a profit margin, plus a risk premium if the game is played only a few times), and certainly less than \$6.
+REFRESH:
+- Expectation of a discrete random variable: $E[X]=\sum_x x\,P(X=x)$.
+- Linearity: $E[X+Y]=E[X]+E[Y]$, with or without independence.
+- Law of large numbers: the average of many i.i.d. payoffs converges to their expectation.
+- $\sum_{k=1}^n k=\frac{n(n+1)}2$.
+EXPLANATION:
+The "fair" price of a gamble is its expected payoff: at that price neither side gains on average. For a fair die the expected number of dots is the midpoint of $1$ and $6$, i.e. $3.5$. A house that sells many independent tickets is essentially risk-neutral: by the law of large numbers its average payout per ticket will be very close to \$3.50, so any price above \$3.50 is profitable in the long run (like a casino). How far above is a business decision (costs, competition, how much players enjoy gambling). If the game were played only once, the seller bears real risk (payout anywhere from \$1 to \$6), and a risk-averse seller would add a risk premium. No rational player would pay \$6 or more, since the payoff never exceeds \$6.
+SOLUTION: Expected payoff
+Let $D$ be the number of dots, uniform on $\{1,\dots,6\}$. Then
+$$E[D]=\frac{1+2+3+4+5+6}{6}=\frac{21}{6}=3.5.$$
+So the break-even (fair) ticket price is \$3.50. To make money over many plays, charge \$3.50 plus a margin; for a one-off game add a risk premium on top. The price must stay below \$6 for anyone to want to play.
+FOLLOWUP: An $n$-sided die
+What is the expected score of a fair $n$-sided die with faces $1,2,\dots,n$?
+FOLLOWUP_ANSWER:
+$$E[D]=\frac1n\sum_{k=1}^nk=\frac1n\cdot\frac{n(n+1)}2=\frac{n+1}2.$$
+For $n=6$ this gives $3.5$, as before.
+FOLLOWUP: Sum of two rolls
+What is the expected sum of two rolls of a fair die?
+FOLLOWUP_ANSWER:
+By linearity of expectation (independence isn't even needed), $E[D_1+D_2]=E[D_1]+E[D_2]=3.5+3.5=7$.
+FOLLOWUP: Probability of a seven
+What is the probability that the sum of two rolls of a fair die equals 7?
+FOLLOWUP_ANSWER:
+The 36 ordered outcomes are equally likely. A sum of 7 occurs for $(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)$: 6 outcomes. So $P=\frac6{36}=\frac16$. (Equivalently: whatever the first roll is, exactly one value of the second roll makes 7, so the probability is $\frac16$. Seven is the most likely sum.)
+===END===
+
+===TEASER===
+SLUG: five-coins-versus-four-coins
+IDS: H4A-03
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Five coins versus four coins
+QUESTION:
+I toss four fair coins and you toss five fair coins. You win if you get strictly more heads than I do. What is the probability that you win?
+HINT1:
+Brute force works but there's a symmetry argument that avoids all computation. Set aside your fifth coin for a moment.
+HINT2:
+Compare your first four coins with my four. Either you're ahead, I'm ahead, or it's a tie — how does your fifth coin settle each case? Alternatively, consider both heads *and* tails.
+ANSWER:
+$\dfrac12$.
+REFRESH:
+- Law of total probability: $P(A)=\sum_i P(A\mid B_i)P(B_i)$ for a partition $\{B_i\}$.
+- If $X$ and $Y$ are i.i.d., then $P(X>Y)=P(Y>X)$.
+- For a fair coin, the number of heads $H$ and the number of tails $n-H$ have the same distribution.
+EXPLANATION:
+Split your five coins into the first four and a last one. Your first four and my four are identically distributed, so by symmetry "you ahead" and "I'm ahead" have the same probability $q$, and a tie has probability $1-2q$. If you're ahead after four, you win regardless of the fifth coin (you already have strictly more). If you're behind, you can at best tie, so you lose. If it's a tie, your fifth coin decides: you win with probability $\frac12$. Total: $q+\frac12(1-2q)=\frac12$. The unknown $q$ cancels, so no computation is needed.
+SOLUTION: Set aside the fifth coin
+Let $Y_4$ be your heads among your first four coins, $\varepsilon\in\{0,1\}$ your fifth coin, and $X$ my heads. $Y_4$ and $X$ are i.i.d. Binomial$(4,\frac12)$, so $P(Y_4>X)=P(X>Y_4)=:q$ and $P(Y_4=X)=1-2q$.
+
+You win iff $Y_4+\varepsilon>X$:
+- If $Y_4>X$: then $Y_4+\varepsilon\ge Y_4>X$, you win.
+- If $Y_4<X$: then $Y_4+\varepsilon\le Y_4+1\le X$, you lose.
+- If $Y_4=X$: you win iff $\varepsilon=1$, probability $\frac12$ (independent of the rest).
+
+Hence $P(\text{win})=q+\frac12(1-2q)=\frac12$.
+SOLUTION: Heads versus tails symmetry
+Let $Y$ be your heads (out of 5) and $X$ mine (out of 4); your tails are $5-Y$, mine $4-X$. Since $Y$ and $X$ are integers, exactly one of $Y>X$ and $5-Y>4-X$ holds: indeed $5-Y>4-X\iff Y<X+1\iff Y\le X$. So "you have more heads" and "you have more tails" are complementary events. By fairness of the coins, flipping every coin's label (heads $\leftrightarrow$ tails) doesn't change the joint distribution, so the two events have the same probability. Thus each has probability $\frac12$.
+SOLUTION: Direct computation
+$P(X=x)=\binom4x/16$ and $P(Y>x)=\sum_{y>x}\binom5y/32$. The tail counts $\sum_{y>x}\binom5y$ for $x=0,\dots,4$ are $31,26,16,6,1$. So
+$$P(Y>X)=\frac{1\cdot31+4\cdot26+6\cdot16+4\cdot6+1\cdot1}{16\cdot32}=\frac{31+104+96+24+1}{512}=\frac{256}{512}=\frac12.$$
+===END===

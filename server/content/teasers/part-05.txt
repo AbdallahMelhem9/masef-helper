@@ -1,0 +1,918 @@
+===TEASER===
+SLUG: red-and-white-wine-mixing
+IDS: R8-23, R8-24, R8-25, R8-26, H1A-01
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Red and white wine
+QUESTION:
+We have a glass of white wine and a glass of red wine, each containing $100$ ml. We take $5$ ml from the red glass, pour it into the white glass and stir until the mixture is homogeneous. We then take $5$ ml from the white glass and pour it back into the red glass.
+
+At the end, is there more white wine in the red glass, or more red wine in the white glass?
+HINT1:
+You do not need to track concentrations. Ask what is the same at the end as at the start, both for each glass and for each kind of wine.
+HINT2:
+Let $x$ be the amount of red wine in the white glass and $y$ the amount of white wine in the red glass at the end. Write down how much red wine is in the red glass, and use the fact that the red glass holds $100$ ml again.
+ANSWER:
+They are equal: the red glass contains exactly as much white wine as the white glass contains red wine (here $100/21 \approx 4.76$ ml each).
+REFRESH:
+- **Conservation of volume**: when liquids are mixed (ignoring physical chemistry), the volume of each component is preserved; a glass's volume is the sum of the volumes of its components.
+- **Homogeneous mixture**: if a glass holds $a$ ml of one liquid and $b$ ml of another, well mixed, then any $v$ ml taken from it contains $v\cdot\frac{a}{a+b}$ ml of the first and $v\cdot\frac{b}{a+b}$ ml of the second.
+EXPLANATION:
+The trap is to think that because the first pour was pure red and the second pour was a diluted mix, the exchange must be lopsided. It isn't, and the reason is pure bookkeeping.
+
+At the end each glass holds $100$ ml again, exactly as at the start. So whatever red wine has left the red glass (and is now sitting in the white glass) has been replaced, millilitre for millilitre, by something else, and the only other thing available is white wine. The red glass has "lost" some red and "gained" some white, and because its volume is unchanged, the loss and the gain are equal. The red wine that is missing from the red glass is exactly the red wine in the white glass.
+
+This argument does not use the size of the pour, how well the mixing was done, or even how many times you pour back and forth: it only uses that both glasses end up with their original volumes. That is why the two follow-ups where the pours differ give an unequal answer: the volumes are no longer restored.
+
+Heard on the Street asks the same thing with jugs of volume $V$ of alcohol and water and a transferred quantity $Q$: the final concentration of alcohol in the alcohol jug equals the final concentration of water in the water jug, both being $\frac{V}{V+Q}$.
+SOLUTION: Conservation of volume
+Let $x$ be the volume of red wine in the white glass at the end and $y$ the volume of white wine in the red glass at the end.
+
+Red wine is never created or destroyed, and there were $100$ ml of it in total. The part not in the white glass is in the red glass, so the red glass contains $100 - x$ ml of red wine.
+
+The red glass therefore contains $100 - x$ ml of red and $y$ ml of white, and its total volume at the end is $100$ ml (it lost $5$ and got $5$ back):
+$$(100 - x) + y = 100 \quad\Longrightarrow\quad x = y.$$
+There is exactly as much white wine in the red glass as red wine in the white glass.
+SOLUTION: Direct computation
+After the first pour the red glass holds $95$ ml of red, and the white glass holds $100$ ml of white and $5$ ml of red, $105$ ml in total.
+
+The $5$ ml taken from the well-mixed white glass contains
+$$5\cdot\frac{100}{105} = \frac{100}{21}\ \text{ml of white}, \qquad 5\cdot\frac{5}{105} = \frac{5}{21}\ \text{ml of red}.$$
+After pouring it into the red glass:
+- red glass: $95 + \frac{5}{21}$ ml of red and $\frac{100}{21}$ ml of white;
+- white glass: $100 - \frac{100}{21}$ ml of white and $5 - \frac{5}{21} = \frac{100}{21}$ ml of red.
+
+So the white in the red glass and the red in the white glass are both $\frac{100}{21}\approx 4.76$ ml.
+
+In Heard's notation (volume $V$, transfer $Q$), the same computation gives an alcohol concentration of $\frac{V}{V+Q}$ in the alcohol jug after the first pour, unchanged by removing some of the mixture, and a water concentration of $\frac{V}{V+Q}$ in the water jug after the second pour: the two final concentrations are equal.
+FOLLOWUP: A 6 ml second pour
+Same two $100$ ml glasses. Pour $5$ ml of red into the white glass and mix, but then pour $6$ ml of the mixture back into the red glass. Is there now more white in the red or red in the white?
+FOLLOWUP_ANSWER:
+Now there is **more white in the red glass, by exactly $1$ ml**.
+
+With $x$ = red in the white glass, $y$ = white in the red glass: the red glass now has volume $95 + 6 = 101$ ml, and it contains $100 - x$ ml of red and $y$ of white, so
+$$(100 - x) + y = 101 \quad\Longrightarrow\quad y - x = 1.$$
+Check directly: the $6$ ml taken from the $105$ ml mixture contains $6\cdot\frac{100}{105} = \frac{40}{7}\approx 5.71$ ml of white and $6\cdot\frac{5}{105}=\frac{2}{7}$ ml of red. So $y = \frac{40}{7}$ and $x = 5 - \frac{2}{7} = \frac{33}{7}\approx 4.71$, and indeed $y - x = 1$.
+FOLLOWUP: A 6 ml first pour
+Same two $100$ ml glasses. Pour $6$ ml of red into the white glass and mix, then pour $5$ ml of the mixture back into the red glass. Which is larger now?
+FOLLOWUP_ANSWER:
+Now there is **more red in the white glass, by exactly $1$ ml**.
+
+The red glass ends with $94 + 5 = 99$ ml, containing $100 - x$ ml of red and $y$ of white:
+$$(100 - x) + y = 99 \quad\Longrightarrow\quad x - y = 1.$$
+Check directly: the white glass holds $100$ white $+\,6$ red $= 106$ ml; the $5$ ml returned contains $5\cdot\frac{100}{106} = \frac{250}{53}\approx 4.72$ ml of white and $5\cdot\frac{6}{106} = \frac{15}{53}$ ml of red. So $y = \frac{250}{53}$ and $x = 6 - \frac{15}{53} = \frac{303}{53}\approx 5.72$, a difference of $1$ ml.
+FOLLOWUP: Colour of the white glass
+After the original procedure ($5$ ml red into white, mix, $5$ ml back), what colour is the wine in the white glass?
+FOLLOWUP_ANSWER:
+The white glass holds $100$ ml in total, of which $\frac{100}{21}\approx 4.76$ ml is red wine, so it is about $4.8\%$ red and $95.2\%$ white: a white wine with a faint pink (rosé-like) tint, uniformly coloured because it was stirred. (The red glass, symmetrically, is about $4.8\%$ white, which hardly changes its colour.)
+===END===
+===TEASER===
+SLUG: sharing-a-pint-alternate-halves
+IDS: R8-31, R8-32, R8-33, R8-34
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Sharing a pint
+QUESTION:
+Two of us go into a pub and order one pint of beer. I drink half of the pint. You then drink half of what remains. I then drink half of what is left after that, and we keep alternating in this way forever.
+
+How much of the pint do I drink in total, and how much do you drink?
+HINT1:
+Compare each of your drinks with the drink of mine that came just before it.
+HINT2:
+Each of your drinks is exactly half of my preceding drink, so your total is half of my total. Now you only need to know that the whole pint gets drunk.
+ANSWER:
+I drink $\frac23$ of the pint and you drink $\frac13$.
+REFRESH:
+- **Geometric series**: for $|r|<1$, $\sum_{k=0}^{\infty} a r^k = \frac{a}{1-r}$.
+EXPLANATION:
+You can sum two geometric series, but the slicker view is a ratio argument. The drinks form a sequence $d_1, d_2, d_3,\dots$ where each drink is half the remaining beer, and the remaining beer halves at every step, so each drink is half the previous one: $d_{k+1} = d_k/2$. I take the odd-numbered drinks and you take the even-numbered ones, so each of your drinks is exactly half of the drink I just had. Pairing them up, your total is half of mine.
+
+The only other thing needed is that the pint is finished: after $k$ drinks, $2^{-k}$ of the pint remains, which tends to $0$. So my total $M$ and your total $Y$ satisfy $M + Y = 1$ and $Y = M/2$, which gives $M = \frac23$, $Y = \frac13$.
+SOLUTION: Ratio argument
+After $k$ drinks the amount left is $2^{-k}$ (each drink removes half of what is there), and the $k$-th drink is $d_k = 2^{-k}$. Since $2^{-k}\to 0$ the whole pint is consumed: $\sum_{k\ge1} d_k = 1$.
+
+I drink $d_1, d_3, d_5,\dots$ and you drink $d_2, d_4,\dots$, with $d_{2j} = \frac12 d_{2j-1}$. Summing over $j$,
+$$Y = \sum_{j\ge1} d_{2j} = \frac12\sum_{j\ge1} d_{2j-1} = \frac12 M.$$
+Together with $M + Y = 1$: $\frac32 M = 1$, so $M = \frac23$ and $Y = \frac13$.
+SOLUTION: Summing the series
+My drinks are $\frac12, \frac18, \frac1{32},\dots$, a geometric series with first term $\frac12$ and ratio $\frac14$:
+$$M = \sum_{k=0}^{\infty}\frac{1}{2^{2k+1}} = \frac{1/2}{1 - 1/4} = \frac23.$$
+Your drinks are $\frac14, \frac1{16},\dots$:
+$$Y = \sum_{k=0}^{\infty}\frac{1}{2^{2k+2}} = \frac{1/4}{1-1/4} = \frac13.$$
+And $M + Y = 1$, so nothing is left over.
+FOLLOWUP: Thirds instead of halves (and 1/n)
+Now I drink $\frac13$ of the pint, you drink $\frac13$ of what remains, I drink $\frac13$ of what then remains, and so on. How much more do I drink now? Is the whole pint consumed? Generalise to drinking a fraction $\frac1n$ of what remains each time.
+FOLLOWUP_ANSWER:
+With fraction $\frac1n$, after $k$ drinks the amount remaining is $\left(\frac{n-1}{n}\right)^k \to 0$, so **yes, the whole pint is drunk** (for any $n\ge2$). Each drink is $\frac{n-1}{n}$ times the previous one (it is $\frac1n$ of a remainder that has shrunk by the factor $\frac{n-1}{n}$). Hence your total is $\frac{n-1}{n}$ times mine: $Y = \frac{n-1}{n}M$, and $M + Y = 1$ gives
+$$M = \frac{n}{2n-1},\qquad Y = \frac{n-1}{2n-1},\qquad M - Y = \frac{1}{2n-1}.$$
+For $n=3$: I drink $\frac35$, you drink $\frac25$, so I drink $\frac15$ of a pint more than you (the ratio is $3:2$, compared with $2:1$ for halves). For $n=2$ we recover $\frac23$ and $\frac13$.
+FOLLOWUP: Three drinkers
+Go back to halves, but add a third person: I drink half, you drink half of what is left, then the third person drinks half of what is left, and we cycle. How much does each person drink?
+FOLLOWUP_ANSWER:
+Each drink is still half of the previous one, and the pint is still finished. In each cycle the three drinks are in ratio $1 : \frac12 : \frac14$, so the totals are in the same ratio $4:2:1$:
+$$\text{me} = \frac47,\qquad \text{you} = \frac27,\qquad \text{third person} = \frac17.$$
+(Check: my drinks are $\frac12,\frac1{16},\dots$, a geometric series with ratio $\frac18$, summing to $\frac{1/2}{7/8} = \frac47$.)
+FOLLOWUP: Unequal thirst
+I drink $\frac12$ of what is left each time, but you only drink $\frac13$ of what is left each time. How much more do I drink?
+FOLLOWUP_ANSWER:
+Consider one round starting with $R$ in the glass: I drink $\frac R2$, you drink $\frac13\cdot\frac R2 = \frac R6$, and $R - \frac R2 - \frac R6 = \frac R3$ is left. So in every round I drink three times what you drink, and the remainder shrinks by the factor $\frac13$ (so it tends to $0$). Summing,
+$$M = \frac{1/2}{1 - 1/3} = \frac34,\qquad Y = \frac{1/6}{1-1/3} = \frac14.$$
+I drink $\frac34$ of the pint, you drink $\frac14$: I drink half a pint more than you (three times as much).
+===END===
+===TEASER===
+SLUG: snow-clearing-car
+IDS: R8-38, R8-39
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Snow clearing car
+QUESTION:
+Snow starts falling at some time before midday. A snow clearing car starts work at midday, and its speed is inversely proportional to the time elapsed since the snow began to fall. The distance the car covers between midday and 1 pm is twice the distance it covers between 1 pm and 2 pm.
+
+When did the snow start falling?
+HINT1:
+Measure time from the moment the snow started, and call $x$ the (unknown) number of hours it had been snowing at midday. Write the speed as a function of that time.
+HINT2:
+With speed $\alpha/t$, the distance covered between times $t_1$ and $t_2$ is $\alpha\log(t_2/t_1)$. Write the condition "first hour = twice the second hour" as an equation in $x$; the constant $\alpha$ cancels.
+ANSWER:
+It had been snowing for $x = \frac{\sqrt5-1}{2}\approx 0.618$ hours $\approx 37$ minutes at midday, so the snow started at about 11:23 am.
+REFRESH:
+- **Distance from speed**: distance travelled between $t_1$ and $t_2$ is $\int_{t_1}^{t_2} v(t)\,dt$.
+- **Logarithm rules**: $\int \frac{dt}{t} = \log t$; $\log a - \log b = \log\frac ab$; $2\log a = \log a^2$; $\log$ is injective, so $\log A = \log B \Rightarrow A = B$.
+- **Quadratic formula**: $x^2 + x - 1 = 0 \Rightarrow x = \frac{-1\pm\sqrt5}{2}$.
+EXPLANATION:
+The unknown proportionality constant looks like a problem, but it isn't: both distances are proportional to it, and the problem only gives a ratio of distances. So everything comes down to one equation for the single unknown $x$, the time the snow had been falling at midday.
+
+Speed $\propto 1/t$ means the distance covered is logarithmic in time: between $t_1$ and $t_2$ the car covers $\alpha\log(t_2/t_1)$. The distance only depends on the ratio of the two times. Midday to 1 pm corresponds to the time ratio $\frac{x+1}{x}$, and 1 pm to 2 pm to $\frac{x+2}{x+1}$. "First distance is twice the second" becomes "the first ratio is the square of the second": $\frac{x+1}{x} = \left(\frac{x+2}{x+1}\right)^2$, which reduces to the golden-ratio equation $x^2 + x - 1 = 0$. The positive root is $x = \frac{\sqrt5-1}{2} = \frac1\varphi\approx 0.618$ hours.
+SOLUTION: Integrating the speed
+Let $t$ be the time in hours since the snow began, and $x>0$ the value of $t$ at midday. The speed is $v(t) = \frac{\alpha}{t}$ for some constant $\alpha>0$, so the distance covered between $t_1$ and $t_2$ is
+$$d(t_1,t_2) = \int_{t_1}^{t_2}\frac{\alpha}{t}\,dt = \alpha\log\frac{t_2}{t_1}.$$
+The condition $d(x, x+1) = 2\,d(x+1, x+2)$ becomes
+$$\alpha\log\frac{x+1}{x} = 2\alpha\log\frac{x+2}{x+1} \quad\Longrightarrow\quad \frac{x+1}{x} = \left(\frac{x+2}{x+1}\right)^2.$$
+Clearing denominators:
+$$(x+1)^3 = x(x+2)^2 \iff x^3 + 3x^2 + 3x + 1 = x^3 + 4x^2 + 4x \iff x^2 + x - 1 = 0.$$
+So $x = \frac{-1\pm\sqrt5}{2}$, and since $x>0$,
+$$x = \frac{\sqrt5 - 1}{2}\approx 0.618\ \text{hours}\approx 37\ \text{minutes } 5\ \text{seconds}.$$
+The snow started about $37$ minutes before midday, i.e. at roughly 11:23 am.
+FOLLOWUP: Acceleration proportional to snowing time
+Redo the problem if instead the car (starting at midday) has an acceleration proportional to the time elapsed since it began snowing. The distance covered from midday to 1 pm is still twice the distance from 1 pm to 2 pm. When did the snow start?
+FOLLOWUP_ANSWER:
+**There is no solution**: with a positive acceleration the car speeds up, so it always covers more ground in the second hour than in the first.
+
+Concretely, let the car start from rest at midday, time $t$ measured from the start of the snow, midday at $t = x$, acceleration $a(t) = ct$ with $c>0$. Then $v(t) = \frac c2(t^2 - x^2)$ for $t\ge x$, and
+$$d(x,x+1) = \frac c2\left[\frac{(x+1)^3 - x^3}{3} - x^2\right] = \frac c2\left(x + \frac13\right),$$
+$$d(x+1,x+2) = \frac c2\left[\frac{(x+2)^3 - (x+1)^3}{3} - x^2\right] = \frac c2\left(3x + \frac73\right).$$
+The ratio of the first to the second is $\frac{3x+1}{9x+7} < \frac13$ for every $x\ge0$, so it can never equal $2$. (Starting with a positive initial speed does not help: the speed is still increasing, so the first hour is still shorter. Only a decelerating car, $c<0$, could satisfy the condition, and then the answer depends on the unknown initial speed, so the problem is underdetermined.)
+===END===
+===TEASER===
+SLUG: weights-to-balance-1-to-40
+IDS: R8-40, R8-41, R8-42, R8-43, R8-44, R8-45, R8-46, R8-47
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Weights to balance 1 to 40
+QUESTION:
+You want a set of integer weights with which you can exactly balance, on a two-pan scale, any object whose weight is an integer between $1$ and $40$. Each weight in the set can be used at most once.
+
+(a) If the weights may only be placed on the pan opposite the object, what is the smallest number of weights needed? Prove it.
+
+(b) If the weights may be placed on either pan (equivalently: find the smallest set of integers from which every number $1, 2,\dots,40$ can be produced as a sum and difference, using each integer at most once with a "$+$" or a "$-$" sign), what is the smallest number now? Prove it.
+HINT1:
+Count: with $k$ weights, how many different totals can you possibly produce? In (a) each weight has two states; in (b) it has three.
+HINT2:
+The counting gives a lower bound; for the construction, think of number bases. In (a) use base $2$; in (b) think of base $3$ with "digits" $-1, 0, +1$, choosing each new weight as large as possible without leaving a gap.
+ANSWER:
+(a) $6$ weights, e.g. $1,2,4,8,16,32$; (b) $4$ weights, namely $1,3,9,27$.
+REFRESH:
+- **Binary representation**: every integer $0\le m\le 2^k-1$ is uniquely $\sum_{i=0}^{k-1} b_i2^i$ with $b_i\in\{0,1\}$.
+- **Counting bound (pigeonhole)**: a function defined on a set of size $s$ takes at most $s$ distinct values.
+- **Balanced ternary**: every integer $m$ with $|m|\le \frac{3^k-1}{2}$ is uniquely $\sum_{i=0}^{k-1} e_i3^i$ with $e_i\in\{-1,0,1\}$.
+EXPLANATION:
+Both parts are a count followed by a construction.
+
+**Counting.** A choice of how to use the weights determines the total. In (a) each weight is either on the pan or not: $2^k$ choices, one of which (nothing) gives $0$, so at most $2^k - 1$ positive totals. In (b) each weight is on the object's pan ($-$), on the other pan ($+$), or unused ($0$): $3^k$ choices. These totals come in $\pm$ pairs (flip every sign) plus the total $0$, so at most $\frac{3^k-1}{2}$ positive totals. We need $40$ positive totals: $2^k - 1\ge 40$ forces $k\ge6$, and $\frac{3^k-1}{2}\ge 40$ forces $3^k\ge 81$, i.e. $k\ge 4$.
+
+**Construction.** The bounds are attained by number systems that use every combination exactly once, with no waste. Powers of two, $1,2,4,8,16,32$, give every integer from $0$ to $63$ by binary expansion. Powers of three, $1,3,9,27$, give every integer from $-40$ to $40$ by "balanced ternary", where each digit is $-1$, $0$ or $+1$. Greedily: $1$ gives $\{-1,0,1\}$; the next weight should be (smallest number not yet reachable) + (largest reachable number) $= 2+1 = 3$, extending the range to $\pm4$; then $5+4 = 9$ gives $\pm13$; then $14 + 13 = 27$ gives $\pm 40$.
+SOLUTION: Counting bound and binary / balanced ternary
+**(a) Lower bound.** With $k$ weights on one pan the achievable totals are the subset sums $\sum_{i\in S} w_i$, $S\subseteq\{1,\dots,k\}$. There are $2^k$ subsets and the empty one gives $0$, so there are at most $2^k-1$ distinct positive totals. For $k = 5$ this is $31 < 40$, so at least $6$ weights are needed.
+
+**(a) Construction.** Take $1,2,4,8,16,32$. Any integer $m$ with $1\le m\le 63$ has a binary expansion $m = \sum_{i=0}^{5} b_i 2^i$, $b_i\in\{0,1\}$; put on the pan the weights $2^i$ with $b_i = 1$. In particular all of $1,\dots,40$ are covered. So the minimum is $6$.
+
+**(b) Lower bound.** Now a total is $\sum_i e_i w_i$ with $e_i\in\{-1,0,+1\}$: $3^k$ sign patterns. The all-zero pattern gives $0$, and the remaining patterns pair up as $e\leftrightarrow -e$ with opposite totals, so there are at most $\frac{3^k-1}{2}$ distinct positive totals. We need $\frac{3^k-1}{2}\ge 40$, i.e. $3^k\ge 81$, so $k\ge4$.
+
+**(b) Construction.** Take $1,3,9,27$. Claim: with $1,3,\dots,3^{j-1}$ one reaches every integer in $[-R_j, R_j]$, where $R_j = \frac{3^j-1}{2} = 1 + 3 + \dots + 3^{j-1}$. This holds for $j=1$ ($\{-1,0,1\}$). If it holds for $j$, adding $3^j$ with sign $-1$, $0$ or $+1$ shifts the interval $[-R_j,R_j]$ to $[-3^j - R_j, -3^j + R_j]$, $[-R_j,R_j]$ and $[3^j - R_j, 3^j + R_j]$. Since $3^j = 2R_j + 1$, these three blocks of integers are adjacent with no gap and no overlap, and together they form $[-R_{j+1}, R_{j+1}]$ with $R_{j+1} = 3^j + R_j$. For $j = 4$, $R_4 = 40$.
+
+Examples: $2 = 3 - 1$, $5 = 9 - 3 - 1$, $14 = 27 - 9 - 3 - 1$, $20 = 27 - 9 + 3 - 1$, $40 = 27 + 9 + 3 + 1$. So the minimum is $4$: $\{1,3,9,27\}$.
+
+Note: the red book's Question 8.12 is version (a) (answer $6$) and its Question 8.13 is version (b) (answer $4$); the only difference is where the weights may be placed.
+FOLLOWUP: Balancing 1 to 64 on one pan
+With weights on one pan only, what is the smallest number of weights that balances every integer from $1$ to $64$? Show how to balance $64$ with your weights.
+FOLLOWUP_ANSWER:
+**$7$ weights.** Six weights give at most $2^6 - 1 = 63 < 64$ positive totals, so six are not enough. Seven suffice, e.g. $1,2,4,8,16,32,64$: then $64$ is balanced by the single weight $64$ (and everything up to $127$ is reachable). If you prefer a set whose total is exactly $64$, take $1,1,2,4,8,16,32$: every $m\le 63$ uses the binary weights, and $64 = 32+16+8+4+2+1+1$.
+FOLLOWUP: An algorithm to pick the weights
+With the weights $1,2,4,8,16,32$ on one pan, give an algorithm that, given $n\in\{1,\dots,63\}$, returns the weights to use.
+FOLLOWUP_ANSWER:
+Compute the binary expansion of $n$. Greedy version: for $w = 32, 16, 8, 4, 2, 1$ in turn, if $n\ge w$ then use weight $w$ and set $n\leftarrow n - w$. At the end $n = 0$ and the chosen weights sum to the original $n$.
+
+Equivalent version reading bits from the bottom: set $w = 1$; while $n>0$: if $n$ is odd, use weight $w$; then set $n\leftarrow\lfloor n/2\rfloor$ and $w\leftarrow 2w$.
+
+Why the greedy works: if $n\ge 2^i$ we must use $2^i$, because all smaller weights together sum to only $2^i - 1 < n$; after subtracting, $n< 2^i$ and we continue with the smaller weights.
+
+(For the two-pan version with $1,3,9,27$, the analogous algorithm writes $n$ in balanced ternary: while $n\neq0$, let $r = n \bmod 3$; if $r = 0$ skip the current weight; if $r = 1$ put it on the opposite pan and set $n\leftarrow n - 1$; if $r = 2$ put it on the object's pan and set $n\leftarrow n+1$; then set $n\leftarrow n/3$ and move to the next power of $3$.)
+FOLLOWUP: Plus-minus set for 1 to 50
+Using each integer at most once with a "$+$" or "$-$" sign, what is the smallest set that produces every number from $1$ to $50$?
+FOLLOWUP_ANSWER:
+**$5$ numbers.** The counting bound requires $\frac{3^k-1}{2}\ge 50$, i.e. $3^k\ge 101$; since $3^4 = 81$ this forces $k\ge5$. Five suffice: $\{1,3,9,27,81\}$ reaches every integer up to $121$. For instance, $1,\dots,40$ come from $\{1,3,9,27\}$ alone, and $41,\dots,50$ are $81 - m$ with $m = 40,\dots,31$, each $m$ being a signed combination of $1,3,9,27$ (e.g. $50 = 81 - 27 - 3 - 1$).
+FOLLOWUP: Each number usable twice
+Now each number in the set may be used up to twice (so each coefficient is in $\{-2,-1,0,1,2\}$). What is the smallest set producing $1,\dots,40$?
+FOLLOWUP_ANSWER:
+**$3$ numbers**, e.g. $\{1,5,25\}$.
+
+Lower bound: with $k$ numbers there are $5^k$ coefficient patterns, giving at most $\frac{5^k - 1}{2}$ positive totals; $k = 2$ gives $12 < 40$, so $k\ge 3$.
+
+Construction: balanced base $5$. With coefficients in $\{-2,\dots,2\}$, the number $1$ covers $[-2,2]$; adding $5$ covers $[-12,12]$; adding $25$ covers $[-62,62]$, which contains $1,\dots,40$. For example $40 = 2\cdot 25 - 2\cdot 5$ and $38 = 2\cdot 25 - 2\cdot 5 - 2\cdot 1$.
+FOLLOWUP: A physical application
+Can you think of a physical application of the set $\{1,3,9,27\}$ used with signs?
+FOLLOWUP_ANSWER:
+The most direct one is the problem itself: a **pan balance with weights allowed on both pans** (Bachet's weight problem). With weights of $1,3,9,27$ kg you can weigh any whole number of kilograms up to $40$, putting some of the weights next to the goods. More generally, the signed digits form **balanced ternary**, which was used in the experimental Soviet computer Setun and appears in signalling schemes with three voltage levels ($-V, 0, +V$); the same idea underlies paying with coins when both sides may hand over coins (paying $5$ with a $9$ and receiving $3+1$ in change).
+===END===
+===TEASER===
+SLUG: domino-tilings-2-by-n
+IDS: R8-48, R8-49, R8-50, R8-51, R8-52
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Domino tilings of a 2 by n strip
+QUESTION:
+In how many ways can a $2\times n$ grid be tiled by $2\times1$ dominoes (each domino covers two adjacent cells, placed horizontally or vertically), with no gaps and no overlaps?
+HINT1:
+Look at the leftmost column: in how many ways can its two cells be covered? Try small $n$ first.
+HINT2:
+Either the left column is covered by one vertical domino, or its two cells are covered by two horizontal dominoes stacked on top of each other (which then also cover the second column). Let $F(n)$ be the answer and write a recursion.
+ANSWER:
+$F(n) = F(n-1) + F(n-2)$ with $F(0) = F(1) = 1$, so $F(n)$ is the $(n+1)$-th Fibonacci number: $1,1,2,3,5,8,13,\dots$
+REFRESH:
+- **Fibonacci numbers**: $f_1 = f_2 = 1$, $f_{m} = f_{m-1} + f_{m-2}$; Binet's formula $f_m = \frac{\varphi^m - \psi^m}{\sqrt5}$ with $\varphi = \frac{1+\sqrt5}{2}$, $\psi = \frac{1-\sqrt5}{2}$.
+- **Linear recursions**: a sequence satisfying a linear recursion of order $r$ is determined by the recursion plus its first $r$ values.
+EXPLANATION:
+The whole problem is decided at the left edge. The top-left cell must be covered by some domino. If that domino is vertical, it covers the entire first column and what remains is a $2\times(n-1)$ strip, tiled in $F(n-1)$ ways. If it is horizontal, it covers the top cells of columns 1 and 2; then the bottom-left cell can only be covered by another horizontal domino lying directly below it (a vertical one would need the top-left cell, which is taken). These two stacked dominoes cover columns 1 and 2 completely, leaving a $2\times(n-2)$ strip: $F(n-2)$ ways. The two cases are disjoint and exhaustive, hence the Fibonacci recursion.
+
+Equivalently, reading the tiling from left to right, it is a sequence of "blocks" of width $1$ (a vertical domino) and width $2$ (two stacked horizontal dominoes) whose widths add up to $n$: the classical Fibonacci count of ordered ways to write $n$ as a sum of $1$s and $2$s.
+SOLUTION: Recursion on the left column
+Let $F(n)$ be the number of tilings of the $2\times n$ grid, with $F(0) = 1$ (the empty grid has exactly one tiling, the empty one).
+
+Consider the domino covering the top-left cell.
+- If it is vertical, it covers column 1; the rest is any tiling of a $2\times(n-1)$ grid: $F(n-1)$ tilings.
+- If it is horizontal, it covers the top cells of columns 1 and 2. The bottom-left cell cannot be covered vertically (its upper neighbour is taken), so it is covered by a horizontal domino on the bottom cells of columns 1 and 2. The rest is a $2\times(n-2)$ grid: $F(n-2)$ tilings.
+
+Hence, for $n\ge2$,
+$$F(n) = F(n-1) + F(n-2),\qquad F(0) = 1,\ F(1) = 1.$$
+This gives $F(2) = 2$, $F(3) = 3$, $F(4) = 5$, $F(5) = 8$, $F(6) = 13$, …, so $F(n) = f_{n+1}$, the $(n+1)$-th Fibonacci number, and by Binet's formula
+$$F(n) = \frac{1}{\sqrt5}\left[\left(\frac{1+\sqrt5}{2}\right)^{n+1} - \left(\frac{1-\sqrt5}{2}\right)^{n+1}\right].$$
+Note: the book prints the initial values as $F(0)=1$, $F(1)=2$; that is a slip, since a $2\times1$ grid has only one tiling (a single vertical domino). The correct values $F(0)=F(1)=1$ are the ones consistent with its conclusion that $F(n)$ is the $(n+1)$-th Fibonacci number.
+SOLUTION: Squares and dominoes on a 1 by n strip
+Cut the $2\times n$ grid horizontally into two $1\times n$ rows. A vertical domino occupies one cell in each row; a horizontal domino in the top row is always matched by an identical one directly below it in the bottom row (shown above). So the tiling is determined by the top row alone, read as a tiling of a $1\times n$ strip by "squares" (halves of vertical dominoes) and "dominoes" (horizontal ones).
+
+A tiling of the $1\times n$ strip with $j$ dominoes uses $n - 2j$ squares, hence $n - j$ tiles in total, and the dominoes can occupy any $j$ of these $n - j$ positions, so
+$$F(n) = \sum_{j=0}^{\lfloor n/2\rfloor}\binom{n-j}{j},$$
+a well-known formula for $f_{n+1}$ (e.g. $n = 4$: $1 + 3 + 1 = 5$).
+FOLLOWUP: Why is F(0) = 1?
+In the recursion $F(n) = F(n-1) + F(n-2)$, why should $F(0)$ be $1$ rather than $0$?
+FOLLOWUP_ANSWER:
+A $2\times 0$ grid has no cells, and there is exactly one way to cover nothing: use no dominoes (the empty tiling), just as there is $1$ way to choose $0$ objects, $\binom{n}{0} = 1$, and $0! = 1$. It is also the value that makes the recursion correct: in a $2\times 2$ grid the case "two stacked horizontal dominoes" leaves a $2\times0$ grid and must count as one tiling, so $F(2) = F(1) + F(0) = 1 + 1 = 2$, which matches the direct count (two vertical, or two horizontal). Setting $F(0) = 0$ would give the wrong value $F(2) = 1$.
+FOLLOWUP: Computing F(10000) quickly
+How would you compute $F(10000)$ quickly?
+FOLLOWUP_ANSWER:
+$F(10000) = f_{10001}$ has about $10001\log_{10}\varphi - \log_{10}\sqrt5\approx 2090$ digits, so you need exact big-integer arithmetic; floating-point Binet only gives the leading digits.
+
+- **Iteration**: $(a, b) \leftarrow (b, a + b)$ ten thousand times: $O(n)$ big-integer additions, already fast in practice.
+- **Matrix power**: $\begin{pmatrix}1&1\\1&0\end{pmatrix}^m = \begin{pmatrix}f_{m+1}&f_m\\f_m&f_{m-1}\end{pmatrix}$, and computing the power by repeated squaring needs only $O(\log n)$ matrix multiplications (about $14$ squarings for $m = 10001$).
+- **Fast doubling** (the same idea without matrices): $f_{2k} = f_k(2f_{k+1} - f_k)$ and $f_{2k+1} = f_k^2 + f_{k+1}^2$, recursing on the binary digits of $m$.
+
+With $O(\log n)$ multiplications of numbers of at most $2090$ digits this takes milliseconds.
+FOLLOWUP: Domino tilings of a 3 by n rectangle
+How many ways are there to tile a $3\times n$ rectangle with $2\times1$ dominoes?
+FOLLOWUP_ANSWER:
+For odd $n$ the area $3n$ is odd, so there are **no** tilings. For even $n$, let $a_n$ be the number of tilings of the $3\times n$ rectangle and $b_n$ the number of tilings of a $3\times n$ rectangle with one corner cell removed (by symmetry it does not matter which corner).
+
+- $a_n$: the left column (3 cells) is covered either by three horizontal dominoes (leaving a $3\times(n-2)$ rectangle: $a_{n-2}$), or by one vertical domino on two of its cells plus a horizontal domino on the third cell, which is the top or the bottom one (each case leaves a $3\times(n-1)$ rectangle with a corner removed: $b_{n-1}$). So $a_n = a_{n-2} + 2b_{n-1}$.
+- $b_n$ (top-left cell removed): the two remaining left cells are covered either by a vertical domino (leaving $a_{n-1}$) or by two horizontal dominoes; in the latter case the top cell of column 2 is forced to be covered horizontally together with column 3, leaving $b_{n-2}$. So $b_n = a_{n-1} + b_{n-2}$.
+
+Eliminating $b$: from $a_n - a_{n-2} = 2b_{n-1}$ and $b_{n-1} - b_{n-3} = a_{n-2}$ we get
+$$a_n = 4a_{n-2} - a_{n-4},\qquad a_0 = 1,\ a_2 = 3,$$
+so $a_4 = 11$, $a_6 = 41$, $a_8 = 153$, $a_{10} = 571$. In closed form, for $n = 2m$,
+$$a_{2m} = \frac{(3+\sqrt3)(2+\sqrt3)^m + (3-\sqrt3)(2-\sqrt3)^m}{6}.$$
+FOLLOWUP: Counting polyominoes
+A polyomino of size $k$ is a connected shape made of $k$ unit squares joined edge to edge; one of size $k$ is obtained from one of size $k-1$ by attaching a square to a side. For $k=2$ there is one (the domino). How many are there for $k = 3$ and $k = 4$?
+FOLLOWUP_ANSWER:
+Counting shapes up to rotation and reflection ("free" polyominoes):
+
+- $k = 3$: **2** trominoes, the straight one (I) and the bent one (L). Growing the domino: a square attached at an end gives I, one attached to a long side gives L.
+- $k = 4$: **5** tetrominoes: I (four in a row), O ($2\times2$ square), T, L and S (the zig-zag). Growing the I tromino gives I, L and T; growing the L tromino gives L, T, O and S; nothing else appears.
+
+If mirror images are counted as different (as in Tetris) there are $7$ tetrominoes (L/J and S/Z split), and if every rotation is also counted separately ("fixed" polyominoes) there are $6$ trominoes and $19$ tetrominoes.
+===END===
+===TEASER===
+SLUG: four-cards-vowel-implies-even
+IDS: R8-53, R8-54, R8-55, R8-56, R8-57, R8-58
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: easy
+TITLE: Four cards: vowel implies even
+QUESTION:
+Four cards lie on a table showing $7$, $6$, A and C. Each card has a letter on one side and a number on the other. The claim is: *if a card has a vowel on one side, then it has an even number on the other side.*
+
+Which cards must you turn over to test this claim, and why?
+HINT1:
+For each card, ask: is there anything that could be on its hidden side that would make the claim false? If not, turning it over is pointless.
+HINT2:
+The claim has the form "$P\Rightarrow Q$" with $P$ = "vowel" and $Q$ = "even". It can only be broken by a card with $P$ true and $Q$ false. Which visible faces could belong to such a card?
+ANSWER:
+Turn over the A and the $7$ (and only those).
+REFRESH:
+- **Implication**: "$P\Rightarrow Q$" is false only when $P$ is true and $Q$ is false; it is equivalent to its contrapositive "$\neg Q\Rightarrow\neg P$", but *not* to its converse "$Q\Rightarrow P$".
+EXPLANATION:
+This is the Wason selection task, famous because most people answer "A and 6". The rule only forbids one kind of card: a vowel paired with an odd number. So you should turn over exactly the cards that might turn out to be "vowel + odd".
+
+- A vowel is showing: the other side might be odd, so check it.
+- An odd number is showing: the other side might be a vowel, so check it. This is the contrapositive: "odd $\Rightarrow$ not a vowel".
+- An even number is showing: whatever is behind it, the card cannot break the rule. The rule says vowels need even numbers, not that even numbers need vowels (that would be the converse).
+- A consonant is showing: the rule says nothing about consonants.
+SOLUTION: Checking which cards can falsify the claim
+The claim "vowel $\Rightarrow$ even" is violated by a card exactly when it has a vowel on one side and an odd number on the other.
+
+- **A**: its back could be odd, making it a counterexample. Must turn.
+- **C**: a consonant; whatever number is on the back, the premise "vowel" is false, so the card satisfies the implication. Do not turn.
+- **6**: even; whatever letter is on the back, the conclusion "even" is true, so the card satisfies the implication. Do not turn.
+- **7**: odd; if the back is a vowel, the card is a counterexample. Must turn.
+
+So turn over A and $7$. If both pass (A has an even back, $7$ has a consonant back), the claim is true for all four cards.
+FOLLOWUP: Claim "vowel or even"
+Same four cards (letter on one side, number on the other). Claim: *every card has a vowel or an even number (or both).* Which cards must be turned?
+FOLLOWUP_ANSWER:
+**Two cards: $7$ and C.** A card fails only if it has a consonant *and* an odd number. A already has a vowel and $6$ already has an even number, so they satisfy the claim whatever is behind them. $7$ fails if its back is a consonant, and C fails if its back is odd, so those two must be turned.
+FOLLOWUP: Claim "vowel and even"
+Same four cards. Claim: *every card has a vowel and an even number.* How many cards must be turned?
+FOLLOWUP_ANSWER:
+**None.** The claim is already refuted by what is showing: the $7$ card has an odd number, and the C card has a consonant, so neither can have "a vowel and an even number". (If the visible faces had all been vowels and even numbers, you would have had to turn all four.)
+FOLLOWUP: Claim "exactly one of vowel, even"
+Same four cards. Claim: *every card has exactly one of the two properties "vowel" and "even number".* How many cards must be turned?
+FOLLOWUP_ANSWER:
+**All four.** Every visible face leaves the claim undecided:
+- A (vowel): needs an odd back; an even back breaks the claim.
+- C (consonant): needs an even back; an odd back breaks it.
+- $6$ (even): needs a consonant back; a vowel breaks it.
+- $7$ (odd): needs a vowel back; a consonant breaks it.
+
+"Exactly one" (exclusive or) is sensitive to both sides of every card, so no card can be skipped.
+FOLLOWUP: "Implies" from elementary operations
+How would you express "$P$ implies $Q$" using the elementary logical operations (not, and, or)?
+FOLLOWUP_ANSWER:
+$$P\Rightarrow Q\ \equiv\ \neg P\lor Q\ \equiv\ \neg(P\land\neg Q).$$
+Truth table: the implication is false only in the row $P = $ true, $Q = $ false, and $\neg P\lor Q$ is also false only in that row. The second form says exactly what the card problem uses: the claim fails iff some card has $P$ (vowel) and not $Q$ (odd).
+FOLLOWUP: Cards with two letters or two numbers
+In the original problem, what if a card could also have two letters or two numbers on its sides?
+FOLLOWUP_ANSWER:
+Now **three cards: A, C and $7$.** A card violates "vowel on one side $\Rightarrow$ even number on the other" if some side shows a vowel while the opposite side is not an even number.
+- A: the back could be odd or a letter; must turn.
+- $7$: the back could be a vowel; must turn.
+- C: the back could now be a vowel, whose other side is C, not an even number, so the card would break the rule; must turn.
+- $6$: if its back is a vowel, that vowel has the even $6$ opposite it, which is fine; if its back is a consonant or a number, the rule is not triggered. It can never violate the claim, so it need not be turned.
+===END===
+===TEASER===
+SLUG: nine-marbles-three-weighings
+IDS: R8-59, R8-60, R8-61, R8-62, H1B-12
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: easy
+TITLE: Nine marbles, one heavy
+QUESTION:
+There are nine marbles in a jar. They look identical, but one is heavier than the others, which all have the same weight. You have a balance scale (two pans) and may use it at most three times, putting as many marbles on each pan as you like. How do you find the heavy marble?
+HINT1:
+A weighing has three possible outcomes, not two: left heavier, right heavier, or balance. Marbles you leave off the scale are also informative.
+HINT2:
+Split the marbles into groups so that every outcome of a weighing leaves you with the same number of candidates. With nine marbles, try groups of three.
+ANSWER:
+Weigh $3$ against $3$: the heavy marble is in the heavier group, or among the $3$ left out if the pans balance; then weigh $1$ against $1$ of those three. Two weighings suffice (so three certainly do).
+REFRESH:
+- **Information bound**: a procedure with $k$ weighings, each having $3$ outcomes, can distinguish at most $3^k$ different situations.
+EXPLANATION:
+Halving is the natural first idea, but it wastes the scale: a weighing has three outcomes, so it can cut the candidates into thirds. Put one third of the candidates on each pan and leave one third off. If one pan goes down, the heavy marble is on it; if they balance, it is among those left off. Either way one third remains.
+
+Nine marbles, then three, then one: two weighings. The red book's solution weighs $4$ against $4$ with one marble left aside, then $2$ against $2$, then $1$ against $1$: that is correct and fits the three allowed weighings, but it uses the third outcome only in the first weighing. Heard on the Street asks the same question with eight balls: weigh $3$ against $3$ with $2$ aside, then either compare the two left out, or weigh $1$ against $1$ from the heavier trio: again two weighings.
+SOLUTION: The book's approach (4 against 4)
+Weigh marbles $1$–$4$ against $5$–$8$, leaving marble $9$ aside.
+- If they balance, marble $9$ is the heavy one (one weighing used).
+- Otherwise the heavy marble is among the four on the heavier pan. Weigh two of them against the other two; the heavier pair contains it. Finally weigh the two marbles of that pair against each other; the heavier one is the answer.
+
+At most three weighings.
+SOLUTION: Splitting into thirds (2 weighings)
+Weigh marbles $\{1,2,3\}$ against $\{4,5,6\}$, leaving $\{7,8,9\}$ aside.
+- Left pan heavier: the heavy marble is in $\{1,2,3\}$. Right pan heavier: it is in $\{4,5,6\}$. Balance: it is in $\{7,8,9\}$.
+
+Call the remaining trio $\{a,b,c\}$ and weigh $a$ against $b$: the heavier of the two is the heavy marble, and if they balance it is $c$.
+
+Two weighings always suffice. This is optimal: one weighing has only $3$ outcomes, which cannot identify one of $9$ marbles.
+
+Eight balls (Heard's version): weigh $3$ against $3$, leaving $2$ aside. If one side is heavier, weigh $1$ against $1$ from that trio as above; if they balance, weigh the two left-out balls against each other. Two weighings.
+FOLLOWUP: Nine marbles in two weighings?
+Can you find the heavy marble among nine in only two weighings?
+FOLLOWUP_ANSWER:
+**Yes.** Weigh $3$ against $3$ with $3$ aside; the heavier pan, or the three set aside if the pans balance, contains the heavy marble. Then weigh $1$ against $1$ of those three: the heavier is the answer, or the third one if they balance. Two cannot be improved to one, since one weighing has only three outcomes.
+FOLLOWUP: Eleven marbles
+What if there are eleven marbles (one heavy) and three weighings allowed?
+FOLLOWUP_ANSWER:
+Three weighings are needed and suffice. Two weighings can distinguish at most $3^2 = 9 < 11$ cases, so two are not enough.
+
+With three: weigh $4$ against $4$, leaving $3$ aside.
+- If the pans balance, the heavy marble is among the $3$ aside: weigh $1$ against $1$ (two weighings in total).
+- If one pan is heavier, the heavy marble is among its $4$: weigh $1$ against $1$ of them, leaving $2$ aside. If one is heavier, done; if they balance, weigh the remaining two against each other.
+
+(Any first split $a$ vs $a$ with $11 - 2a$ aside works as long as each part has at most $9$ marbles.)
+FOLLOWUP: Maximum for three weighings
+What is the largest number of marbles among which one heavy marble can always be found with three weighings?
+FOLLOWUP_ANSWER:
+**$27$.** With one weighing you can handle $3$ marbles ($1$ vs $1$, $1$ aside). With $k$ weighings, if you can handle $N_{k-1}$ marbles with $k-1$ weighings, then with $k$ weighings split $3N_{k-1}$ marbles into three groups of $N_{k-1}$, weigh two of them, and recurse into the group that must contain the heavy marble: $N_k = 3N_{k-1}$, so $N_2 = 9$ and $N_3 = 27$.
+
+No more is possible: $k$ weighings have $3^k$ possible outcome sequences, and each outcome sequence must point to a single marble, so at most $3^3 = 27$ marbles can be distinguished.
+===END===
+===TEASER===
+SLUG: balls-in-two-sacks
+IDS: R8-69, R8-70, R8-71, R8-72, H4A-16, H4A-17
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Balls in two sacks
+QUESTION:
+You have $100$ balls, $50$ white and $50$ black, and two sacks. You may distribute all the balls between the two sacks in any way you like. Then someone picks one of the two sacks at random (each with probability $\frac12$) and draws one ball at random from it. If the ball is white you win; if it is black you lose.
+
+How should you arrange the balls to maximise your chance of winning, and what is that chance?
+HINT1:
+The sack is chosen with probability $\frac12$ regardless of how many balls it holds. A small sack therefore carries as much weight as a big one.
+HINT2:
+Condition on the sack. If one sack contains $n$ balls of which $w$ are white, the winning probability is $\frac12\cdot\frac{w}{n} + \frac12\cdot\frac{50-w}{100-n}$. For fixed $n$ it is linear in $w$, so first choose the best $w$ for each $n$, then the best $n$.
+ANSWER:
+Put a single white ball in one sack and the other $99$ balls in the other: $P(\text{win}) = \frac12 + \frac12\cdot\frac{49}{99} = \frac{74}{99}\approx 0.747$.
+REFRESH:
+- **Law of total probability**: if $B_1, B_2$ partition the sample space, $P(A) = P(A\mid B_1)P(B_1) + P(A\mid B_2)P(B_2)$.
+EXPLANATION:
+The randomness is two-stage: first a sack (fifty-fifty), then a ball within it. The sack stage does not care how many balls a sack holds, and this is what you exploit. A sack holding just one white ball is a guaranteed win whenever it is chosen, which happens half the time. The cost is tiny: the other sack loses a single white ball, going from $50/99$-ish to $49/99$ white. So you get almost $\frac12 + \frac12\cdot\frac12 = \frac34$.
+
+Why nothing is better: once the first sack's size $n$ is fixed, the winning probability is linear in the number of white balls $w$ you put in it, so the optimum puts in as many whites as possible (the smaller sack should be all white). Then the only question is how big to make that all-white sack, and every extra white ball in it is one fewer in the other sack, so the smallest possible size, $n = 1$, is best.
+
+Heard on the Street asks the same question with two jars and marbles (you draw blindfolded from a jar you cannot identify), with the same answer: almost $\frac34$.
+SOLUTION: Optimising over arrangements
+Let sack 1 contain $w$ white and $b$ black balls, $n = w+b$, and sack 2 the rest; by symmetry assume $1\le n\le 50$ (sack 1 is the smaller one, and neither sack is empty; an empty sack would be chosen half the time and give no ball at all, leaving a winning chance of only $\frac12\cdot\frac12 = \frac14$). By the law of total probability,
+$$P(n,w) = \frac12\cdot\frac{w}{n} + \frac12\cdot\frac{50-w}{100-n} = \frac12\left[\frac{50}{100-n} + w\left(\frac1n - \frac1{100-n}\right)\right].$$
+
+**Step 1 (fixed $n$).** For $n<50$ the coefficient of $w$ is positive, so the best choice is $w$ as large as possible: $w = n$ (sack 1 all white). For $n = 50$ the coefficient is $0$ and $P = \frac12$ for every $w$.
+
+**Step 2 (choose $n$).** With $w = n$,
+$$P(n,n) = \frac12\left[1 + \frac{50-n}{100-n}\right] = \frac12\left[2 - \frac{50}{100-n}\right],$$
+which is decreasing in $n$. So $n = 1$ is optimal:
+$$P_{\max} = \frac12\left[1 + \frac{49}{99}\right] = \frac{74}{99}\approx 0.7475.$$
+The optimal arrangement: one white ball alone in one sack, $49$ white and $50$ black in the other.
+FOLLOWUP: Three sacks
+Same game with three sacks (each chosen with probability $\frac13$). What is the best arrangement?
+FOLLOWUP_ANSWER:
+Put one white ball alone in each of two sacks and the remaining $48$ white and $50$ black in the third:
+$$P = \frac13 + \frac13 + \frac13\cdot\frac{48}{98} = \frac23 + \frac{8}{49} = \frac{122}{147}\approx 0.830.$$
+The same argument applies: each small sack should be all white (linearity in the number of whites) and as small as possible (one ball), because each white ball placed in a guaranteed-win sack is removed from the big sack. With $k$ sacks the best is $\frac{k-1}{k} + \frac1k\cdot\frac{51-k}{101-k}$.
+FOLLOWUP: Two independent white draws
+You now win only if the first two independent draws are both white, where each draw picks a sack at random, draws a ball, and puts it back. What arrangement is best?
+FOLLOWUP_ANSWER:
+The two draws are independent and identically distributed, so $P(\text{win}) = p^2$, where $p$ is the single-draw probability of white. Since $p\mapsto p^2$ is increasing, you maximise $p$ exactly as before: one white ball alone, $99$ in the other sack, giving
+$$P = \left(\frac{74}{99}\right)^2\approx 0.559.$$
+FOLLOWUP: Two white draws from one sack
+You win only if a single sack is chosen at random and the first two balls drawn from it (without replacement) are both white. What arrangement is best?
+FOLLOWUP_ANSWER:
+A one-ball sack is now useless (you cannot draw two balls from it), so the "tiny sack" idea moves to size two: put **two white balls in one sack** and the other $48$ white and $50$ black in the other:
+$$P = \frac12\cdot 1 + \frac12\cdot\frac{48}{98}\cdot\frac{47}{97} = \frac12 + \frac{1128}{9506} = \frac{5881}{9506}\approx 0.619.$$
+With $k\ge2$ white balls alone in the small sack, $P = \frac12\left[1 + \frac{(50-k)(49-k)}{(100-k)(99-k)}\right]$, decreasing in $k$, so $k = 2$ is best; an exhaustive check over all arrangements $(w,b)$ confirms this is the optimum. (If the two draws were made *with* replacement from the chosen sack, the one-white-ball sack is best again: $\frac12 + \frac12\left(\frac{49}{99}\right)^2\approx 0.622$.)
+FOLLOWUP: Minimising the chance of white
+In Heard's version (two jars, $50$ white and $50$ black marbles, you draw one marble blindfolded from a randomly chosen jar), how do you *minimise* the probability of drawing a white marble? Is this the same as maximising the probability of a black one?
+FOLLOWUP_ANSWER:
+If a jar may be left empty, put all $100$ marbles in one jar: with probability $\frac12$ you pick the empty jar and draw nothing, otherwise white has probability $\frac12$, so $P(\text{white}) = \frac14$. This is the minimum: in any arrangement with both jars nonempty, $P(\text{white}) = 1 - P(\text{black})\ge 1 - \frac{74}{99} = \frac{25}{99} > \frac14$ (by the main problem with colours swapped).
+
+With both jars required to be nonempty, minimising white is the same as maximising black: one black marble alone, $99$ in the other jar, giving $P(\text{white}) = \frac12\cdot\frac{50}{99} = \frac{25}{99}\approx 0.253$, just over $\frac14$.
+
+So the two goals differ when an empty jar is allowed: the empty-jar arrangement gives $P(\text{black}) = \frac14$ too, far from the maximal $\frac{74}{99}$, because "no marble" is neither white nor black.
+===END===
+===TEASER===
+SLUG: blue-eyed-islanders
+IDS: R8-73, R8-74, R8-75, R8-76, H1A-37
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: hard
+TITLE: Blue-eyed islanders
+QUESTION:
+Fifty perfectly logical people live on an island. Each has either blue or brown eyes. The island's rule: anyone who works out, with complete certainty, that they have blue eyes must commit suicide at midnight on that day. There are no mirrors, and nobody may tell anyone else their eye colour, but everyone can see everyone else's eyes. Everyone knows all of this, and knows that everyone is perfectly logical.
+
+First, what happens?
+
+Then one day a visitor from outside comes and announces to everyone, publicly: "There is at least one person with blue eyes on this island." What happens now?
+HINT1:
+Start from the smallest cases: what happens after the announcement if exactly one person has blue eyes? Exactly two?
+HINT2:
+Prove by induction on $n$: "if exactly $n$ people have blue eyes, then after the announcement nothing happens for $n-1$ nights and all $n$ blue-eyed people die on night $n$." A blue-eyed person sees $n-1$ blue-eyed people; what does she learn when night $n-1$ passes quietly?
+ANSWER:
+Before the visitor nothing happens; after the announcement, if $n$ people have blue eyes, all $n$ of them commit suicide at midnight of the $n$-th night, and the brown-eyed people survive.
+REFRESH:
+- **Mathematical induction**: if a statement holds for $n=1$ and "holds for $n-1$" implies "holds for $n$", it holds for all $n\ge1$.
+- **Common knowledge**: a fact is common knowledge if everyone knows it, everyone knows that everyone knows it, and so on to every depth.
+EXPLANATION:
+Nobody can ever see their own eyes, so each person's reasoning is: "the world is one of two possibilities: either my eyes are brown, or they are blue. What would I expect to see happen in each case?"
+
+Before the visitor, both possibilities are always consistent with everything anyone observes, so nothing ever happens.
+
+After the announcement, run it up from small cases. With one blue-eyed person, she sees only brown eyes; the announcement tells her someone is blue, so it must be her: she dies the first night. With two, each blue-eyed person sees one other and thinks "if I am brown, she is the only one and will die tonight". When nobody dies on night $1$, each concludes "so I am blue too", and both die on night $2$. In general, the silence of night $n-1$ tells each blue-eyed person that there are not $n-1$ blue-eyed people, so there are $n$ and she is one of them.
+
+The puzzling part (the first follow-up) is that when $n\ge2$ everyone already knew there was a blue-eyed person, so the announcement seems to say nothing new. What it adds is *common knowledge*: now everyone knows that everyone knows that ... that someone has blue eyes, and the induction needs exactly that nested chain.
+
+Heard on the Street has the same puzzle with a town of wives and unfaithful husbands: a stranger announces that some husbands cheat, each wife knows about every husband except her own, and a wife who deduces that her husband cheats throws him out the next morning. If unfaithful husbands are first thrown out on the tenth morning, there are exactly $10$ of them.
+SOLUTION: Induction on the number of blue-eyed people
+**Before the visitor.** Consider any islander. Whatever the true colours, the world where her own eyes are the other colour produces exactly the same observations for her (she sees the same eyes, and, as we argue, nobody dies in either world). So nobody can ever be certain of their own colour, and nothing happens. (Even a lone blue-eyed person, seeing $49$ brown-eyed people, cannot rule out that all $50$ are brown.)
+
+**After the announcement.** Call night $1$ the midnight following the announcement. Claim $C(n)$: if exactly $n\ge1$ islanders have blue eyes, then nobody dies on nights $1,\dots,n-1$ and exactly the $n$ blue-eyed islanders die on night $n$.
+
+*Base case $n=1$.* The blue-eyed islander sees $49$ brown-eyed people. Since the visitor said someone has blue eyes, it must be her; she dies on night $1$. Every brown-eyed islander sees one blue-eyed person, so the announcement is consistent with their own eyes being brown or blue; they cannot conclude anything on night $1$.
+
+*Inductive step.* Assume $C(n-1)$ and suppose exactly $n\ge2$ islanders have blue eyes. Each blue-eyed islander sees $n-1$ blue-eyed people and considers two worlds:
+- her eyes are brown, so there are exactly $n-1$ blue-eyed people: by $C(n-1)$ (which every islander can prove too) they all die on night $n-1$;
+- her eyes are blue, so there are $n$ blue-eyed people.
+
+Until night $n-1$ both worlds agree with what she sees (no deaths before night $n-1$ in either). On night $n-1$ nobody dies, which rules out the first world. So on day $n$ she knows her eyes are blue and dies on night $n$. All $n$ blue-eyed islanders reason identically.
+
+A brown-eyed islander sees $n$ blue-eyed people and considers $n$ or $n+1$ blue-eyed islanders in total; these predict deaths on night $n$ or night $n+1$ respectively. Before night $n$ she learns nothing, so she does not die early; on night $n$ the $n$ blue-eyed islanders die, and she concludes that her eyes are brown. This proves $C(n)$.
+
+**Conclusion.** If $n$ of the $50$ islanders have blue eyes, all $n$ commit suicide at midnight on the $n$-th night after the announcement; the others survive (and then know their eyes are brown).
+
+In Heard's version, "kicked out on the tenth morning for the first time" is $C(n)$ with $n = 10$: there are exactly $10$ unfaithful husbands.
+FOLLOWUP: Why the announcement matters
+If $9$ islanders have blue eyes, everyone already knows that someone has blue eyes. Why does the visitor's statement make any difference?
+FOLLOWUP_ANSWER:
+Because it turns a fact that everybody knows into **common knowledge**. With $9$ blue-eyed people, everyone knows "someone has blue eyes". But the induction needs nested statements. Label the blue-eyed $B_1,\dots,B_9$. $B_1$ considers possible a world where she is brown and only $B_2,\dots,B_9$ are blue; in that world $B_2$ considers possible a world where only $B_3,\dots,B_9$ are blue; and so on down to a hypothetical world, nine levels deep, in which nobody is blue. So before the announcement, "$B_1$ knows that $B_2$ knows that ... $B_9$ knows that someone is blue" is *false*, and the chain of reasoning of the solution cannot start. The public announcement makes "someone is blue" known at every depth, and it also synchronises everyone's count of nights. That is why nothing happened before and something happens after.
+FOLLOWUP: A lying visitor
+What if the visitor's statement was a lie (but everyone believed it)?
+FOLLOWUP_ANSWER:
+The statement is only a lie if **nobody** has blue eyes. Then every islander sees $49$ brown-eyed people and, believing someone has blue eyes, concludes it must be herself: **all $50$ islanders commit suicide on the first night**. (If at least one person has blue eyes, the statement is true, and the original analysis applies.)
+FOLLOWUP: Suicide at p% certainty
+Suppose instead you must commit suicide as soon as you are at least $p\%$ sure that you have blue eyes, and everyone starts with the prior belief that each person independently has blue or brown eyes with probability $\frac12$. What changes?
+FOLLOWUP_ANSWER:
+Each islander's own colour is independent of everything she can see, so her belief in "my eyes are blue" starts at exactly $50\%$.
+
+- If $p\le 50$: everyone is already at least $p\%$ sure on the very first night, so **all $50$ die immediately**, brown- and blue-eyed alike, visitor or not.
+- If $p>50$: an islander who sees $k$ blue-eyed people has two hypotheses, "$k$ blue in total" (she is brown) and "$k+1$ blue in total" (she is blue). Until night $k$ the observations (no deaths) have the same probability, namely $1$, under both hypotheses, so her posterior stays exactly $50\%$; then it jumps to $100\%$ for blue (if night $k$ is silent) or $0\%$ (if the $k$ others die). So beliefs never lie strictly between $50\%$ and $100\%$, and the outcome is **exactly as in the original**: the $n$ blue-eyed die on night $n$ after the announcement, and nothing happens without it.
+===END===
+===TEASER===
+SLUG: prisoners-and-two-switches
+IDS: R8-77, R8-78, R8-79
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: hard
+TITLE: 22 prisoners and two switches
+QUESTION:
+A prison holds $22$ prisoners in separate cells. The warden explains that each day he will pick one prisoner at random and take him to a room containing two light switches, each of which starts in the down position. The visiting prisoner may flip either switch, both, or neither. As soon as any prisoner tells the warden that every prisoner has been in the room at least once, all are set free if this is true, and all are hanged if it is false.
+
+The prisoners get one hour to agree on a strategy; after that they cannot communicate. How can they guarantee their freedom?
+HINT1:
+The switches are the only memory the room has, and they can store very little. Rather than have everyone keep track of everything, put one person in charge of counting.
+HINT2:
+Elect a "captain" who is the only one who ever switches lights down, and who counts. Each other prisoner should signal his first visit exactly once by pushing a switch up. Make sure no signal is ever lost or counted twice.
+ANSWER:
+Elect a captain; each of the other $21$ prisoners pushes one switch up exactly once (on a visit when some switch is down); the captain counts the up switches on each visit and resets them to down; when his tally reaches $21$ he declares.
+REFRESH:
+- **Infinitely many visits**: if each day's prisoner is chosen uniformly at random, independently, then with probability $1$ every prisoner is chosen infinitely often (by the second Borel–Cantelli lemma, since the events "prisoner $i$ is chosen on day $t$" are independent with probability $\frac1{22}$ each).
+EXPLANATION:
+Two binary switches cannot store a list of who has been in; they can only carry a few "tokens" from the other prisoners to someone who remembers. So the prisoners elect a captain who is the only person allowed to switch lights down, and who keeps a tally in his head.
+
+Every other prisoner has a single token to deliver: the first time he finds a switch down (and has not yet delivered), he pushes it up. After that he never touches anything. The captain, on each visit, counts the switches that are up, adds that to his tally, and pushes them down again, emptying the "mailbox". Each up switch corresponds to exactly one prisoner's first-visit token, because nobody else ever raises a switch and nobody raises one twice, and tokens never disappear because only the captain lowers switches. When the tally reaches $21$, every other prisoner has definitely been in the room, and the captain has obviously been in himself.
+
+The strategy never produces a false claim, so the prisoners can never be hanged; they are freed as soon as the counting finishes, which happens with probability $1$ (every prisoner, including the captain, keeps being picked). Typical waiting time: about $300$ days.
+SOLUTION: Captain counting strategy
+Designate one prisoner as the captain. Everybody knows both switches start down.
+
+**Other prisoners (21 of them).** Each keeps one bit of memory, "have I delivered?", initially no. On a visit:
+- if he has not delivered and at least one switch is down, he pushes one down switch up and records that he has delivered;
+- otherwise (he has delivered, or both switches are up) he touches nothing.
+
+**Captain.** He keeps a tally $T$, initially $0$. On each visit he counts the switches that are up, adds that number to $T$, and pushes all switches down. When $T = 21$ he tells the warden that everyone has visited.
+
+**Correctness.** Only non-captains raise switches, and each does so at most once, on a visit to the room. Only the captain lowers switches, and he counts each switch as he lowers it. So every increment of $T$ corresponds to a distinct non-captain having visited, and $T\le 21$. When $T = 21$, all $21$ others have visited, and so has the captain: the claim is true.
+
+**Termination.** With random daily choices, with probability $1$ every prisoner visits infinitely often. A non-captain who has not delivered will eventually visit when a switch is down (the captain lowers both switches each time he comes, and the captain comes infinitely often), so every token is eventually delivered and eventually counted. So the prisoners are freed with probability $1$, and they are never hanged.
+FOLLOWUP: Expected days until freedom
+Using the captain strategy above, what is the expected number of days until the prisoners are freed? Estimate it by simulation.
+FOLLOWUP_ANSWER:
+A simulation of $20{,}000$ runs (a uniformly random prisoner each day, the strategy above) gives a mean of about **$304$ days**. For comparison, the classic one-switch version of the strategy (only one token can wait in the room at a time) takes about $543$ days on average.
+
+Sanity check: the room holds at most $2$ tokens, so the captain needs at least $\lceil 21/2\rceil = 11$ visits that collect something, and the gaps between his visits are geometric with mean $22$ days; hence the expected time is at least $11\times 22 = 242$ days. The simulated $\approx 304$ is consistent with this: some captain visits find nothing, and the last few prisoners take a long time to show up (coupon-collector effect).
+
+Simulation sketch: repeat many times: set up the state (tally, switch count, delivered flags), draw a random prisoner each day, apply the rules, and record the day when the tally reaches $21$; average the recorded days.
+FOLLOWUP: Better use of the two switches
+How can the prisoners use the two switches more efficiently? (Hint: how can you count to $31$ on one hand?)
+FOLLOWUP_ANSWER:
+Counting to $31$ on one hand uses **binary**: five fingers give $2^5$ states rather than $6$. In the book's strategy the two switches only hold $0$, $1$ or $2$ tokens (the order of the switches is wasted). Reading them as a 2-bit binary number, (down, down) $=0$, (down, up) $=1$, (up, down) $=2$, (up, up) $=3$, the room can hold up to **$3$ tokens**:
+- a non-captain who has not yet delivered and finds the counter below $3$ increases it by $1$ (e.g. $1\to2$ means flip both switches) and records that he has delivered;
+- the captain adds the counter value to his tally and resets it to $0$; he declares when the tally reaches $21$.
+
+The correctness proof is unchanged (only non-captains increase the counter, each by $1$ exactly once; only the captain decreases it, counting what he removes). Fewer prisoners find the mailbox full, so fewer visits are wasted: in the same simulation the mean falls from about $304$ to about **$224$ days**.
+===END===
+===TEASER===
+SLUG: halving-rectangle-with-a-hole
+IDS: R8-80, R8-81, R8-82
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: easy
+TITLE: Halving a rectangle with a hole
+QUESTION:
+A small rectangle lies entirely inside a large rectangle (in any position and orientation). Using only a straight edge, draw one straight line that divides the region inside the large rectangle but outside the small one into two parts of equal area.
+HINT1:
+If a line halves the big rectangle and also halves the small rectangle, what does it do to the region between them?
+HINT2:
+Which lines cut a rectangle into two equal areas? And how do you find the relevant point of a rectangle with only a straight edge?
+ANSWER:
+Draw the line through the centres of the two rectangles (each centre is the intersection of that rectangle's diagonals).
+REFRESH:
+- **Central symmetry of a rectangle**: a rectangle is symmetric under the half-turn about its centre (the intersection of its diagonals); any line through the centre is mapped to itself and swaps the two halves, so it cuts the area in half.
+EXPLANATION:
+Area is additive: the region we want to halve is (big rectangle) minus (small rectangle). If a line cuts the big rectangle into two halves of area $\frac{A}{2}$ each, and the small rectangle into two halves of area $\frac{a}{2}$ each, then on each side of the line the region between them has area $\frac{A}{2} - \frac{a}{2}$: the same on both sides.
+
+So we need a line that halves both rectangles at once. Every line through the centre of a rectangle halves it, by central symmetry. Two points determine a line, so the line through both centres works. And with a straight edge, the centre of each rectangle is found by drawing its two diagonals and taking their intersection.
+SOLUTION: Line through both centres
+Let the big rectangle $R$ have area $A$ and centre $O$, and the small rectangle $r\subset R$ have area $a$ and centre $o$. Draw the diagonals of each rectangle; they meet at $O$ and $o$ respectively.
+
+If $O\ne o$, draw the line $L$ through $O$ and $o$; if $O=o$, any line through that point will do. The half-turn about $O$ maps $R$ to itself and swaps the two sides of $L$, so $L$ splits $R$ into two parts of area $\frac A2$; likewise $L$ splits $r$ into two parts of area $\frac a2$. Since $r\subset R$, on each side of $L$ the area of $R\setminus r$ is
+$$\frac A2 - \frac a2,$$
+so $L$ halves the region between the rectangles.
+FOLLOWUP: Is the solution unique?
+Is the line through the two centres the only straight line that halves the region?
+FOLLOWUP_ANSWER:
+**No.** It is the only line that halves *both rectangles separately* (when the centres differ), but many other lines halve the region between them. In fact there is a halving line in **every direction**: fix a direction and slide a line with that direction across the plane; the area of the region on one side of the line varies continuously from $0$ to the full area $A - a$, so by the intermediate value theorem it equals $\frac{A-a}{2}$ at some position. Only one of these infinitely many lines generally passes through both centres; the others are just much harder to construct with a straight edge. (If the two centres coincide, even the lines through the common centre are infinitely many.)
+FOLLOWUP: A cake with a piece missing
+A rectangular cake has had a rectangular piece cut out of it (from anywhere). Find a way to split the rest of the cake into two equal parts with a single straight cut. Give at least two solutions.
+FOLLOWUP_ANSWER:
+1. **Vertical cut through both centres**: as in the main problem, cut along the line through the centre of the cake and the centre of the missing piece (seen from above). It halves both the full cake and the missing piece, hence what remains.
+2. **Horizontal cut**: slice the cake parallel to the table at half its height. Both layers have exactly the same shape (the cake with the same rectangular hole) and half the height, so they have the same volume (and each gets the same share of top and sides, apart from the icing on top).
+
+(Any vertical cut in the right position for a given direction also works, as shown in the previous follow-up, but it is not easy to locate without measuring.)
+===END===
+===TEASER===
+SLUG: nim-last-stick-loses
+IDS: R8-83, R8-84, R8-85
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: medium
+TITLE: NIM, last stick loses
+QUESTION:
+There are $n$ matches on the table (for example $n = 10$). Two players take turns; on each turn a player removes $1$, $2$ or $3$ matches. The player who takes the last match **loses**. What is the optimal strategy?
+HINT1:
+Work backwards from the end. Which small numbers of matches are bad to face when it is your turn?
+HINT2:
+Facing exactly $1$ match is a loss. From which numbers can you force your opponent to face $1$? And then, which number is the next bad one to face?
+ANSWER:
+Always leave your opponent a number of matches of the form $4j+1$ ($1,5,9,\dots$); the player to move loses iff $n\equiv 1 \pmod 4$. With $n=10$, go first and take $1$.
+REFRESH:
+- **Backward induction / P- and N-positions**: in a finite two-player game without chance, a position is losing for the player to move (P-position) iff every move leads to a winning position (N-position), and winning iff some move leads to a losing position.
+EXPLANATION:
+You lose if you are forced to take the last match, i.e. if you face exactly $1$ match. So your goal is to hand your opponent exactly $1$ match. From $2$, $3$ or $4$ matches you can do that (take $1$, $2$ or $3$). From $5$ you cannot: whatever you take ($1$, $2$ or $3$) leaves $4$, $3$ or $2$, and then the opponent hands you $1$. So $5$ is the next bad number, and the pattern repeats with period $4$ because a move and its "complement" ($k$ and $4-k$) always add up to $4$.
+
+This is the same as the "last to take wins" game with one fewer match: taking the last match is forced exactly when one match is left, so leaving one match is the same as winning the other game. In "last to take wins", the losing numbers to face are the multiples of $4$.
+SOLUTION: Backward induction with period 4
+Claim: the player about to move loses (against best play) iff the number of matches $m$ satisfies $m\equiv1\pmod4$.
+
+*If $m\equiv1\pmod4$:* for $m=1$ you must take the last match and lose. For $m = 4j+1\ge5$, any move $k\in\{1,2,3\}$ leaves $4j+1-k$, and the opponent replies with $4-k\in\{3,2,1\}$, leaving $4(j-1)+1$. Repeating, the opponent keeps handing you $1\pmod 4$ until you face $1$ and lose.
+
+*If $m\not\equiv1\pmod4$:* take $k\equiv m-1\pmod4$, $k\in\{1,2,3\}$ (take $1$ if $m\equiv2$, $2$ if $m\equiv3$, $3$ if $m\equiv0$). This leaves a number $\equiv1\pmod4$ for the opponent, who loses by the previous case.
+
+For $n=10\equiv2\pmod4$: move first, take $1$ to leave $9$, and after each opponent move of $k$ take $4-k$ (leaving $5$, then $1$).
+
+In the "last to take wins" variant, the player to move loses iff $m\equiv0\pmod4$, and the strategy is to leave a multiple of $4$.
+FOLLOWUP: Random starting number
+If the number of matches were random, would you rather play first or second?
+FOLLOWUP_ANSWER:
+**First** (if you must choose before seeing $n$). The first player wins unless $n\equiv1\pmod4$, which, for a starting number spread roughly evenly over residues mod $4$, happens only about $\frac14$ of the time; so playing first wins about $\frac34$ of the time against a perfect opponent. If you may choose after seeing $n$, play first unless $n\equiv 1\pmod 4$, and then play second; you then always win.
+FOLLOWUP: Several piles
+Now there are several piles; on each turn a player takes $1$, $2$ or $3$ matches from a single pile. What is the winning strategy when the last player to take wins, and when the last player to take loses?
+FOLLOWUP_ANSWER:
+Reduce each pile size $n_i$ to its residue $r_i = n_i \bmod 4\in\{0,1,2,3\}$ and let $X = r_1\oplus r_2\oplus\cdots$ be their bitwise XOR ("nim-sum").
+
+**Last to take wins (normal play).** The position is lost for the player to move iff $X = 0$. Strategy: move so that the nim-sum of the residues becomes $0$. (By Sprague–Grundy, a single pile of size $n$ in this game is equivalent to a Nim heap of size $n\bmod4$, and Bouton's theorem says XOR $=0$ is losing.) If $X\ne0$, pick a pile with $r_i\oplus X < r_i$ and reduce its residue to $r_i\oplus X$, which removes $r_i - (r_i\oplus X)\in\{1,2,3\}$ matches.
+
+**Last to take loses (misère play).** The position is lost for the player to move iff
+- every residue is $0$ or $1$ and $X = 1$ (an odd number of piles with residue $1$), or
+- some residue is $2$ or $3$ and $X = 0$.
+
+Strategy: play as in normal play (make $X=0$), except for the move after which all residues would be $0$ or $1$: then leave an odd number of piles with residue $1$ instead. Proof sketch: every move changes exactly one residue. From a position in the losing set every move leaves it: flipping a residue $0\leftrightarrow1$ turns $X=1$ into $X=0$; creating a residue $\ge2$ makes $X\ge2$; and from "some residue $\ge2$, $X=0$" there are at least two piles with residue $\ge2$ (one alone cannot cancel the others), so after one move some residue $\ge2$ remains and $X\ne0$. From every other nonempty position there is a move into the set: if all residues are $\le1$ with $X=0$, change one residue $1\to0$ (take $1$) or, if all are $0$, $0\to1$ (take $3$ from a nonempty pile); if exactly one residue $r\ge2$, reduce it to $s\oplus1$ where $s$ is the XOR of the others; if two or more residues are $\ge2$, make $X=0$ as in normal play. Finally, the empty position (the opponent just took the last match) is a win for the player to move, and it is not in the set. (An exhaustive computer check over all positions with up to three piles of up to $12$ matches agrees.) With a single pile this reduces to the main answer: lose iff $n\equiv1\pmod4$.
+===END===
+===TEASER===
+SLUG: coins-on-a-round-table
+IDS: R8-86, R8-87, R8-88
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: medium
+TITLE: Coins on a round table
+QUESTION:
+Two players take turns placing identical coins flat on a round table. A coin may not overlap another coin or hang over the edge of the table. The first player who cannot place a coin loses. You may choose whether to play first or second. Devise a winning strategy.
+HINT1:
+You do not need to know the sizes. Look for a symmetry of the table that lets you answer every move of your opponent.
+HINT2:
+If you could always "copy" your opponent's move by reflecting it through the centre of the table, you would never be the one who runs out of moves. What has to happen first for this copying to be legal?
+ANSWER:
+Play first: put your first coin exactly in the centre of the table, then always answer your opponent's coin with its point reflection through the centre.
+REFRESH:
+- **Point reflection (half-turn) about $O$**: the map $x\mapsto 2O - x$; it sends a disc centred at $c$ to the disc of the same radius centred at $2O - c$, and maps a disc centred at $O$ to itself.
+- **Convex set**: a set containing the segment between any two of its points; a disc is convex.
+EXPLANATION:
+This is a mirroring (symmetry) argument. After your central coin the arrangement on the table is symmetric about the centre. Whenever your opponent places a coin somewhere, the mirror-image spot is guaranteed to be free, because by symmetry it was free before his move (the configuration was symmetric), and his new coin cannot overlap its own mirror image, since that would require it to cover the centre, which is already taken. So you can always reply, the table is symmetric again, and you are never the one stuck. Since the game is finite (only finitely many coins fit), your opponent eventually cannot move and loses.
+
+The central first coin is essential: it occupies the only spot that is its own mirror image, and it is what prevents your opponent from ever placing a coin that overlaps its own reflection.
+SOLUTION: Central coin then point-reflection
+Let $O$ be the centre of the table and $\sigma(x) = 2O - x$ the half-turn about $O$. The table $D$ is a disc centred at $O$, so $\sigma(D) = D$.
+
+**Move 1.** Place a coin centred at $O$. This is legal (the table is larger than a coin, or else nobody can play at all). The set of coins is now invariant under $\sigma$.
+
+**Invariant.** Before each opponent move, the configuration $\mathcal C$ of coins satisfies $\sigma(\mathcal C) = \mathcal C$ and contains the central coin.
+
+**Reply.** Suppose the opponent legally places a coin $K$ (a disc of radius $\rho$ centred at $c$). Place your coin at $\sigma(K)$, centred at $2O-c$. It is legal:
+- It lies on the table, since $K\subset D$ implies $\sigma(K)\subset\sigma(D) = D$.
+- It does not overlap any coin $C\in\mathcal C$: if it did, then $K$ would overlap $\sigma(C)$, which is also in $\mathcal C$, contradicting the legality of $K$.
+- It does not overlap $K$ itself: if a point $p$ lay in both $K$ and $\sigma(K)$, then $p\in K$ and $\sigma(p) = 2O - p\in K$, so by convexity their midpoint $O$ lies in $K$. But $O$ is covered by the central coin, which $K$ does not overlap. Contradiction.
+
+After your reply the configuration is again symmetric, so the invariant holds.
+
+**Conclusion.** Only finitely many non-overlapping coins fit on the table, so the game ends; by the invariant you always have a legal reply, so it is your opponent who first cannot move. Playing first with this strategy always wins.
+FOLLOWUP: Square table, square coins
+What if the table is square and the coins are square too?
+FOLLOWUP_ANSWER:
+The same strategy works. A square table is symmetric under the half-turn about its centre $O$, and a square coin is centrally symmetric and convex, so the half-turn of a legally placed square coin is a square coin (with the same orientation, rotated by $180^\circ$, which for a square is the same shape) lying on the table. Play first, put a coin with its centre at $O$, and answer every move by its point reflection through $O$; the proof above goes through word for word (table invariant under $\sigma$, reflected coin avoids the other coins by symmetry, and cannot overlap its own reflection because by convexity it would then contain $O$).
+FOLLOWUP: Other shapes
+For which other shapes of table (and coin) does this strategy work?
+FOLLOWUP_ANSWER:
+The proof uses exactly three facts:
+1. the **table is centrally symmetric** (invariant under a half-turn about some point $O$): rectangles, parallelograms, ellipses, regular hexagons, annuli are fine; triangles and regular pentagons are not;
+2. the **first coin can be placed so that it is itself invariant** under that half-turn, e.g. the coin is centrally symmetric and centred at $O$ (for an annulus-shaped table, whose centre is a hole, this fails);
+3. the reflection of a legally placed coin is a **legal coin shape**, and each coin is **convex** (so a coin and its mirror image can only overlap by covering $O$). For a non-centrally-symmetric coin, such as a triangle, the reflected coin is a rotated triangle, which is fine if coins may be placed in any orientation.
+
+When these hold, the first player wins by the central coin plus mirroring. When they fail (a triangular table, say), the mirroring argument is unavailable and the winner depends on the precise sizes; there is no simple general answer.
+===END===
+===TEASER===
+SLUG: petrol-stations-in-the-uk
+IDS: R8-89, R8-90, R8-91
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Petrol stations in the UK
+QUESTION:
+How many petrol stations are there in the UK (or in whichever country or city you are in)?
+HINT1:
+Nobody expects you to know the number. Break it into quantities you can estimate from everyday experience, and say your assumptions out loud.
+HINT2:
+Two natural routes: from the supply side (how many people does one station serve in a town you know?) or from the demand side (how many cars, how often they fill up, how many fill-ups a station can handle per day). Do both and compare.
+ANSWER:
+Of the order of $10{,}000$ (the book's estimate is about $12{,}000$; the actual UK figure was about $12{,}000$ some years ago and is about $8{,}000$–$8{,}500$ today).
+REFRESH:
+NONE
+EXPLANATION:
+Estimation ("Fermi") questions test how you structure a problem, not your memory. A good answer: (1) decomposes the unknown into a product of factors you can estimate, (2) states each assumption with a round number, (3) checks the result by a second, independent route, and (4) comments on what could make it wrong. Being within a factor of $2$ is a good result.
+
+For petrol stations, the supply-side route is "people per station" (from a town you know, then scale by population); the demand-side route is "fill-ups needed per day" divided by "fill-ups one station can serve per day". If the two routes agree to within a factor of $2$ or so, you can be fairly confident in the order of magnitude.
+SOLUTION: Supply side: people per station
+Take a town you know: say $10{,}000$ inhabitants and $3$ petrol stations, i.e. one station per $3{,}300$ people. That town has many tourists (more cars than residents would suggest), so for the country as a whole use one station per $5{,}000$ people. With a UK population of about $60$ million (the book's figure; today about $68$ million):
+$$\frac{60{,}000{,}000}{5{,}000} = 12{,}000\ \text{stations}.$$
+The book notes that this matches the National Audit Office figure of about $12{,}000$ at the time. (Since then many small stations have closed; the current UK count is roughly $8{,}000$–$8{,}500$.)
+SOLUTION: Demand side: fill-ups per day
+The UK has about $30$ million cars (roughly one per two people). A car fills up about once a week, so about $30{,}000{,}000/7\approx 4.3$ million fill-ups per day. A station with about $8$ pumps, open about $16$ hours a day, with each pump busy about a third of the time and a fill-up taking about $5$ minutes, serves
+$$8\times 16\times 60\times\frac13\div 5\approx 500\ \text{fill-ups per day}.$$
+So we need about $4{,}300{,}000/500\approx 8{,}600$ stations, the same order of magnitude as the first estimate (and close to today's actual figure).
+FOLLOWUP: Pairs of shoes bought each year
+How many pairs of shoes are bought each year in the UK?
+FOLLOWUP_ANSWER:
+Estimate per person and scale up. Population about $68$ million. Split by group:
+- adults (about $55$ million): a couple of pairs of everyday shoes, some trainers, maybe sandals or boots, say $4$ pairs a year on average (some buy many more, many buy one or two);
+- children (about $13$ million): feet grow, so they need new shoes every $6$ months or so, plus school shoes and trainers, say $4$ pairs a year.
+
+Total: $68\text{ million}\times 4\approx 270$ million pairs a year, i.e. a few hundred million. (Published industry figures are of this order, a few hundred million pairs a year, i.e. about $4$–$6$ pairs per person.) Cross-check by spend: at about £40 a pair, $270$ million pairs cost about £11 billion, which is a plausible size for the UK footwear market.
+FOLLOWUP: Real estate value of Central Park
+What is the real estate value of Central Park in New York?
+FOLLOWUP_ANSWER:
+First define "value": what the land would sell for if it could be developed like the surrounding Manhattan blocks.
+
+**Area.** The park is about $4$ km by $0.8$ km, about $3.4$ km$^2$ (843 acres), which is about $3.4\times 10^6\text{ m}^2\approx 37$ million square feet.
+
+**Route 1: land price.** Manhattan land near the park is very expensive; say land sells for about \$1,000–\$2,000 per square foot of lot. Then the park is worth $37\text{ million}\times\$1{,}500\approx\$55$ billion.
+
+**Route 2: what could be built.** Leave about $30\%$ for streets, so about $26$ million square feet of lots. Build at a typical Manhattan density (floor area about $10$ times the lot area) for about $260$ million square feet of apartments, which sell for about \$1,500–\$2,000 per square foot: roughly \$400–\$500 billion of finished real estate, from which construction costs (a few hundred dollars per square foot, i.e. about \$100 billion) must be subtracted.
+
+So the answer is somewhere between tens of billions (raw land) and several hundred billion dollars (fully developed value); published appraisals have put it at around half a trillion dollars. The key points an interviewer looks for: a sensible area estimate, a price per square foot, and the realisation that developing the park would change prices (flooding the market lowers them, while losing the park makes the surrounding area less valuable).
+===END===
+===TEASER===
+SLUG: piano-tuners-in-oxford
+IDS: R8-92, R8-93, R8-94
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: easy
+TITLE: Piano tuners in Oxford
+QUESTION:
+How many piano tuners are there in Oxford?
+HINT1:
+Work from the demand for tuning: how many pianos are there, and how often is each one tuned?
+HINT2:
+Estimate (number of pianos) $\times$ (tunings per piano per year) to get the annual number of tunings, then divide by the number of tunings one tuner can do in a year.
+ANSWER:
+Roughly $50$–$60$ piano tuners (the book's estimate: about $60$); the structure of the estimate matters more than the number.
+REFRESH:
+NONE
+EXPLANATION:
+This is the classic Fermi problem (Enrico Fermi asked about piano tuners in Chicago). The unknown is a supply of workers, which must match the demand for their work:
+$$\text{tuners} = \frac{\text{pianos}\times\text{tunings per piano per year}}{\text{tunings per tuner per year}}.$$
+Each factor can be estimated from common knowledge, and a sensible answer is within a factor of $2$ or $3$ of the truth. The interviewer wants to see the decomposition, the assumptions stated clearly, and some sanity checks.
+SOLUTION: Demand for tunings divided by capacity
+**Pianos.** Take Oxford's population as about $100{,}000$ (the book's figure; the city proper is nearer $160{,}000$). With many students, colleges, schools, churches and musicians, assume one piano for every $4$ people: $25{,}000$ pianos. (A more conservative assumption, one piano for every $10$ to $20$ households, would give fewer.)
+
+**Tunings.** Suppose each piano is tuned twice a year: $50{,}000$ tunings per year.
+
+**Capacity.** A tuner spends about $1$–$2$ hours per piano plus travel, so about $4$ pianos a day; working about $200$ days a year that is $800$ tunings a year.
+
+**Answer.**
+$$\frac{50{,}000}{800}\approx 62,$$
+so roughly $60$ piano tuners. The numbers are rough (a piano for every four people is generous, and many pianos are tuned less than twice a year), which would bring the estimate down, perhaps to $20$–$30$; what matters is the structure.
+FOLLOWUP: Will the number grow or shrink?
+Do you think the number of piano tuners will increase or decrease over time?
+FOLLOWUP_ANSWER:
+Most likely **decrease**. Go through the factors of the estimate:
+- number of acoustic pianos: falling, as digital pianos and keyboards (which never need tuning) are cheaper, smaller and quieter, and fewer households learn the piano;
+- tunings per piano: roughly stable, perhaps falling as owners economise;
+- capacity per tuner: slightly rising (electronic tuning aids, better scheduling), so fewer tuners are needed for the same work.
+
+Counter-arguments: population growth in Oxford, the concentration of colleges, concert venues and schools that tune often, and an ageing workforce of tuners that is not being replaced (which reduces supply, raising prices, but does not raise the number of tuners). Overall a slow decline is the natural answer.
+FOLLOWUP: A more accurate number
+How would you get a more accurate number?
+FOLLOWUP_ANSWER:
+Two approaches:
+- **Count directly**: search business directories, online listings and the Piano Tuners Association membership for the Oxford area, remove duplicates and firms located outside the area, and add an allowance for unlisted tuners (e.g. staff tuners at music shops and colleges).
+- **Improve each factor of the estimate**: use census data for the population and number of households; survey or use market data for the fraction of households owning an acoustic piano; add institutional pianos (schools, colleges, churches, halls) separately, since they are tuned more often; ask a few tuners how many pianos they tune per week and how many weeks they work, and how many of their clients are in Oxford.
+
+Comparing the two (a direct count against a bottom-up estimate) is itself a useful check.
+===END===
+===TEASER===
+SLUG: four-sealed-boxes-fair-price
+IDS: R3A-10, R3A-11, R3A-12
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: medium
+TITLE: Four sealed boxes
+QUESTION:
+There are four sealed boxes. One of them contains $100$ pounds and the other three are empty; you do not know which is which. A player may pay $X$ pounds to open a box of their choice and keep its contents, and may do this as many times as they like. Assuming the game is fair, what is the value of $X$?
+HINT1:
+"Fair" means that the player, playing optimally, has expected gain $0$. First decide what the optimal strategy is: after a failed opening, is it ever better to stop?
+HINT2:
+If opening a box was worth it when the chance of success was $\frac14$, it is worth it at $\frac13$, $\frac12$ and $1$ at the same price. So the player opens boxes until the money is found and always wins $100$. Compute the expected number of boxes opened.
+ANSWER:
+$X = 40$ pounds.
+REFRESH:
+- **Expectation of a discrete variable**: $\mathbb E[N] = \sum_k k\,P(N=k)$.
+- **Uniform random position**: if an object is in one of $n$ boxes uniformly at random and boxes are opened in any fixed order, the index of the box containing it is uniform on $\{1,\dots,n\}$, with mean $\frac{n+1}{2}$.
+- **Fair game**: the price at which the value of the game (expected payoff under optimal play, minus costs) is zero.
+EXPLANATION:
+The optimal strategy is to keep opening boxes until you find the money: each failure only improves the odds of the next opening at the same price. So a player who starts will always end up with the $100$ pounds, and the only random quantity is how many boxes they pay to open.
+
+The money is equally likely to be in the first, second, third or fourth box opened, so the number of boxes opened, $N$, is uniform on $\{1,2,3,4\}$, with mean $2.5$. The expected cost is $2.5X$, and fairness requires $2.5X = 100$, so $X = 40$.
+
+A quick sanity check: $X$ must be at least $25$, since a single opening at a price below $25$ would already have positive expected value. And $40>25$ because the option to continue is valuable.
+SOLUTION: Expected cost of playing until you win
+Suppose the player opens boxes until finding the money. The number of openings $N$ satisfies
+$$P(N=1) = \frac14,\quad P(N=2) = \frac34\cdot\frac13 = \frac14,\quad P(N=3) = \frac34\cdot\frac23\cdot\frac12 = \frac14,\quad P(N=4) = \frac34\cdot\frac23\cdot\frac12\cdot 1 = \frac14.$$
+So $\mathbb E[N] = \frac{1+2+3+4}{4} = 2.5$ and the expected cost is $2.5X$. The payoff is always $100$. Fairness means
+$$100 - 2.5X = 0\quad\Longrightarrow\quad X = 40.$$
+It remains to check that "play until you win" is optimal at $X = 40$ (next method).
+SOLUTION: Backward induction on the number of boxes left
+Let $V_k$ be the value (expected gain under optimal play) when $k$ closed boxes remain, one of which holds the $100$ pounds. At each stage the player either stops (gain $0$) or pays $X$ and opens a box:
+$$V_k = \max\left(0,\ -X + \frac{100}{k} + \frac{k-1}{k}V_{k-1}\right),\qquad V_1 = \max(0,\,100 - X).$$
+With $X = 40$:
+$$V_1 = 60,\quad V_2 = -40 + 50 + \tfrac12\cdot 60 = 40,\quad V_3 = -40 + \tfrac{100}{3} + \tfrac23\cdot 40 = 20,\quad V_4 = -40 + 25 + \tfrac34\cdot 20 = 0.$$
+All continuation values are nonnegative, so continuing is always (weakly) optimal, and the value of the whole game is exactly $0$. Since every $V_k$ is decreasing in $X$, a price below $40$ gives $V_4>0$ (favourable to the player) and a price above $40$ gives $V_4 = 0$ with the player refusing to play. So the fair price is $X = 40$.
+FOLLOWUP: Price change after two misses
+Instead of a constant price, the first two openings cost $X$ each, and if the player chooses to continue after two incorrect guesses, each further opening costs $Z$. What are fair values of $X$ and $Z$?
+FOLLOWUP_ANSWER:
+Fairness of the whole game gives only one equation, so we add the natural requirement that the game is also fair from the moment the price changes (two boxes left).
+
+**Two boxes left, price $Z$.** Playing until the money is found, the number of further openings is $1$ or $2$ with probability $\frac12$ each, mean $\frac32$. Fairness of this subgame: $100 - \frac32 Z = 0$, so $Z = \frac{200}{3}\approx 66.67$.
+
+**Whole game, price $X$.** The subgame is now worth $0$, so the game is: open up to two boxes at price $X$, winning $100$ with probability $\frac14$ on the first and $\frac14$ on the second (the latter only if the first failed and you continued). Continuing after one miss is worth $-X + \frac{100}{3}$, which is positive for the $X$ found below, so the expected number of $X$-openings is $1 + \frac34 = \frac74$ and the probability of winning within them is $\frac12$:
+$$\frac12\cdot 100 - \frac74 X = 0\quad\Longrightarrow\quad X = \frac{200}{7}\approx 28.57.$$
+Check: $-X + \frac{100}{3} = \frac{100}{21} > 0$, so continuing after one miss is indeed optimal.
+
+**In general**, if the player always plays to the end (which is optimal whenever $Z\le\frac{200}{3}$ and $X$ is not too large), the expected cost is $\frac74X + \frac34 Z$ (the second price is paid once with probability $\frac14$ and twice with probability $\frac14$), so every pair with $\frac74X + \frac34Z = 100$ makes the game fair; e.g. $X = Z = 40$ is the original problem, and $X = \frac{200}{7}$, $Z = \frac{200}{3}$ is the pair that is also fair at the price change.
+FOLLOWUP: n boxes
+Generalise to $n$ boxes, one containing $100$ pounds, each opening costing $X$. What is the fair price?
+FOLLOWUP_ANSWER:
+$$X = \frac{200}{n+1}.$$
+Playing until you find the money, the number of openings is uniform on $\{1,\dots,n\}$ (each position is equally likely to hold the money), with mean $\frac{n+1}{2}$. Fairness: $100 = \frac{n+1}{2}X$.
+
+Optimality: by induction, if continuing is always chosen, $V_k = 100 - \frac{k+1}{2}X$, because
+$$-X + \frac{100}{k} + \frac{k-1}{k}\left(100 - \frac{k}{2}X\right) = 100 - \frac{k+1}{2}X.$$
+This is decreasing in $k$, so if $V_n = 0$ then $V_k\ge 0$ for all $k\le n$ and continuing is always optimal. For $n = 4$ we recover $X = 40$; for $n = 1$, $X = 100$; and for large $n$, $X\approx\frac{200}{n}$, about twice the naive one-shot value $\frac{100}{n}$.
+===END===

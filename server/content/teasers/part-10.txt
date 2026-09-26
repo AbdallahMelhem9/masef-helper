@@ -1,0 +1,1023 @@
+===TEASER===
+SLUG: die-game-up-to-three-rolls
+IDS: H4A-04, H4A-05, R3A-05, R3A-06, R3A-07, R3A-08, R3A-09
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Stop the die within three rolls
+QUESTION:
+I will roll a fair six-sided die at most three times. After each of the first two rolls you may either stop me, and take as many dollars as the number showing, or ask for another roll (which throws away the current number). If you reach the third roll, you must take whatever it shows. What is your optimal strategy, and what are your expected winnings under it?
+HINT1:
+Start at the end. If you are about to make the last roll, you have no choice, so its value is easy to compute. Then ask what an earlier roll must beat to be worth keeping.
+HINT2:
+Let $V_n$ be the expected winnings when $n$ rolls remain and you play optimally. Then $V_1 = \mathbb{E}[X]$, and $V_{n} = \mathbb{E}[\max(X, V_{n-1})]$: keep a roll $x$ exactly when $x > V_{n-1}$.
+ANSWER:
+Keep the first roll only if it is 5 or 6, keep the second only if it is 4, 5 or 6; expected winnings $V_3 = 14/3 \approx \$4.67$.
+REFRESH:
+**Expectation of a function of a die.** For a fair die $X$, $\mathbb{E}[g(X)] = \frac16\sum_{x=1}^6 g(x)$; in particular $\mathbb{E}[X] = 3.5$.
+
+**Backward induction (dynamic programming).** In a finite-horizon stopping problem, the value with $n$ steps left is the expectation of the maximum of "stop now" and "value with $n-1$ steps left". You compute it from the last step backwards.
+EXPLANATION:
+At every decision you compare two numbers: what you hold now, and what you expect to get if you give it up and keep playing optimally. The second number depends only on how many rolls are left, not on what you have seen, because the rolls are independent. So you compute those "continuation values" from the end.
+
+With one roll left you just get the average face, $3.5$. So on the second roll you should keep anything that beats $3.5$, that is 4, 5 or 6. That makes the two-roll game worth $4.25$: half the time you keep a 4, 5 or 6 (average 5), half the time you fall back on the last roll (average $3.5$). On the first roll you should therefore keep only what beats $4.25$, namely 5 or 6, and the whole game is worth $\frac13\cdot 5.5 + \frac23\cdot 4.25 = 14/3$.
+
+This is exactly how an American (or Bermudan) option is priced on a tree: at each node you compare the exercise value with the discounted expected continuation value, and take the larger.
+SOLUTION: Backward induction
+Let $X$ denote a fair die roll and $V_n$ the optimal expected winnings when $n$ rolls remain.
+
+**One roll left.** You must take it:
+$$V_1 = \mathbb{E}[X] = \frac{1+2+3+4+5+6}{6} = 3.5.$$
+
+**Two rolls left.** After seeing the first of them, $x$, you keep it if $x > V_1 = 3.5$ (i.e. $x \in \{4,5,6\}$), otherwise you roll again and expect $3.5$:
+$$V_2 = \mathbb{E}[\max(X, 3.5)] = \frac{4+5+6}{6} + \frac{3}{6}\cdot 3.5 = 2.5 + 1.75 = 4.25.$$
+
+**Three rolls left.** Keep the first roll $x$ if $x > V_2 = 4.25$ (i.e. $x\in\{5,6\}$), otherwise continue and expect $4.25$:
+$$V_3 = \mathbb{E}[\max(X, 4.25)] = \frac{5+6}{6} + \frac{4}{6}\cdot 4.25 = \frac{11}{6} + \frac{17}{6} = \frac{28}{6} = \frac{14}{3}.$$
+
+**Strategy:** stop after roll 1 on a 5 or 6; otherwise stop after roll 2 on a 4, 5 or 6; otherwise take roll 3. Expected winnings $\frac{14}{3} \approx \$4.67$ (assuming you are risk-neutral).
+FOLLOWUP: Pricing the game, and the maximum-of-three variant
+If you ran this game for many players, what would you charge per play? Now consider an amended game: the die is rolled three times with no decisions and the player gets the maximum of the three rolls. What is its expected payoff, and could you tell in advance which game is worth more?
+FOLLOWUP_ANSWER:
+**Pricing.** Over many plays the law of large numbers makes the average payout close to $14/3 \approx \$4.67$, so charge that plus a margin (more of a risk premium if only a few games are played). Never more than \$6, the maximum payout.
+
+**Maximum of three rolls.** Let $M = \max(X_1,X_2,X_3)$. Then $P(M \le m) = (m/6)^3$, so $P(M=m) = \frac{m^3-(m-1)^3}{216} = \frac{3m^2-3m+1}{216}$, which gives $\frac{1}{216},\frac{7}{216},\frac{19}{216},\frac{37}{216},\frac{61}{216},\frac{91}{216}$ for $m=1,\dots,6$. Using $\mathbb{E}[M] = \sum_{k=1}^{6} P(M \ge k)$:
+$$\mathbb{E}[M] = \sum_{k=1}^6\left(1-\Big(\tfrac{k-1}{6}\Big)^3\right) = 6 - \frac{0+1+8+27+64+125}{216} = 6-\frac{225}{216} = \frac{1071}{216}\approx \$4.96.$$
+**Yes, you can tell in advance.** In the original game the amount you take is always one of the three rolls, so it can never exceed their maximum (and it is often smaller, e.g. when you keep a 5 and a 6 would have come later). Pointwise $\text{payoff}_1 \le M$, so $\mathbb{E}[\text{payoff}_1] \le \mathbb{E}[M]$: the amended game dominates, $4.96 > 4.67$.
+FOLLOWUP: How many rolls before you only accept a 6?
+Same game, but I offer you $n$ rolls instead of three. How large must $n$ be before your optimal strategy is to accept only a 6 on the first roll?
+FOLLOWUP_ANSWER:
+You accept only a 6 on the first roll exactly when the value of the remaining $n-1$ rolls exceeds 5. Continue the recursion $V_n = \mathbb{E}[\max(X, V_{n-1})]$:
+$$V_4 = \frac{5+6}{6} + \frac46\cdot\frac{14}{3} = \frac{11}{6}+\frac{28}{9} = \frac{89}{18}\approx 4.944,$$
+$$V_5 = \frac{11}{6} + \frac46\cdot\frac{89}{18} = \frac{11}{6} + \frac{89}{27} = \frac{277}{54} \approx 5.130.$$
+$V_4 < 5 < V_5$. So with 5 rolls you still keep a 5 on the first roll (the remaining 4 rolls are worth only $4.94$), but with $n = 6$ rolls the remaining 5 rolls are worth $5.13 > 5$, and you keep only a 6. Answer: **6 rolls**. (Then $V_6 = 1 + \frac56\cdot\frac{277}{54} = \frac{1709}{324}\approx 5.27$.)
+FOLLOWUP: Which option is this?
+What kind of financial option does this game resemble?
+FOLLOWUP_ANSWER:
+An option with early exercise at a finite set of dates: a **Bermudan** option (an American option with discrete exercise dates), priced by backward induction on a (multinomial) tree. Each roll is a node; "stopping" is exercising and receiving the intrinsic value (the face shown), "rolling again" is holding and receiving the expected continuation value. At each node the value is $\max(\text{exercise value}, \text{continuation value})$, exactly the recursion $V_n = \mathbb{E}[\max(X,V_{n-1})]$ (with zero interest rate, so no discounting). The optimal exercise boundary here is "5 at date 1, 4 at date 2, anything at date 3".
+FOLLOWUP: Payment equal to the square
+Same three-roll game, but you are paid the square of the number showing. What are the optimal strategy and the expected winnings?
+FOLLOWUP_ANSWER:
+Redo the backward induction with payoff $X^2$.
+$$V_1 = \mathbb{E}[X^2] = \frac{1+4+9+16+25+36}{6} = \frac{91}{6}\approx 15.17.$$
+Second roll: keep $x$ if $x^2 > 15.17$, i.e. $x\ge4$:
+$$V_2 = \frac{16+25+36}{6} + \frac36\cdot\frac{91}{6} = \frac{77}{6} + \frac{91}{12} = \frac{245}{12} \approx 20.42.$$
+First roll: keep $x$ if $x^2 > 20.42$, i.e. $x\ge5$:
+$$V_3 = \frac{25+36}{6} + \frac46\cdot\frac{245}{12} = \frac{61}{6}+\frac{245}{18} = \frac{428}{18} = \frac{214}{9}\approx \$23.78.$$
+The thresholds are the same as before (5 on the first roll, 4 on the second), but the value is not $(14/3)^2 \approx 21.78$: the convex payoff makes the gamble of rolling again more attractive, and in general $\mathbb{E}[X^2] \ge (\mathbb{E}X)^2$.
+FOLLOWUP: A \$1 fee for each extra roll
+Same three-roll game (first roll free), but you must pay \$1 each time you ask for another roll. What changes?
+FOLLOWUP_ANSWER:
+Continuing now costs \$1, so you keep a roll whenever it beats the continuation value **minus 1**.
+
+Last roll: $V_1 = 3.5$. At the second roll, continuing is worth $3.5 - 1 = 2.5$, so keep $x \ge 3$:
+$$V_2 = \frac{3+4+5+6}{6} + \frac26\cdot 2.5 = 3 + \frac56 = \frac{23}{6}\approx 3.83.$$
+At the first roll, continuing is worth $\frac{23}{6}-1 = \frac{17}{6}\approx 2.83$, so again keep $x\ge 3$:
+$$V_3 = \frac{18}{6} + \frac{2}{6}\cdot\frac{17}{6} = 3 + \frac{17}{18} = \frac{71}{18}\approx \$3.94 \text{ (net of fees)}.$$
+The fee makes you much less picky (accept 3 or more at both stages instead of 5+ then 4+) and cuts the game's value from \$4.67 to about \$3.94.
+===END===
+
+===TEASER===
+SLUG: correlation-affine-shift
+IDS: H4A-06
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: Correlation under affine shifts
+QUESTION:
+The correlation between random variables $X$ and $Y$ is $\rho$. What is the correlation between $X+5$ and $Y$? What is the correlation between $5X$ and $Y$?
+HINT1:
+Write correlation as covariance divided by the product of standard deviations, and see what each operation does to the numerator and to the denominator.
+HINT2:
+Use $\operatorname{Cov}(aX+b, Y) = a\operatorname{Cov}(X,Y)$ and $\sigma_{aX+b} = |a|\,\sigma_X$.
+ANSWER:
+Both are still $\rho$ (in general $\operatorname{corr}(aX+b,Y) = \operatorname{sign}(a)\,\rho$).
+REFRESH:
+**Correlation.** $\operatorname{corr}(X,Y) = \dfrac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}$, where $\operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}X)(Y-\mathbb{E}Y)]$.
+
+**Bilinearity of covariance.** $\operatorname{Cov}(aX+b,Y) = a\operatorname{Cov}(X,Y)$ for constants $a,b$; and $\operatorname{Var}(aX+b) = a^2\operatorname{Var}(X)$.
+EXPLANATION:
+Correlation is designed to be a unit-free measure of linear association. Shifting $X$ by a constant moves every value by the same amount, which does not change the deviations from the mean, so nothing changes. Scaling $X$ by 5 scales the covariance by 5 and the standard deviation of $X$ by 5, and the two cancel. The only thing that can change is the sign, if you multiply by a negative number.
+SOLUTION: Covariance and standard deviations
+For constants $a \neq 0$ and $b$:
+$$\operatorname{Cov}(aX+b, Y) = \mathbb{E}\big[(aX+b - a\mathbb{E}X - b)(Y-\mathbb{E}Y)\big] = a\operatorname{Cov}(X,Y),\qquad \sigma_{aX+b} = \sqrt{a^2\sigma_X^2} = |a|\sigma_X.$$
+Hence
+$$\operatorname{corr}(aX+b,Y) = \frac{a\operatorname{Cov}(X,Y)}{|a|\sigma_X\sigma_Y} = \frac{a}{|a|}\,\rho.$$
+- $X+5$: $a=1$, $b=5$, correlation $\rho$.
+- $5X$: $a=5$, $b=0$, correlation $\frac{5}{5}\rho = \rho$.
+
+(Had the question been $-5X$, the answer would be $-\rho$.)
+===END===
+
+===TEASER===
+SLUG: exchange-paradox-two-envelopes
+IDS: H4A-07
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: hard
+TITLE: Exchange Paradox (two envelopes)
+QUESTION:
+Two sealed envelopes are handed out: you get one and your competitor gets the other. One envelope contains $m$ dollars and the other $2m$ dollars, where $m$ is not stated. (This is the classic "Exchange Paradox".)
+
+1. Suppose you *could* peek and would see $X$ dollars; you would not know whether your opponent has $2X$ or $X/2$. **Without peeking**, what is your expected benefit from switching envelopes? What is your opponent's expected benefit from switching (if she would see $Y$)? Should you switch? If you do, should you switch again for the same reason (still without peeking)?
+2. Now suppose you both peek into your envelopes first. What is the payoff to switching? Should you switch? If you do, would you switch again?
+HINT1:
+The naive argument says "the other envelope holds $2X$ or $X/2$ with probability $\frac12$ each, so it is worth $1.25X$". Since this makes *both* players want to switch forever, something in it must be wrong. Which probability statement is being made, and for which values of $X$?
+HINT2:
+Condition on $m$ instead of on $X$: given $m$, you hold $m$ or $2m$ with probability $\frac12$ each, and your gain from switching is $+m$ or $-m$. For part 2, put a genuine prior on $m$ and use Bayes' rule to find $P(\text{you hold the small one} \mid X = x)$.
+ANSWER:
+Without peeking the expected gain from switching is exactly $0$ (you are indifferent); after peeking at $x$, switching is favourable iff, under your prior, $\pi(x) > \tfrac12\pi(x/2)$, and once both have seen both amounts nobody switches back.
+REFRESH:
+**Conditional expectation / tower rule.** $\mathbb{E}[G] = \sum_k \mathbb{E}[G\mid A_k]P(A_k)$ for a partition $(A_k)$.
+
+**Bayes' rule.** $P(A\mid B) = \dfrac{P(B\mid A)P(A)}{P(B)}$.
+
+**A probability distribution must sum to 1.** There is no uniform distribution on an infinite set such as $\{\dots,\tfrac14,\tfrac12,1,2,4,\dots\}$.
+EXPLANATION:
+The naive computation says: "whatever amount $X$ I hold, the other envelope has $2X$ or $X/2$ with equal probability, so switching gains $0.25X$ on average." Applied to your opponent it says she gains by switching too, which is absurd: the two gains add up to zero in every state of the world. And it says that after switching you should switch again, forever.
+
+The flaw is the claim "$P(\text{other} = 2X \mid X = x) = \frac12$ for **every** $x$". For that to hold, the amounts $x/2$ and $x$ (and then $x/4$, $2x$, ...) would all have to be equally likely values of $m$, i.e. a "uniform" prior on infinitely many doubling amounts, which is not a probability distribution. For any genuine prior on $m$, the conditional probability that you hold the small envelope depends on $x$: large $x$ makes it less likely.
+
+What *is* true is the statement conditional on $m$: given $m$, you hold $m$ or $2m$ with probability $\frac12$. Then switching gains $+m$ or $-m$, which averages to $0$. So without looking, switching is worthless, for you and for your opponent, which is the only answer consistent with symmetry.
+
+Once you peek, you do learn something, but only relative to your prior beliefs about $m$. If the amount seems small for what you think the organiser would put in, switching is attractive; if it seems large, keep it. After a switch where both have looked, each knows both amounts, and whoever gained will refuse to switch back. (One more subtlety: if your opponent is keen to switch after seeing her own envelope, that itself tells you something about her amount, a "no-trade" effect.)
+SOLUTION: Part 1: condition on the unknown amount $m$
+Fix $m$ (or give it any prior, it makes no difference). Your envelope holds $m$ or $2m$ with probability $\frac12$ each.
+- If you hold $m$, switching gains $2m - m = +m$.
+- If you hold $2m$, switching gains $m - 2m = -m$.
+
+So
+$$\mathbb{E}[\text{gain}\mid m] = \tfrac12(+m) + \tfrac12(-m) = 0,$$
+and averaging over any distribution of $m$ still gives $0$. The same holds for your opponent. Switching is neither good nor bad; switching again is equally pointless. There is no paradox.
+
+**Where the naive $1.25X$ breaks.** The naive argument uses $P(\text{other} = 2X \mid X=x) = \frac12$ for all $x$. Suppose $m$ has prior probabilities $\pi(\cdot)$ on some set of values. Then
+$$P(\text{you hold the small one}\mid X=x) = \frac{\tfrac12\pi(x)}{\tfrac12\pi(x) + \tfrac12\pi(x/2)} = \frac{\pi(x)}{\pi(x)+\pi(x/2)}.$$
+This equals $\frac12$ for every $x$ only if $\pi(x) = \pi(x/2)$ for all $x$, i.e. all the amounts $\dots, x/4, x/2, x, 2x, 4x, \dots$ are equally likely. Infinitely many equal positive probabilities cannot sum to 1, so no genuine prior justifies the naive computation. (Also, as the book notes, "value = expected payoff" presumes risk-neutrality.)
+SOLUTION: Part 2: both peek, then update with Bayes
+With prior $\pi$ on $m$ and observed amount $x$, write $q(x) = P(\text{small}\mid X=x) = \dfrac{\pi(x)}{\pi(x)+\pi(x/2)}$. The expected gain from switching is
+$$\mathbb{E}[\text{gain}\mid X=x] = q(x)\cdot x + (1-q(x))\cdot\left(-\frac x2\right) = \frac{x\left(\pi(x) - \tfrac12\pi(x/2)\right)}{\pi(x)+\pi(x/2)}.$$
+So you want to switch iff $\pi(x) > \tfrac12\pi(x/2)$. Examples:
+- If $x$ is the smallest possible value of $m$ ($\pi(x/2)=0$), you certainly hold the small envelope: switch.
+- If $x/2$ is the largest possible value of $m$ ($\pi(x) = 0$), you hold the big envelope: keep it.
+- For amounts that "look large" relative to what you believe the organiser would put in, $\pi(x)$ is small compared with $\pi(x/2)$ and you keep; for amounts that "look small", you switch.
+
+This is subjective in the sense that it depends on your prior. Your opponent does the same computation with her amount $y$; since the gains are opposite ($y-x$ versus $x-y$), both can *want* to switch only because their beliefs differ.
+
+**Switching again.** Once you have both peeked and switched, each of you knows both amounts. The one who gained $m$ will not switch back to lose it, so there is no endless switching.
+===END===
+
+===TEASER===
+SLUG: world-series-bet-replication
+IDS: H4A-08
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: hard
+TITLE: World Series betting replication
+QUESTION:
+(The "World Series" problem.) Teams A and B play each other until one of them has won four games; that team wins the series. You want to bet \$100 on Team A winning the series, but you are only allowed to bet on individual games (at even money: a bet of $b$ dollars wins or loses $b$), and you must bet a **positive** amount on **every** game that is played. You must end with \$200 if Team A wins the series and with \$0 if Team A loses it. Your best assessment is that Team A has a 70% chance of winning any given game. How do you place your bets?
+HINT1:
+Think of the state of the series as a node $(a,b)$ = (A's wins, B's wins) on a lattice, like a binomial tree. You know exactly how much money you need at every terminal node.
+HINT2:
+Work backwards. At a node where you hold $W$ and bet $\beta$ on A, you end with $W+\beta$ or $W-\beta$. Matching the two successor values forces $W$ to be their average and $\beta$ half their difference. Do you ever need the 70%?
+ANSWER:
+Bet \$31.25 on A in game 1; in general bet $100\binom{6-a-b}{3-a}/2^{6-a-b}$ dollars at score $(a,b)$ (half the difference of the two successor wealths); the 70% is irrelevant.
+REFRESH:
+**Replication / backward induction on a tree.** If a payoff is known at the final nodes and at each step you can trade an instrument with two possible outcomes, the portfolio at each node is determined by matching both successor values: two equations, two unknowns.
+
+**Binomial coefficient.** $\binom{n}{k}$ counts the ways to choose which $k$ of $n$ games a team wins.
+EXPLANATION:
+You are replicating a "digital option" on the series with a dynamic strategy in the only traded instrument, the single-game bet. This is the binomial pricing model in miniature.
+
+At each node you hold wealth $W$ and choose a bet $\beta$ on A. After the game you have $W+\beta$ (A won) or $W-\beta$ (A lost). If you already know how much you need in each of those two successor states, say $W_{\text{up}}$ and $W_{\text{down}}$, then $W = \frac{W_{\text{up}}+W_{\text{down}}}{2}$ and $\beta = \frac{W_{\text{up}}-W_{\text{down}}}{2}$. At the end of the series the required wealth is known (200 or 0 dollars), so you can fill in the whole lattice backwards, and the starting wealth comes out as exactly 100 dollars, confirming the scheme works.
+
+The probability 70% never appears, just as the real-world drift never appears in the binomial option price: replication works path by path, whatever happens. Because the bets are even-money, the wealth at each node equals 200 dollars times the probability that A wins the series **if each game were a fair coin flip** (the "risk-neutral" measure here). And every bet is strictly positive, since from any non-terminal node A can still win or lose the series.
+SOLUTION: Backward induction on the lattice
+Let $W(a,b)$ be the wealth you must hold when A has $a$ wins and B has $b$ wins, and $\beta(a,b)$ the bet on A at that node. Terminal conditions: $W(4,b) = 200$ for $b\le 3$ and $W(a,4) = 0$ for $a\le3$. For $a,b\le 3$:
+$$W(a,b) = \frac{W(a+1,b)+W(a,b+1)}{2},\qquad \beta(a,b) = \frac{W(a+1,b)-W(a,b+1)}{2}.$$
+
+**6 games played, $(3,3)$:** $W = \frac{200+0}{2} = 100$, bet $100$.
+
+**5 games played:** $(3,2)$: successors $200$ and $100$, so $W=150$, bet $50$. $(2,3)$: successors $100$ and $0$, so $W = 50$, bet $50$.
+
+**4 games played:** $(3,1)$: $200, 150 \Rightarrow W = 175$, bet $25$. $(2,2)$: $150, 50 \Rightarrow W=100$, bet $50$. $(1,3)$: $50, 0\Rightarrow W=25$, bet $25$.
+
+**3 games played:** $(3,0)$: $200,175\Rightarrow W=187.50$, bet $12.50$. $(2,1)$: $175,100\Rightarrow W=137.50$, bet $37.50$. $(1,2)$: $100,25\Rightarrow W=62.50$, bet $37.50$. $(0,3)$: $25,0\Rightarrow W=12.50$, bet $12.50$.
+
+**2 games played:** $(2,0)$: $187.5, 137.5\Rightarrow W=162.50$, bet $25$. $(1,1)$: $137.5, 62.5\Rightarrow W=100$, bet $37.50$. $(0,2)$: $62.5,12.5\Rightarrow W=37.50$, bet $25$.
+
+**1 game played:** $(1,0)$: $162.5,100\Rightarrow W=131.25$, bet $31.25$. $(0,1)$: $100, 37.5\Rightarrow W = 68.75$, bet $31.25$.
+
+**Start $(0,0)$:** $131.25, 68.75\Rightarrow W = 100$ (exactly your stake), bet **\$31.25** on A in game 1.
+
+Summary of bets on A (by score A–B): 0–0: 31.25; 1–0 and 0–1: 31.25; 2–0: 25, 1–1: 37.50, 0–2: 25; 3–0: 12.50, 2–1: 37.50, 1–2: 37.50, 0–3: 12.50; 3–1: 25, 2–2: 50, 1–3: 25; 3–2: 50, 2–3: 50; 3–3: 100. All bets are positive, and whatever the sequence of results you finish with 200 dollars if A wins the series and 0 otherwise. The 70% was a red herring (we also assume no interest on idle money).
+SOLUTION: Closed form via fair-coin probabilities
+Because each step averages the two successors with weights $\frac12$, $W(a,b)/200$ is the probability that A wins the series when every game is a fair coin toss. From $(a,b)$, A needs $4-a$ more wins and B needs $4-b$; imagine playing all $n = 7-a-b$ remaining possible games: A wins the series iff A wins at least $4-a$ of them. So
+$$W(a,b) = 200\sum_{j=4-a}^{n}\binom{n}{j}2^{-n}.$$
+The bet is half the difference of successors, which equals 100 dollars times the probability that the next game is *pivotal*: the next game matters exactly when, of the other $6-a-b$ imagined games, A wins exactly $3-a$. Hence
+$$\beta(a,b) = 100\cdot\binom{6-a-b}{3-a}2^{-(6-a-b)}.$$
+Check: $\beta(0,0) = 100\cdot\binom63/64 = 100\cdot\frac{20}{64} = 31.25$; $\beta(1,1) = 100\binom42/16 = 37.5$; $\beta(3,3) = 100$. And $W(0,0) = 200\cdot\frac{35+21+7+1}{128} = 100$.
+===END===
+
+===TEASER===
+SLUG: one-apple-three-children-coin
+IDS: H4A-09, H4A-10, H4A-11
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: One apple, three children
+QUESTION:
+You have three children but only one apple, and you want to use tosses of a fair coin to decide which child gets it, so that each child is equally likely to get the apple. What is your strategy?
+HINT1:
+A fixed number $n$ of tosses gives $2^n$ equally likely outcomes, and 3 never divides $2^n$. So you must allow yourself to start over.
+HINT2:
+Toss twice: there are 4 equally likely outcomes. Assign three of them to the children. What do you do with the fourth?
+ANSWER:
+Toss twice; $HT$ gives child 1, $TH$ child 2, $HH$ child 3, and on $TT$ toss twice again.
+REFRESH:
+**Rejection sampling.** If you draw uniformly from a set $S$ and redraw whenever the outcome lies outside $A\subseteq S$, the accepted outcome is uniform on $A$.
+
+**Geometric distribution.** If each attempt succeeds independently with probability $s$, the number of attempts $K$ has $\mathbb{E}[K] = 1/s$.
+EXPLANATION:
+You cannot split $2^n$ equally likely outcomes into three equal groups, so any fair scheme must sometimes repeat. The simplest trick is to throw away one outcome: two tosses give $HH, HT, TH, TT$, each with probability $\frac14$. Give three of them to the children and redraw on the fourth. Conditional on stopping, the three remaining outcomes are equally likely, so each child wins with probability $\frac13$.
+
+Any scheme built on three equally likely outcomes works; another is a "tournament" with three tosses where a child wins if their toss is the only tail. That one is fair too but wasteful: it succeeds only $\frac38$ of the time.
+SOLUTION: Two tosses, reject $TT$
+Toss the coin twice. $HT$: child 1. $TH$: child 2. $HH$: child 3. $TT$: start again.
+
+Each round stops with probability $\frac34$, rounds are independent, and in each round each child's outcome has probability $\frac14$. So
+$$P(\text{child } i \text{ gets the apple}) = \sum_{r\ge1}\left(\tfrac14\right)^{r-1}\cdot\tfrac14 = \frac{1/4}{1-1/4} = \frac13.$$
+SOLUTION: Three tosses, the lone tail wins
+Assign one toss to each child and toss three times. If exactly one toss is a tail ($THH$, $HTH$, $HHT$), that child gets the apple; otherwise (5 of the 8 outcomes) toss three times again. The three winning outcomes are equally likely, so each child wins with probability $\frac13$. It is fair, but slower (see follow-up).
+FOLLOWUP: Expected number of tosses
+What is the expected number of coin tosses needed by each of the two strategies above?
+FOLLOWUP_ANSWER:
+Let $N$ be the number of tosses.
+
+**Two-toss scheme.** With probability $\frac34$ you stop after 2 tosses; with probability $\frac14$ you have used 2 tosses and start afresh:
+$$\mathbb{E}N = \tfrac34\cdot 2 + \tfrac14\,(2+\mathbb{E}N)\ \Rightarrow\ \tfrac34\,\mathbb{E}N = 2\ \Rightarrow\ \mathbb{E}N = \frac83\approx 2.67.$$
+(Equivalently: the number of rounds is geometric with success probability $\frac34$, mean $\frac43$, times 2 tosses.)
+
+**Three-toss scheme.** A round succeeds with probability $\frac38$:
+$$\mathbb{E}N = \tfrac38\cdot3 + \tfrac58(3+\mathbb{E}N)\ \Rightarrow\ \tfrac38\,\mathbb{E}N = 3\ \Rightarrow\ \mathbb{E}N = 8.$$
+(The two-toss scheme is in fact optimal: $8/3$ is the minimum expected number of fair tosses needed to pick uniformly among 3, by the Knuth–Yao theory of random generation.)
+FOLLOWUP: Simulating probability 1/3 with a fair coin
+With a fair coin, how can you simulate an event of probability $\frac13$ (and its complement, of probability $\frac23$)?
+FOLLOWUP_ANSWER:
+**Rejection.** Toss twice; $HH$ = the event of probability $\frac13$, $HT$ or $TH$ = the event of probability $\frac23$, $TT$ = toss twice again. Given acceptance the three outcomes are equally likely, so the probabilities are $\frac13$ and $\frac23$; expected tosses $\frac83$.
+
+**Binary expansion (faster).** Read the tosses $B_1, B_2,\dots$ (H=1, T=0) as the binary digits of a uniform $U = 0.B_1B_2\ldots$, and compare with $\frac13 = 0.010101\ldots$ in binary. Stop at the first toss that differs from the corresponding digit of $\frac13$: if your digit is smaller, $U<\frac13$ (event occurs), if larger, $U>\frac13$ (it does not). Then $P(\text{event}) = P(U<\tfrac13) = \frac13$. Each toss differs from the target digit with probability $\frac12$, so the expected number of tosses is only $2$.
+===END===
+
+===TEASER===
+SLUG: roll-until-not-a-one
+IDS: H4A-12
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Roll until not a one
+QUESTION:
+You roll a fair die until a number other than 1 appears. The first time this happens, I pay you as many dollars as the number showing, and the game ends. What is the expected payoff?
+HINT1:
+The 1s never pay anything and never end the game. What is the distribution of the face that finally stops the game?
+HINT2:
+The stopping face is a die roll conditioned on "not 1". Alternatively, condition on the first roll and write an equation for the expected payoff $E$.
+ANSWER:
+\$4.
+REFRESH:
+**Law of total expectation.** $\mathbb{E}[Y] = \sum_i \mathbb{E}[Y\mid A_i]P(A_i)$ for a partition $(A_i)$.
+EXPLANATION:
+Rolling a 1 is a "do-over": nothing happens and you are back where you started. So the rule effectively deletes 1 from the die, leaving five equally likely faces $2,\dots,6$, whose average is $4$. (Quick mental sum: the faces total $21$, minus the 1 gives $20$, divided by $5$ gives $4$.)
+SOLUTION: Conditioning on the stopping face
+The final roll is the first roll that is not a 1. Conditioning a fair die on "not 1" gives each of $2,\dots,6$ probability $\frac{1/6}{5/6} = \frac15$, and by independence of the rolls the stopping face has this distribution. Hence
+$$\mathbb{E}[\text{payoff}] = \frac{2+3+4+5+6}{5} = \frac{20}{5} = 4 \text{ dollars}.$$
+SOLUTION: First-step equation
+Let $E$ be the expected payoff. Condition on the first roll: with probability $\frac16$ it is a 1 and the game restarts (worth $E$); otherwise you are paid the face:
+$$E = \frac16 E + \frac{2+3+4+5+6}{6} = \frac16E + \frac{20}{6}\ \Rightarrow\ \frac56E = \frac{20}{6}\ \Rightarrow\ E = 4.$$
+===END===
+
+===TEASER===
+SLUG: two-kings-dealt
+IDS: H4A-13
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Two Kings dealt
+QUESTION:
+You are dealt exactly two cards from a well-shuffled standard 52-card deck, which contains exactly four Kings. What is the probability that both of your cards are Kings?
+HINT1:
+The two cards are not independent: once a King has gone, there are fewer Kings and fewer cards left.
+HINT2:
+Multiply $P(\text{first card is a King})$ by $P(\text{second is a King}\mid\text{first is a King})$, or count pairs of Kings among all $\binom{52}{2}$ pairs.
+ANSWER:
+$\dfrac{1}{221}\approx 0.45\%$.
+REFRESH:
+**Multiplication rule.** $P(A\cap B) = P(A)\,P(B\mid A)$.
+
+**Binomial coefficient.** $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ counts the $k$-element subsets of an $n$-element set.
+EXPLANATION:
+A tempting wrong answer is $2/52$ (or $(4/52)^2$, as if the cards were dealt with replacement). The first card is a King with probability $4/52$. Given that, only 3 Kings remain among 51 cards, so the second card is a King with probability $3/51$. The product is about 1 in 221, a bit less than $(1/13)^2 = 1/169$ because removing a King makes a second one less likely.
+SOLUTION: Sequential conditioning
+$$P(\text{both Kings}) = P(K_1)\,P(K_2\mid K_1) = \frac{4}{52}\cdot\frac{3}{51} = \frac{1}{13}\cdot\frac{1}{17} = \frac{1}{221}\approx 0.0045.$$
+SOLUTION: Counting pairs
+All $\binom{52}{2} = \frac{52\cdot51}{2} = 1326$ two-card hands are equally likely, and $\binom42 = 6$ of them consist of two Kings:
+$$P = \frac{6}{1326} = \frac{1}{221}.$$
+===END===
+
+===TEASER===
+SLUG: monty-hall-ignorant-audience-member
+IDS: H4A-15
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Monty Hall with an ignorant audience member
+QUESTION:
+Recall the Monty Hall game: a prize is behind one of three doors (uniformly at random), the other two are empty. You pick a door. Normally the host, who knows where the prize is, then opens one of the other two doors that is empty, and offers you the chance to switch to the remaining closed door.
+
+Now change one thing: instead of the host, an audience member, who does **not** know where the prize is, picks one of the two doors you did not choose at random, and it happens to be revealed empty. Should you switch?
+
+There are two ways to read this: (a) the game is played repeatedly and an audience member *always* reveals an empty door; (b) a one-off game in which the ignorant audience member just happens to open an empty door. Answer both.
+HINT1:
+The difference from the classic problem is the probability of the observation "an empty door was opened" under each hypothesis about where the prize is. With a knowledgeable host that probability is 1 whatever you picked.
+HINT2:
+Use Bayes' rule with hypotheses "my door has the prize" (prior $\frac13$) and "it doesn't" (prior $\frac23$). If your door has the prize, the random door is empty with probability 1; if not, with probability $\frac12$.
+ANSWER:
+(a) If the audience member always reveals an empty door, they must effectively know where the prize is: switch, winning with probability $\frac23$. (b) If the reveal was blind luck, switching wins with probability $\frac12$: you are indifferent.
+REFRESH:
+**Bayes' rule.** $P(A\mid E) = \dfrac{P(E\mid A)P(A)}{P(E\mid A)P(A) + P(E\mid A^c)P(A^c)}$.
+
+**Classic Monty Hall.** With a host who knowingly opens an empty door, staying wins with probability $\frac13$ and switching with probability $\frac23$.
+EXPLANATION:
+In the classic game, the host's action carries no information about your door: whatever you picked, he can and will open an empty door. So your door keeps its $\frac13$, and the other closed door inherits the remaining $\frac23$.
+
+With an ignorant opener, the fact that the opened door turned out empty *is* informative. If you had picked the prize, any door they opened would be empty (probability 1). If you had not, they had a 50% chance of exposing the prize. Seeing an empty door therefore makes "I picked the prize" relatively more likely, pushing its probability from $\frac13$ up to exactly $\frac12$. The remaining closed door is then also at $\frac12$, and switching does not help.
+
+Reading (a) is different: if, game after game, a door opened by the audience is always empty, then the choice cannot be random (a random choice would expose the prize a third of the time), so the audience member is acting like the host, and the classic answer applies.
+SOLUTION: Bayes' rule
+Let $C$ = "your door hides the prize" and $E$ = "the randomly opened door is empty".
+- $P(C) = \frac13$ and $P(E\mid C) = 1$ (both other doors are empty).
+- $P(C^c) = \frac23$ and $P(E\mid C^c) = \frac12$ (one of the two other doors hides the prize, and the opener picks between them at random).
+
+Then
+$$P(C\mid E) = \frac{1\cdot\frac13}{1\cdot\frac13 + \frac12\cdot\frac23} = \frac{\frac13}{\frac23} = \frac12.$$
+So given what you saw, staying and switching both win with probability $\frac12$: you are **indifferent** in the one-off reading (b).
+
+**Reading (a).** If the audience member reveals an empty door every single time, they are not choosing blindly, since a blind choice would reveal the prize with probability $\frac23\cdot\frac12 = \frac13$. Their choice is then as informed as the host's: $P(E\mid C) = P(E\mid C^c) = 1$, the posterior is $P(C\mid E) = \frac13$, and you should **switch** (win probability $\frac23$).
+SOLUTION: Counting equally likely scenarios
+Say you picked door 1. The six equally likely (prize location, door opened) scenarios for a blind opener are: prize 1 & open 2, prize 1 & open 3, prize 2 & open 2, prize 2 & open 3, prize 3 & open 2, prize 3 & open 3, each with probability $\frac16$.
+
+Discard the two where the prize is revealed (prize 2 & open 2, prize 3 & open 3). Of the four remaining, staying wins in two (prize at 1) and switching wins in two (prize 2 & open 3, prize 3 & open 2). So each strategy wins with probability $\frac24 = \frac12$.
+
+With a knowing host, the scenarios "prize 2 & open 2" and "prize 3 & open 3" never happen; instead the host opens 3 when the prize is at 2 (probability $\frac13$) and 2 when it is at 3 (probability $\frac13$), while "prize 1" keeps total probability $\frac13$: switching wins $\frac23$.
+===END===
+
+===TEASER===
+SLUG: three-way-duel-truel
+IDS: H4A-18, H4A-19
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: hard
+TITLE: Three-way duel (truel)
+QUESTION:
+You are Mr. 10, standing in a field with two opponents, Mr. 30 and Mr. 60. Everyone has a gun, plenty of ammunition, and a clear shot at everyone else. Each person wants to maximise his own probability of survival. When you shoot at someone you kill him with probability 10%; Mr. 30 kills his target with probability 30%, and Mr. 60 with probability 60%. You take turns shooting in a fixed order: first you, then Mr. 30, then Mr. 60, then you again, and so on (dead men are skipped), until only one person is left.
+
+You shoot first. At whom do you shoot?
+HINT1:
+Think about what the other two will do while all three are alive. Whom does each of them regard as the main threat? And what happens to you if you succeed in killing one of them?
+HINT2:
+Compute the value of the two-person duels that can arise. A duel where you shoot first against Mr. 30 is much better for you than one against Mr. 60, and killing someone means your surviving opponent shoots first. Compare "shoot in the air" with "shoot at Mr. 60" and "shoot at Mr. 30".
+ANSWER:
+Shoot in the air (deliberately miss): your survival probability is then about $20.4\%$, versus about $20.2\%$ if you shoot at Mr. 60 and less if you shoot at Mr. 30.
+REFRESH:
+**Two-person duel.** If A (hit probability $a$) shoots first and alternates with B (hit probability $b$) until one dies, then
+$$P(\text{A wins}) = \frac{a}{1-(1-a)(1-b)},$$
+by summing the geometric series $a\sum_{k\ge0}\left[(1-a)(1-b)\right]^k$.
+
+**First-step analysis.** For a repeating game, write the win probability $S$ at the start of a round in terms of itself after one round and solve the linear equation.
+EXPLANATION:
+While all three are alive, Mr. 30 and Mr. 60 are each other's most dangerous opponent, so they shoot at each other and ignore you (you are too poor a shot to be a threat). That is good for you: you are not the target, and eventually one of them dies and you face the survivor, **and you get the first shot** in that duel, because the killer has just used his turn.
+
+If instead you shoot someone yourself, you give up this advantage: the survivor gets the first shot at you. Killing Mr. 30 is a disaster (you then face Mr. 60 who shoots first). Killing Mr. 60 is not terrible (you face Mr. 30 who shoots first), but your chance in that duel, $7/37 \approx 18.9\%$, is lower than what you get by staying out of the fight, about $20.4\%$. So the best move is to waste your shot.
+
+The order matters. In the given order, after your turn Mr. 30 shoots at Mr. 60 before Mr. 60 gets to fire, which improves your chance of eventually facing the weaker Mr. 30. If Mr. 60 shot before Mr. 30, the balance tips and it becomes worth helping Mr. 30 by shooting at Mr. 60 (see follow-up).
+SOLUTION: Duel values and first-step analysis
+**Assumptions.** While three are alive, Mr. 30 shoots at Mr. 60 and Mr. 60 shoots at Mr. 30. (Check: if Mr. 30 kills Mr. 60 he faces you with you shooting first, surviving with probability $\frac{0.9\cdot0.3}{1-0.9\cdot0.7} = \frac{0.27}{0.37}\approx 0.73$; if he killed you he would face Mr. 60 shooting first, surviving with probability $\frac{0.4\cdot0.3}{1-0.4\cdot0.7}=\frac{0.12}{0.72}\approx0.17$. Similarly Mr. 60 prefers to face you: $\frac{0.54}{0.64}\approx 0.84$ against $\frac{0.42}{0.72}\approx0.58$.)
+
+**Duels for you (hit probability $0.1$).**
+- You shoot first against Mr. 30: $\dfrac{0.1}{1-0.9\cdot0.7} = \dfrac{0.1}{0.37} = \dfrac{10}{37}\approx 0.2703$.
+- You shoot first against Mr. 60: $\dfrac{0.1}{1-0.9\cdot0.4} = \dfrac{0.1}{0.64} = \dfrac{5}{32} = 0.15625$.
+- Mr. 30 shoots first against you: $0.7\cdot\dfrac{10}{37} = \dfrac{7}{37}\approx 0.1892$.
+- Mr. 60 shoots first against you: $0.4\cdot\dfrac{5}{32} = 0.0625$.
+
+**Shoot in the air every time.** Let $S$ be your survival probability at the start of a round (all alive, your turn). After your miss, Mr. 30 kills Mr. 60 w.p. $0.3$, and then you shoot first against Mr. 30. Otherwise (w.p. $0.7$) Mr. 60 kills Mr. 30 w.p. $0.6$, and you shoot first against Mr. 60; or he misses (w.p. $0.4$) and the round restarts:
+$$S = 0.3\cdot\frac{10}{37} + 0.7\cdot0.6\cdot\frac{5}{32} + 0.7\cdot0.4\cdot S = \frac{3}{37} + \frac{21}{320} + 0.28\,S.$$
+So $0.72\,S = \frac{1737}{11840}$ and $S = \frac{965}{4736}\approx 0.2038$.
+
+**Deviation: shoot at Mr. 60 this turn.** With probability $0.1$ you kill him and face Mr. 30, who shoots first: $\frac{7}{37}\approx0.1892$. With probability $0.9$ you miss and the play continues exactly as after a shot in the air, worth $S$. So the value is $0.1\cdot 0.1892 + 0.9\cdot 0.2038 \approx 0.2023 < S$. (Shooting at Mr. 60 at every turn gives $\approx 0.2018$, also worse.) The general criterion: shooting at Mr. 60 helps iff $\frac{7}{37} > S$, which fails.
+
+**Deviation: shoot at Mr. 30.** With probability $0.1$ you face Mr. 60 shooting first ($0.0625$), otherwise $S$: clearly worse.
+
+**Conclusion:** shoot in the air; survival probability $\approx 20.4\%$. (If everyone agreed to shoot in the air forever all would survive, but that requires cooperation that no one has an incentive to keep.)
+FOLLOWUP: Reversed order of play
+Same truel (10%, 30%, 60%), but the order is you, then Mr. 60, then Mr. 30, then you, and so on. Does your answer change?
+FOLLOWUP_ANSWER:
+Yes: now you should shoot at Mr. 60. The other two still target each other (same comparisons as before).
+
+**Shoot in the air.** After you, Mr. 60 kills Mr. 30 w.p. $0.6$ and you face Mr. 60 shooting first yourself ($\frac{5}{32}$); otherwise Mr. 30 kills Mr. 60 w.p. $0.3$ and you face Mr. 30 shooting first yourself ($\frac{10}{37}$); otherwise the round repeats:
+$$S = 0.6\cdot\frac{5}{32} + 0.4\cdot0.3\cdot\frac{10}{37} + 0.4\cdot0.7\,S = 0.09375 + 0.03243 + 0.28\,S \ \Rightarrow\ S = \frac{0.12618}{0.72}\approx 0.1753.$$
+**Shoot at Mr. 60.** If you kill him (w.p. $0.1$), the next shooter is Mr. 30, so you face Mr. 30 shooting first: $\frac{7}{37}\approx 0.1892$. Since $0.1892 > 0.1753$, taking the shot helps. Doing it every turn: $S' = 0.1\cdot\frac{7}{37} + 0.9\,(0.12618 + 0.28\,S')$, so $0.748\,S' = 0.13248$ and $S'\approx 0.1771 > 0.1753$.
+
+**Shoot at Mr. 30:** a kill leaves you facing Mr. 60 shooting first ($0.0625$), which is worse.
+
+The trade-off: hitting Mr. 60 costs you the first shot in the final duel, but it saves you from the likely scenario where Mr. 60 (now shooting right after you) kills Mr. 30 and you are left against the 60% shooter. With Mr. 60 moving before Mr. 30, that risk is large enough that helping Mr. 30 pays.
+===END===
+
+===TEASER===
+SLUG: three-pointer-or-two-pointer
+IDS: H4A-20
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Three-pointer or two-pointer
+QUESTION:
+Your basketball team is down by two points with a few seconds left; you are the best player and you have the ball. You can shoot from three-point range, where you score 40% of the time (a make wins the game), or move in and shoot a two-pointer, where you score 70% of the time (a make ties the game and sends it to overtime). Your team has a fifty-fifty chance of winning in overtime. Which shot should you take?
+HINT1:
+A two-pointer does not win the game by itself; it only gets you to overtime.
+HINT2:
+Compute $P(\text{win}\mid\text{two-point attempt})$ with the law of total probability, conditioning on whether the shot goes in.
+ANSWER:
+Take the three-pointer: it wins with probability $40\%$, against $35\%$ for the two-pointer.
+REFRESH:
+**Law of total probability.** $P(W) = P(W\mid T)P(T) + P(W\mid T^c)P(T^c)$.
+EXPLANATION:
+The 70% looks much better than 40%, but a made two-pointer is only worth a coin flip in overtime. So the two-point route wins with probability $0.7\times0.5 = 0.35$, less than the $0.40$ of the three-pointer, which wins outright.
+SOLUTION: Law of total probability
+Three-pointer: $P(W\mid 3) = 0.40$.
+
+Two-pointer: let $T$ be "the shot goes in (tie)". Then
+$$P(W\mid 2) = P(W\mid T)P(T\mid 2) + P(W\mid T^c)P(T^c\mid 2) = 0.5\times0.7 + 0\times0.3 = 0.35.$$
+Since $0.40 > 0.35$, shoot the three. (The two-pointer would be better only if the overtime win probability exceeded $0.40/0.70\approx 57\%$.)
+===END===
+
+===TEASER===
+SLUG: five-section-roulette-wheel
+IDS: H4A-21
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Five-section roulette wheel
+QUESTION:
+A fair roulette wheel has five equal sections: four pay \$1 and the fifth pays \$5.
+
+1. If a spin costs \$1.50 and you may play as often as you like, should you play?
+2. If a spin costs \$1.50 and you may play exactly once, should you play?
+HINT1:
+Start with the expected payoff of one spin and compare with the cost.
+HINT2:
+With many plays, the law of large numbers makes your average gain close to the expected gain. With one play, think about the worst case and your attitude to risk.
+ANSWER:
+Expected payoff \$1.80 per spin, a gain of \$0.30: with repeated play, yes; with one play it depends on risk attitude, but with stakes this small (worst loss \$0.50), yes.
+REFRESH:
+**Weak law of large numbers.** For i.i.d. $X_i$ with mean $\mu$, $\frac1n\sum_{i=1}^n X_i \to \mu$ in probability.
+EXPLANATION:
+The expected payoff per spin is $\frac{4\cdot1+5}{5} = 1.80$ dollars, 30 cents more than the price. When you can play many times, the average result converges to that expectation, so you are effectively risk-neutral and you should play as much as you can. With a single play, expectation alone does not decide: you gain 30 cents on average but you lose 50 cents 80% of the time and win 3.50 dollars 20% of the time. For pocket change almost anyone would play; if the amounts were scaled up to billions and losing would cost you your job, a risk-averse decision-maker might refuse.
+SOLUTION: Expected value and risk
+**Expected payoff.** $\mathbb{E}[\text{payoff}] = \frac45\cdot1 + \frac15\cdot5 = 1.80$ dollars, so the expected net gain per spin is $1.80 - 1.50 = 0.30$ dollars.
+
+1. **Many plays: yes.** Your total net gain after $n$ spins is a sum of i.i.d. variables with mean $0.30$ and standard deviation $1.60$ (net outcomes $-0.50$ w.p. $0.8$ and $+3.50$ w.p. $0.2$: variance $0.8\cdot0.8^2 + 0.2\cdot3.2^2 = 0.512+2.048 = 2.56$). The mean grows like $0.30n$ while the standard deviation grows only like $1.6\sqrt n$, so you profit with probability tending to 1.
+2. **One play: it depends on risk preferences.** You lose $0.50$ with probability $0.8$ and gain $3.50$ with probability $0.2$. A risk-neutral player plays. With these tiny amounts, practically anyone would play; if the stakes were multiplied by a billion, a risk-averse player might not.
+===END===
+
+===TEASER===
+SLUG: four-match-parlay-odds
+IDS: H4A-22, H4A-23
+SECTION: probability
+CATEGORY: Expected value
+DIFFICULTY: easy
+TITLE: Four-match parlay at 10-to-1
+QUESTION:
+A parlay bet on several sports matches wins only if you are right about **every** match. Your bookie offers 10-to-1 odds on a parlay covering four matches (no payout for "almost wins"). Should you take the bet?
+HINT1:
+With no special information, how likely are you to call a single match correctly? And four in a row?
+HINT2:
+Compare your probability of winning with the probability implied by 10-to-1 odds, or compute the expected profit per dollar staked.
+ANSWER:
+No: you win with probability $\frac1{16}$ (fair odds 15-to-1), so at 10-to-1 you lose $\frac5{16}$ of your stake on average.
+REFRESH:
+**Odds.** Odds of "$a$-to-1" mean that a winning 1-dollar bet returns a profit of $a$ dollars (plus the stake), and a losing bet loses the stake. A bet with win probability $q$ is fair at odds $\frac{1-q}{q}$-to-1.
+EXPLANATION:
+Without an edge, each match is a coin flip, and the matches are independent, so all four are right with probability $(1/2)^4 = 1/16$: you lose 15 times for every win. Fair odds would therefore be 15-to-1. The bookie pays only 10-to-1, so the bet has negative expectation; you would take it only if you enjoy risk (or genuinely know more than a coin flip about the matches).
+SOLUTION: Expected profit per dollar
+Assuming each match is a 50–50 call and matches are independent, $P(\text{win}) = \left(\frac12\right)^4 = \frac1{16}$.
+
+At 10-to-1, for a 1-dollar stake:
+$$\mathbb{E}[\text{profit}] = \frac1{16}\cdot 10 - \frac{15}{16}\cdot1 = -\frac{5}{16}\approx -0.31 \text{ dollars}.$$
+The break-even odds are $\frac{15/16}{1/16} = 15$-to-1. **Do not take the bet** unless you are risk-seeking or have real information (you would need a per-match accuracy $q$ with $11q^4 > 1$, i.e. $q > 11^{-1/4}\approx 0.55$).
+FOLLOWUP: The same parlay at 25-to-1
+Should you take the four-match parlay if the odds are 25-to-1?
+FOLLOWUP_ANSWER:
+Yes (if you are not strongly risk-averse). The win probability is still $\frac1{16}$, so per dollar staked
+$$\mathbb{E}[\text{profit}] = \frac{1}{16}\cdot25 - \frac{15}{16}\cdot1 = \frac{10}{16} = +0.625 \text{ dollars}.$$
+The offered odds (25-to-1) exceed the fair odds (15-to-1), making it an attractive bet.
+===END===
+
+===TEASER===
+SLUG: standard-deviation-one-to-five
+IDS: H4A-24
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: easy
+TITLE: Standard deviation of (1,2,3,4,5)
+QUESTION:
+What is the standard deviation of $(1,2,3,4,5)$?
+HINT1:
+The question is ambiguous: are these five numbers the whole population (e.g. a uniform distribution on $\{1,\dots,5\}$), or a sample from some larger population?
+HINT2:
+The mean is 3. Compute the sum of squared deviations from the mean, then divide by $N$ (population) or by $N-1$ (sample estimate) before taking the square root.
+ANSWER:
+$\sqrt2\approx1.414$ as a population standard deviation (or for the uniform distribution on $\{1,\dots,5\}$); $\sqrt{2.5}\approx1.581$ with the $N-1$ sample correction.
+REFRESH:
+**Population variance.** $\sigma^2 = \frac1N\sum_{i=1}^N(x_i-\bar x)^2$.
+
+**Sample variance (unbiased).** $s^2 = \frac{1}{N-1}\sum_{i=1}^N(x_i-\bar x)^2$ satisfies $\mathbb{E}[s^2] = \sigma^2$ for i.i.d. data; $s$ itself is still biased for $\sigma$.
+EXPLANATION:
+In an interview, the first good move is to ask which quantity is wanted. If $(1,\dots,5)$ is the complete list of equally likely values, you compute the true standard deviation, dividing by $N=5$. If they are five i.i.d. observations and you want to estimate the standard deviation of the process that generated them, the usual unbiased variance estimator divides by $N-1=4$, because the deviations are measured from the sample mean, which is itself fitted to the data and makes them slightly too small.
+SOLUTION: Direct computation, both conventions
+Mean: $\bar x = \frac{1+2+3+4+5}{5} = 3$. Squared deviations: $4, 1, 0, 1, 4$, summing to $10$.
+
+**Population / uniform distribution on $\{1,\dots,5\}$:**
+$$\sigma = \sqrt{\frac{10}{5}} = \sqrt2 \approx 1.4142.$$
+(Check with the formula for the discrete uniform on $\{1,\dots,n\}$: $\operatorname{Var} = \frac{n^2-1}{12} = \frac{24}{12} = 2$.)
+
+**Sample estimate with the $N-1$ correction:**
+$$s = \sqrt{\frac{10}{4}} = \sqrt{2.5}\approx 1.5811.$$
+State which one you are computing: $\sqrt2$ if the five numbers are the whole population, $\sqrt{2.5}$ if they are an i.i.d. sample and you want the unbiased variance estimate.
+===END===
+
+===TEASER===
+SLUG: water-earth-wind-fire-cards
+IDS: H4B-03
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Water, earth, wind, fire cards
+QUESTION:
+Four cards are shuffled and placed face down in front of you. Their hidden faces show the four elements: water, earth, wind and fire. You turn the cards over one at a time until you either win or lose. You win as soon as you have turned over both water and earth; you lose as soon as you turn over fire. What is the probability that you win?
+HINT1:
+Does the wind card ever affect whether you win or lose?
+HINT2:
+Ignore wind and look only at the relative order of water, earth and fire, which is uniformly random. In which of these orders do you win?
+ANSWER:
+$\dfrac13$.
+REFRESH:
+**Random permutations.** In a uniformly shuffled deck, the relative order of any fixed subset of $k$ cards is uniform over the $k!$ possible orders.
+EXPLANATION:
+Wind is a blank: turning it over neither wins nor loses, so it is irrelevant. What matters is the order in which water, earth and fire appear. You win exactly when both water and earth come before fire, i.e. when fire is the last of the three. Each of the three cards is equally likely to be last, so the answer is $\frac13$.
+SOLUTION: Fire must come last
+The relative order of water (W), earth (E) and fire (F) is uniform over the $3! = 6$ orders. You win iff both W and E precede F: the orders WEF and EWF, i.e. 2 of 6. So $P(\text{win}) = \frac26 = \frac13$.
+SOLUTION: Sequential conditioning
+Look only at the "relevant" cards W, E, F. The first relevant card is F with probability $\frac13$ (you lose). Otherwise (probability $\frac23$) it is W or E, and the next relevant card is F or the remaining one of W/E with probability $\frac12$ each. So
+$$P(\text{win}) = \frac23\cdot\frac12 = \frac13.$$
+===END===
+
+===TEASER===
+SLUG: red-blue-marble-game
+IDS: H4B-04, H4B-05
+SECTION: probability
+CATEGORY: Games & optimal stopping
+DIFFICULTY: medium
+TITLE: Red and blue marble game
+QUESTION:
+Two players, $A$ and $B$, each have one red and one blue marble. Simultaneously, each presents one marble to the other. If both present red, $A$ wins \$3. If both present blue, $A$ wins \$1. If the colours do not match, $B$ wins \$2. The winnings are paid by an outside source, not by the other player.
+
+Is it better to be $A$, or $B$, or does it not matter?
+HINT1:
+First try the simplest assumption, that each player picks red or blue at random with probability $\frac12$. Compare both the means and the risks. Then ask whether a strategic player would really play 50–50.
+HINT2:
+For a mixed-strategy Nash equilibrium, each player's mix must make the *other* player indifferent between red and blue. Let $q = P(B \text{ plays red})$: $A$ is indifferent when $3q = 1\cdot(1-q)$.
+ANSWER:
+It is better to be $B$: with 50–50 play both earn \$1 on average but $B$ has lower variance (1 vs 1.5); in the Nash equilibrium ($A$ plays red w.p. $\frac12$, $B$ w.p. $\frac14$) $A$ expects \$0.75 and $B$ \$1.
+REFRESH:
+**Variance.** $\operatorname{Var}(X) = \mathbb{E}[(X-\mathbb{E}X)^2]$.
+
+**Mixed-strategy Nash equilibrium (2×2 game).** Each player randomises so that the opponent is indifferent between his two pure strategies; then no player can gain by deviating unilaterally.
+EXPLANATION:
+$A$ wants the colours to match and $B$ wants them to differ: this is "matching pennies" with unequal payoffs, so there is no pure-strategy equilibrium and the natural analysis is in mixed strategies.
+
+The quick answer assumes both players flip a fair coin. Then matches and mismatches each occur half the time: $A$ gets 3 or 1 dollars on matches (average 2, times $\frac12$ = 1 dollar) and $B$ gets 2 dollars on mismatches (average 1 dollar). Same mean, but $B$'s payoff is less dispersed, so a risk-averse player prefers $B$.
+
+Strategic players do better than coin flips. $B$ knows $A$ is especially keen on red–red (it pays 3), so $B$ plays red less often, only $\frac14$ of the time, which is exactly the mix that makes $A$ indifferent. $A$ plays red half the time, which makes $B$ indifferent. At this equilibrium $A$ earns only $\frac34$ while $B$ still earns $1$: being $B$ is better.
+SOLUTION: Fifty–fifty play: means and variances
+If each player picks red or blue with probability $\frac12$ independently, each colour pair has probability $\frac14$.
+
+Player $A$: payoff $3$ (RR), $1$ (BB), $0$ otherwise (probability $\frac12$):
+$$\mathbb{E}[A] = 3\cdot\tfrac14 + 1\cdot\tfrac14 = 1,\qquad \operatorname{Var}(A) = (3-1)^2\tfrac14 + (1-1)^2\tfrac14 + (0-1)^2\tfrac12 = 1 + 0 + \tfrac12 = 1.5.$$
+Player $B$: payoff $2$ on a mismatch (probability $\frac12$), else $0$:
+$$\mathbb{E}[B] = 1,\qquad \operatorname{Var}(B) = (2-1)^2\tfrac12 + (0-1)^2\tfrac12 = 1.$$
+Same mean, lower risk: a risk-averse player prefers to be $B$.
+SOLUTION: Mixed-strategy Nash equilibrium
+Let $p = P(A\text{ plays red})$ and $q = P(B\text{ plays red})$.
+
+There is no pure equilibrium: $A$ always wants to copy $B$ and $B$ always wants to differ from $A$.
+
+**$A$ indifferent** (this pins down $q$): $A$'s expected payoff from red is $3q$, from blue $1\cdot(1-q)$. Setting $3q = 1-q$ gives $q = \frac14$.
+
+**$B$ indifferent** (this pins down $p$): $B$'s payoff from red is $2(1-p)$ (mismatch when $A$ plays blue), from blue $2p$. Setting them equal gives $p = \frac12$.
+
+Payoffs at the equilibrium:
+$$\mathbb{E}[A] = 3q = \tfrac34,\qquad \mathbb{E}[B] = 2p = 1.$$
+So $B$ is favoured, both in the strategic analysis and (via lower variance) in the naive 50–50 analysis.
+FOLLOWUP: Zero-sum version
+Now suppose the winnings come out of the other player's pocket: on red–red $B$ pays $A$ 3 dollars, on blue–blue $B$ pays $A$ 1 dollar, and on a mismatch $A$ pays $B$ 2 dollars. Show that there is a Nash equilibrium in which each player plays red with probability $\frac38$. Who is favoured?
+FOLLOWUP_ANSWER:
+$A$'s payoff matrix (rows $A$'s choice, columns $B$'s): RR $= 3$, RB $= -2$, BR $= -2$, BB $= 1$; $B$ receives the negative.
+
+**$A$ indifferent:** with $q = P(B\text{ red})$, red gives $3q - 2(1-q) = 5q-2$ and blue gives $-2q + (1-q) = 1-3q$. Equal when $8q = 3$, so $q = \frac38$.
+
+**$B$ indifferent:** with $p = P(A\text{ red})$, $B$'s payoff from red is $-(3p - 2(1-p)) = -(5p-2)$ and from blue is $-(-2p + (1-p)) = -(1-3p)$. Equal when $5p - 2 = 1-3p$, so $p = \frac38$.
+
+So each plays red with probability $\frac38$, and neither can gain by deviating (each is indifferent between his pure strategies). The value of the game to $A$ is $5\cdot\frac38 - 2 = -\frac18$: $A$ loses 12.5 cents per play on average, so $B$ is again favoured.
+===END===
+
+===TEASER===
+SLUG: random-coin-bias-posterior
+IDS: H4B-06
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: hard
+TITLE: Posterior of a random coin's bias
+QUESTION:
+A machine produces pennies. Each penny has probability $P$ of landing heads, where the machine draws $P$ afresh for each coin from the uniform distribution on $[0,1]$. A coin comes out of the machine; you flip it once and it lands heads. Given this, what is the conditional distribution function $F_{P\mid H}(p) = P(P\le p\mid H)$ of that coin's head probability?
+
+What is the conditional distribution function if instead you flip the coin 1,000 times and get 750 heads?
+HINT1:
+This is Bayes' rule with a continuous parameter: prior density times likelihood, normalised.
+HINT2:
+Compute $P(P\le p,\ H) = \int_0^p u\,du$ and divide by $P(H) = \int_0^1 u\,du$. For 750 heads out of 1,000, the likelihood is proportional to $u^{750}(1-u)^{250}$: which family of densities is that?
+ANSWER:
+After one head, $F_{P\mid H}(p) = p^2$ on $[0,1]$ (density $2p$, mean $\frac23$). After 750 heads in 1,000 flips, $P$ has the Beta$(751, 251)$ distribution: mean $\approx0.7495$, sd $\approx0.0137$, so $F$ is a steep S-curve rising from $\approx0.007$ at $p=0.715$ to $\approx 0.996$ at $p = 0.785$.
+REFRESH:
+**Bayes' rule with a density.** If $P$ has prior density $f(u)$ and the data $D$ has likelihood $L(u) = P(D\mid P=u)$, the posterior density is $f(u\mid D) = \dfrac{L(u)f(u)}{\int_0^1 L(v)f(v)\,dv}$.
+
+**Beta distribution.** Density $\dfrac{u^{a-1}(1-u)^{b-1}}{B(a,b)}$ on $[0,1]$, mean $\frac{a}{a+b}$, variance $\frac{ab}{(a+b)^2(a+b+1)}$, where $B(a,b) = \int_0^1 u^{a-1}(1-u)^{b-1}du = \frac{(a-1)!(b-1)!}{(a+b-1)!}$ for integers.
+EXPLANATION:
+Before any flip, every value of $P$ is equally plausible. A head is more likely to occur for coins with large $P$: its probability given $P=u$ is exactly $u$. Bayes' rule reweights the flat prior by this likelihood, so the posterior density is proportional to $u$, i.e. $2u$, and the cdf is $p^2$. One head shifts the mean only from $\frac12$ to $\frac23$: one observation is weak evidence.
+
+With 750 heads in 1,000 flips, the likelihood $u^{750}(1-u)^{250}$ is extremely concentrated around $0.75$. The posterior is a Beta$(751,251)$ distribution, nearly normal with mean $\approx 0.75$ and standard deviation $\approx\sqrt{0.75\cdot0.25/1000}\approx 0.0137$. So the cdf looks almost like a step at $0.75$, with the step spread over roughly $0.75 \pm 2.58\times0.0137$, i.e. $[0.715, 0.785]$. The more flips (with the same 75% frequency), the steeper the step: the data overwhelm the prior.
+SOLUTION: Bayes' rule, one head
+Prior density $f(u) = 1$ on $[0,1]$; likelihood $P(H\mid P=u) = u$. Then
+$$P(H) = \int_0^1 u\,du = \frac12,\qquad P(P\le p,\ H) = \int_0^p u\,du = \frac{p^2}{2}.$$
+Hence, for $0\le p\le1$,
+$$F_{P\mid H}(p) = \frac{p^2/2}{1/2} = p^2,\qquad f_{P\mid H}(p) = 2p,\qquad \mathbb{E}[P\mid H] = \int_0^1 2p^2\,dp = \frac23.$$
+Sanity checks: $F(0) = 0$, $F(1) = 1$, and the mass has moved towards high $p$.
+SOLUTION: Beta posterior, 750 heads in 1,000 flips
+Given $P=u$, the probability of the observed data is $\binom{1000}{750}u^{750}(1-u)^{250}$. With the flat prior, the posterior density is
+$$f(u\mid D) = \frac{u^{750}(1-u)^{250}}{\int_0^1 v^{750}(1-v)^{250}dv} = \frac{u^{750}(1-u)^{250}}{B(751,251)},$$
+the Beta$(751,251)$ density (the binomial coefficient cancels). Its cdf can be written with a neat identity (Beta–binomial duality):
+$$F(p) = \int_0^p f(u\mid D)\,du = P\big(\text{Bin}(1001,p)\ge 751\big) = \sum_{j=751}^{1001}\binom{1001}{j}p^j(1-p)^{1001-j}.$$
+(With one head, the same identity gives Beta$(2,1)$ and $F(p) = P(\text{Bin}(2,p)\ge2) = p^2$, as before.)
+
+**Shape.** Mean $\frac{751}{1002}\approx 0.7495$, mode $\frac{750}{1000} = 0.75$, variance $\frac{751\cdot251}{1002^2\cdot1003}\approx 1.87\times10^{-4}$, so standard deviation $\approx 0.0137$. For large samples the posterior is approximately normal, so $F(p)\approx\Phi\!\left(\frac{p-0.75}{0.0137}\right)$: essentially $0$ below $0.715$ and $1$ above $0.785$ (about $\pm 2.58$ standard deviations), with a steep S-shaped rise in between. Evaluating exactly: $F(0.715)\approx 0.0069$ and $F(0.785)\approx0.9962$. (The book, using a normal approximation to the binomial likelihood, reports $0.0075$ and $0.9967$; the difference is only numerical.) With $N = 100{,}000$ flips and $75{,}000$ heads the same probabilities are reached within about $\pm0.0035$ of $0.75$: the step keeps sharpening like $1/\sqrt N$.
+===END===
+
+===TEASER===
+SLUG: one-roll-vs-million-rolls
+IDS: H4B-08
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: easy
+TITLE: One roll vs a million rolls
+QUESTION:
+You are offered two games. In Game One, you roll a die once and are paid \$1 million times the number showing. In Game Two, you roll a die one million times and for each roll are paid \$1 times the number showing. You are risk-averse. Which game do you prefer?
+HINT1:
+Compare the expected payoffs first. If they are equal, what else matters to a risk-averse person?
+HINT2:
+Let $X$ be one die roll with variance $\sigma^2$. Compare $\operatorname{Var}(10^6X)$ with $\operatorname{Var}(X_1+\dots+X_{10^6})$ for independent rolls.
+ANSWER:
+Game Two: both have mean \$3.5 million, but the standard deviation is about \$1.7 million in Game One and only about \$1,708 in Game Two.
+REFRESH:
+**Variance of a scaled variable.** $\operatorname{Var}(cX) = c^2\operatorname{Var}(X)$.
+
+**Variance of a sum of independent variables.** $\operatorname{Var}\left(\sum_{i=1}^n X_i\right) = \sum_{i=1}^n\operatorname{Var}(X_i)$.
+
+**Die roll.** $\mathbb{E}X = 3.5$, $\operatorname{Var}X = \frac{35}{12}\approx 2.917$.
+EXPLANATION:
+Both games pay 3.5 million dollars on average. But Game One puts everything on a single roll: you might get 1 million or 6 million. Game Two spreads the same total exposure over a million independent rolls, and independent errors largely cancel, so the total is almost certain to be very close to 3.5 million (law of large numbers). Scaling one bet by $n$ multiplies its standard deviation by $n$; summing $n$ independent bets multiplies it only by $\sqrt n$. That is diversification in its purest form, and a risk-averse person prefers the game with the same mean and less risk.
+SOLUTION: Mean and standard deviation
+Let $X$ be a die roll: $\mathbb{E}X = 3.5$, $\mathbb{E}X^2 = \frac{91}{6}$, $\operatorname{Var}X = \frac{91}{6} - \frac{49}{4} = \frac{35}{12}$, $\sigma_X \approx 1.708$.
+
+**Game One:** payoff $10^6X$. Mean $3.5\times10^6$, standard deviation $10^6\sigma_X\approx 1{,}708{,}000$ dollars.
+
+**Game Two:** payoff $S = \sum_{i=1}^{10^6}X_i$ with independent rolls. Mean $10^6\times3.5 = 3.5\times10^6$, variance $10^6\cdot\frac{35}{12}$, standard deviation $\sqrt{10^6}\,\sigma_X = 1000\,\sigma_X\approx 1{,}708$ dollars.
+
+Same mean, a thousand times less volatility (by the CLT, Game Two pays within about $\pm 3{,}400$ dollars of 3.5 million with 95% probability). A risk-averse player chooses **Game Two**.
+===END===
+
+===TEASER===
+SLUG: expected-tosses-heads-in-a-row
+IDS: H4B-09, R3A-26, R3A-27, R3A-28, R3A-29, R3A-30, R3A-31, R3A-32, R3A-33
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: medium
+TITLE: Tosses until two or three heads in a row
+QUESTION:
+A coin lands heads with probability $p$ (independently on each toss). What is the expected number of tosses until the first head? Until you first get two heads in a row? Until three heads in a row? Give the values for a fair coin.
+HINT1:
+Build the run one head at a time. Once you have a run of $k-1$ heads, the next toss either extends it or destroys it, and a tail sends you all the way back to the start.
+HINT2:
+Let $E_k$ be the expected number of tosses to get $k$ heads in a row. To get $k$ in a row you first need $k-1$ in a row ($E_{k-1}$ tosses), then one more toss: with probability $p$ you are done, with probability $1-p$ you start from scratch. Write $E_k = E_{k-1} + 1 + (1-p)E_k$.
+ANSWER:
+$\frac1p$, $\frac{1+p}{p^2}$ and $\frac{1+p+p^2}{p^3}$; for a fair coin $2$, $6$ and $14$.
+REFRESH:
+**Law of total expectation / first-step analysis.** $\mathbb{E}[N] = \sum_i\mathbb{E}[N\mid A_i]P(A_i)$; conditioning on the next toss gives linear equations for expected hitting times.
+
+**Geometric distribution.** The number of trials until the first success (probability $p$) has mean $\frac1p$.
+
+**Optional stopping theorem.** If $(M_n)$ is a martingale with bounded increments and $T$ a stopping time with $\mathbb{E}T<\infty$, then $\mathbb{E}M_T = M_0$.
+EXPLANATION:
+A run of $k$ heads is built on top of a run of $k-1$ heads. Once you have $k-1$ heads in a row (which takes $E_{k-1}$ tosses on average), you toss once more. With probability $p$ you have your run; with probability $1-p$ you get a tail, and all the work is lost: you are back at the start, facing another $E_k$ tosses on average. This gives $E_k = (E_{k-1}+1)/p$: each extra head in the run multiplies the effort by $\frac1p$ (and adds a bit). For a fair coin, $E_k = 2E_{k-1} + 2$: $2, 6, 14, 30, \dots = 2^{k+1}-2$.
+
+There is a beautiful alternative, favoured in quant interviews because it is really a pricing argument: imagine a casino where, before every toss, a new gambler arrives and bets 1 dollar on heads at fair odds, letting his winnings ride on subsequent heads until he loses. The casino's total profit is a martingale (fair bets), so its expected value when the run first appears is 0. At that time the casino has collected 1 dollar from each of the $T$ gamblers and paid out to the last $k$ gamblers, who are still winning: $\frac1{p^k} + \frac1{p^{k-1}}+\dots+\frac1p$. Setting the expectation of the profit to zero gives $\mathbb{E}T = \frac1p + \dots + \frac1{p^k}$ directly.
+SOLUTION: Recursion on the length of the run
+Let $E_k$ be the expected number of tosses until the first run of $k$ heads, with $E_0 = 0$.
+
+**One head.** Condition on the first toss: $E_1 = p\cdot1 + (1-p)(1+E_1)$, so $pE_1 = 1$ and $E_1 = \frac1p$.
+
+**General step.** To get $k$ in a row, you must first get $k-1$ in a row (expected $E_{k-1}$ tosses). Then toss once more: with probability $p$ you are done; with probability $1-p$ you got a tail and must start again from nothing:
+$$E_k = p\,(E_{k-1}+1) + (1-p)\,(E_{k-1}+1+E_k) = E_{k-1} + 1 + (1-p)E_k,$$
+so
+$$E_k = \frac{E_{k-1}+1}{p}.$$
+Hence
+$$E_2 = \frac{\frac1p + 1}{p} = \frac{1+p}{p^2},\qquad E_3 = \frac{\frac{1+p}{p^2}+1}{p} = \frac{1+p+p^2}{p^3},$$
+and by induction $E_k = \dfrac{1+p+\dots+p^{k-1}}{p^k} = \dfrac1p + \dfrac1{p^2}+\dots+\dfrac1{p^k}$.
+
+**Fair coin** ($p=\frac12$): $E_1 = 2$, $E_2 = \frac{3/2}{1/4} = 6$, $E_3 = \frac{7/4}{1/8} = 14$.
+SOLUTION: Markov chain with states "current run length"
+For two heads, let the state be the length of the current run of heads (0 or 1), and let $m_i$ be the expected number of further tosses from state $i$. From state 0 a head leads to state 1 and a tail back to 0; from state 1 a head finishes and a tail goes to 0:
+$$m_0 = 1 + p\,m_1 + (1-p)\,m_0,\qquad m_1 = 1 + (1-p)\,m_0.$$
+From the first, $p\,m_0 = 1 + p\,m_1 = 1 + p + p(1-p)m_0$, so $m_0\,(p - p + p^2) = 1+p$, i.e. $m_0 = \frac{1+p}{p^2}$. For three heads add state 2 with $m_2 = 1 + (1-p)m_0$ and $m_1 = 1 + p\,m_2 + (1-p)m_0$; solving the same way gives $m_0 = \frac{1+p+p^2}{p^3}$.
+SOLUTION: Gambling martingale (optional stopping)
+Before each toss $t = 1,2,\dots$ a new gambler arrives with 1 dollar and bets it on heads at fair odds: a head multiplies his stake by $\frac1p$, a tail wipes him out. Each gambler keeps betting everything on heads on subsequent tosses until he loses or the game stops. Every bet is fair, so the casino's cumulative profit $M_t$ is a martingale with $M_0 = 0$.
+
+Let $T$ be the first time of $k$ heads in a row. At time $T$ the casino has received $T$ dollars. Gamblers who arrived at times $\le T-k$ have all lost (each saw a tail before the run ended, or the run would have come earlier). The gambler who arrived at time $T-j+1$ ($j = 1,\dots,k$) has seen $j$ heads and holds $p^{-j}$. So
+$$M_T = T - \left(\frac1p + \frac1{p^2}+\dots+\frac1{p^k}\right).$$
+$T$ has finite expectation (each disjoint block of $k$ tosses is all heads with probability $p^k$, so $P(T > nk)\le(1-p^k)^n$) and the increments of $M$ are bounded, so optional stopping gives $\mathbb{E}M_T = 0$:
+$$\mathbb{E}T = \frac1p + \frac1{p^2}+\dots+\frac1{p^k}.$$
+For a fair coin and $k=3$: $\mathbb{E}T = 2+4+8 = 14$. (The red book's version sizes the bets on a single gambler's account: bet 1 after a tail, 3 after one head, 7 after two heads, so that every tail on toss $n$ leaves the position at $-n$; after three heads the position is $(1+3+7)-(n-3) = 14-n$, giving $\mathbb{E}n = 14$. For two heads with a biased coin it arrives at $2 + \frac{1-p}{p}\left(1 + \frac{1+p}{p}\right)$, which simplifies to $\frac{1+p}{p^2}$.)
+FOLLOWUP: n heads in a row
+For a fair coin, what is the expected number of tosses to get $n$ heads in a row?
+FOLLOWUP_ANSWER:
+With $p = \frac12$ the recursion is $E_n = 2(E_{n-1}+1)$ with $E_0 = 0$, or directly from the martingale formula
+$$E_n = 2 + 4 + \dots + 2^n = 2^{n+1}-2.$$
+Check: $E_1=2$, $E_2=6$, $E_3=14$, $E_4 = 30$. (Induction: if $E_{n-1} = 2^n - 2$ then $E_n = 2(2^n-1) = 2^{n+1}-2$.)
+FOLLOWUP: The expected time is always an integer
+Show that, for a fair coin, the expected waiting time for a run of heads is always an integer. (Bonus: the same holds for any fixed pattern of heads and tails.)
+FOLLOWUP_ANSWER:
+**Runs of heads.** $E_n = 2^{n+1}-2$ is an integer; or by induction, $E_0 = 0$ and $E_n = 2(E_{n-1}+1)$ maps integers to integers.
+
+**Any pattern $w$ of length $n$.** Use the gamblers' martingale: a new gambler arrives before each toss and bets his fortune successively on the letters of $w$ at fair odds (each correct toss doubles his money, a wrong one ruins him). When $w$ first appears at time $T$, the gamblers still in the game are exactly those whose arrival lines up with a suffix of $w$ that is also a prefix of $w$; a gambler who has matched $k$ letters holds $2^k$. Optional stopping gives
+$$\mathbb{E}T = \sum_{k\in\{1,\dots,n\}:\ \text{prefix}_k(w) = \text{suffix}_k(w)} 2^k,$$
+a sum of powers of 2, hence an integer. For $w = H^n$ every $k$ qualifies and we recover $2^{n+1}-2$; for $w = HT$ only $k=2$ qualifies, giving $4$.
+FOLLOWUP: A monkey types "option pricing"
+A monkey types letters of the alphabet or the space bar, each of the 27 keys with equal probability, at one keystroke per second. How long, on average, until he types the string "option pricing"?
+FOLLOWUP_ANSWER:
+Apply the pattern formula with $27$ equally likely symbols: each gambler's fortune is multiplied by 27 per correct letter, so
+$$\mathbb{E}T = \sum_{k:\ \text{prefix}_k = \text{suffix}_k} 27^k.$$
+"option pricing" has 14 characters (6 + space + 7). The last character, g, appears nowhere else, so no proper prefix equals a suffix: only $k = 14$ counts. Hence
+$$\mathbb{E}T = 27^{14}\approx 1.09\times10^{20}\text{ seconds}\approx 3.5\times10^{12}\text{ years},$$
+roughly 250 times the age of the universe.
+FOLLOWUP: A monkey types "Black-Scholes"
+Same monkey (26 letters and the space bar, equally likely, one per second). How long until he types "Black-Scholes"?
+FOLLOWUP_ANSWER:
+Trick question: **forever**. The string contains a hyphen (and capital letters), which are not among the monkey's 27 keys, so the probability of ever typing it is 0 and the expected time is infinite. (If you ignore case and replace the hyphen by a space, "black scholes" has 13 characters with no self-overlap, because its first letter b occurs nowhere else, so no proper suffix can equal a prefix; the answer would then be $27^{13}\approx 4\times10^{18}$ seconds.)
+FOLLOWUP: Four heads in a row
+For a fair coin, what is the expected number of tosses to get four heads in a row?
+FOLLOWUP_ANSWER:
+$E_4 = 2 + 4 + 8 + 16 = 30$. (From the recursion: $E_3 = 14$, so $E_4 = 2(14+1) = 30$.)
+FOLLOWUP: Quit when you are up one
+With a fair coin, I win 1 on a head and lose 1 on a tail, and I quit as soon as my total is $+1$. What is the probability that the game terminates? What are my expected winnings when it ends? Explain why this does not contradict the fact that the game is fair.
+FOLLOWUP_ANSWER:
+**It terminates with probability 1.** Let $h$ be the probability of ever reaching $+1$ from $0$. Condition on the first toss: a head gets there at once; a tail puts you at $-1$, from which you must climb one level (probability $h$) and then another (probability $h$, by the strong Markov property):
+$$h = \tfrac12 + \tfrac12 h^2 \iff (h-1)^2 = 0 \iff h = 1.$$
+**Winnings when it ends: exactly $+1$**, since it only ends at $+1$; so $\mathbb{E}[\text{winnings}] = 1$.
+
+**Why no contradiction.** Your fortune $S_n$ is a martingale with $S_0=0$, and yet $\mathbb{E}S_T = 1\neq0$. Optional stopping fails because its conditions fail: $T$ is finite almost surely but $\mathbb{E}T = \infty$, and $S_n$ is unbounded below before $T$. Indeed, if $m = \mathbb{E}T$ were finite, first-step analysis would give $m = 1 + \tfrac12\cdot0 + \tfrac12\cdot 2m = 1 + m$, which is impossible. In practice the strategy needs unlimited credit and unlimited time: with any finite credit limit (you are forced out at $-L$) optional stopping applies, you reach $+1$ with probability $\frac{L}{L+1}$ and lose $L$ otherwise, and the expected winnings are $\frac{L}{L+1}-\frac{L}{L+1} = 0$. This is the doubling/"martingale" betting system in disguise.
+===END===
+
+===TEASER===
+SLUG: poll-margin-of-error
+IDS: H4B-10
+SECTION: probability
+CATEGORY: Statistics & estimation
+DIFFICULTY: easy
+TITLE: Poll margin of error
+QUESTION:
+In a survey of 1,000 people, 60% said they would vote for Candidate A (and 40% for someone else). How can you compute a margin of error for the 60% estimate?
+HINT1:
+Model each respondent as a Bernoulli variable (1 = votes A). What are the mean and variance of the sample proportion?
+HINT2:
+The standard error of a sample proportion is $\sqrt{p(1-p)/N}$. A 95% confidence interval is roughly $\hat p\pm 2$ standard errors.
+ANSWER:
+About $\pm 3$ percentage points: $0.60\pm1.96\sqrt{0.6\cdot0.4/1000} = 0.60\pm0.030$ (quick rule: $\pm1/\sqrt N$).
+REFRESH:
+**Bernoulli variance.** If $X\in\{0,1\}$ with $P(X=1) = p$, then $\operatorname{Var}X = p(1-p)$.
+
+**Central limit theorem.** For i.i.d. $X_i$ with mean $\mu$ and variance $\sigma^2$, $\bar X$ is approximately $\mathcal N(\mu, \sigma^2/N)$ for large $N$; $P(|Z|\le1.96)=0.95$ for $Z\sim\mathcal N(0,1)$.
+EXPLANATION:
+The poll estimates the true proportion $p$ by the sample average of 1,000 yes/no answers. Its standard error is $\sqrt{p(1-p)/N}$, and a 95% interval extends about two standard errors either side. The handy mental shortcut: $p(1-p)$ is at most $\frac14$ and stays close to it for $p$ between 0.3 and 0.7, so two standard errors are about $2\sqrt{0.25/N} = 1/\sqrt N$. With $N = 1000$, $1/\sqrt{1000}\approx 1/31.6\approx 3\%$.
+SOLUTION: Standard error of a proportion
+Let $X_i = 1$ if respondent $i$ supports A, else 0, i.i.d. with $P(X_i=1) = p$ (random sampling from a large population). The estimator is $\hat p = \frac1N\sum_{i=1}^N X_i$. Then
+$$\mathbb{E}\hat p = p,\qquad \operatorname{Var}\hat p = \frac{1}{N^2}\sum_{i=1}^N\operatorname{Var}X_i = \frac{Np(1-p)}{N^2} = \frac{p(1-p)}{N},$$
+using independence and $\operatorname{Var}X_i = p(1-p)$. Plugging in $\hat p = 0.6$:
+$$\widehat{SE} = \sqrt{\frac{0.6\cdot0.4}{1000}} = \sqrt{0.00024}\approx 0.0155.$$
+By the CLT, a 95% confidence interval is
+$$\hat p \pm 1.96\,\widehat{SE} = 0.60\pm0.0304,$$
+i.e. about $[57\%, 63\%]$: a margin of error of roughly $\pm3$ points.
+
+**Shortcut.** Replace 1.96 by 2 and $p(1-p)$ by its maximum $\frac14$: margin $\approx 2\sqrt{\frac{1}{4N}} = \frac1{\sqrt N} = \frac{1}{\sqrt{1000}}\approx 0.032$. Useful facts: $\sqrt{1000}\approx 31.6$, $\sqrt{10{,}000} = 100$.
+===END===
+
+===TEASER===
+SLUG: disease-test-false-positives
+IDS: H4B-11
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: easy
+TITLE: Disease test false positives
+QUESTION:
+A disease affects 0.5% of the population. A test for it always returns positive if you have the disease; if you do not, it returns a (false) positive 7% of the time. A random stranger is tested and the result is positive. What is the probability that the stranger has the disease?
+HINT1:
+Compare how many people are true positives with how many are false positives in a large population.
+HINT2:
+Apply Bayes' rule: $P(D\mid +) = \dfrac{P(+\mid D)P(D)}{P(+\mid D)P(D) + P(+\mid D^c)P(D^c)}$.
+ANSWER:
+About $6.7\%$ ($\frac{0.005}{0.07465}\approx0.067$).
+REFRESH:
+**Bayes' rule with the law of total probability.**
+$$P(D\mid +) = \frac{P(+\mid D)P(D)}{P(+\mid D)P(D) + P(+\mid D^c)P(D^c)}.$$
+EXPLANATION:
+The disease is rare, and the false-positive rate is much larger than the prevalence. Out of 100,000 people, 500 are ill and all test positive, but among the 99,500 healthy people about 6,965 test positive too. A positive result therefore puts you in a group of about 7,465 people of whom only 500 are ill: about 1 in 15. The test raises the probability from 0.5% to 6.7%, a big relative jump, but a positive is still far more likely to be a false alarm. (Quick estimate: $0.005/0.075 \approx 6.7\%$.)
+SOLUTION: Bayes' rule
+Let $D$ = "has the disease", $+$ = "tests positive". Then $P(D) = 0.005$, $P(+\mid D) = 1$, $P(+\mid D^c) = 0.07$.
+$$P(+) = 1\cdot0.005 + 0.07\cdot0.995 = 0.005 + 0.06965 = 0.07465,$$
+$$P(D\mid +) = \frac{0.005}{0.07465}\approx 0.0670.$$
+So about 6.7%. (If the prevalence were only 0.05%, the same computation gives $\frac{0.0005}{0.0005 + 0.07\cdot 0.9995}\approx 0.0071$.)
+SOLUTION: Natural frequencies
+Take 100,000 people. Ill: 500, all positive. Healthy: 99,500, of whom $7\%$, i.e. 6,965, test positive. Positives: $500 + 6{,}965 = 7{,}465$, of whom 500 are ill:
+$$\frac{500}{7465}\approx 6.7\%.$$
+===END===
+
+===TEASER===
+SLUG: invest-20000-in-five-funds
+IDS: H4B-12
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Investing \$20,000 in five funds
+QUESTION:
+In how many different ways can you invest \$20,000 in five funds, in increments of \$1,000? (A fund may receive nothing.) For example, one way is (\$0; \$4,000; \$1,000; \$2,000; \$13,000).
+HINT1:
+You are distributing 20 identical units (the thousands) into 5 distinguishable boxes (the funds), with empty boxes allowed.
+HINT2:
+Represent an allocation as a row of 20 stars (units) and 4 bars (separators between funds). How many such rows are there?
+ANSWER:
+$\binom{24}{4} = 10{,}626$.
+REFRESH:
+**Stars and bars.** The number of ways to write $N = x_1+\dots+x_k$ with integers $x_i\ge0$ is $\binom{N+k-1}{k-1}$.
+EXPLANATION:
+Each allocation is a solution of $x_1 + x_2+x_3+x_4+x_5 = 20$ in non-negative integers ($x_i$ = thousands in fund $i$). Line up 20 stars and insert 4 bars; the stars before the first bar go to fund 1, between the first and second bar to fund 2, and so on. For example `*****|********||*******|` means (5, 8, 0, 7, 0). Every allocation corresponds to exactly one arrangement and vice versa, so you just choose which 4 of the 24 positions hold bars.
+SOLUTION: Stars and bars
+Allocations $\leftrightarrow$ sequences of 20 stars and 4 bars $\leftrightarrow$ choices of the 4 bar positions among 24:
+$$\binom{24}{4} = \frac{24\cdot23\cdot22\cdot21}{4\cdot3\cdot2\cdot1} = \frac{255{,}024}{24} = 10{,}626.$$
+In general, $N$ units into $k$ funds: $\binom{N+k-1}{k-1}$ ways. (Check with $k = 2$: $\binom{N+1}{1} = N+1$, namely $0,1,\dots,N$ in the first fund.)
+SOLUTION: Recursion over funds
+Let $A(N,k)$ be the number of ways to put $N$ units into $k$ funds. Fixing the amount $j$ in the last fund: $A(N,k) = \sum_{j=0}^N A(N-j,k-1)$ with $A(N,1) = 1$. Then $A(N,2) = N+1$, $A(N,3) = \sum_{j=0}^N (j+1) = \binom{N+2}{2}$, and by the hockey-stick identity $\sum_{m=0}^{N}\binom{m+k-2}{k-2} = \binom{N+k-1}{k-1}$ one gets $A(N,k) = \binom{N+k-1}{k-1}$ in general; for $N = 20$, $k = 5$ this is $\binom{24}{4} = 10{,}626$.
+===END===
+
+===TEASER===
+SLUG: chocolate-chips-100-cookies
+IDS: H4B-13
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: hard
+TITLE: Chocolate chips in 100 cookies
+QUESTION:
+You add $N$ chocolate chips at random to cookie dough, and the dough is split at random into 100 equal cookies (so each chip independently lands in each cookie with probability $\frac1{100}$). How many chips must you add so that, with probability at least 90%, every cookie contains at least one chip?
+HINT1:
+It is easier to compute the probability that *some* cookie is empty. The events "cookie $i$ is empty" overlap, so think inclusion–exclusion, or a good approximation.
+HINT2:
+$P(\text{a given set of } i \text{ cookies all empty}) = \left(1-\frac{i}{100}\right)^N$. For a quick estimate, treat the 100 cookies as independent: $P(\text{all non-empty})\approx\left[1-(0.99)^N\right]^{100}$, and solve for $N$.
+ANSWER:
+$683$ chips.
+REFRESH:
+**Inclusion–exclusion.** $P\left(\bigcup_{i=1}^k A_i\right) = \sum_{i=1}^k(-1)^{i+1}\sum_{j_1<\dots<j_i}P(A_{j_1}\cap\dots\cap A_{j_i})$.
+
+**Union bound.** $P\left(\bigcup A_i\right)\le\sum P(A_i)$.
+
+**Useful approximation.** $(1-\frac1k)^N\approx e^{-N/k}$.
+EXPLANATION:
+This is the coupon collector problem turned around: how many random draws among 100 "coupons" (cookies) until every one has been hit, with 90% confidence? The expected number of chips to cover every cookie is $100(1+\frac12+\dots+\frac1{100})\approx 519$, so a gut guess of about 500 is too low for 90% confidence (it gives only about 51%).
+
+The exact answer comes from inclusion–exclusion on the events "cookie $i$ is empty". But a very accurate shortcut is to pretend the cookies are independent: each is empty with probability $0.99^N\approx e^{-N/100}$, and we need $(1-0.99^N)^{100}\ge0.9$. The dependence between cookies is weak (it makes the true probability very slightly lower than the independent one), so this is almost exact. It leads to $N\approx 100\,[\ln 100 - \ln(-\ln 0.9)]\approx 100(4.605+2.250)\approx 686$, and the more precise versions give 683.
+SOLUTION: Inclusion–exclusion (exact)
+Let $A_i$ = "cookie $i$ gets no chip", $k=100$. A given set of $i$ cookies is chip-free iff every chip misses all of them, which has probability $\left(\frac{k-i}{k}\right)^N$ by independence of the chips. There are $\binom ki$ such sets, so
+$$P(\text{some cookie empty}) = \sum_{i=1}^{k}(-1)^{i+1}\binom ki\left(1-\frac ik\right)^N,$$
+$$P_N := P(\text{every cookie has a chip}) = \sum_{i=0}^{k}(-1)^{i}\binom{k}{i}\left(1-\frac ik\right)^N.$$
+Evaluating numerically for $k = 100$:
+- $N = 500$: $P_N\approx 0.512$.
+- $N = 682$: $P_N\approx 0.8995$.
+- $N = 683$: $P_N\approx 0.9005$.
+- $N = 916$: $P_N\approx 0.990$ (for 99% confidence).
+
+So the smallest $N$ with $P_N\ge 0.9$ is $\boxed{683}$.
+
+(Equivalently, one can compute $P_{k,N}$ by the recursion $P_{k,N} = P_{k,N-1} + P_{k-1,N-1}\left(\frac{k-1}{k}\right)^{N-1}$ with $P_{k,N} = 0$ for $N<k$ and $P_{1,N}=1$: the $N$-th chip completes the covering either because the first $N-1$ already covered everything, or because they covered exactly the other $k-1$ cookies and the $N$-th lands in the empty one. This avoids huge alternating sums.)
+SOLUTION: Approximations (by hand)
+**Independence approximation.** $P(A_i) = 0.99^N$. Treating the cookies as independent,
+$$P_N\approx\left(1 - 0.99^N\right)^{100}\ge 0.9 \iff 0.99^N\le 1-0.9^{1/100}\iff N\ge\frac{\ln\left(1-0.9^{0.01}\right)}{\ln 0.99}\approx 682.2,$$
+so $N = 683$, matching the exact answer.
+
+**Union bound (guaranteed sufficient).** $P(\text{some empty})\le 100\cdot0.99^N$, so $N$ with $100\cdot0.99^N\le0.1$ surely works: $N\ge\frac{\ln 0.001}{\ln0.99}\approx 687.3$, i.e. $688$ chips are certainly enough.
+
+**Closed-form estimate.** With $0.99^N\approx e^{-N/100}$ and $1-0.9^{1/100}\approx\frac{-\ln 0.9}{100}$:
+$$N\approx 100\left[\ln 100 - \ln(-\ln0.9)\right] = 100\,(4.605 + 2.250)\approx 686.$$
+All three bracket the exact answer, 683.
+===END===
+
+===TEASER===
+SLUG: pebble-in-four-boxes
+IDS: H4B-15
+SECTION: probability
+CATEGORY: Markov chains & random walks
+DIFFICULTY: easy
+TITLE: Pebble in four boxes
+QUESTION:
+Four boxes in a row are numbered 1 to 4, and a pebble starts in Box 1. Toss a fair coin: on heads move the pebble forward one box (to Box 2), on tails forward two boxes (to Box 3). Toss again: on heads move the pebble back to Box 1, on tails advance it to Box 4. If it reaches Box 4 the game is over; if it is back in Box 1, repeat with the same rules. What is the expected number of tosses to reach Box 4?
+HINT1:
+Look at the game in blocks of two tosses. What does the first toss of a block change about what happens on the second?
+HINT2:
+Each block of two tosses ends in Box 4 with probability $\frac12$ (second toss tails) and otherwise returns the pebble to Box 1. Write an equation for $E$.
+ANSWER:
+$4$ tosses.
+REFRESH:
+**Geometric distribution.** The number of independent trials until the first success, with success probability $s$, has mean $\frac1s$.
+EXPLANATION:
+The first toss of each round is irrelevant for the outcome: from Box 2 or Box 3 alike, the second toss sends the pebble to Box 4 (tails) or back to Box 1 (heads). So the game is a sequence of two-toss rounds, each ending the game with probability $\frac12$. The number of rounds is geometric with mean 2, and each round costs 2 tosses: $E = 4$.
+SOLUTION: First-step equation
+Let $E$ be the expected number of tosses from Box 1. After two tosses you are in Box 4 with probability $\frac12$, or back in Box 1 with probability $\frac12$:
+$$E = \tfrac12\cdot 2 + \tfrac12\,(2+E)\ \Rightarrow\ \tfrac12E = 2\ \Rightarrow\ E = 4.$$
+SOLUTION: Summing the series
+The game ends after exactly $2n$ tosses with probability $\left(\frac12\right)^n$ ($n-1$ failed rounds then a success), so
+$$E = \sum_{n=1}^\infty 2n\left(\tfrac12\right)^n = 2\sum_{n=1}^\infty \frac{n}{2^n} = 2\cdot 2 = 4,$$
+using $\sum_{n\ge1}n x^n = \frac{x}{(1-x)^2}$, which equals 2 at $x=\frac12$.
+===END===
+
+===TEASER===
+SLUG: broken-stick-longest-piece
+IDS: H4B-17, H4B-18
+SECTION: probability
+CATEGORY: Order statistics
+DIFFICULTY: hard
+TITLE: Expected longest broken-stick piece
+QUESTION:
+A stick of length 1 is broken at two points chosen independently and uniformly at random along it, giving three pieces. What is the expected length of the longest piece?
+HINT1:
+Find the distribution function of the longest piece $L$: $L\le l$ means *all three* pieces are at most $l$. Represent the three lengths as a point uniformly distributed on a triangle and compute areas.
+HINT2:
+Let the pieces be $(x, y, 1-x-y)$, uniform on the triangle $x,y\ge0$, $x+y\le1$ (area $\frac12$). The region $\{x\le l,\ y\le l,\ x+y\ge 1-l\}$ has a different shape for $l\ge\frac12$ and for $\frac13\le l\le\frac12$. Alternatively, compute $P(L>l)$ by inclusion–exclusion using $P(\text{a given piece} > l) = (1-l)^2$.
+ANSWER:
+$\mathbb{E}[L] = \dfrac{11}{18}\approx 0.611$.
+REFRESH:
+**Uniform spacings.** If two points are uniform on $[0,1]$, the three piece lengths $(X_1,X_2,X_3)$ are uniformly distributed on the simplex $\{x_i\ge0,\ \sum x_i=1\}$, and $P(X_1>a_1, X_2>a_2, X_3>a_3) = (1-a_1-a_2-a_3)^2$ when $\sum a_i\le1$.
+
+**Tail formula for expectation.** For $L\ge0$, $\mathbb{E}L = \int_0^\infty P(L>l)\,dl$.
+EXPLANATION:
+The three pieces are exchangeable and together make 1, so each has mean $\frac13$. The longest is at least $\frac13$ and typically quite a bit more. The clean way to see its distribution: a piece exceeds $l$ with probability $(1-l)^2$ (both break points must avoid a stretch of length $l$), and two pieces cannot both exceed $l$ when $l\ge\frac12$. For $l<\frac12$ two pieces can both be long, and inclusion–exclusion adds back the overlap $(1-2l)^2$.
+
+A neat general fact behind the answer: for $n$ pieces from $n-1$ uniform breaks, the expected $k$-th largest piece is $\frac1n\left(\frac1k + \frac1{k+1}+\dots+\frac1n\right)$. For $n = 3$: longest $\frac13(1+\frac12+\frac13) = \frac{11}{18}$, middle $\frac13(\frac12+\frac13) = \frac5{18}$, shortest $\frac13\cdot\frac13 = \frac19$.
+SOLUTION: Area method (distribution function of the longest piece)
+Let the pieces be $x$, $y$ and $1-x-y$; the point $(x,y)$ is uniform on the triangle $T = \{x,y\ge0, x+y\le1\}$ of area $\frac12$. (Taking the two uniform break points $U<V$, the pieces $(U, V-U, 1-V)$ are uniform on this simplex.) $L\le l$ iff $x\le l$, $y\le l$ and $x+y\ge1-l$.
+
+**Case $\frac12\le l\le1$.** The complement within $T$ consists of three disjoint corner triangles ($x>l$, $y>l$, or $x+y<1-l$), each with legs $1-l$ and area $\frac12(1-l)^2$. So
+$$F_L(l) = \frac{\frac12 - \frac32(1-l)^2}{\frac12} = 1-3(1-l)^2,\qquad f_L(l) = 6(1-l).$$
+**Case $\frac13\le l\le\frac12$.** The region is the small triangle with vertices $(l, 1-2l)$, $(1-2l, l)$, $(l,l)$: legs of length $l-(1-2l) = 3l-1$, area $\frac12(3l-1)^2$. So
+$$F_L(l) = (3l-1)^2,\qquad f_L(l) = 6(3l-1).$$
+(For $l<\frac13$, $F_L = 0$: the longest piece is at least $\frac13$.) Then
+$$\mathbb{E}L = \int_{1/3}^{1/2} 6l(3l-1)\,dl + \int_{1/2}^1 6l(1-l)\,dl = \Big[6l^3-3l^2\Big]_{1/3}^{1/2} + \Big[3l^2-2l^3\Big]_{1/2}^1.$$
+First bracket: $\left(\frac68-\frac34\right) - \left(\frac{6}{27}-\frac39\right) = 0 - \left(-\frac19\right) = \frac19$. Second bracket: $(3-2) - \left(\frac34-\frac14\right) = \frac12$. Hence
+$$\mathbb{E}L = \frac19+\frac12 = \frac{11}{18}.$$
+SOLUTION: Tail probabilities and inclusion–exclusion
+Let $A_i = \{X_i > l\}$. By the spacing formula $P(A_i) = (1-l)^2$, $P(A_i\cap A_j) = (1-2l)^2$ for $l\le\frac12$ (and 0 otherwise), and three pieces cannot all exceed $l\ge\frac13$. So
+$$P(L>l) = P\left(\textstyle\bigcup A_i\right) = 3(1-l)^2 - 3\,(1-2l)_+^2\quad\text{for } l\ge\tfrac13,$$
+and $P(L>l) = 1$ for $l<\frac13$. Therefore
+$$\mathbb{E}L = \int_0^1P(L>l)\,dl = \frac13 + 3\int_{1/3}^1(1-l)^2dl - 3\int_{1/3}^{1/2}(1-2l)^2dl.$$
+Compute: $3\int_{1/3}^1(1-l)^2dl = \left[-(1-l)^3\right]_{1/3}^1 = \left(\frac23\right)^3 = \frac{8}{27}$. For the second integral substitute $u = 1-2l$ (so $dl = -\frac{du}{2}$, and $u$ runs from $\frac13$ down to $0$): $3\int_{1/3}^{1/2}(1-2l)^2dl = \frac32\int_0^{1/3}u^2\,du = \frac32\cdot\frac{1}{81} = \frac{1}{54}$. So
+$$\mathbb{E}L = \frac13 + \frac{8}{27} - \frac1{54} = \frac{18 + 16 - 1}{54} = \frac{33}{54} = \frac{11}{18}.$$
+FOLLOWUP: Shortest and middle pieces
+Same broken stick. What is the expected length of the shortest piece? Of the middle piece?
+FOLLOWUP_ANSWER:
+**Shortest piece $S$.** $S>s$ iff all three pieces exceed $s$, which by the spacing formula has probability $(1-3s)^2$ for $0\le s\le\frac13$ (in the triangle picture: the inner triangle $x>s$, $y>s$, $x+y<1-s$ has legs $1-3s$). So $F_S(s) = 1-(1-3s)^2$, $f_S(s) = 6(1-3s)$, and
+$$\mathbb{E}S = \int_0^{1/3}(1-3s)^2ds = \left[-\frac{(1-3s)^3}{9}\right]_0^{1/3} = \frac19.$$
+**Middle piece $M$.** Since $S+M+L = 1$,
+$$\mathbb{E}M = 1 - \frac19 - \frac{11}{18} = \frac{18-2-11}{18} = \frac{5}{18}.$$
+(Consistent with the general formula $\frac13\left(\frac12+\frac13\right) = \frac5{18}$.)
+===END===

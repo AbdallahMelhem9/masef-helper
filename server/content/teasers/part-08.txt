@@ -1,0 +1,971 @@
+===TEASER===
+SLUG: why-itos-lemma-is-true
+IDS: R3S-51, R3S-52, R3S-53, R3S-54
+SECTION: probability
+CATEGORY: Brownian motion
+DIFFICULTY: hard
+TITLE: Why is Itô's lemma true?
+QUESTION:
+Why is Itô's lemma true? State it and give an (informal but convincing) argument for it.
+HINT1:
+Start from an ordinary second-order Taylor expansion of $f(t,X_t)$. In classical calculus the second-order terms disappear in the limit; ask yourself whether that is still true when the driving noise is a Brownian motion.
+HINT2:
+Over a small step $\Delta t$, the Brownian increment $\Delta W$ has size $\sqrt{\Delta t}$, not $\Delta t$. Compute the mean and variance of $\sum_i (\Delta W_i)^2$ over a partition of $[0,t]$ and see what it converges to; then decide which terms of the Taylor expansion survive.
+ANSWER:
+If $dX_t=\mu\,dt+\sigma\,dW_t$ and $f\in C^{1,2}$, then $df(t,X_t)=\big(f_t+\mu f_x+\tfrac12\sigma^2 f_{xx}\big)dt+\sigma f_x\,dW_t$; the extra $\tfrac12\sigma^2 f_{xx}$ term exists because Brownian motion has quadratic variation $(dW_t)^2=dt$.
+REFRESH:
+- **Taylor's theorem (order 2)**: $f(x+h)=f(x)+f'(x)h+\tfrac12 f''(\xi)h^2$ for some $\xi$ between $x$ and $x+h$ (for $f\in C^2$).
+- **Brownian motion**: $W_0=0$, continuous paths, independent increments, $W_t-W_s\sim\mathcal N(0,t-s)$. In particular $E[(\Delta W)^2]=\Delta t$ and $E[(\Delta W)^4]=3(\Delta t)^2$.
+- **Variance of a sum of independent variables** is the sum of the variances.
+- **Convergence in $L^2$**: $Y_n\to Y$ in $L^2$ if $E[(Y_n-Y)^2]\to 0$; it suffices that $E[Y_n]\to Y$ (constant) and $\mathrm{Var}(Y_n)\to 0$.
+EXPLANATION:
+**The statement.** Let $X_t$ be an Itô process, $dX_t=\mu(t,X_t)\,dt+\sigma(t,X_t)\,dW_t$, and let $f(t,x)$ be once continuously differentiable in $t$ and twice in $x$. Then $Y_t=f(t,X_t)$ satisfies
+$$dY_t=\frac{\partial f}{\partial t}\,dt+\frac{\partial f}{\partial x}\,dX_t+\frac12\frac{\partial^2 f}{\partial x^2}\,(dX_t)^2,$$
+and with the multiplication rules $(dW_t)^2=dt$, $dt\,dW_t=0$, $(dt)^2=0$,
+$$dY_t=\Big(f_t+\mu f_x+\tfrac12\sigma^2 f_{xx}\Big)dt+\sigma f_x\,dW_t .$$
+
+**Why there is an extra term.** Write the ordinary Taylor expansion:
+$$df=f_t\,dt+f_x\,dx+\tfrac12 f_{xx}\,(dx)^2+f_{tx}\,dt\,dx+\tfrac12 f_{tt}(dt)^2+\dots$$
+In classical calculus $x$ moves smoothly, so $dx$ is of order $dt$ and $(dx)^2$ is of order $(dt)^2$: summed over the $t/dt$ steps of $[0,t]$, such terms add up to something of order $dt\to 0$. They vanish, and we get the usual chain rule.
+
+A Brownian path is much rougher: over a step $dt$, the increment $dW$ has standard deviation $\sqrt{dt}$. So $(dW)^2$ is of order $dt$ — the *same* order as the drift term. Summed over $t/dt$ steps, the squared increments do **not** vanish; they add up to (almost exactly) $t$. That is the whole content of the rule "$(dW)^2=dt$": the sum of squared increments of Brownian motion (its *quadratic variation*) is deterministic and equal to elapsed time. Everything of higher order ($dt\,dW\sim dt^{3/2}$, $(dt)^2$, $(dW)^3\sim dt^{3/2}$) still disappears.
+
+So in the Taylor expansion, the second-order term $\tfrac12 f_{xx}(dX)^2$ survives, and since $(dX)^2=\sigma^2(dW)^2+(\text{negligible})=\sigma^2dt$, it contributes the famous $\tfrac12\sigma^2 f_{xx}\,dt$.
+
+**Why $(dW)^2=dt$ really holds.** Take a partition $0=t_0<t_1<\dots<t_n=t$ with mesh $\delta=\max_i\Delta t_i$ and let $Q_n=\sum_i(\Delta W_i)^2$. Then $E[Q_n]=\sum_i\Delta t_i=t$, and by independence
+$$\mathrm{Var}(Q_n)=\sum_i\mathrm{Var}\big((\Delta W_i)^2\big)=\sum_i\big(3(\Delta t_i)^2-(\Delta t_i)^2\big)=2\sum_i(\Delta t_i)^2\le 2\delta\,t\longrightarrow 0 .$$
+So $Q_n\to t$ in $L^2$: the random sum of squares becomes deterministic. By contrast $E\big[\sum_i\Delta t_i\,|\Delta W_i|\big]=\sum_i\Delta t_i\sqrt{2\Delta t_i/\pi}\le\sqrt{\delta}\,t$ and $\sum_i(\Delta t_i)^2\le\delta t$ both go to $0$, which is the meaning of $dt\,dW=0$ and $(dt)^2=0$.
+
+Interviewers usually want exactly this: Taylor expansion plus the order-of-magnitude argument that $(dW)^2$ behaves like $dt$.
+SOLUTION: Telescoping sum with a second-order Taylor expansion
+We prove the simplest case $Y_t=f(W_t)$ with $f\in C^2$ and $f''$ bounded (the general case $f(t,X_t)$ follows the same steps with more bookkeeping). Claim:
+$$f(W_t)=f(W_0)+\int_0^t f'(W_s)\,dW_s+\frac12\int_0^t f''(W_s)\,ds .$$
+
+**Step 1: telescoping.** Take a partition $0=t_0<\dots<t_n=t$ with mesh $\delta\to 0$, $\Delta W_i=W_{t_{i+1}}-W_{t_i}$. Then
+$$f(W_t)-f(W_0)=\sum_{i=0}^{n-1}\big[f(W_{t_{i+1}})-f(W_{t_i})\big].$$
+
+**Step 2: Taylor.** For each $i$ there is $\xi_i$ between $W_{t_i}$ and $W_{t_{i+1}}$ with
+$$f(W_{t_{i+1}})-f(W_{t_i})=f'(W_{t_i})\,\Delta W_i+\tfrac12 f''(\xi_i)(\Delta W_i)^2 .$$
+So $f(W_t)-f(W_0)=A_n+B_n+C_n$ with
+$$A_n=\sum_i f'(W_{t_i})\Delta W_i,\quad B_n=\tfrac12\sum_i f''(W_{t_i})(\Delta W_i)^2,\quad C_n=\tfrac12\sum_i\big[f''(\xi_i)-f''(W_{t_i})\big](\Delta W_i)^2 .$$
+
+**Step 3: first-order term.** $A_n$ is a Riemann-type sum with the integrand evaluated at the *left* endpoint; its limit is by definition the Itô integral $\int_0^t f'(W_s)\,dW_s$.
+
+**Step 4: second-order term.** Compare $B_n$ with the ordinary Riemann sum $\tfrac12\sum_i f''(W_{t_i})\Delta t_i\to\tfrac12\int_0^t f''(W_s)ds$. The difference is
+$$D_n=\tfrac12\sum_i g_i\,Z_i,\qquad g_i=f''(W_{t_i}),\quad Z_i=(\Delta W_i)^2-\Delta t_i .$$
+$Z_i$ is independent of $\mathcal F_{t_i}$ (hence of $g_i$) and has mean $0$ and variance $2(\Delta t_i)^2$. For $i<j$, $g_ig_jZ_i$ is $\mathcal F_{t_j}$-measurable and $E[Z_j\mid\mathcal F_{t_j}]=0$, so the cross terms vanish:
+$$E[D_n^2]=\tfrac14\sum_i E[g_i^2]\,E[Z_i^2]\le\tfrac14\|f''\|_\infty^2\sum_i 2(\Delta t_i)^2\le\tfrac12\|f''\|_\infty^2\,\delta\,t\to 0 .$$
+So $B_n\to\tfrac12\int_0^t f''(W_s)\,ds$ in $L^2$.
+
+**Step 5: the remainder.** $|C_n|\le\tfrac12\max_i|f''(\xi_i)-f''(W_{t_i})|\cdot\sum_i(\Delta W_i)^2$. The path $s\mapsto W_s$ is continuous on $[0,t]$, so the $\xi_i$ get uniformly close to $W_{t_i}$ and, $f''$ being uniformly continuous on the (bounded) range of the path, the max goes to $0$; meanwhile $\sum_i(\Delta W_i)^2\to t$ (quadratic variation, see the Explanation). Hence $C_n\to 0$ in probability.
+
+**Conclusion.** Letting $\delta\to0$,
+$$f(W_t)=f(W_0)+\int_0^t f'(W_s)\,dW_s+\frac12\int_0^t f''(W_s)\,ds,$$
+i.e. $d f(W_t)=f'(W_t)\,dW_t+\tfrac12 f''(W_t)\,dt$. For a general Itô process the same argument uses $\sum(\Delta X_i)^2\to\int_0^t\sigma^2(s,X_s)\,ds$ and adds the (harmless) $t$-derivative, giving
+$$dY_t=\Big(f_t+\mu f_x+\tfrac12\sigma^2 f_{xx}\Big)dt+\sigma f_x\,dW_t .$$
+SOLUTION: Check it exactly on f(x) = x², then extend
+For $f(x)=x^2$ the telescoping identity is exact, with no remainder:
+$$W_t^2=\sum_i\big(W_{t_{i+1}}^2-W_{t_i}^2\big)=\sum_i\big(2W_{t_i}\Delta W_i+(\Delta W_i)^2\big)=2\sum_iW_{t_i}\Delta W_i+\sum_i(\Delta W_i)^2 .$$
+(Use $b^2-a^2=2a(b-a)+(b-a)^2$.) As the mesh goes to $0$, the first sum converges to $2\int_0^tW_s\,dW_s$ and the second to $t$, so
+$$W_t^2=2\int_0^t W_s\,dW_s+t,\qquad\text{i.e.}\qquad d(W_t^2)=2W_t\,dW_t+dt .$$
+This is exactly Itô's formula with $f'=2x$, $f''=2$: the correction $\tfrac12 f''\,dt=dt$ is literally the quadratic variation. Sanity check: $E[W_t^2]=t$, and the Itô integral has mean $0$, so the $+t$ is forced — the classical chain rule $d(W^2)=2W\,dW$ would wrongly give $E[W_t^2]=0$.
+
+The same algebra gives the formula for every monomial $x^k$ (by induction, using the product rule $d(UV)=U\,dV+V\,dU+dU\,dV$), hence for every polynomial by linearity, and finally for every $C^2$ function by approximating $f,f',f''$ uniformly on compacts by polynomials.
+FOLLOWUP: The Itô isometry
+What is the Itô isometry? Prove that it holds for piecewise-constant (simple) integrands and then for continuous integrands.
+FOLLOWUP_ANSWER:
+**Statement.** For an adapted integrand $H$ with $E\int_0^T H_s^2\,ds<\infty$,
+$$E\Big[\Big(\int_0^T H_s\,dW_s\Big)^2\Big]=E\Big[\int_0^T H_s^2\,ds\Big].$$
+The map $H\mapsto\int H\,dW$ is an isometry from $L^2(\Omega\times[0,T])$ into $L^2(\Omega)$.
+
+**Simple integrands.** Let $H_s=\sum_{i=0}^{n-1}\xi_i\,\mathbf 1_{(t_i,t_{i+1}]}(s)$ with $\xi_i$ $\mathcal F_{t_i}$-measurable and square-integrable. Then $I=\int_0^T H\,dW=\sum_i\xi_i\Delta W_i$ and
+$$E[I^2]=\sum_i E[\xi_i^2(\Delta W_i)^2]+2\sum_{i<j}E[\xi_i\xi_j\Delta W_i\,\Delta W_j].$$
+Cross terms ($i<j$): $\xi_i\xi_j\Delta W_i$ is $\mathcal F_{t_j}$-measurable and $\Delta W_j$ is independent of $\mathcal F_{t_j}$ with mean $0$, so $E[\xi_i\xi_j\Delta W_i\Delta W_j]=E\big[\xi_i\xi_j\Delta W_i\,E[\Delta W_j\mid\mathcal F_{t_j}]\big]=0$. Diagonal terms: $E[\xi_i^2(\Delta W_i)^2]=E\big[\xi_i^2E[(\Delta W_i)^2\mid\mathcal F_{t_i}]\big]=E[\xi_i^2](t_{i+1}-t_i)$. Therefore
+$$E[I^2]=\sum_iE[\xi_i^2](t_{i+1}-t_i)=E\Big[\int_0^T H_s^2\,ds\Big].$$
+
+**Continuous integrands.** Let $H$ be adapted with continuous paths and (for simplicity) bounded, $|H|\le K$. Define simple approximations $H^{(n)}_s=H_{t_i}$ for $s\in(t_i,t_{i+1}]$ on partitions with mesh $\to0$. By path continuity $H^{(n)}_s\to H_s$ for every $s,\omega$, and $|H^{(n)}-H|^2\le 4K^2$, so by dominated convergence $E\int_0^T(H^{(n)}-H)^2ds\to0$. Applying the simple-case isometry to $H^{(n)}-H^{(m)}$ (which is simple),
+$$E\big[(I(H^{(n)})-I(H^{(m)}))^2\big]=E\int_0^T(H^{(n)}-H^{(m)})^2ds\to0,$$
+so $I(H^{(n)})$ is Cauchy in $L^2(\Omega)$ and converges; its limit is by definition $\int_0^T H\,dW$. Both sides of the isometry are continuous under these $L^2$ limits (norms converge when the elements converge), so
+$$E\Big[\Big(\int_0^TH\,dW\Big)^2\Big]=\lim_n E\big[I(H^{(n)})^2\big]=\lim_nE\int_0^T(H^{(n)})^2ds=E\int_0^TH^2ds .$$
+(Unbounded continuous $H$ with $E\int H^2<\infty$ is handled by truncating $H$ at level $K$ and letting $K\to\infty$.) Example: $E[(\int_0^TW_s\,dW_s)^2]=\int_0^Ts\,ds=T^2/2$.
+FOLLOWUP: Properties of the Itô integral
+What are some other properties of the Itô integral?
+FOLLOWUP_ANSWER:
+For adapted $H,K$ with $E\int_0^TH^2\,ds<\infty$ (and likewise $K$), with $I_t=\int_0^tH\,dW$:
+- **Linearity**: $\int(aH+bK)\,dW=a\int H\,dW+b\int K\,dW$, and additivity over intervals.
+- **Zero mean**: $E[I_t]=0$ (true for simple integrands since $E[\xi_i\Delta W_i]=E[\xi_iE[\Delta W_i\mid\mathcal F_{t_i}]]=0$, and it passes to the $L^2$ limit).
+- **Isometry and covariance**: $E[I_t^2]=E\int_0^tH^2ds$ and $E\big[\int H\,dW\int K\,dW\big]=E\int HK\,ds$ (polarisation).
+- **Martingale**: $t\mapsto I_t$ is a martingale with continuous paths (a genuine martingale under the $L^2$ condition, a local martingale in general).
+- **Quadratic variation**: $\langle I\rangle_t=\int_0^tH_s^2\,ds$, so $d I\,dI=H^2dt$; this is what makes Itô's formula work for Itô processes.
+- **Gaussian for deterministic integrands**: if $H=h(s)$ is deterministic, $\int_0^th(s)\,dW_s\sim\mathcal N\big(0,\int_0^th^2ds\big)$.
+- **Not a pathwise integral**: Brownian paths have infinite total variation, so $\int H\,dW$ is not a Riemann–Stieltjes integral path by path; it is an $L^2$ (or in-probability) limit, and the choice of the left endpoint matters. Evaluating at the midpoint gives the Stratonovich integral, which differs by $\tfrac12\langle H,W\rangle_t$ (e.g. $\int_0^tW\circ dW=W_t^2/2$ versus $\int_0^tW\,dW=(W_t^2-t)/2$).
+- **Non-anticipation**: the integrand must be adapted; this is what kills the cross terms and gives the martingale property.
+FOLLOWUP: What can we integrate against?
+What sorts of quantities can integrals be defined against?
+FOLLOWUP_ANSWER:
+- **Ordinary functions of $t$** (Riemann integral, $\int f(t)\,dt$).
+- **Functions of bounded variation** $g$: Riemann–Stieltjes $\int f\,dg$ for continuous $f$ (e.g. $g$ a CDF gives expectations $\int x\,dF(x)$); more generally **measures** via Lebesgue–Stieltjes integration. Pathwise, this covers any finite-variation process (e.g. $\int H_s\,dA_s$ with $A$ increasing, or a Poisson process $N$: $\int H\,dN=\sum_{\text{jumps}}H_{\tau_k}$).
+- **Rough deterministic paths**: Young integration works pathwise when the integrand and integrator are Hölder with exponents adding to more than $1$; rough-path theory goes beyond.
+- **Brownian motion**, and more generally **continuous (local) martingales** $M$: the Itô integral $\int H\,dM$ built by the $L^2$ procedure above with $dt$ replaced by $d\langle M\rangle_t$.
+- **Semimartingales** (local martingale plus finite-variation process, possibly with jumps): the most general class of "good integrators" — the Bichteler–Dellacherie theorem says these are exactly the processes for which a stochastic integral with reasonable continuity properties exists. All asset-price models used in no-arbitrage pricing are semimartingales, which is why the gains from trading $\int\theta\,dS$ make sense.
+===END===
+
+===TEASER===
+SLUG: two-bells-ring-together
+IDS: H1A-02
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Two bells
+QUESTION:
+There are two bells. One rings five times per minute, and the other rings four times per minute. If they start at the same time, how long will it be until they next ring together?
+HINT1:
+Don't multiply 4 by 5 on reflex. Convert each bell's rate into the time between two consecutive rings.
+HINT2:
+One bell rings every 12 seconds, the other every 15 seconds (assuming evenly spaced rings). You want the first positive time that is a multiple of both.
+ANSWER:
+One minute (60 seconds).
+REFRESH:
+- **Least common multiple**: the smallest positive integer divisible by both $a$ and $b$; $\mathrm{lcm}(a,b)=\dfrac{ab}{\gcd(a,b)}$.
+EXPLANATION:
+The tempting answer "20 minutes" comes from multiplying the two rates, which has no meaning here. What matters is the *period* of each bell. Ringing five times a minute at equal intervals means one ring every $60/5=12$ seconds; four times a minute means every $60/4=15$ seconds. The bells ring together exactly at times that are multiples of both 12 and 15 seconds, and the first such time is their least common multiple.
+SOLUTION: Least common multiple of the periods
+Assume each bell rings at equally spaced times and both ring at $t=0$.
+
+- Bell 1 rings at $t=0,12,24,36,48,60,\dots$ seconds.
+- Bell 2 rings at $t=0,15,30,45,60,\dots$ seconds.
+
+They coincide at the multiples of $\mathrm{lcm}(12,15)$. Since $12=2^2\cdot3$ and $15=3\cdot5$, $\mathrm{lcm}(12,15)=2^2\cdot3\cdot5=60$. The first common time after the start is $60$ seconds, i.e. **one minute**.
+
+(Quick check with rates: in one minute bell 1 completes exactly 5 periods and bell 2 exactly 4, both whole numbers, and no shorter time makes both counts whole since the periods 12 and 15 first align at 60.)
+===END===
+
+===TEASER===
+SLUG: sum-of-integers-1-to-100
+IDS: H1A-03, H1A-04
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Sum of 1 to 100
+QUESTION:
+What is the sum of the integers from 1 to 100?
+HINT1:
+Look at the first and last numbers of the list together, then the second and second-to-last.
+HINT2:
+Pair $1$ with $100$, $2$ with $99$, and so on. How many pairs are there, and what does each pair add up to?
+ANSWER:
+$5{,}050$
+REFRESH:
+NONE
+EXPLANATION:
+Adding 100 numbers one by one is slow; the trick is that the list is symmetric. Reading it forwards and backwards at the same time, each forward term plus the matching backward term is always $101$: $1+100=2+99=3+98=\dots=101$. So the total is "number of pairs times 101". This is Gauss's classic schoolboy trick, and it gives the general formula $1+2+\dots+n=\frac{n(n+1)}{2}$.
+
+Mental arithmetic tip: one of $n$ and $n+1$ is even; halve it and multiply by the other ($\frac{100}{2}\times101=50\times101=5050$).
+SOLUTION: Pairing the ends
+Write $S=1+2+\dots+100$. Group the terms in pairs $(1,100),(2,99),\dots,(50,51)$. Each pair sums to $101$, and there are $100/2=50$ pairs, so
+$$S=50\times101=5{,}050 .$$
+SOLUTION: Reverse and add
+Write the sum twice, once reversed:
+$$\begin{aligned}S&=1+2+\dots+99+100\\ S&=100+99+\dots+2+1\end{aligned}$$
+Adding column by column, each of the $100$ columns sums to $101$, so $2S=100\times101$ and $S=\frac{100\times101}{2}=5{,}050$.
+SOLUTION: Marble triangle
+Represent the number $i$ as a row of $i$ marbles and stack the rows $1,\dots,100$: you get a triangle that is the lower half of a $100\times100$ square, *including* the diagonal. Two such triangles cover the square with the diagonal counted twice: $2S=100^2+100$. Hence $S=\frac{10{,}000+100}{2}=5{,}050$.
+FOLLOWUP: Sum of 1 to n
+More generally, what is the sum of the integers from $1$ to $n$?
+FOLLOWUP_ANSWER:
+$$1+2+\dots+n=\frac{n(n+1)}{2}.$$
+Reverse-and-add: writing $S=1+\dots+n$ above $S=n+\dots+1$, each of the $n$ columns sums to $n+1$, so $2S=n(n+1)$. Check by induction: true for $n=1$, and if $S_n=\frac{n(n+1)}{2}$ then $S_{n+1}=\frac{n(n+1)}{2}+(n+1)=\frac{(n+1)(n+2)}{2}$.
+===END===
+
+===TEASER===
+SLUG: circle-in-square-corner-rectangle
+IDS: H1A-07
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Inscribed circle and rectangle
+QUESTION:
+A circle is inscribed in a square, touching all four sides. There is exactly enough room to fit a $5\times10$ rectangle into one corner of the square so that the rectangle just touches the circle.
+
+Figure (described): a square of side $S$ with its inscribed circle. In the top-right corner sits a rectangle whose top and right sides lie along the square's sides; it is 10 wide (along the top edge) and 5 tall. Its lower-left corner touches the circle.
+
+What is the side length of the square?
+HINT1:
+Call the circle's radius $R$ (so the square has side $2R$) and look at the corner of the rectangle that touches the circle. How far is it from the centre?
+HINT2:
+Draw the right triangle from the circle's centre to that corner of the rectangle. Express its horizontal and vertical legs in terms of $R$, and use Pythagoras with hypotenuse $R$.
+ANSWER:
+The square has side $50$ (radius $25$).
+REFRESH:
+- **Quadratic formula**: $ax^2+bx+c=0\Rightarrow x=\dfrac{-b\pm\sqrt{b^2-4ac}}{2a}$.
+EXPLANATION:
+Put the origin at the centre of the circle. The top-right corner of the square is at $(R,R)$. The rectangle occupies the region from the top-right corner going 10 left and 5 down, so its inner corner (the one touching the circle) is at $(R-10,\,R-5)$. "Just touches the circle" means this point lies on the circle, i.e. at distance $R$ from the centre. That gives one equation in one unknown. It is quadratic and has two roots; only one matches the picture.
+SOLUTION: Pythagoras from the centre
+The touching corner is at $(R-10,R-5)$ relative to the centre, so
+$$R^2=(R-10)^2+(R-5)^2=R^2-20R+100+R^2-10R+25 .$$
+Simplifying: $0=R^2-30R+125$, so
+$$R=\frac{30\pm\sqrt{900-500}}{2}=\frac{30\pm20}{2}\in\{5,\,25\}.$$
+Reject $R=5$: then the square has side $10$, the rectangle's inner corner is at $(-5,0)$, on the far side of the circle — the rectangle would span the whole width of the square and overlap the circle, which is not the picture. So $R=25$ and the side is $S=2R=\mathbf{50}$.
+
+Check: the corner is at $(15,20)$ from the centre and $\sqrt{15^2+20^2}=25=R$. ✓
+===END===
+
+===TEASER===
+SLUG: continuing-the-male-line
+IDS: H1A-09
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: Continuing the male line
+QUESTION:
+A mythical city contains 100,000 married couples but no children. Each family wishes to "continue the male line", but they do not wish to over-populate. So each family has one baby per year until the arrival of the first boy. For example, if (at some future date) a family has five children, then either they are all girls and another child is planned, or there are four girls and one boy and no more children are planned. Assume that children are equally likely to be born male or female.
+
+Let $p(t)$ be the percentage of *children* that are male at the end of year $t$. How is this percentage expected to evolve through time?
+HINT1:
+Forget the families for a moment and look at the individual births. Does the stopping rule change the sex of any single baby?
+HINT2:
+In each year, compute the expected number of boys and the expected number of girls born that year among the families still trying.
+ANSWER:
+It stays at 50% in every year: stopping rules cannot change the fact that each birth is a fair coin flip.
+REFRESH:
+- **Linearity of expectation**: $E[X+Y]=E[X]+E[Y]$ for any random variables, independent or not.
+- **Geometric series derivative**: $\sum_{k\ge1}kq^{k-1}=\frac{1}{(1-q)^2}$ for $|q|<1$, so $\sum_{k\ge1}k\,2^{-k}=\tfrac12\cdot\frac1{(1/2)^2}=2$.
+EXPLANATION:
+Many people expect a surplus of girls, picturing big families with many daughters and one son. But the rule only decides *whether* a family has another baby, never *what sex* the baby is. Every birth that happens is an independent 50/50 event, so each year the births are, in expectation, half boys and half girls — and so are the cumulative totals.
+
+The "big families with many girls" intuition fails because big families are rare: half of the families stop after one child (a boy), a quarter after two, and so on. The average family size is only $\sum_k k/2^k=2$ children: one boy and, on average, one girl.
+SOLUTION: Year-by-year expected counts
+Let $N=100{,}000$. In year 1 every family has a baby: expected $N/2$ boys and $N/2$ girls. The $N/2$ families that had a girl continue.
+
+In year 2 those $N/2$ families have a baby: expected $N/4$ boys and $N/4$ girls. In general, in year $t$ the number of families still trying is expected to be $N/2^{t-1}$, and they produce $N/2^t$ boys and $N/2^t$ girls in expectation.
+
+Cumulative expected totals at the end of year $t$:
+$$E[\text{boys}]=E[\text{girls}]=N\Big(\tfrac12+\tfrac14+\dots+\tfrac1{2^t}\Big)=N\big(1-2^{-t}\big).$$
+So the expected numbers of boys and girls are equal at all times and $p(t)$ is expected to stay at **50%** forever (e.g. $50{,}000/50{,}000$ after year 1, $75{,}000/75{,}000$ after year 2).
+
+Note (fine print): strictly, the *ratio* of expected counts is exactly $1/2$; the expectation of the random ratio $\text{boys}/\text{children}$ differs from $1/2$ by an amount of order $1/N$ (about $10^{-6}$ here) because a ratio is a nonlinear function of the counts. For 100,000 families this is invisible, and the intended answer is 50%.
+SOLUTION: Births as fair coin flips
+Line up every birth in the city in the order they occur. Each birth is a fair coin flip independent of all previous ones: the families' rule looks only at the *past* to decide whether a flip happens, and never influences its outcome. For any sequence of fair flips where the decision to flip again depends only on past results, the expected number of heads equals the expected number of tails (each flip contributes $\tfrac12$ to both, by linearity of expectation). Hence at every date expected boys $=$ expected girls, and $p(t)\approx50\%$.
+===END===
+
+===TEASER===
+SLUG: apples-by-truck
+IDS: H1A-11
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: hard
+TITLE: Delivering apples by truck
+QUESTION:
+Two cities, A and B, are 1,000 miles apart. You have 3,000 apples at City A and want to deliver as many as possible to City B. The only delivery method is a truck, which holds at most 1,000 apples. If there are any apples at all in the truck, the hungry driver eats one apple for every mile he drives. What is the maximum number of apples you can deliver from A to B? You may stop part way, dump some apples at the roadside, and come back for them later.
+HINT1:
+Driving straight to B with a full truck delivers nothing. Think of apples as fuel: how many apples per mile are you "burning" while you have more than 2,000, between 1,000 and 2,000, and at most 1,000 apples left to move?
+HINT2:
+While there are more than 2,000 apples to move forward, every mile must be driven loaded three times, costing 3 apples per mile. Find where the stock drops to exactly 2,000 and dump there; then repeat with two loads (2 apples per mile) until 1,000 remain.
+ANSWER:
+833 apples (the continuous optimum is $833\tfrac13$).
+REFRESH:
+- **Ceiling function**: $\lceil x\rceil$ is the smallest integer $\ge x$; moving $a$ apples past a point with a 1,000-apple truck needs at least $\lceil a/1000\rceil$ loaded passes.
+EXPLANATION:
+The driver only eats when the truck contains apples; returning empty is free. So the cost of moving apples forward over one mile is one apple *per loaded pass* over that mile. If you want to push $a$ apples past a given mile, you need at least $\lceil a/1000\rceil$ loaded passes, so that mile costs at least $\lceil a/1000\rceil$ apples.
+
+Therefore you want to reduce the number of loads as fast as possible: with 3,000 apples you pay 3 per mile, but as soon as the stock falls to 2,000 you pay only 2 per mile, and once it is 1,000 you pay 1 per mile. Going from 3,000 to 2,000 at 3 per mile takes $1000/3\approx333$ miles; from 2,000 to 1,000 at 2 per mile takes $500$ miles; the remaining $1000-333\tfrac13-500=166\tfrac23$ miles cost 1 per mile. What arrives is $1000-166\tfrac23=833\tfrac13$, or 833 whole apples.
+
+(The same logic with $N$ thousand apples gives stages of length $1000/N,1000/(N-1),\dots$; for large $N$ the delivered fraction tends to $1/e\approx36.8\%$. With $N=3$ you get $27.8\%$.)
+SOLUTION: Staged dumps (construction)
+**Stage 1 (3 loads).** Make three runs from A, each with 1,000 apples, to the 333-mile marker, dumping what is left each time and returning empty. Each run loses 333 apples, so the pile there is $3\times(1000-333)=2{,}001$ apples.
+
+**Stage 2 (2 loads).** Leave one apple behind and move 2,000 apples in two runs of 1,000, each driving 500 miles to the 833-mile marker: each run loses 500, so the pile there is $2\times500=1{,}000$.
+
+**Stage 3 (1 load).** Drive the 1,000 apples the remaining $1000-833=167$ miles to B, losing 167. Delivered: $1000-167=\mathbf{833}$ apples.
+
+(Dumping at mile 334 in stage 1 gives $1{,}998$ apples; moving them 499 miles in two loads leaves $1{,}000$ at mile 833 again, so the answer is also 833.)
+SOLUTION: Upper bound (why you cannot beat 833⅓)
+Let $a(x)$ be the number of apples that are eventually carried forward past mile $x$. To carry $a(x)$ apples past $x$ with a 1,000-capacity truck, the truck must cross the small segment $[x,x+dx]$ loaded at least $\lceil a(x)/1000\rceil$ times, each crossing costing $dx$ apples. So
+$$\frac{da}{dx}\le-\Big\lceil\frac{a(x)}{1000}\Big\rceil,\qquad a(0)\le3000 .$$
+- While $2000<a\le3000$: $a$ falls at rate $\ge3$, so $a$ reaches $2000$ by mile $x_1\le\frac{1000}{3}$.
+- While $1000<a\le2000$: rate $\ge2$, so $a$ reaches $1000$ by mile $x_2\le x_1+\frac{1000}{2}\le833\tfrac13$.
+- Afterwards rate $\ge1$, so $a(1000)\le1000-(1000-x_2)=x_2\le833\tfrac13$.
+
+Hence no strategy delivers more than $833\tfrac13$ apples; with whole apples the maximum is **833**, achieved by the construction above.
+===END===
+
+===TEASER===
+SLUG: clock-hands-coincide-after-3pm
+IDS: H1A-13
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Clock hands coincide after 3PM
+QUESTION:
+What is the first time after 3PM when the hour and minute hands of a clock are exactly on top of each other?
+HINT1:
+Measure both hands in degrees from 12 o'clock and write down how fast each one moves.
+HINT2:
+The minute hand moves at $6^\circ$ per minute and the hour hand at $0.5^\circ$ per minute. At 3:00 the hour hand is $90^\circ$ ahead; how long does the minute hand take to close that gap at the relative speed?
+ANSWER:
+At $3{:}16\tfrac{4}{11}$, i.e. about 3:16:21.8 PM.
+REFRESH:
+NONE
+EXPLANATION:
+This is a chase problem. At 3:00 the minute hand points at 12 and the hour hand at 3, i.e. $90^\circ$ ahead. The minute hand gains on the hour hand at $6-0.5=5.5^\circ$ per minute, so it catches up after $90/5.5$ minutes, a little more than 16 minutes. Slicker view: between noon and midnight the hands coincide 11 times, equally spaced, so every $\frac{12}{11}$ hours; the third coincidence after noon is at $3\times\frac{12}{11}$ hours.
+SOLUTION: Relative speed
+Minute hand: $360^\circ/60=6^\circ$ per minute. Hour hand: $30^\circ/60=0.5^\circ$ per minute. At 3:00 the gap is $90^\circ$ and closes at $5.5^\circ$ per minute:
+$$t=\frac{90}{5.5}=\frac{180}{11}=16\tfrac{4}{11}\ \text{minutes}.$$
+$\frac4{11}$ of a minute is $\frac{240}{11}\approx21.82$ seconds, so the hands coincide at about **3:16:21.8 PM**.
+SOLUTION: Eleven equally spaced meetings
+The hands coincide at 12:00 and next at 12:00 twelve hours later. In 12 hours the minute hand makes 12 turns and the hour hand 1, so the minute hand laps the hour hand $12-1=11$ times; by constant speeds these meetings are equally spaced, every $\frac{12}{11}$ hours $=65\tfrac5{11}$ minutes. The meetings are at $k\cdot\frac{12}{11}$ hours after noon; the first one after 3PM is $k=3$:
+$$3\cdot\frac{12}{11}\ \text{h}=\frac{36}{11}\ \text{h}=3\ \text{h}\ 16\tfrac4{11}\ \text{min}\approx3{:}16{:}21.82 .$$
+===END===
+
+===TEASER===
+SLUG: light-bulb-64-and-perfect-squares
+IDS: H1A-14, H1A-15
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Light bulb 64
+QUESTION:
+There are 100 light bulbs in a row, numbered 1 to 100, each with its own switch and all currently off. 100 stockbrokers, numbered 1 to 100, pass through the room one at a time. Broker 1 switches on every bulb. Broker 2 flips the switch of every second bulb (2, 4, 6, …). Broker 3 flips every third bulb (3, 6, 9, …), and so on, until all 100 brokers have passed through.
+
+What is the final state of bulb number 64: illuminated or dark?
+HINT1:
+Which brokers touch bulb 64's switch at all?
+HINT2:
+Broker $k$ flips bulb 64 exactly when $k$ divides 64. Count the divisors of 64 and think about what an odd or even number of flips does to a bulb that starts off.
+ANSWER:
+Bulb 64 is on (illuminated): it is flipped 7 times.
+REFRESH:
+- **Number of divisors**: if $n=p_1^{e_1}\cdots p_r^{e_r}$ then $n$ has $(e_1+1)\cdots(e_r+1)$ positive divisors.
+EXPLANATION:
+A bulb's final state depends only on how many times its switch is flipped: it starts off, so an odd number of flips leaves it on and an even number leaves it off. Broker $k$ touches bulb $n$ exactly when $k$ divides $n$, so the number of flips is the number of divisors of $n$. For $64=2^6$ the divisors are $1,2,4,8,16,32,64$: seven of them.
+SOLUTION: Count the divisors
+The brokers who flip bulb 64 are those whose number divides 64: $1,2,4,8,16,32,64$ (all at most 100). That is $7$ flips (equivalently, $64=2^6$ has $6+1=7$ divisors). Starting from off, after an odd number of flips the bulb is **on**.
+FOLLOWUP: Which bulbs are lit?
+Same set-up. How many of the 100 bulbs are illuminated after the 100th broker has passed through, and which are they?
+FOLLOWUP_ANSWER:
+Bulb $n$ ends up on iff $n$ has an odd number of divisors. Divisors come in pairs $(d,\,n/d)$; the pairs are distinct except when $d=n/d$, i.e. $d=\sqrt n$. So the number of divisors is odd exactly when $n$ is a perfect square (e.g. $32$: pairs $(1,32),(2,16),(4,8)$, six divisors, off; $64$: $(1,64),(2,32),(4,16),(8,8)$, seven divisors, on). Between 1 and 100 the perfect squares are $1,4,9,16,25,36,49,64,81,100$: **10 bulbs are lit**, the perfect squares.
+===END===
+
+===TEASER===
+SLUG: race-to-50
+IDS: H1A-17
+SECTION: brainteaser
+CATEGORY: Strategy & games
+DIFFICULTY: easy
+TITLE: Race to 50
+QUESTION:
+Two players take turns calling out integers; the first to call out "50" wins. Rules:
+
+1. The player who starts must call out an integer between 1 and 10 inclusive.
+2. Each new number must exceed the most recently called number by at least 1 and at most 10. (For example, if the first player calls 9, the opponent may call anything from 10 to 19.)
+
+Do you want to go first, and if so, what is your strategy?
+HINT1:
+Work backwards from 50. Which number, if you call it, guarantees that your opponent cannot reach 50 but you can next turn?
+HINT2:
+If you call 39, the opponent must call something in $40..49$ and you then call 50. So 39 is a "winning" number. Now ask the same question with 39 as the target, and repeat.
+ANSWER:
+Go first and call 6; then always call the next number of the sequence 17, 28, 39, 50.
+REFRESH:
+NONE
+EXPLANATION:
+Whatever number $m$ your opponent calls, you can respond with any number from $m+1$ to $m+10$. So if you have just called $k$, the opponent's reply lies in $k+1..k+10$, and from there you can always reach exactly $k+11$ (it is at least 1 and at most 10 above any reply). Hence calling a number means you can force the number 11 higher on your next turn. The winning positions are therefore $50,\,39,\,28,\,17,\,6$ — all numbers congruent to $6$ modulo $11$. Since 6 is a legal opening call, the first player wins by opening with 6 and then always "completing to 11".
+SOLUTION: Backward induction
+Call a number *safe* if the player who calls it can force a win.
+
+- $50$ is safe (it wins).
+- $39$ is safe: after 39 the opponent must call $40..49$, and from any of these you can call 50.
+- From $28$ the opponent cannot reach 39 (their options are $29..38$), and from any of $29..38$ you can call 39. So $28$ is safe. Likewise $17$ and $6$.
+
+So the safe numbers are $6,17,28,39,50$ (step 11). Go **first** and call **6**. Whatever the opponent calls ($7..16$), call 17; whatever they call next ($18..27$), call 28; then 39; then 50. The opponent can never land on a safe number, because from a safe number $k$ their reply is at most $k+10<k+11$. If you opened with anything other than 6 (i.e. $1..5$ or $7..10$), your opponent could call 6 or 17 and take over the winning sequence.
+===END===
+
+===TEASER===
+SLUG: cracking-the-safe
+IDS: H1A-18
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: medium
+TITLE: Cracking the safe
+QUESTION:
+You must open a safe without knowing the combination. Starting with the dial at zero, you turn it counter-clockwise to the first combination number (then clockwise back to zero), clockwise to the second number (then counter-clockwise back to zero), and counter-clockwise again to the third and final number, whereupon the door immediately springs open — there is no handle or key to turn. The dial has numbers from 0 to 40, and 0 is not one of the combination numbers.
+
+Without knowing the combination, what is the maximum number of trials required to open the safe (one trial = one attempt at a full three-number combination)?
+HINT1:
+The naive count is $40^3$. Read the mechanics again: what happens during the last turn of the dial?
+HINT2:
+The door springs open *the moment* the dial reaches the third number. So on the last turn you can simply sweep the whole dial. How many numbers do you actually have to guess?
+ANSWER:
+At most $40^2=1{,}600$ trials (fewer than 200 if the lock tolerates being one number off).
+REFRESH:
+- **Multiplication principle**: if one choice has $m$ options and a second choice has $n$ options, there are $mn$ combined choices.
+EXPLANATION:
+Each combination number is one of $1,\dots,40$, so there are $40^3=64{,}000$ combinations, but you don't need to try them all. Because the door opens as soon as the dial reaches the correct third number, a single trial can test all 40 third numbers at once: after dialling a candidate first and second number, just keep turning counter-clockwise through the full dial. Only the first two numbers need guessing, giving $40\times40=1{,}600$ trials.
+
+The interviewer may push further with a real-world fact: mechanical locks have tolerance, so dialling within $\pm1$ of the true number usually works. Then testing every third number covers the dial with $\lceil40/3\rceil=14$ values per number, and $14^2=196$ trials suffice.
+SOLUTION: Only the first two numbers matter
+1. Possible values for each number: $1,2,\dots,40$ (zero excluded), i.e. 40 values.
+2. For a guess $(a,b)$ of the first two numbers: turn counter-clockwise to $a$, back to zero, clockwise to $b$, back to zero, then turn counter-clockwise all the way around. If $(a,b)$ is correct, the door opens when the dial passes the true third number; if it doesn't open during the full sweep, $(a,b)$ is wrong.
+3. So one trial tests one pair $(a,b)$ against every possible third number, and in the worst case you try all $40\times40=\mathbf{1{,}600}$ pairs.
+4. With a $\pm1$ mechanical tolerance, the 14 test values $2,5,8,\dots,38$ and $40$ cover every number from 1 to 40, so at most $14^2=196$ trials are needed.
+===END===
+
+===TEASER===
+SLUG: ninety-coins-balance-weighing
+IDS: H1A-19, H1A-20, H1A-21
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: hard
+TITLE: Ninety coins, 100 dollars per weighing
+QUESTION:
+You have an old-fashioned balance scale (two dishes; it tells you whether the contents weigh the same or which side is heavier) and 90 coins that look identical. 89 are identical and one has a different weight — it may be heavier or lighter. Each use of the scale costs \$100.
+
+You must identify the unusual coin **and** say whether it is heavy or light, minimising the maximum possible cost. What is your algorithm, and what is the most it can cost?
+HINT1:
+Start with a counting bound: how many possible answers are there, and how many different outcomes can $k$ weighings produce?
+HINT2:
+There are $90\times2=180$ possible answers and each weighing has 3 outcomes, so compare 180 with $3^4$. For the construction, split $90=81+9$ and use the fact that a group of $3^k$ coins containing a bad coin of *known* direction needs only $k$ weighings.
+ANSWER:
+Five weighings, so at most \$500.
+REFRESH:
+- **Ternary search**: if a group of $3^k$ coins contains one coin known to be heavy, split it into three groups of $3^{k-1}$ and weigh two of them; the outcome tells you which third contains it. So $k$ weighings suffice.
+- **Counting (information) bound**: $k$ weighings have at most $3^k$ outcome sequences, so they can distinguish at most $3^k$ cases.
+EXPLANATION:
+The answer is a pair (which coin, heavy or light): $180$ possibilities. Each weighing has only three outcomes (left heavy, balance, right heavy), so four weighings distinguish at most $3^4=81$ cases: **four is impossible, at least five weighings are needed.**
+
+Five is achievable because $3^5=243\ge180$, and a concrete scheme exists. The key facts are: (i) once you know the direction (heavy or light) of the bad coin, a group of $3^k$ coins is solved in $k$ weighings by ternary search; (ii) two weighings among three equal groups tell you which group holds the bad coin *and* in which direction. Split $90=81+9$ and use (ii) on the 81 as three groups of 27. (A known general result: with $n$ weighings you can handle up to $\frac{3^n-3}{2}$ coins when you must also give the direction and have no extra known-good coin; $n=4$ gives $39<90$, $n=5$ gives $120\ge90$.)
+SOLUTION: Split 90 = 81 + 9 (three groups of 27 plus nine)
+Groups: $A,B,C$ of 27 coins each and $D$ of 9 coins.
+
+**Weighings 1 and 2:** $A$ vs $B$, then $A$ vs $C$.
+- Both balance: $A,B,C$ are all good (81 known good coins), so the bad coin is in $D$.
+- 1st balances, 2nd tips: $A$ and $B$ are good, so the bad coin is in $C$; it is heavy if $C$'s side went down, light otherwise.
+- 1st tips, 2nd balances: $A=C$ so $A$ is good, and the bad coin is in $B$, with direction read off the first weighing.
+- Both tip: the bad coin must be in $A$ (if it were in $B$ the 2nd would balance; if in $C$ the 1st would balance); the two tips point the same way and tell you whether it is heavy or light.
+
+**If the bad coin is in a group of 27 with known direction:** ternary search $27\to9\to3\to1$ takes **3** more weighings (9 vs 9 among the 27, balance meaning the third 9; then 3 vs 3; then 1 vs 1). Total $2+3=5$.
+
+**If the bad coin is in $D$:** weighing 3 is $D$ vs 9 good coins; it must tip, and tells you heavy or light. Then ternary search on 9 coins takes **2** more weighings. Total $2+1+2=5$.
+
+**Lower bound:** $180$ possible answers $>3^4=81$ outcome sequences, so no strategy guarantees success in 4 weighings.
+
+Hence the minimal maximum is **5 weighings, i.e. \$500**.
+SOLUTION: Groups of 30, then reduce to the 12-coin problem
+Split into three groups of 30 and weigh two of them (weighing 1).
+
+- **Balance:** the bad coin is among the other 30 (direction unknown) and we have 60 good coins. Weighing 2: 10 of those 30 vs 10 others of them. If balanced, the bad coin is among the remaining 10 (unknown direction): add 2 good coins and solve the classic 12-coin problem in 3 weighings. If not balanced, we have 10 "possibly heavy" coins ($10\downarrow$) and 10 "possibly light" coins ($10\uparrow$).
+- **Tip:** we have $30\downarrow$ (heavy side) and $30\uparrow$ (light side). Weighing 2: set aside $10\downarrow$ and $10\uparrow$; of the remaining coins, leave 10 heavy-side and 10 light-side coins where they were and swap the other 10 of each to the opposite dish. Balance means the set-aside coins hold the bad one; the same tilt means the unmoved coins do; a reversed tilt means the swapped coins do. In every case one group of $10\downarrow$ and one of $10\uparrow$ remain, all other coins good.
+
+**Solving $10\downarrow$, $10\uparrow$ in 3 more weighings:** weigh $\{3\uparrow,4\downarrow\}$ vs $\{3\downarrow,4\uparrow\}$, holding out $3\uparrow,3\downarrow$. Balance leaves the held-out $3\uparrow,3\downarrow$; if the left side goes up it leaves the left $3\uparrow$ and right $3\downarrow$; if the left side goes down it leaves the left $4\downarrow$ and right $4\uparrow$. At most 8 candidates remain, each with a known possible direction, and 8 such candidates can be resolved in 2 weighings (e.g. for $4\downarrow,4\uparrow$: weigh $\{2\downarrow,1\uparrow\}$ vs $\{1\downarrow,1\uparrow,\text{good}\}$ holding out $1\downarrow,2\uparrow$; each outcome leaves at most 3 candidates, and one last weighing, using good coins, settles them). Total $2+3=5$ weighings.
+
+Either way the cost is at most **\$500**.
+FOLLOWUP: Minimising the expected cost instead
+Suppose instead you want to minimise the *expected* cost of weighing (each coin equally likely to be the bad one, heavy or light equally likely). How would you approach it, and is it the same problem?
+FOLLOWUP_ANSWER:
+It is a different objective: a minimax strategy may be poor on average, and an average-optimal strategy may accept a worse worst case. Here the 81+9 strategy always uses exactly 5 weighings, so its expected cost is \$500; you can do better on average by designing each weighing so its three outcomes are as close to equally likely as possible and stopping as soon as the answer is determined, so that some cases finish after 4 weighings.
+
+A lower bound: any strategy is a ternary decision tree with 180 equally likely leaves (coin, direction). With $x$ leaves at depth 4 and the other $180-x$ at depth 5, the depth-4 level has room for $x+\lceil(180-x)/3\rceil\le3^4=81$ nodes, which allows at most $x=31$. So the smallest possible average number of weighings is $\frac{31\times4+149\times5}{180}=\frac{869}{180}\approx4.83$, i.e. an expected cost of at least about **\$483**. Well-balanced strategies can approach this bound without ever exceeding 5 weighings.
+FOLLOWUP: Identify the coin without saying heavy or light
+Does the answer change if you must identify the odd coin but need not say whether it is heavy or light?
+FOLLOWUP_ANSWER:
+No: you still need **5 weighings (\$500)**. With 4 weighings there are $3^4=81$ outcome sequences. Every coin that is ever put on the scale produces two different sequences (one if it is heavy, the mirror image if light), and at most one coin can stay off the scale in every weighing (otherwise two such coins would be indistinguishable). So $2(N-1)+1\le81$, i.e. $N\le41<90$. Four weighings are therefore not enough, and the 5-weighing strategy above works (it even gives the direction).
+===END===
+
+===TEASER===
+SLUG: bounded-entire-function-liouville
+IDS: H1A-22
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: hard
+TITLE: Bounded entire function (Liouville)
+QUESTION:
+Suppose that $f(z)$ is a complex-valued function on the complex plane which is both bounded and entire. Prove that $f$ must be constant.
+
+(Recall: "entire" means analytic in the whole finite complex plane, so $f$ has an everywhere-convergent power series $f(z)=\sum_{n=0}^\infty a_nz^n$.)
+HINT1:
+Write $f$ as its power series and try to show that every coefficient $a_n$ with $n\ge1$ is zero. How can you extract a single coefficient from $f$?
+HINT2:
+Integrate $f(z)/z^n$ around the circle $|z|=r$: all powers except one average out to zero, which expresses $a_n$ as an average of $f$ over the circle divided by $r^n$. Bound this and let $r\to\infty$.
+ANSWER:
+By Cauchy's estimate $|a_n|\le M/r^n$ for every $r>0$, so $a_n=0$ for all $n\ge1$ and $f\equiv a_0$ (Liouville's theorem).
+REFRESH:
+- **Orthogonality of $e^{ik\phi}$**: $\int_0^{2\pi}e^{ik\phi}\,d\phi=2\pi$ if $k=0$ and $0$ for any other integer $k$.
+- **Uniform convergence**: a power series converges uniformly on any circle strictly inside its disc of convergence, so it can be integrated term by term there.
+- **Triangle inequality for integrals**: $\left|\int g\right|\le\int|g|$.
+EXPLANATION:
+This is Liouville's theorem. The idea: a power series coefficient $a_n$ can be written as an average of $f$ over a circle of radius $r$, divided by $r^n$. If $|f|\le M$ everywhere, that average is at most $M$ in modulus for *every* radius, so $|a_n|\le M/r^n$. Now let the circle grow: $r^n\to\infty$ for $n\ge1$, which squeezes $a_n$ to $0$. Only the constant term survives.
+
+Intuitively: a non-constant power series must grow at least like $|z|^n$ somewhere far away; a function trapped in a bounded region has no room to do that. (A much stronger result, Picard's little theorem, says a non-constant entire function takes every complex value with at most one exception, so it certainly cannot be bounded.)
+SOLUTION: Cauchy estimates on the coefficients
+Let $|f(z)|\le M$ for all $z$ and $f(z)=\sum_{k\ge0}a_kz^k$.
+
+**Step 1: coefficient formula.** Fix $r>0$ and $n\ge0$. On $|z|=r$ write $z=re^{i\phi}$. The series converges uniformly on the circle, so
+$$\frac1{2\pi}\int_0^{2\pi}\frac{f(re^{i\phi})}{(re^{i\phi})^n}\,d\phi=\sum_{k\ge0}a_k\,r^{k-n}\,\frac1{2\pi}\int_0^{2\pi}e^{i(k-n)\phi}\,d\phi=a_n ,$$
+since the inner integral is $2\pi$ for $k=n$ and $0$ otherwise.
+
+**Step 2: bound.** By the triangle inequality,
+$$|a_n|\le\frac1{2\pi}\int_0^{2\pi}\frac{|f(re^{i\phi})|}{r^n}\,d\phi\le\frac{M}{r^n}.$$
+
+**Step 3: let $r\to\infty$.** The bound holds for every $r>0$ because $f$ is entire. For $n\ge1$, $M/r^n\to0$, so $a_n=0$. Therefore $f(z)=a_0$ for all $z$: $f$ is constant. $\blacksquare$
+SOLUTION: Cauchy integral formula for the derivative
+For any $z_0\in\mathbb C$ and $r>0$, Cauchy's formula gives
+$$f'(z_0)=\frac1{2\pi i}\oint_{|z-z_0|=r}\frac{f(z)}{(z-z_0)^2}\,dz .$$
+The contour has length $2\pi r$, and on it $\left|\frac{f(z)}{(z-z_0)^2}\right|\le\frac{M}{r^2}$, so
+$$|f'(z_0)|\le\frac1{2\pi}\cdot2\pi r\cdot\frac{M}{r^2}=\frac Mr\xrightarrow[r\to\infty]{}0 .$$
+Hence $f'(z_0)=0$ for every $z_0$, and since the plane is connected $f$ is constant (e.g. $f(z)-f(0)=\int_0^1f'(tz)\,z\,dt=0$). $\blacksquare$
+===END===
+
+===TEASER===
+SLUG: lily-pads-eight-instead-of-one
+IDS: H1A-24, H1A-25, R8-17, R8-18, R8-19
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Eight lily pads
+QUESTION:
+A single lily pad sits on an otherwise empty pond. Its surface area doubles every day, and it takes 30 days for this single lily pad to cover the pond.
+
+If instead you start with eight lily pads, each identical to the original one, how many days will it take for the pond to be covered?
+HINT1:
+Dividing 30 by 8 is wrong: growth is multiplicative, not additive. Compare the eight pads with the single pad at some later age.
+HINT2:
+Eight pads have the same total area as one pad after how many doublings? From that moment on, the two scenarios are identical.
+ANSWER:
+27 days.
+REFRESH:
+- **Exponential growth**: an area doubling daily is $A_0\,2^t$ after $t$ days, so multiplying the starting area by $2^k$ saves exactly $k$ days.
+EXPLANATION:
+With doubling, the only thing that matters is the total area, and area grows by a factor 2 per day regardless of how it is split among pads. Eight pads have $8=2^3$ times the area of one pad — exactly what one pad reaches after 3 days. So starting with eight pads is like starting with a 3-day-old single pad, which needs the remaining $30-3=27$ days. (This assumes the pads never overlap, so the covered area is the sum of the pads' areas.)
+
+Another book asks the same idea backwards: if a lily pad doubles every second and fills the pond after one minute, when is the pond a quarter full? A quarter is two halvings, so 2 seconds before the end, at 58 seconds (see the follow-up).
+SOLUTION: Time shift
+One pad: area $a\,2^t$, with $a\,2^{30}=P$ (the pond's area). Eight pads: total area $8a\,2^t=a\,2^{t+3}$. Setting $a\,2^{t+3}=P=a\,2^{30}$ gives $t+3=30$, so $t=\mathbf{27}$ days.
+FOLLOWUP: Why not 3,000 days?
+Someone suggests making the puzzle harder by saying the single lily pad takes 3,000 days (instead of 30) to cover the pond. What is wrong with that?
+FOLLOWUP_ANSWER:
+It is physically absurd because of compound growth. After 3,000 doublings the area is multiplied by $2^{3000}\approx10^{903}$. Even after only 100 days the factor is $2^{100}\approx1.3\times10^{30}$: a pad of $1\ \text{mm}^2=10^{-6}\ \text{m}^2$ would cover about $10^{24}\ \text{m}^2$, far more than the Earth's surface ($\approx5\times10^{14}\ \text{m}^2$). No pond — indeed nothing in the universe — could take 3,000 days to be covered by a visible pad that doubles daily.
+FOLLOWUP: Quarter-filling the pond
+A lily pad doubles in area every second. After one minute it fills the pond. How long does it take to quarter-fill the pond?
+FOLLOWUP_ANSWER:
+**58 seconds.** Going backwards in time, the area halves every second: the pond is half full at 59 seconds and a quarter full at 58 seconds. Formally $A(t)=A(60)\,2^{t-60}$, and $A(t)=\tfrac14A(60)=A(60)\,2^{-2}$ gives $t=58$.
+FOLLOWUP: Fly between two trains
+Two trains start 60 miles apart and head toward each other on the same track, each at 30 mph. A fly starts at the front of one train and flies at 45 mph until it meets the other train, then reverses, and keeps doing this until it gets squashed. How far does the fly fly?
+FOLLOWUP_ANSWER:
+**45 miles.** The trains close the gap at $30+30=60$ mph, so they collide after $60/60=1$ hour. The fly flies at a constant 45 mph for that hour, so it covers 45 miles. (Summing the infinite geometric series of back-and-forth legs gives the same answer with much more work.)
+FOLLOWUP: Finite geometric series
+What is the formula for the sum of $N$ terms of a geometric series?
+FOLLOWUP_ANSWER:
+For first term $a$ and ratio $r\ne1$:
+$$S_N=a+ar+\dots+ar^{N-1}=a\,\frac{1-r^N}{1-r}.$$
+Proof: $S_N-rS_N=a-ar^N$ (all other terms cancel), so $(1-r)S_N=a(1-r^N)$. If $r=1$, $S_N=Na$. If $|r|<1$, letting $N\to\infty$ gives $\frac{a}{1-r}$. Lily-pad example: $1+2+\dots+2^{N-1}=2^N-1$.
+===END===
+
+===TEASER===
+SLUG: twenty-seven-lily-pads
+IDS: H1A-26
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Twenty-seven lily pads
+QUESTION:
+There are 27 lily pads on a pond, each one square foot in area. The pond has an area of 6,000 square feet. Each lily pad doubles in size every day. How long until the pond is covered in lily pads?
+HINT1:
+Only the total area matters. Write the total area after $N$ days.
+HINT2:
+Solve $27\cdot2^N=6000$ for $N$ using logarithms, or bracket $6000/27$ between two powers of 2.
+ANSWER:
+$N=\log_2(6000/27)\approx7.8$ days, i.e. during the 8th day.
+REFRESH:
+- **Logarithms**: $2^N=x\iff N=\log_2x=\dfrac{\ln x}{\ln 2}$ (any base works in the ratio).
+EXPLANATION:
+Each pad covers $2^N$ square feet after $N$ days, so 27 pads cover $27\cdot2^N$ (assuming no overlap). The pond is covered when this reaches 6,000, i.e. when $2^N=6000/27\approx222$. Since $2^7=128$ and $2^8=256$, it happens between day 7 and day 8 — a mental estimate that is good enough in an interview.
+SOLUTION: Solve with logarithms
+$$27\cdot2^N=6000\iff2^N=\frac{6000}{27}=\frac{2000}{9}\approx222.2\iff N=\frac{\ln(2000/9)}{\ln2}\approx\frac{5.404}{0.693}\approx7.80 .$$
+So the pond is covered after about **7.8 days**. Without a calculator: $128=2^7<222<2^8=256$, so it takes between 7 and 8 days — eight days will certainly do it.
+===END===
+
+===TEASER===
+SLUG: sixteenths-to-decimals
+IDS: H1A-27
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Sixteenths to decimals
+QUESTION:
+Interviewer: "You're from MIT, so you must be quantitative. Give me the decimal equivalents of $\frac{13}{16}$ and of $\frac{9}{16}$."
+HINT1:
+You surely know quarters and eighths by heart. How far is each fraction from a quarter or a half?
+HINT2:
+$\frac1{16}=0.0625$ (half of $\frac18=0.125$). Write $\frac{13}{16}=\frac{12}{16}+\frac1{16}$ and $\frac9{16}=\frac8{16}+\frac1{16}$.
+ANSWER:
+$\frac{13}{16}=0.8125$ and $\frac9{16}=0.5625$.
+REFRESH:
+NONE
+EXPLANATION:
+Don't memorise all sixteenths. Anchor on the fractions you know — $\frac14=0.25$, $\frac12=0.5$, $\frac34=0.75$, $\frac18=0.125$ — and correct by one sixteenth, $\frac1{16}=0.0625$. Every odd sixteenth is exactly one sixteenth away from an eighth.
+SOLUTION: Nearest quarter plus one sixteenth
+$$\frac{13}{16}=\frac{12}{16}+\frac1{16}=\frac34+\frac1{16}=0.75+0.0625=\mathbf{0.8125},$$
+$$\frac9{16}=\frac8{16}+\frac1{16}=\frac12+\frac1{16}=0.5+0.0625=\mathbf{0.5625}.$$
+===END===
+
+===TEASER===
+SLUG: snail-on-a-pole
+IDS: H1A-28
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Snail on a pole
+QUESTION:
+A snail climbs a 10-foot pole. Each day it climbs up 3 feet; each night, while sleeping, it slides down 1 foot. When does it reach the top of the pole?
+HINT1:
+The net gain is 2 feet per day, but be careful about the last day: once the snail reaches the top, it doesn't slide back.
+HINT2:
+Track the snail's height each morning. From what height does it start the day on which it reaches 10 feet?
+ANSWER:
+Two-thirds of the way through the 5th day (assuming it climbs at a steady rate during the day).
+REFRESH:
+NONE
+EXPLANATION:
+"Net 2 feet per day, so 5 full days" lands on the right day here, but for the wrong reason, and misses the timing. The snail's morning heights are $0,2,4,6,8$; on day 5 it starts at 8 feet and needs only 2 of its 3 daily feet, so it arrives before the day is over. The general lesson for "up $a$, down $b$" problems: the final climb is not followed by a slide, so count mornings until the snail is within $a$ of the top.
+SOLUTION: Track the mornings
+- Day 1: $0\to3$; night: $3\to2$.
+- Day 2: $2\to5$; night: $5\to4$.
+- Day 3: $4\to7$; night: $7\to6$.
+- Day 4: $6\to9$; night: $9\to8$.
+- Day 5: starts at 8 and needs 2 more feet out of its 3-foot daily climb.
+
+At a steady climbing rate it reaches the top **two-thirds of the way through day 5**, and stays there.
+===END===
+
+===TEASER===
+SLUG: blind-mans-hat
+IDS: H1A-30
+SECTION: brainteaser
+CATEGORY: Logic & deduction
+DIFFICULTY: medium
+TITLE: Blind man's hat
+QUESTION:
+In a dark closet there are five hats: three blue and two red. Three smart men go into the closet, and each selects a hat in the dark and puts it on unseen. Each man knows that the closet contained three blue and two red hats, and that the others know this too.
+
+Outside the closet, no man can see his own hat. The first man looks at the other two, thinks, and says, "I cannot tell what color my hat is." The second man hears this, looks at the other two, and says, "I cannot tell what color my hat is either." The third man is blind. He says, "Well, I know what color my hat is." What color is his hat, and how does he know?
+HINT1:
+Ask what the first man would have had to see in order to *know* his own colour. His "I don't know" rules that out.
+HINT2:
+After the first statement, men 2 and 3 are not both red. Now put yourself in man 2's shoes: if he saw a red hat on man 3, what could he conclude about his own hat?
+ANSWER:
+Blue: if the third man wore red, the second man would have known his own hat was blue.
+REFRESH:
+NONE
+EXPLANATION:
+Each "I don't know" is information: it eliminates every situation in which the speaker *would* have known. The first man could only know his colour if he saw two red hats (then all the reds are used up and his own must be blue). So men 2 and 3 are not both red. The second man knows this. If he saw red on man 3, he would immediately deduce that his own hat is blue. He says he can't tell, so he did not see red on man 3. The blind man follows the same chain of reasoning without needing to see anything.
+SOLUTION: Eliminate what each speaker would have known
+1. **Man 1's statement.** There are only two red hats. If man 1 saw red on both men 2 and 3, he would know his hat is blue. He doesn't know, so (man 2, man 3) are not (red, red): they are (blue, blue), (blue, red) or (red, blue).
+2. **Man 2's statement.** Man 2 has heard step 1, so he knows the pair (man 2, man 3) is one of those three. He sees man 3's hat. If it were red, the only possibility consistent with step 1 would be (blue, red), and he would know his own hat is blue. He says he cannot tell, so man 3's hat is not red.
+3. **Man 3's conclusion.** Man 3 hears both statements and makes the same deduction: his hat is **blue**. (Nothing he could see would help — the information is entirely in what the others were unable to deduce.)
+===END===
+
+===TEASER===
+SLUG: remainders-one-through-nine
+IDS: H1A-31
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Remainders 1 through 9
+QUESTION:
+Find the smallest positive integer that leaves a remainder of 1 when divided by 2, a remainder of 2 when divided by 3, a remainder of 3 when divided by 4, …, and a remainder of 9 when divided by 10.
+HINT1:
+In every condition the remainder is exactly one less than the divisor. What does that say about the number plus one?
+HINT2:
+$X\equiv-1\pmod n$ for $n=2,\dots,10$, so $X+1$ is divisible by all of $2,3,\dots,10$. Find the smallest such $X+1$.
+ANSWER:
+$2519$
+REFRESH:
+- **Least common multiple via primes**: $\mathrm{lcm}$ of a set of integers is the product of each prime raised to the highest power in which it appears in any of them.
+EXPLANATION:
+Writing nine congruences and solving them one by one would be painful. The pattern "remainder = divisor $-1$" means $X$ is one short of a multiple of every divisor: $X+1$ is a common multiple of $2,3,\dots,10$. The smallest positive common multiple is the LCM, so $X=\mathrm{lcm}(2,\dots,10)-1$. The full set of solutions is $X=2520k-1$ for $k=1,2,\dots$.
+SOLUTION: Add one and take the LCM
+The conditions say $X=nq_n+(n-1)$ for some integer $q_n$, for each $n=2,\dots,10$. Adding 1: $X+1=n(q_n+1)$, so $n\mid X+1$ for all $n=2,\dots,10$. Hence $X+1$ is a positive multiple of
+$$\mathrm{lcm}(2,3,\dots,10)=2^3\cdot3^2\cdot5\cdot7=8\cdot9\cdot5\cdot7=2520$$
+(highest powers: $2^3$ from 8, $3^2$ from 9, $5$, $7$). The smallest choice is $X+1=2520$, so $X=\mathbf{2519}$.
+
+Check: $2519=2\cdot1259+1=3\cdot839+2=4\cdot629+3=5\cdot503+4=6\cdot419+5=7\cdot359+6=8\cdot314+7=9\cdot279+8=10\cdot251+9$. ✓
+===END===
+
+===TEASER===
+SLUG: fly-between-motorcyclists
+IDS: H1A-32
+SECTION: brainteaser
+CATEGORY: Clocks, rates & motion
+DIFFICULTY: easy
+TITLE: Fly between motorcyclists
+QUESTION:
+Two motorcyclists on a single-lane road are 25 miles apart. At a signal they ride toward each other at constant speeds: the first at 20 mph, the second at 30 mph. At the signal, a fly on the first motorcyclist's helmet starts flying toward the second at 40 mph. When it reaches the second motorcyclist, it immediately turns back toward the first; when it reaches the first, it turns again, and so on, until they all collide. How many miles does the fly travel?
+HINT1:
+Don't follow the fly's zig-zags. What is the one quantity you need to know about the fly's journey, given that its speed is constant?
+HINT2:
+Find how long it takes until the motorcyclists collide, and multiply by the fly's speed.
+ANSWER:
+20 miles.
+REFRESH:
+- **Relative speed**: two objects moving toward each other at speeds $v_1,v_2$ close their gap at $v_1+v_2$.
+EXPLANATION:
+The trap is to sum an infinite series of shrinking legs. But the fly flies at a constant 40 mph the whole time, so its distance is just 40 mph times the total flying time, and the flying time is simply the time until the two riders meet. They approach each other at $20+30=50$ mph and start 25 miles apart, so they meet after half an hour. (The infinite series converges to the same number, of course.)
+SOLUTION: Time to collision
+Closing speed $=20+30=50$ mph; time to collision $=25/50=0.5$ hours. Fly's distance $=40\times0.5=\mathbf{20}$ miles.
+SOLUTION: Proportions
+In the same time, the riders cover distances in ratio $20:30=2:3$; together they cover 25 miles, so the first rider covers $\tfrac25\times25=10$ miles and the second $15$. The fly moves at twice the first rider's speed for the same time, so it covers $2\times10=20$ miles.
+===END===
+
+===TEASER===
+SLUG: herons-formula
+IDS: H1A-33
+SECTION: brainteaser
+CATEGORY: Geometry & space
+DIFFICULTY: medium
+TITLE: Heron's formula
+QUESTION:
+Prove that the area of a triangle with side lengths $a$, $b$, $c$ is
+$$A=\sqrt{s(s-a)(s-b)(s-c)},\qquad s=\frac{a+b+c}{2}\ \text{(the semi-perimeter)}.$$
+HINT1:
+Start from $A=\tfrac12\times\text{base}\times\text{height}$ (or $A=\tfrac12ab\sin C$) and eliminate the height (or the angle) using only side lengths.
+HINT2:
+Use the law of cosines to get $\cos C$ from the sides, then $\sin^2C=1-\cos^2C$. You will reach $16A^2=4a^2b^2-(a^2+b^2-c^2)^2$: factor it as a difference of squares, twice.
+ANSWER:
+$16A^2=(a+b+c)(-a+b+c)(a-b+c)(a+b-c)=16\,s(s-a)(s-b)(s-c)$.
+REFRESH:
+- **Law of cosines**: $c^2=a^2+b^2-2ab\cos C$, where $C$ is the angle between sides $a$ and $b$.
+- **Difference of squares**: $x^2-y^2=(x-y)(x+y)$.
+- **Area**: $A=\tfrac12ab\sin C$.
+EXPLANATION:
+Area is naturally "half base times height", but the height is not one of the given data. Everything about the triangle is determined by its three sides, so we eliminate the height (or the angle) with Pythagoras or the law of cosines. The resulting expression $16A^2=4a^2b^2-(a^2+b^2-c^2)^2$ looks messy, but it is a difference of two squares; factoring it, and then each factor again, produces the four linear factors $a+b+c$, $-a+b+c$, $a-b+c$, $a+b-c$, which are exactly $2s,2(s-a),2(s-b),2(s-c)$. Avoid expanding everything into a big polynomial — factoring is the whole trick.
+SOLUTION: Law of cosines and difference of squares
+Let $C$ be the angle between sides $a$ and $b$. Then $A=\tfrac12ab\sin C$, so
+$$16A^2=4a^2b^2\sin^2C=4a^2b^2(1-\cos^2C)=4a^2b^2-(2ab\cos C)^2 .$$
+By the law of cosines $2ab\cos C=a^2+b^2-c^2$, hence
+$$16A^2=(2ab)^2-(a^2+b^2-c^2)^2=\big(2ab-a^2-b^2+c^2\big)\big(2ab+a^2+b^2-c^2\big).$$
+Each factor is again a difference of squares:
+$$2ab-a^2-b^2+c^2=c^2-(a-b)^2=(c-a+b)(c+a-b),$$
+$$2ab+a^2+b^2-c^2=(a+b)^2-c^2=(a+b-c)(a+b+c).$$
+Now $a+b+c=2s$, $-a+b+c=2(s-a)$, $a-b+c=2(s-b)$, $a+b-c=2(s-c)$. Therefore
+$$16A^2=2s\cdot2(s-a)\cdot2(s-b)\cdot2(s-c)=16\,s(s-a)(s-b)(s-c),$$
+and taking square roots (all factors are positive by the triangle inequality) gives $A=\sqrt{s(s-a)(s-b)(s-c)}$. $\blacksquare$
+SOLUTION: Base, height and Pythagoras
+Take $b$ as the base, with height $h$. Put the base on the $x$-axis from $(0,0)$ to $(b,0)$ and the apex at $(p,h)$, where side $a$ joins $(0,0)$ to the apex and side $c$ joins $(b,0)$ to the apex. Then
+$$a^2=p^2+h^2,\qquad c^2=(b-p)^2+h^2 .$$
+Subtracting: $a^2-c^2=2bp-b^2$, so $p=\dfrac{a^2+b^2-c^2}{2b}$ (this works whether the foot of the height lies inside or outside the base). Then
+$$A^2=\tfrac14b^2h^2=\tfrac14b^2(a^2-p^2)=\tfrac14b^2a^2-\tfrac1{16}(a^2+b^2-c^2)^2,$$
+i.e. $16A^2=4a^2b^2-(a^2+b^2-c^2)^2$, which factors exactly as in the first method to $16\,s(s-a)(s-b)(s-c)$. (The book reaches the same identity by substituting $a=2s-b-c$ etc. and expanding a quartic in $s$; factoring as differences of squares avoids that algebra.)
+===END===
+
+===TEASER===
+SLUG: nine-digits-four-sums-of-20
+IDS: H1A-34
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: medium
+TITLE: Nine digits, four sums of 20
+QUESTION:
+$A,B,C,D,E,F,G,H,I$ are the nine integers $1$ to $9$ in some order. They satisfy
+$$\begin{aligned}A+B+C+D&=20,\\ B+C+D+E+F&=20,\\ D+E+F+G+H&=20,\\ F+G+H+I&=20.\end{aligned}$$
+What values are taken by each of $A$ to $I$?
+HINT1:
+You have 4 equations and 9 unknowns, but also know the total $1+2+\dots+9$. Which letter appears in neither the first nor the last equation?
+HINT2:
+Adding the first and last equations and comparing with the total gives $E$. Then subtract consecutive equations to get simple relations such as $A=E+F$ and $I=D+E$.
+ANSWER:
+$E=5$, $A=F+5$, $I=D+5$ and $B+C=G+H$; the solution is not unique — there are 96 of them, e.g. $(A,\dots,I)=(6,8,4,2,5,1,3,9,7)$.
+REFRESH:
+- **Sum of $1$ to $n$**: $1+2+\dots+n=\frac{n(n+1)}{2}$, so $1+\dots+9=45$.
+EXPLANATION:
+The system is underdetermined, so the right answer is a description of *all* solutions. The first and last equations together involve eight letters, all except $E$, and add to 40; since all nine digits sum to 45, $E=5$. Subtracting overlapping equations cancels the shared letters and leaves tiny relations: eq.1 $-$ eq.2 gives $A=E+F=F+5$, eq.4 $-$ eq.3 gives $I=D+E=D+5$, and eq.2 $-$ eq.3 gives $B+C=G+H$. So $D$ and $F$ are small digits (1–4) and $A$, $I$ are their partners $+5$. The remaining four digits are two small ones $s_1<s_2$ and their partners $s_1+5,s_2+5$, and the only way to split them into two pairs of equal sum is $\{s_1,s_2+5\}$ and $\{s_2,s_1+5\}$.
+SOLUTION: Reduce the system and count
+1. $(A+B+C+D)+(F+G+H+I)=40$ and all nine sum to $45$, so $E=5$.
+2. Eq.1 $-$ eq.2: $A-E-F=0$, so $A=F+5$. Eq.4 $-$ eq.3: $I-D-E=0$, so $I=D+5$. Eq.2 $-$ eq.3: $B+C-G-H=0$, so $B+C=G+H$.
+3. Since $A,I\le9$, we need $F,D\in\{1,2,3,4\}$, distinct: $4\times3=12$ choices; then $A=F+5$, $I=D+5$ are distinct values in $\{6,\dots,9\}$.
+4. The four remaining digits are the two unused small digits $s_1<s_2$ in $\{1,2,3,4\}$ and the two unused large digits, which are exactly $s_1+5$ and $s_2+5$. To have $B+C=G+H$ they must split into pairs of equal sum. $\{s_1,s_2\}$ vs $\{s_1+5,s_2+5\}$ fails (sums differ by 10); $\{s_1,s_1+5\}$ vs $\{s_2,s_2+5\}$ fails ($s_1<s_2$); $\{s_1,s_2+5\}$ vs $\{s_2,s_1+5\}$ works (both sum to $s_1+s_2+5$).
+5. So choose $B$ among the 4 remaining digits (4 ways), which fixes $C$ (its pair partner); then $G,H$ are the other pair in either order (2 ways).
+
+Total: $12\times4\times2=\mathbf{96}$ solutions. Example: $F=1$, $D=2$ give $A=6$, $I=7$, $E=5$; the rest is $\{3,4,8,9\}$ with pairs $\{3,9\}$ and $\{4,8\}$; taking $B=8$, $C=4$, $G=3$, $H=9$ gives $(A,\dots,I)=(6,8,4,2,5,1,3,9,7)$. Check: $6+8+4+2=20$, $8+4+2+5+1=20$, $2+5+1+3+9=20$, $1+3+9+7=20$. ✓
+===END===
+
+===TEASER===
+SLUG: rock-thrown-out-of-boat
+IDS: H1A-36, R8-66, R8-67, R8-68
+SECTION: brainteaser
+CATEGORY: Estimation & lateral thinking
+DIFFICULTY: medium
+TITLE: Rock in a boat
+QUESTION:
+A small boat is floating in a swimming pool. The boat contains a small but very heavy rock (or, in another version, an anchor). The rock is thrown out of the boat into the pool and sinks to the bottom. What happens to the water level in the pool?
+HINT1:
+Archimedes: a floating object displaces water according to one property of the object, a sunken object according to another. Which property in each case?
+HINT2:
+In the boat, the rock makes the boat displace a *mass* of water equal to the rock's mass. On the bottom of the pool, the rock displaces only its own *volume* of water. Compare the two volumes, given that the rock is denser than water.
+ANSWER:
+The water level falls.
+REFRESH:
+- **Archimedes' principle**: a body immersed in a fluid feels an upward force equal to the weight of the fluid it displaces. A floating body therefore displaces a mass of fluid equal to its own mass; a fully submerged body resting on the bottom displaces exactly its own volume.
+EXPLANATION:
+While the rock rides in the boat, it is *floating* (via the boat), so it pushes aside water of the same **mass** as the rock: volume $m/\rho_{\text{water}}$. Once it lies on the bottom, it pushes aside only its own **volume**: $m/\rho_{\text{rock}}$. A heavy rock (or anchor) is much denser than water, so $m/\rho_{\text{rock}}<m/\rho_{\text{water}}$: less water is displaced after the throw, and the level goes down. It's as if a mass of water equal to the rock's mass were removed and only a rock-sized volume put back.
+SOLUTION: Compare displaced volumes
+Let $m$ be the rock's mass, $\rho_r$ its density, $\rho_w$ the water's density ($\rho_r>\rho_w$) and $S$ the pool's surface area.
+
+- Rock in the boat: boat plus rock float, so the extra displaced volume due to the rock is $V_1=m/\rho_w$.
+- Rock on the bottom: it displaces its own volume $V_2=m/\rho_r$, and the boat rises back by the corresponding $V_1$.
+
+Change in level:
+$$\Delta h=\frac{V_2-V_1}{S}=\frac{m}{S}\Big(\frac1{\rho_r}-\frac1{\rho_w}\Big)<0 .$$
+The level **falls**. Example: a 10 kg stone of density 2,500 kg/m³ in a pool of 50 m² gives $V_1=10$ L, $V_2=4$ L, so the level drops by $6\ \text{L}/50\ \text{m}^2=0.12$ mm.
+FOLLOWUP: Melting iceberg
+An iceberg floating in the ocean melts. What happens to the sea level?
+FOLLOWUP_ANSWER:
+If the ice floated in *fresh* water, the level would be exactly unchanged: floating ice of mass $M$ displaces water of mass $M$, i.e. volume $M/\rho_{\text{fresh}}$, and when it melts it becomes exactly that volume of water. In the real ocean, icebergs are fresh water floating in denser salt water: the ice displaces $M/\rho_{\text{sea}}$, but melts into $M/\rho_{\text{fresh}}$, which is slightly larger ($\rho_{\text{sea}}\approx1.025\,\rho_{\text{fresh}}$). So the sea level rises very slightly — by about 2.5% of the displaced volume. (Ice melting on land, by contrast, adds its full volume to the sea.)
+FOLLOWUP: Why a pool and not a lake?
+Why do you think this question is phrased for a swimming pool and not a lake?
+FOLLOWUP_ANSWER:
+Several reasons. (1) The answer relies on the rock or anchor ending up **resting on the bottom**. In a shallow pool it certainly does; in a deep lake an anchor might hang on its rope from the boat, and then the boat still carries its weight minus buoyancy — boat plus anchor float together and the total displaced mass is unchanged, so the level does not change at all. (2) A pool is a closed container with vertical walls, so the level change $\Delta V/S$ is well defined and in principle measurable; in a huge lake it is utterly negligible and swamped by waves, inflows, outflows and evaporation. (3) A lake bottom may be mud the anchor sinks into, and its shores are sloped, muddying the geometry. The pool makes it a clean physics question.
+===END===
+
+===TEASER===
+SLUG: tower-of-hanoi-64-rings
+IDS: H1A-38
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Tower of Hanoi, 64 rings
+QUESTION:
+There are three poles. One pole holds 64 rings, weighing from 1 ounce (at the top) to 64 ounces (at the bottom). You must move all the rings to one of the other poles so that they end up in the same order. You may move only one ring at a time, only from one pole to another, and you may never place a ring on top of a lighter ring, even temporarily.
+
+What is the minimum number of moves needed?
+HINT1:
+Solve it for 1, 2 and 3 rings and look for a pattern. Think about the moment the heaviest ring moves.
+HINT2:
+When the heaviest ring moves, all the other $n-1$ rings must be stacked on the third pole. So $V(n)=2V(n-1)+1$ with $V(1)=1$.
+ANSWER:
+$2^{64}-1=18{,}446{,}744{,}073{,}709{,}551{,}615$ moves.
+REFRESH:
+- **Proof by induction**: prove $P(1)$, then prove $P(N)\Rightarrow P(N+1)$; then $P(n)$ holds for all $n\ge1$.
+- **Linear recursion**: $V(n)=2V(n-1)+1$ becomes $V(n)+1=2(V(n-1)+1)$, a geometric sequence.
+EXPLANATION:
+Focus on the heaviest ring. It can only move when it is alone on its pole and the destination pole is empty, so all $n-1$ lighter rings must sit, correctly stacked, on the third pole. Getting them there is itself a Tower of Hanoi with $n-1$ rings; after the big ring moves, the $n-1$ rings must be moved on top of it — another $(n-1)$-ring puzzle. Hence $V(n)=2V(n-1)+1$, and this is both achievable and unavoidable. Each extra ring doubles the work, giving $2^n-1$.
+
+For 64 rings that is about $1.8\times10^{19}$ moves: at one move per second, roughly 585 billion years.
+SOLUTION: Recursion with matching lower bound
+**Upper bound (a strategy).** To move $n$ rings from pole 1 to pole 3: move the top $n-1$ rings to pole 2 ($V(n-1)$ moves), move the heaviest ring to pole 3 (1 move), then move the $n-1$ rings from pole 2 onto pole 3 ($V(n-1)$ moves). So $V(n)\le2V(n-1)+1$.
+
+**Lower bound.** In any solution, the heaviest ring must move at least once. Just before its first move, the other $n-1$ rings must all be on the one remaining pole (none can be under it or on its destination), which needs at least $V(n-1)$ moves. After its last move, those $n-1$ rings must be brought on top of it, at least another $V(n-1)$ moves. So $V(n)\ge2V(n-1)+1$.
+
+**Solving.** $V(1)=1$ and $V(n)=2V(n-1)+1$. Claim $V(n)=2^n-1$: true for $n=1$; if $V(N)=2^N-1$ then $V(N+1)=2(2^N-1)+1=2^{N+1}-1$. By induction $V(n)=2^n-1$ for all $n$.
+
+For $n=64$: $V(64)=2^{64}-1=\mathbf{18{,}446{,}744{,}073{,}709{,}551{,}615}$ moves ($\approx1.84\times10^{19}$; at one move per second, about $5.8\times10^{11}$ years).
+===END===
+
+===TEASER===
+SLUG: solve-ode-u-double-prime-plus-u-prime-plus-u-equals-1
+IDS: H1B-01
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: easy
+TITLE: Solve u'' + u' + u = 1
+QUESTION:
+Solve the ordinary differential equation
+$$u''+u'+u=1 .$$
+HINT1:
+This is linear with constant coefficients: general solution $=$ general solution of the homogeneous equation $+$ one particular solution.
+HINT2:
+Try $u=e^{\lambda x}$ in $u''+u'+u=0$ to get the characteristic equation $\lambda^2+\lambda+1=0$. For the particular solution, try a constant.
+ANSWER:
+$u(x)=1+e^{-x/2}\Big(a\cos\tfrac{\sqrt3}{2}x+b\sin\tfrac{\sqrt3}{2}x\Big)$ for arbitrary constants $a,b$.
+REFRESH:
+- **Linear ODEs with constant coefficients**: for $Au''+Bu'+Cu=0$, if the roots $\lambda_{1,2}$ of $A\lambda^2+B\lambda+C=0$ are distinct, $u=c_1e^{\lambda_1x}+c_2e^{\lambda_2x}$; if $\lambda_{1,2}=\alpha\pm i\beta$ are complex, $u=e^{\alpha x}(a\cos\beta x+b\sin\beta x)$; if repeated, $u=(c_1+c_2x)e^{\lambda x}$.
+- **Euler's formula**: $e^{i\theta}=\cos\theta+i\sin\theta$.
+EXPLANATION:
+The equation is linear, so the difference of any two solutions solves the homogeneous equation $u''+u'+u=0$. Hence all solutions are one particular solution plus all homogeneous solutions. A constant right-hand side suggests a constant particular solution: $u=1$ works since $u''=u'=0$. The homogeneous equation has characteristic roots $-\frac12\pm\frac{\sqrt3}2i$: the negative real part gives exponential decay, the imaginary part gives oscillation. So every solution is a damped oscillation around the level $1$. Two initial conditions (not given) would fix $a$ and $b$.
+SOLUTION: Homogeneous plus particular solution
+**Homogeneous part.** Substituting $u=e^{\lambda x}$ into $u''+u'+u=0$ gives $\lambda^2+\lambda+1=0$, so
+$$\lambda=\frac{-1\pm\sqrt{1-4}}{2}=-\frac12\pm\frac{\sqrt3}{2}i .$$
+The complex solutions $e^{(-\frac12\pm\frac{\sqrt3}{2}i)x}=e^{-x/2}\big(\cos\tfrac{\sqrt3}{2}x\pm i\sin\tfrac{\sqrt3}{2}x\big)$ combine into the real solutions $e^{-x/2}\cos\tfrac{\sqrt3}{2}x$ and $e^{-x/2}\sin\tfrac{\sqrt3}{2}x$.
+
+**Particular solution.** $u_p=1$: $0+0+1=1$. ✓
+
+**General solution.**
+$$u(x)=1+e^{-x/2}\Big(a\cos\frac{\sqrt3}{2}x+b\sin\frac{\sqrt3}{2}x\Big),\qquad a,b\in\mathbb R,$$
+or equivalently $u(x)=1+c_1e^{(-\frac12+\frac{\sqrt3}{2}i)x}+c_2e^{(-\frac12-\frac{\sqrt3}{2}i)x}$ with complex constants. As $x\to\infty$, $u(x)\to1$.
+===END===
+
+===TEASER===
+SLUG: minimum-variance-two-asset-weights
+IDS: H1B-02, H1B-03
+SECTION: probability
+CATEGORY: Variance & correlation
+DIFFICULTY: medium
+TITLE: Minimum-variance weights
+QUESTION:
+Let $X\sim\mathcal N(\mu_X,\sigma_X^2)$ and $Y\sim\mathcal N(\mu_Y,\sigma_Y^2)$ with correlation $\rho$. How should you choose constants $a$ and $b$ to minimise the variance of $S=aX+bY$ subject to $a+b=1$, $0\le a\le1$, $0\le b\le1$?
+HINT1:
+Use $b=1-a$ to get a one-variable problem, and write $\mathrm{Var}(S)$ with the covariance term.
+HINT2:
+$\mathrm{Var}(S)$ is a quadratic in $a$ with non-negative leading coefficient. Set its derivative to zero, then think about what to do if the minimiser falls outside $[0,1]$.
+ANSWER:
+$a^*=\dfrac{\sigma_Y^2-\rho\sigma_X\sigma_Y}{\sigma_X^2-2\rho\sigma_X\sigma_Y+\sigma_Y^2}$, clipped to $[0,1]$, and $b^*=1-a^*$.
+REFRESH:
+- **Variance of a linear combination**: $\mathrm{Var}(aX+bY)=a^2\sigma_X^2+b^2\sigma_Y^2+2ab\,\rho\,\sigma_X\sigma_Y$.
+- **Minimising a convex quadratic on an interval**: if the unconstrained minimiser lies outside the interval, the constrained minimum is at the nearest endpoint.
+EXPLANATION:
+This is the two-asset minimum-variance portfolio. Normality is irrelevant: only variances and the correlation matter. Diversification lowers variance because the cross term $2a(1-a)\rho\sigma_X\sigma_Y$ is smaller than it would be with perfect correlation. The variance is a parabola in $a$ opening upwards (its curvature is $2\,\mathrm{Var}(X-Y)\ge0$), so the first-order condition gives the unconstrained minimum, and the no-short-selling constraint $0\le a\le1$ simply clips it.
+
+Special cases: with $\rho=0$, $a^*=\frac{\sigma_Y^2}{\sigma_X^2+\sigma_Y^2}$ (weights inversely proportional to variances); with $\rho=-1$, $a^*=\frac{\sigma_Y}{\sigma_X+\sigma_Y}$ and the variance drops to zero (a perfect hedge). If $\rho$ is high, the minimiser can fall outside $[0,1]$ — it would short the riskier asset — and then you put everything in the less volatile asset.
+SOLUTION: One-variable quadratic minimisation
+Substitute $b=1-a$:
+$$V(a)=a^2\sigma_X^2+2a(1-a)\rho\sigma_X\sigma_Y+(1-a)^2\sigma_Y^2 .$$
+**First-order condition.**
+$$V'(a)=2a\sigma_X^2+2(1-2a)\rho\sigma_X\sigma_Y-2(1-a)\sigma_Y^2=2\Big[a\big(\sigma_X^2-2\rho\sigma_X\sigma_Y+\sigma_Y^2\big)+\rho\sigma_X\sigma_Y-\sigma_Y^2\Big]=0,$$
+so
+$$a^*=\frac{\sigma_Y^2-\rho\sigma_X\sigma_Y}{\sigma_X^2-2\rho\sigma_X\sigma_Y+\sigma_Y^2}.$$
+**Second-order condition.** $\tfrac12V''(a)=\sigma_X^2-2\rho\sigma_X\sigma_Y+\sigma_Y^2=\mathrm{Var}(X-Y)\ge(\sigma_X-\sigma_Y)^2\ge0$, strictly positive unless $\rho=1$ and $\sigma_X=\sigma_Y$ (then $X-Y$ is constant and every $a$ gives the same variance). So $a^*$ is a minimum.
+
+**Constraints.** $V$ is a convex parabola, so the constrained minimiser is $a^*$ clipped to $[0,1]$:
+- $a^*<0\iff\sigma_Y^2<\rho\sigma_X\sigma_Y\iff\sigma_Y/\sigma_X<\rho$: take $a=0$ (all in $Y$, the less volatile one);
+- $a^*>1\iff\sigma_X^2<\rho\sigma_X\sigma_Y\iff\sigma_X/\sigma_Y<\rho$: take $a=1$ (all in $X$).
+
+**Check $\rho=-1$:** $a^*=\frac{\sigma_Y^2+\sigma_X\sigma_Y}{(\sigma_X+\sigma_Y)^2}=\frac{\sigma_Y}{\sigma_X+\sigma_Y}$, and then $V(a^*)=(a^*\sigma_X-(1-a^*)\sigma_Y)^2=0$.
+FOLLOWUP: Where to sit on the axle
+You drive with one wheel on gravel and one on pavement. The vertical bumps of the gravel and pavement have variances $\sigma_G^2$ and $\sigma_P^2$ (correlation $\rho$). Where on the axle, between $x=0$ (above the gravel wheel) and $x=1$ (above the pavement wheel), should you sit for the most comfortable ride?
+FOLLOWUP_ANSWER:
+The axle is a rigid rod, so the vertical displacement at position $x$ is the linear interpolation $(1-x)G+xP$. This is the previous problem with $a=1-x$ on $G$ and $b=x$ on $P$:
+$$\mathrm{Var}=(1-x)^2\sigma_G^2+x^2\sigma_P^2+2x(1-x)\rho\sigma_G\sigma_P,$$
+minimised at
+$$x^*=\frac{\sigma_G^2-\rho\sigma_G\sigma_P}{\sigma_G^2-2\rho\sigma_G\sigma_P+\sigma_P^2},$$
+clipped to $[0,1]$. With independent surfaces ($\rho=0$), $x^*=\frac{\sigma_G^2}{\sigma_G^2+\sigma_P^2}$: you sit closer to the pavement wheel, the more so the bumpier the gravel.
+===END===
+
+===TEASER===
+SLUG: lighthouse-beam-speed-along-coast
+IDS: H1B-04
+SECTION: brainteaser
+CATEGORY: Calculus & algebra
+DIFFICULTY: medium
+TITLE: Lighthouse beam speed
+QUESTION:
+A straight coastline lies $L=3$ miles from a lighthouse. The light revolves at one revolution per minute. How fast does the spot of light travel along the coastline? In particular, how fast is it moving when it is $3L$ away from the point of the coast closest to the lighthouse?
+HINT1:
+The speed is not constant. Write the position of the spot along the coast as a function of the beam's angle.
+HINT2:
+If $\theta$ is the angle between the beam and the perpendicular to the coast, the spot is at $y=L\tan\theta$, with $\theta=\omega t$ and $\omega=2\pi$ rad/min. Differentiate with respect to $t$.
+ANSWER:
+$v=\omega L\sec^2\theta=\omega\frac{L^2+y^2}{L}$; at the nearest point $\pi/10\approx0.31$ mi/s ($\approx1{,}130$ mph), and at $y=3L$ exactly $\pi$ mi/s ($\approx11{,}300$ mph).
+REFRESH:
+- **Derivative of tan**: $\frac{d}{d\theta}\tan\theta=\sec^2\theta=1+\tan^2\theta=\frac1{\cos^2\theta}$.
+- **Chain rule**: $\frac{d}{dt}g(\theta(t))=g'(\theta)\,\theta'(t)$.
+EXPLANATION:
+The beam turns at a constant angular speed, but the coast is a straight line at varying distance from the lighthouse. Near the closest point the spot moves at $\omega L$ (like a point on a circle of radius $L$). Further along, two effects speed it up: the coast is farther away ($R=\sqrt{L^2+y^2}$), and the beam hits the coast at an increasingly glancing angle. Both effects combine into the factor $\sec^2\theta=R^2/L^2$. As the beam approaches parallel to the coast the spot's speed goes to infinity — no physical object is moving, so nothing forbids it.
+SOLUTION: Differentiate the spot's position
+Set the closest coastal point at $y=0$ and let $\theta(t)=\omega t$ be the beam's angle from the perpendicular, with $\omega=2\pi$ rad/min $=\frac{2\pi}{60}=\frac{\pi}{30}$ rad/s. The spot is at $y=L\tan\theta$, so
+$$v=\frac{dy}{dt}=L\sec^2\theta\cdot\omega=\frac{\omega L}{\cos^2\theta}=\omega\,\frac{L^2+y^2}{L}=\frac{\omega R^2}{L},$$
+where $R=\sqrt{L^2+y^2}$ is the distance from the lighthouse to the spot.
+
+- At the nearest point ($y=0$): $v=\omega L=\frac{\pi}{30}\times3=\frac{\pi}{10}\approx0.314$ miles per second ($\approx1{,}131$ mph).
+- At $y=3L=9$ miles: $R^2=L^2+9L^2=90$, so $v=\frac{\pi}{30}\cdot\frac{90}{3}=\mathbf{\pi}$ **miles per second** ($\approx11{,}310$ mph), ten times faster.
+SOLUTION: Small-triangle geometry
+In a short time $dt$ the beam sweeps an arc of length $R\,\omega\,dt$ perpendicular to the beam at distance $R$. On the coast, this corresponds to a displacement $v\,dt$ along the shore. The small triangle formed by these two segments has angle $\alpha$ between the beam and the coastline, with $\sin\alpha=\frac{R\omega\,dt}{v\,dt}$. From the big triangle (lighthouse, closest point, spot), $\sin\alpha=\frac{L}{R}$. Equating: $\frac{\omega R}{v}=\frac{L}{R}$, so $v=\frac{\omega R^2}{L}$, the same formula; plugging $R^2=90$, $L=3$, $\omega=\pi/30$ rad/s gives $\pi$ miles per second.
+===END===

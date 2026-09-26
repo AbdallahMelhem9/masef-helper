@@ -53,6 +53,25 @@ function sqliteStore() {
     async filledSections(userId, pdfId) {
       return db.prepare('SELECT section_id FROM section_ink WHERE user_id = ? AND pdf_id = ? AND filled = 1').all(userId, pdfId).map((r) => r.section_id);
     },
+    async teaserStates(userId) {
+      return db.prepare('SELECT slug, completed, ink_filled FROM teaser_user WHERE user_id = ?').all(userId);
+    },
+    async getTeaserInk(userId, slug) {
+      const r = db.prepare('SELECT ink AS data, ink_updated_at AS updated_at FROM teaser_user WHERE user_id = ? AND slug = ?').get(userId, slug);
+      return r && r.data ? r : null;
+    },
+    async putTeaserInk(userId, slug, data, filled, stamp) {
+      db.prepare(
+        `INSERT INTO teaser_user (user_id, slug, ink, ink_filled, ink_updated_at) VALUES (?, ?, ?, ?, ?)
+         ON CONFLICT (user_id, slug) DO UPDATE SET ink = excluded.ink, ink_filled = excluded.ink_filled, ink_updated_at = excluded.ink_updated_at`
+      ).run(userId, slug, data, filled ? 1 : 0, stamp);
+    },
+    async setTeaserCompleted(userId, slug, completed) {
+      db.prepare(
+        `INSERT INTO teaser_user (user_id, slug, completed, completed_at) VALUES (?, ?, ?, ?)
+         ON CONFLICT (user_id, slug) DO UPDATE SET completed = excluded.completed, completed_at = excluded.completed_at`
+      ).run(userId, slug, completed ? 1 : 0, completed ? new Date().toISOString() : null);
+    },
   };
 }
 
@@ -90,6 +109,16 @@ async function postgresStore(url) {
       filled BOOLEAN NOT NULL DEFAULT false,
       updated_at TEXT NOT NULL,
       PRIMARY KEY (user_id, section_id)
+    );
+    CREATE TABLE IF NOT EXISTS teaser_user (
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      slug TEXT NOT NULL,
+      completed BOOLEAN NOT NULL DEFAULT false,
+      completed_at TEXT,
+      ink TEXT,
+      ink_filled BOOLEAN NOT NULL DEFAULT false,
+      ink_updated_at TEXT,
+      PRIMARY KEY (user_id, slug)
     );
   `);
   const one = async (sql, params) => (await pool.query(sql, params)).rows[0] || null;
@@ -130,6 +159,28 @@ async function postgresStore(url) {
     async filledSections(userId, pdfId) {
       const r = await pool.query('SELECT section_id FROM section_ink WHERE user_id = $1 AND pdf_id = $2 AND filled', [userId, pdfId]);
       return r.rows.map((x) => x.section_id);
+    },
+    async teaserStates(userId) {
+      const r = await pool.query('SELECT slug, completed, ink_filled FROM teaser_user WHERE user_id = $1', [userId]);
+      return r.rows.map((x) => ({ slug: x.slug, completed: x.completed ? 1 : 0, ink_filled: x.ink_filled ? 1 : 0 }));
+    },
+    async getTeaserInk(userId, slug) {
+      const r = await one('SELECT ink AS data, ink_updated_at AS updated_at FROM teaser_user WHERE user_id = $1 AND slug = $2', [userId, slug]);
+      return r && r.data ? r : null;
+    },
+    async putTeaserInk(userId, slug, data, filled, stamp) {
+      await pool.query(
+        `INSERT INTO teaser_user (user_id, slug, ink, ink_filled, ink_updated_at) VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (user_id, slug) DO UPDATE SET ink = excluded.ink, ink_filled = excluded.ink_filled, ink_updated_at = excluded.ink_updated_at`,
+        [userId, slug, data, filled, stamp]
+      );
+    },
+    async setTeaserCompleted(userId, slug, completed) {
+      await pool.query(
+        `INSERT INTO teaser_user (user_id, slug, completed, completed_at) VALUES ($1, $2, $3, $4)
+         ON CONFLICT (user_id, slug) DO UPDATE SET completed = excluded.completed, completed_at = excluded.completed_at`,
+        [userId, slug, completed, completed ? new Date().toISOString() : null]
+      );
     },
   };
 }

@@ -1,0 +1,923 @@
+===TEASER===
+SLUG: matching-socks-pigeonhole
+IDS: G2-25, H1A-16
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Matching socks
+QUESTION:
+Your drawer contains 2 red socks, 20 yellow socks and 31 blue socks. You grab socks at random, without looking (each sock equally likely to be picked). What is the minimum number of socks you must take out to be **guaranteed** to have at least one pair of the same colour?
+HINT1:
+"Guaranteed" means you must survive the worst possible luck. How long can you keep drawing without getting a pair?
+HINT2:
+Think of each colour as a box and each sock as an object put in a box. The worst case is one sock per colour. What happens with the next sock?
+ANSWER:
+4 socks (with only two colours, as in the Heard on the Street version with 8 red and 11 blue socks, the answer is 3).
+REFRESH:
+**Pigeonhole principle.** If $n+1$ objects are placed in $n$ boxes, some box contains at least 2 objects. Generalised: if at least $mn+1$ objects are placed in $n$ boxes, some box contains at least $m+1$ objects.
+EXPLANATION:
+The probabilities and the exact numbers of socks (2, 20, 31) are a distraction: the question asks for a *guarantee*, so only the worst case matters. The colours are the "boxes". As long as you have at most one sock of each colour you have no pair, and the most socks you can hold without a pair is one per colour, i.e. 3. The fourth sock must repeat a colour. The only thing that could break this is a colour running out before the worst case is reached, but each colour has at least one sock, so the worst case (one red, one yellow, one blue) really can happen, and 3 socks are not enough.
+SOLUTION: Pigeonhole principle
+**3 socks are not enough.** It is possible to draw one red, one yellow and one blue sock (each colour has at least one sock), and then there is no pair.
+
+**4 socks are enough.** Put each of the 4 socks drawn into the box of its colour. There are 3 boxes and 4 socks, so by the pigeonhole principle some box contains at least 2 socks, i.e. there is a matching pair.
+
+Hence the minimum is $\boxed{4}$.
+
+**Variant (Heard on the Street).** The drawer contains 8 red and 11 blue socks. Now there are only 2 colours, so 2 socks can differ (one red, one blue) but a third must match one of them: the answer is 3. In general, with $c$ colours each present at least once, the answer is $c+1$.
+===END===
+
+===TEASER===
+SLUG: handshakes-pigeonhole
+IDS: G2-26
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Handshakes
+QUESTION:
+You are invited to a welcome party with 25 fellow team members. Each of them shakes hands with you. Many of the other people have not met, so there is also a lot of random hand-shaking among them. You do not know the total number of handshakes. Can you say with certainty that there are at least two people present who shook hands with exactly the same number of people?
+HINT1:
+Count the people present and list the possible values of "number of people I shook hands with". Compare the two counts.
+HINT2:
+There are 26 people. Because everyone shook hands with you, what is the smallest possible number of handshakes a person can have? What is the largest?
+ANSWER:
+Yes: 26 people but only 25 possible handshake counts (1 to 25), so two people must share a count.
+REFRESH:
+**Pigeonhole principle.** If $n+1$ objects are placed in $n$ boxes, at least one box contains at least 2 objects.
+EXPLANATION:
+The party has 26 people (you plus 25). A person's handshake count is the number of *other* people they shook hands with, so it is between 0 and 25: 26 possible values for 26 people, which would *not* force a repeat. The extra fact that saves us is that everyone shook hands with you, so nobody has count 0. You shook hands with all 25 others (count 25), and every other person has count at least 1. So all counts lie in $\{1,2,\dots,25\}$: 25 boxes for 26 people, and two people must share a box.
+
+(Even without "everyone shakes your hand" the result is true: the values 0 and 25 cannot both occur, because someone with 25 handshakes shook hands with everyone, so nobody has 0. That leaves 25 possible values again.)
+SOLUTION: Pigeonhole principle
+There are $26$ people. For each person $p$ let $d(p)$ be the number of people $p$ shook hands with, so $0 \le d(p) \le 25$.
+
+Every one of the 25 team members shook hands with you, so $d(p) \ge 1$ for each of them, and $d(\text{you}) = 25 \ge 1$. Hence $d(p) \in \{1, 2, \dots, 25\}$ for all 26 people.
+
+We have 26 people (objects) and 25 possible values (boxes). By the pigeonhole principle two people have the same value of $d$. **Yes**, this is certain.
+SOLUTION: General graph argument (no assumption needed)
+Forget that everyone shook your hand. For $n \ge 2$ people, each count lies in $\{0, 1, \dots, n-1\}$ ($n$ values). But 0 and $n-1$ cannot both appear: a person with $n-1$ handshakes shook hands with everyone, so nobody has 0. Hence the counts take at most $n-1$ distinct values for $n$ people, and two people share a count. With $n = 26$ this again gives **yes**. (In graph language: every finite simple graph with at least two vertices has two vertices of equal degree.)
+===END===
+
+===TEASER===
+SLUG: party-of-six-ramsey
+IDS: G2-27
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: medium
+TITLE: Have we met before?
+QUESTION:
+Show that if there are 6 people at a party, then either at least 3 of them had all met each other before the party (every two of the three had met), or at least 3 of them were mutual strangers before the party (no two of the three had met).
+HINT1:
+Put yourself in the shoes of one person, and sort the other 5 people into two groups according to their relation with you.
+HINT2:
+With 5 people and 2 groups, one group has at least 3 people. Now look at the relationships *inside* that group of 3.
+ANSWER:
+Proved: in any group of 6 there are always 3 mutual acquaintances or 3 mutual strangers (the Ramsey number $R(3,3) = 6$).
+REFRESH:
+**Generalised pigeonhole principle.** If at least $mn+1$ objects are placed in $n$ boxes, some box contains at least $m+1$ objects. Here: $5 = 2\cdot 2 + 1$ people into 2 groups, so one group has at least 3.
+EXPLANATION:
+Draw the six people as points and join every two of them by a line: blue if they had met, red if not. We want a triangle with all three sides the same colour. Pick one person, $A$. Five lines leave $A$, each blue or red, so at least three have the same colour, say blue, going to $B$, $C$, $D$. Look at the triangle $BCD$. If any of its sides is blue, that side plus the two blue lines to $A$ make a blue triangle. If none is blue, $BCD$ is itself a red triangle. The red case works the same way with the colours swapped. So the whole proof is one pigeonhole step followed by a two-way case split.
+
+The number 6 is sharp: with 5 people seated at a round table, where neighbours know each other and non-neighbours do not, there is no such triple.
+SOLUTION: Pigeonhole and case analysis
+Fix one person $A$. Each of the other 5 people either met $A$ before or did not. With 5 people in 2 categories, by the generalised pigeonhole principle ($5 = 2\cdot2+1$) at least 3 people are in the same category.
+
+**Case 1: at least 3 people $B, C, D$ met $A$.**
+- If some pair among $B, C, D$ had met, say $B$ and $C$, then $A, B, C$ had all met each other.
+- Otherwise no two of $B, C, D$ had met, and $B, C, D$ are 3 mutual strangers.
+
+**Case 2: at least 3 people $B, C, D$ had not met $A$.**
+- If some pair among $B, C, D$ had not met, say $B$ and $C$, then $A, B, C$ are 3 mutual strangers.
+- Otherwise every pair among $B, C, D$ had met, and $B, C, D$ are 3 mutual acquaintances.
+
+The two cases cover every possibility, and in each one the conclusion holds. $\blacksquare$
+
+**Why 6 is needed.** For 5 people $P_1,\dots,P_5$ around a circle where $P_i$ knows only its two neighbours, any 3 people include two non-neighbours (so they are not 3 mutual acquaintances) and two neighbours (so they are not 3 mutual strangers). So 5 people are not enough.
+===END===
+
+===TEASER===
+SLUG: ants-on-a-square
+IDS: G2-28
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: medium
+TITLE: Ants on a square
+QUESTION:
+There are 51 ants on a square of side length 1. You have a glass with a circular rim of radius $1/7$. Can you always place the glass somewhere on the square so that it covers at least 3 ants?
+HINT1:
+$51 = 2 \times 25 + 1$. Try to split the square into 25 regions.
+HINT2:
+Cut the square into a $5\times5$ grid of small squares of side $1/5$. One of them contains at least 3 ants. Can a disc of radius $1/7$ cover a whole small square?
+ANSWER:
+Yes: one of the 25 small squares of side 1/5 holds at least 3 ants, and a disc of radius 1/7 covers such a square.
+REFRESH:
+**Generalised pigeonhole principle.** If at least $mn+1$ objects are placed in $n$ boxes, some box contains at least $m+1$ objects.
+
+**Circle around a square.** The smallest disc containing a square of side $s$ is centred at the square's centre with radius equal to half the diagonal, $s\sqrt2/2 = s/\sqrt2$.
+EXPLANATION:
+The glass is placed *after* you see the ants, so you only need to show that 3 ants always lie close together somewhere. Pigeonhole gives this: split the unit square into 25 cells; since $51 > 2\cdot25$, some cell holds at least 3 ants. Then it is only geometry: the cell must fit inside the glass. A $1/5 \times 1/5$ cell has half-diagonal $\frac{\sqrt2}{10} \approx 0.1414$, and the glass has radius $\frac17 \approx 0.1429$. It fits, just barely, and that is why the numbers 51 and $1/7$ were chosen.
+SOLUTION: Pigeonhole on a 5 by 5 grid
+Divide the unit square into 25 closed small squares of side $1/5$ (a $5\times 5$ grid). Assign each ant to one small square containing it (an ant on a grid line can be assigned to either neighbour).
+
+Since $51 = 2\cdot 25 + 1$, by the generalised pigeonhole principle some small square $Q$ contains at least $3$ ants.
+
+Place the glass centred at the centre $c$ of $Q$. Every point of $Q$ is within half the diagonal of $c$:
+$$\frac{1}{2}\cdot\frac{\sqrt2}{5} = \frac{\sqrt2}{10} \approx 0.14142 < 0.14286 \approx \frac{1}{7}.$$
+(Exactly: $\frac{\sqrt2}{10} < \frac17 \iff 7\sqrt2 < 10 \iff 98 < 100$, true.) So the disc of radius $1/7$ covers all of $Q$ and hence at least 3 ants. **Yes.**
+===END===
+
+===TEASER===
+SLUG: counterfeit-coins-five-bags-one-weighing
+IDS: G2-29
+SECTION: brainteaser
+CATEGORY: Weighing & searching
+DIFFICULTY: medium
+TITLE: Counterfeit coins II
+QUESTION:
+There are 5 bags with 100 coins in each. A coin weighs 9, 10 or 11 grams. All the coins in a given bag weigh the same, but you do not know which type each bag contains. You have a digital scale that shows the exact weight. What is the minimum number of weighings needed to determine the coin type of every bag?
+HINT1:
+Start small: with 2 bags, how many coins must you take from bag 2 (with 1 coin from bag 1) so that one weighing tells you both types?
+HINT2:
+Subtract 10 g per coin, so each coin counts as $-1$, $0$ or $+1$. You want the numbers of coins taken from the bags to make every combination of types give a different total: think of writing numbers in base 3.
+ANSWER:
+One weighing: take 1, 3, 9, 27 and 81 coins from bags 1 to 5 and weigh them together.
+REFRESH:
+**Balanced ternary.** Every integer $S$ with $|S| \le \frac{3^n-1}{2}$ can be written in exactly one way as $S = \sum_{i=0}^{n-1} d_i 3^i$ with digits $d_i \in \{-1,0,1\}$.
+
+**Pigeonhole principle.** If $N$ outcomes are mapped to fewer than $N$ possible readings, two outcomes share a reading.
+EXPLANATION:
+One weighing gives one number, so it can only work if the different possible "type patterns" of the 5 bags always give different totals. There are $3^5 = 243$ patterns. Take $n_i$ coins from bag $i$ and write each coin's weight as $10 + \varepsilon_i$ with $\varepsilon_i \in \{-1,0,1\}$. The scale reads $10\sum n_i + \sum n_i\varepsilon_i$, so you learn $S = \sum n_i\varepsilon_i$. You need the map $(\varepsilon_1,\dots,\varepsilon_5)\mapsto S$ to be one-to-one. Powers of 3 do this, because $S = \varepsilon_1 + 3\varepsilon_2 + 9\varepsilon_3 + 27\varepsilon_4 + 81\varepsilon_5$ is exactly a balanced-ternary expansion, which is unique. We need $1+3+9+27+81 = 121$ coins, and each bag has at most 81 taken out of 100, so there are enough coins.
+
+Pigeonhole explains why smaller numbers fail. With 2 bags and $n_2 = 2$, the sum $\varepsilon_1 + 2\varepsilon_2$ takes only 7 values ($-3$ to $3$) for 9 patterns, so two patterns cannot be told apart.
+SOLUTION: Powers of three (balanced ternary)
+Take $3^{i-1}$ coins from bag $i$: 1, 3, 9, 27, 81 coins from bags 1 to 5 (possible, since $81 \le 100$). Put all 121 coins on the scale together.
+
+Write the coin weight of bag $i$ as $10 + \varepsilon_i$ grams with $\varepsilon_i \in \{-1,0,1\}$. The reading is
+$$W = \sum_{i=1}^5 3^{i-1}(10+\varepsilon_i) = 1210 + S, \qquad S = \varepsilon_1 + 3\varepsilon_2 + 9\varepsilon_3 + 27\varepsilon_4 + 81\varepsilon_5 .$$
+So $S = W - 1210$ is known, with $-121 \le S \le 121$.
+
+**Uniqueness.** Suppose two patterns $\varepsilon$ and $\varepsilon'$ give the same $S$. Then $\sum_i 3^{i-1}(\varepsilon_i - \varepsilon'_i) = 0$ with $\varepsilon_i - \varepsilon'_i \in \{-2,\dots,2\}$. Reduce mod 3: $\varepsilon_1 - \varepsilon'_1 \equiv 0 \pmod 3$, and since $|\varepsilon_1 - \varepsilon_1'| \le 2$, $\varepsilon_1 = \varepsilon_1'$. Divide the remaining sum by 3 and repeat: $\varepsilon_2 = \varepsilon_2'$, and so on. So all 243 patterns give different readings.
+
+**Decoding.** $\varepsilon_1$ is the representative of $S \bmod 3$ in $\{-1,0,1\}$; then $\varepsilon_2$ is the representative of $\frac{S-\varepsilon_1}{3} \bmod 3$, and so on. Example: $W = 1250$ gives $S = 40 = 1 + 3\cdot 1 + 9\cdot 1 + 27\cdot 1 + 81\cdot 0$, so bags 1 to 4 hold 11 g coins and bag 5 holds 10 g coins.
+
+At least one weighing is obviously needed, so the minimum is **one weighing**.
+
+**Why fewer coins fail (2 bags).** With 1 coin from bag 1 and $k$ coins from bag 2, $S = \varepsilon_1 + k\varepsilon_2$. For $k \le 2$ the value $S$ lies in $[-3,3]$, i.e. at most 7 values for $3^2 = 9$ patterns, so by pigeonhole two patterns collide ($k=1$ is even worse). With $k = 3$ all 9 values $-4,\dots,4$ are distinct. The same reasoning bag by bag gives $1, 3, 9, 27, 81$.
+===END===
+
+===TEASER===
+SLUG: prisoners-red-blue-hats-parity
+IDS: G2-30, G2-31
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: medium
+TITLE: Prisoner problem (two hat colours)
+QUESTION:
+One hundred prisoners are told that tomorrow each will be given a red or a blue hat. Each prisoner can see everyone else's hat but not his own. The colours are assigned at random, and once the hats are on, any communication is punished by immediate execution. The prisoners are then called out one at a time in a random order; the prisoner called out says the colour of his own hat aloud, so that everyone hears it. If he is right he is freed immediately, otherwise he is executed.
+
+They have the night to agree on a strategy that saves as many prisoners as possible. What is the best strategy, and how many prisoners can they **guarantee** to save?
+HINT1:
+The first prisoner called cannot learn anything about his own hat, but everyone hears what he says. Use his answer as a signal.
+HINT2:
+The first prisoner sees 99 hats. What single bit of information about those 99 hats would let every other prisoner work out his own colour from what he sees?
+ANSWER:
+99 prisoners are guaranteed to be saved (the first speaker survives with probability 1/2) by announcing the parity of the number of red hats.
+REFRESH:
+**Parity / arithmetic mod 2.** $x \bmod 2$ is 0 if $x$ is even and 1 if $x$ is odd, and $(a+b) \bmod 2$ depends only on $a \bmod 2$ and $b \bmod 2$. In particular, if you know $(a+b) \bmod 2$ and $a$, you know $b \bmod 2$.
+EXPLANATION:
+Nobody can do better than chance about the first prisoner's own hat: nothing he sees depends on it. So at most 99 can be guaranteed, and the first speaker should be used as a messenger. He cannot pass on 99 colours, but one well-chosen bit is enough: the parity of the number of red hats among the other 99. Every later prisoner sees 98 of those 99 hats, all except his own. He knows the parity of the full 99 from the announcement and the parity of the 98 he sees, and the difference is exactly his own hat. The later prisoners also hear the (correct) answers of the earlier ones, but they do not even need them: they see those hats anyway.
+SOLUTION: Parity signal
+**Strategy.** Whoever is called first counts the red hats among the 99 other prisoners. He says "red" if this number is odd and "blue" if it is even. Let $p \in \{0,1\}$ be the parity he announced (1 for odd).
+
+**Everyone else.** Prisoner $i$, called later, counts the red hats $r_i$ among the 98 prisoners other than himself and the first speaker (he sees all of them). Let $h_i = 1$ if his own hat is red and 0 otherwise. The first speaker counted $r_i + h_i$ red hats, so
+$$p \equiv r_i + h_i \pmod 2 \quad\Longrightarrow\quad h_i \equiv p - r_i \pmod 2 .$$
+So prisoner $i$ says "red" if $p$ and $r_i$ have different parities, and "blue" if they have the same parity. He is always right.
+
+**Result.** All 99 prisoners after the first are saved for sure; the first is saved with probability $1/2$ (his hat is independent of what he says).
+
+**Optimality.** The first prisoner called has no information about his own hat, which is independent of everything he sees and hears, so no strategy can guarantee saving him. Hence **99** is the best possible guarantee.
+FOLLOWUP: Three hat colours
+Same setting, but each hat is red, blue or white. What is the best strategy, and how many prisoners can be guaranteed to survive?
+FOLLOWUP_ANSWER:
+Still **99**. Replace parity by a sum mod 3. Code the colours red $=0$, blue $=1$, white $=2$. The first speaker adds up the codes of the 99 others, $s$, and announces the colour whose code is $s \bmod 3$ (he survives with probability $1/3$). Prisoner $i$ adds up the codes $x_i$ of the 98 hats other than his own and the first speaker's. His own code $c_i$ satisfies $x_i + c_i \equiv s \pmod 3$. The three candidates $x_i, x_i+1, x_i+2$ have different remainders mod 3, so exactly one of them matches, and $c_i \equiv s - x_i \pmod 3$ is determined.
+
+Example: prisoner $i$ sees 32 red, 29 blue and 37 white hats among those 98, so $x_i = 0\cdot32 + 1\cdot29 + 2\cdot37 = 103 \equiv 1 \pmod 3$. If the first speaker announced blue ($s \equiv 1$), then $c_i \equiv 0$ and prisoner $i$ says red. The same argument with sums mod $k$ works for any number $k$ of colours.
+===END===
+
+===TEASER===
+SLUG: divisibility-by-nine-digit-sum
+IDS: G2-32
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Division by 9
+QUESTION:
+Given an arbitrary integer, give a rule to decide whether it is divisible by 9, and prove it.
+HINT1:
+Write the integer in base 10 as a sum of its digits times powers of 10. What is $10$ modulo $9$?
+HINT2:
+Show that $10^k - 1$ is divisible by 9 for every $k \ge 0$, and compare the number with the sum of its digits.
+ANSWER:
+An integer is divisible by 9 if and only if the sum of its decimal digits is divisible by 9.
+REFRESH:
+**Congruences.** $a \equiv b \pmod m$ means $m \mid a-b$. Congruences can be added and multiplied: if $a\equiv b$ and $c \equiv d$ then $a+c \equiv b+d$ and $ac \equiv bd \pmod m$. In particular $a \equiv b \Rightarrow a^k \equiv b^k$.
+EXPLANATION:
+Because $10 = 9 + 1$, every power of 10 is "1 plus a multiple of 9". So replacing each $10^k$ by 1 (i.e. replacing the number by its digit sum) changes it only by a multiple of 9. A number and its digit sum therefore leave the same remainder when divided by 9. This is stronger than the rule asked for: it gives the remainder itself, not only divisibility. The same idea with $10 \equiv -1 \pmod{11}$ gives the alternating-sum test for 11.
+SOLUTION: Congruence mod 9
+Let $a = a_n 10^n + a_{n-1}10^{n-1} + \dots + a_1 10 + a_0$ with digits $a_k \in \{0,\dots,9\}$ (for a negative integer apply this to $|a|$). Let $s = a_n + \dots + a_1 + a_0$ be the digit sum.
+
+For every $k\ge 1$, $10^k - 1 = (10-1)(10^{k-1} + \dots + 10 + 1) = 9\,(10^{k-1}+\dots+1)$ is divisible by 9 (and for $k = 0$ it is $0$). Therefore
+$$a - s = \sum_{k=0}^n a_k(10^k - 1)$$
+is divisible by 9, i.e. $a \equiv s \pmod 9$.
+
+So $9 \mid a \iff 9 \mid s$. Since $s$ is much smaller than $a$, the test can be repeated on $s$ until one digit is left (a positive number is divisible by 9 iff this final digit is 9). Example: $738\,261 \to 7+3+8+2+6+1 = 27 \to 9$, so $738\,261 = 9 \times 82\,029$.
+
+**Bonus (divisibility by 11).** Since $10 \equiv -1 \pmod{11}$, $10^k \equiv (-1)^k$, so $a \equiv a_0 - a_1 + a_2 - \dots + (-1)^n a_n \pmod{11}$: $a$ is divisible by 11 iff this alternating digit sum is.
+===END===
+
+===TEASER===
+SLUG: chameleon-colors-mod-3
+IDS: G2-33
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: medium
+TITLE: Chameleon colours
+QUESTION:
+On a remote island there are 13 red, 15 green and 17 blue chameleons. Whenever two chameleons of different colours meet, both change to the third colour (for example, a green and a red that meet both become blue). Is it ever possible for all the chameleons to end up the same colour? Why or why not?
+HINT1:
+Look for a quantity that no meeting can change. Work modulo 3.
+HINT2:
+Track the differences between the counts of two colours, e.g. $R - G$. How much can a single meeting change it?
+ANSWER:
+No: every pairwise difference of the counts is invariant mod 3, and none of them starts at 0 mod 3.
+REFRESH:
+**Invariant method.** If a quantity is unchanged by every allowed move, then any reachable state has the same value of that quantity as the starting state. A target state with a different value is unreachable.
+
+**Congruence mod 3.** $a \equiv b \pmod 3$ means $3 \mid a - b$; adding a multiple of 3 does not change the residue.
+EXPLANATION:
+A meeting always changes the three counts by $(-1,-1,+2)$ in some order. So the difference between any two counts changes by $0$ or $\pm 3$: the two colours that met both drop by 1 (difference unchanged), or one colour drops by 1 while the other gains 2 (difference moves by 3). So every difference keeps its residue mod 3 forever. If all 45 chameleons had the same colour, the other two counts would both be 0, so their difference would be $0 \equiv 0 \pmod 3$. But initially the differences are $15-13 = 2$, $17-15 = 2$, $17-13 = 4$, none of them divisible by 3, so this state can never be reached.
+SOLUTION: Invariant: differences mod 3
+Let $(R, G, B)$ be the counts, starting at $(13, 15, 17)$. A meeting of two different colours changes the vector by one of
+$$(-1,-1,+2),\quad (-1,+2,-1),\quad (+2,-1,-1).$$
+For any two colours, the change of their difference is either $(-1)-(-1) = 0$ or $\pm\big(2-(-1)\big) = \pm 3$. Hence
+$$R - G,\quad G - B,\quad R - B \pmod 3$$
+are invariant.
+
+Initially $R - G = -2 \equiv 1$, $G - B = -2 \equiv 1$, $R - B = -4 \equiv 2 \pmod 3$.
+
+If all chameleons were one colour, two of the counts would be 0 and their difference $\equiv 0 \pmod 3$. None of the three differences is ever $\equiv 0$, so this is impossible. **No.**
+SOLUTION: Residues stay a permutation of 0, 1, 2
+Mod 3 the counts are $15 \equiv 0$, $13 \equiv 1$, $17 \equiv 2$: the residues are $\{0,1,2\}$, all different. A meeting subtracts 1 from two counts and adds 2 to the third, and $+2 \equiv -1 \pmod 3$, so mod 3 **every** count decreases by 1. Subtracting 1 from all three residues of $\{0,1,2\}$ gives $\{2,0,1\}$, again all different. So at every stage the three counts have distinct residues mod 3, and no two counts are ever equal. But the final state $(45,0,0)$ (in some order) has two equal counts. Impossible.
+
+(Just before the end the state would have to be $(1,1,43)$ up to order, with two equal counts, which is ruled out for the same reason.)
+===END===
+
+===TEASER===
+SLUG: coin-split-sum-of-products
+IDS: G2-34
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: medium
+TITLE: Coin split problem
+QUESTION:
+You split 1000 coins into two piles, with $x$ coins in the first and $y$ in the second, and record the product $xy$. Then you split each pile further, and each time a pile is split into two piles of sizes $a$ and $b$ you add $ab$ to the running total. For example, if $x$ is split into $x_1, x_2$ and $y$ into $y_1, y_2$, the total so far is $xy + x_1x_2 + y_1y_2$. You continue until every pile has 1 coin. What is the final total? Prove that it does not depend on how the piles are split.
+HINT1:
+Work out small cases ($n = 2, 3, 4$ coins) and guess a formula.
+HINT2:
+If $f(n)$ is the final total for $n$ coins, the first split gives $f(n) = x(n-x) + f(x) + f(n-x)$. Prove your guess by strong induction. For a slicker proof, count pairs of coins.
+ANSWER:
+$\binom{1000}{2} = \frac{1000\cdot999}{2} = 499{,}500$, whatever the splits.
+REFRESH:
+**Strong induction.** If $P(n_0)$ holds, and for every $N > n_0$, "$P(k)$ for all $n_0 \le k < N$" implies $P(N)$, then $P(n)$ holds for all $n \ge n_0$.
+
+**Binomial coefficient.** $\binom n2 = \frac{n(n-1)}{2}$ is the number of unordered pairs from $n$ objects.
+EXPLANATION:
+The cleanest way to see it is to count pairs of coins. Every pair of coins starts in the same pile and is eventually separated, exactly once, at the split that puts them in different piles. When a pile is split into piles of sizes $a$ and $b$, exactly $ab$ pairs are separated at that moment. So the running total counts every pair of coins exactly once, and the final total is the number of pairs, $\binom{1000}{2}$, however the piles are split. The induction proof checks the same identity algebraically.
+SOLUTION: Strong induction
+Let $f(n)$ be the final total for $n$ coins (with $f(1) = 0$). Small cases: $f(2) = 1$; $f(3) = 2\cdot1 + f(2) + f(1) = 3$; $f(4)$ is $2\cdot2 + 1 + 1 = 6$ or $3\cdot1 + 3 + 0 = 6$. Guess $f(n) = \frac{n(n-1)}{2}$.
+
+**Claim:** for every $n \ge 1$ and every way of splitting, the total is $\frac{n(n-1)}{2}$.
+
+**Base:** $n = 1$: no split, total $0 = \frac{1\cdot0}{2}$.
+
+**Step:** let $N \ge 2$ and assume the claim for all sizes $< N$. The first split of $N$ coins produces piles of $x$ and $N - x$ with $1 \le x \le N-1$. After that, the two piles are split independently, and by the induction hypothesis they contribute $\frac{x(x-1)}{2}$ and $\frac{(N-x)(N-x-1)}{2}$ whatever is done. So
+$$\begin{aligned} f(N) &= x(N-x) + \frac{x(x-1)}{2} + \frac{(N-x)(N-x-1)}{2} \\ &= \frac{2xN - 2x^2 + x^2 - x + N^2 - 2Nx + x^2 - N + x}{2} = \frac{N^2 - N}{2}. \end{aligned}$$
+This does not depend on $x$ or on later choices, which proves the claim.
+
+For $n = 1000$: $f(1000) = \frac{1000\cdot 999}{2} = 499{,}500$.
+SOLUTION: Counting pairs
+Call two coins a pair. At the start all $\binom{1000}{2}$ pairs are in the same pile; at the end no pair is. A pair, once separated, stays separated. When a pile is split into piles of sizes $a$ and $b$, the pairs separated at that moment are those with one coin in each new pile: exactly $ab$ of them. So each term added to the total counts the pairs separated by that split, and every pair is separated exactly once. Therefore
+$$\text{total} = \#\{\text{pairs}\} = \binom{1000}{2} = 499{,}500 .$$
+===END===
+
+===TEASER===
+SLUG: chocolate-bar-breaks
+IDS: G2-35, R8-27, R8-28, R8-29, R8-30
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: easy
+TITLE: Chocolate bar problem
+QUESTION:
+A chocolate bar has 6 rows and 8 columns (48 small $1\times 1$ squares). You break it into the individual squares by a sequence of breaks; each break takes **one** rectangular piece and splits it along a straight line into two smaller rectangles (for example, the first break could split the $6\times8$ bar into a $6\times3$ and a $6\times5$ piece). How many breaks are needed to obtain the 48 small squares?
+
+More generally, for a bar of any shape made of $n$ squares, how many breaks are needed, and does the answer depend on the shape? Additional question: if you are allowed to stack pieces on top of each other and break the whole stack with one break, how many breaks are needed?
+HINT1:
+Don't think about the geometry. Think about what a single break does to the *number of pieces*.
+HINT2:
+Each break turns one piece into two. How many pieces do you start with, and how many do you end with? For the stacking version: at most how much can one break multiply the number of pieces by?
+ANSWER:
+Always $mn - 1 = 47$ breaks ($n-1$ for $n$ squares, whatever the shape or order); with stacking, at least $\lceil \log_2 n\rceil$ breaks, which is exactly 6 for the $6\times8$ bar.
+REFRESH:
+**Invariant / monovariant.** If every move changes a quantity by exactly the same amount, the number of moves is (final value $-$ initial value) / (change per move), independent of the order of the moves.
+
+**Ceiling of a logarithm.** $\lceil \log_2 n\rceil$ is the smallest integer $k$ with $2^k \ge n$.
+EXPLANATION:
+It is tempting to optimise (break along rows first? cut in halves?), but no choice matters: every break increases the number of pieces by exactly one. You start with 1 piece and must end with 48, so you need exactly $48 - 1 = 47$ breaks, whatever you do. The same argument works for any shape made of $n$ squares: $n - 1$ breaks.
+
+Stacking changes things because one break can now split many pieces at once. The number of pieces can at most double per break, so $k$ breaks give at most $2^k$ pieces and you need $2^k \ge n$. Whether this bound can be reached depends on the shape. For a rectangle you halve each side repeatedly, which takes $\lceil\log_2 m\rceil + \lceil\log_2 n\rceil$ breaks; for $6\times 8$ this is $3 + 3 = 6 = \lceil \log_2 48\rceil$.
+SOLUTION: Counting pieces
+Let $P$ be the number of pieces. Initially $P = 1$. A break takes one piece and replaces it by two, so $P$ increases by exactly 1. At the end $P = mn = 48$. If $b$ breaks are made, $1 + b = 48$, so
+$$b = mn - 1 = 47 .$$
+This holds for every order of breaks. For a bar of any shape with $n$ squares (where each break splits one piece into two) the same argument gives $n - 1$ breaks, so the shape does not matter.
+SOLUTION: Strong induction on the rectangle
+Claim: an $m\times n$ rectangle always needs exactly $mn - 1$ breaks. For $1\times1$: 0 breaks. Suppose the claim holds for all smaller rectangles. The first break splits $m\times n$ into $m\times n_1$ and $m\times (n - n_1)$ (or the analogous split of rows). By induction the total is
+$$1 + (mn_1 - 1) + \big(m(n-n_1) - 1\big) = mn - 1 ,$$
+and similarly $1 + (m_1 n - 1) + ((m - m_1)n - 1) = mn - 1$ for a row split. With $m = 6$, $n = 8$: **47**.
+SOLUTION: Stacking allowed
+**Lower bound.** One break of a stack splits each piece in the stack into at most two, so the number of pieces at most doubles. After $k$ breaks there are at most $2^k$ pieces, so we need $2^k \ge n$, i.e. $k \ge \lceil\log_2 n\rceil$.
+
+**Rectangles.** For an $a\times b$ rectangle, $\lceil\log_2 a\rceil + \lceil\log_2 b\rceil$ breaks suffice: cut every piece across its columns as close to half as possible, stack everything, repeat until all widths are 1 (this takes $\lceil \log_2 b\rceil$ rounds, since the largest width goes from $w$ to $\lceil w/2\rceil$), then do the same for the rows. It is also necessary: for a piece $x\times y$ let $\varphi = \lceil\log_2 x\rceil + \lceil\log_2 y\rceil$. Splitting a side of length $x$ into $x_1 + x_2$ leaves a part with $\max(x_1,x_2) \ge x/2$, whose $\lceil\log_2\rceil$ is at least $\lceil\log_2 x\rceil - 1$. So one break lowers the largest $\varphi$ among the pieces by at most 1, and it must go from $\lceil\log_2 a\rceil+\lceil\log_2 b\rceil$ to 0. For $6\times8$: $3 + 3 = 6 = \lceil\log_2 48\rceil$ breaks.
+
+**The shape matters now.** A $2\times 2$ square (4 squares) takes $2 = \log_2 4$ breaks. But take a T-shape: 3 squares in a row with one more square below the middle one. Every straight break detaches a single square and leaves a piece of 3 squares (an L-shape or a bar of 3). A piece of 3 squares still needs at least $\lceil\log_2 3\rceil = 2$ more breaks, so the T needs 3 breaks, although $\lceil\log_2 4\rceil = 2$.
+FOLLOWUP: Does the shape of the small pieces matter?
+Suppose the bar is made of $n$ small pieces that are not squares (triangles, hexagons, irregular tiles), and each break splits one piece into two along the grooves. How many breaks are needed to separate all the small pieces?
+FOLLOWUP_ANSWER:
+Still exactly $n - 1$. The counting argument never used the shape: each break turns one piece into two, so the number of pieces goes up by exactly 1, from 1 to $n$. The only thing we need is that a break always produces exactly two pieces. If a single break could shatter a piece into three, that would be a different game. With stacking the shape of the pieces *does* matter, as the T-shape example shows: the bound $\lceil\log_2 n\rceil$ is reached only if the pieces can always be cut roughly in half.
+FOLLOWUP: The 3-dimensional analogue
+A block of chocolate is an $a\times b\times c$ box of $n = abc$ unit cubes. Each break splits one piece along a plane into two boxes. How many breaks are needed to get the unit cubes? And if pieces can be stacked and broken together?
+FOLLOWUP_ANSWER:
+**Without stacking:** exactly $n - 1 = abc - 1$ breaks, by the same piece-counting argument (it works in any dimension and for any shape).
+
+**With stacking:** the number of pieces at most doubles per break, so at least $\lceil\log_2 n\rceil$ breaks are needed. For a box, halving each dimension in turn needs $\lceil\log_2 a\rceil + \lceil\log_2 b\rceil + \lceil\log_2 c\rceil$ breaks. This is also necessary: the same potential argument as in 2D (the largest value of $\sum \lceil\log_2(\text{side})\rceil$ among the pieces drops by at most 1 per break) proves it. Example: $2\times 2\times 2$ takes $3$ breaks; $3\times3\times3$ takes $6$ breaks, while $\lceil\log_2 27\rceil = 5$, so for boxes the pure counting bound is not always reached.
+FOLLOWUP: What is a Toblerone?
+What is a Toblerone, and how does the question change for one?
+FOLLOWUP_ANSWER:
+A Toblerone is a Swiss chocolate bar shaped as a long triangular prism, made of a row of triangular "peaks" joined at their bases (the shape is said to be inspired by the Matterhorn). It is essentially a one-dimensional bar of $k$ segments. Separating it into single peaks takes $k - 1$ breaks without stacking. With stacking it takes $\lceil\log_2 k\rceil$ breaks, since a row of $k$ segments can always be halved (roughly), so the doubling bound is reached. (The joke of the question: interviewers like to check whether you know the products around you. Not every interview question is a maths question.)
+===END===
+
+===TEASER===
+SLUG: race-track-gas-cans
+IDS: G2-36
+SECTION: brainteaser
+CATEGORY: Induction & recursion
+DIFFICULTY: hard
+TITLE: Race track
+QUESTION:
+You are on a one-way circular race track. $N$ gas cans are placed at different points of the track, and the total gas in them is exactly enough for your car to drive one full lap. Your tank is initially empty, but you may start the car at any point of the track and pick up the cans you pass to fill your tank. Can you always choose a starting point so that you complete the full lap?
+HINT1:
+Try $N = 1$ and $N = 2$ first. For two cans, compare the gas in each can with the distance to the next can.
+HINT2:
+Some can must hold at least enough gas to reach the next can (why?). Can you merge those two cans into one and reduce $N$? Alternatively, drive a lap with a car that has plenty of gas and record the fuel level along the way.
+ANSWER:
+Yes, always: start at the gas can where a car that drives a full lap has its lowest fuel level (such a point always exists).
+REFRESH:
+**Averaging (pigeonhole for sums).** If $\sum_{i=1}^N x_i = \sum_{i=1}^N y_i$, then $x_i \ge y_i$ for at least one $i$ (otherwise $\sum x_i < \sum y_i$).
+
+**Induction.** Prove the statement for the base case, then show that the case $N$ reduces to the case $N-1$.
+EXPLANATION:
+Measure gas in "distance it can drive" and take the lap length to be 1. Let can $i$ hold $x_i$ and let $y_i$ be the distance from can $i$ to the next can, so $\sum x_i = \sum y_i = 1$.
+
+The second method below is the one to remember. Imagine a car with a huge tank driving one lap and plot "fuel in the tank" against position. Picking up cans makes the graph jump up, and driving makes it go down. After a full lap the level is back to where it started, because the lap consumed exactly the gas collected. Now start the empty car at the point where this graph is lowest. From there the empty car's fuel equals the graph minus its minimum, which is never negative, so it never runs dry.
+
+The induction view gives the same result by merging: some can has $x_i \ge y_i$, so a car at can $i$ always reaches can $i+1$ with gas left. You may then pour can $i+1$ into can $i$ without changing anything, which leaves $N-1$ cans.
+SOLUTION: Induction by merging cans
+Normalise the lap length to 1 and measure gas in distance units. Label the cans $1,\dots,N$ in driving order; can $i$ holds $x_i$, and the road from can $i$ to can $i+1$ (can $N+1$ = can 1) has length $y_i$. Then $\sum x_i = 1 = \sum y_i$.
+
+**Base $N = 1$.** Start at the can: it holds enough for the whole lap.
+
+**Step.** Assume the claim for $N - 1$ cans, $N \ge 2$. Since $\sum x_i = \sum y_i$, some $i$ has $x_i \ge y_i$ (otherwise $\sum x_i < \sum y_i$). Build a new configuration by removing can $i+1$ and putting its gas into can $i$ (amount $x_i + x_{i+1}$). This has $N-1$ cans with the same total, so by induction there is a good starting point $s$ for it, which is necessarily at one of the cans (an empty car can only move if it starts on a can). This start also works for the original track:
+- On any stretch not involving cans $i$, $i+1$, the two situations are identical.
+- If the car arrives at can $i$ with fuel $f \ge 0$ in the new configuration it then has $f + x_i + x_{i+1}$; in the original it has $f + x_i \ge y_i$ and reaches can $i+1$ with $f + x_i - y_i \ge 0$. After picking up can $i+1$ it has $f + x_i + x_{i+1} - y_i$, exactly what the merged car has at that point of the track. So from there on the two runs coincide.
+- If $s$ is can $i$ itself, the same computation with $f = 0$ applies.
+
+So the original track can be completed from $s$. **Yes.**
+SOLUTION: Minimum of the fuel curve
+Put a car with a large tank at can 1 with fuel $0$ (allowing negative values) and drive one lap. Let $F(t)$ be the fuel level just before picking up the can at position $t$. Over the lap,
+$$F(\text{after one lap}) = F(\text{start}) + \sum x_i - \sum y_i = F(\text{start}),$$
+so $F$ is a closed "cycle". Let can $j$ be where the reading just before refuelling is smallest, $F_{\min}$.
+
+Now start the empty car at can $j$. At every later point its fuel equals $F(\text{point}) - F_{\min} \ge 0$ (same increments as the big-tank car, shifted by the constant $-F_{\min}$). Between cans the fuel only decreases, and it is lowest just before the next can, where it is $F - F_{\min} \ge 0$. So the car never runs out and completes the lap, ending with exactly 0. **Yes**, and this also tells you *where* to start.
+===END===
+
+===TEASER===
+SLUG: sqrt-2-irrational
+IDS: G2-37
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: easy
+TITLE: Irrational number
+QUESTION:
+Prove that $\sqrt2$ is irrational. (A number is rational if it can be written as a ratio of two integers, and irrational otherwise.)
+HINT1:
+Suppose it were rational and look for a contradiction. Write the fraction in lowest terms.
+HINT2:
+From $m/n = \sqrt 2$ you get $m^2 = 2n^2$. What does that say about the parity of $m$, and then of $n$?
+ANSWER:
+If $\sqrt2 = m/n$ in lowest terms, then $m$ and $n$ would both be even, a contradiction, so $\sqrt2$ is irrational.
+REFRESH:
+**Proof by contradiction.** Assume the negation of the statement and derive something false; then the statement is true.
+
+**Parity of squares.** If $m$ is odd, $m = 2k+1$, then $m^2 = 4k^2+4k+1$ is odd. So $m^2$ even implies $m$ even.
+EXPLANATION:
+A fraction in lowest terms cannot have an even numerator and an even denominator. The equation $m^2 = 2n^2$ forces exactly that: the factor 2 on the right makes $m$ even, and then $m^2$ has a factor 4, which forces $n^2$, and hence $n$, to be even. A cleaner way to say the same thing: in $m^2$ the prime 2 appears an even number of times, and in $2n^2$ it appears an odd number of times, so the two can never be equal.
+SOLUTION: Contradiction via parity
+Suppose $\sqrt2 = m/n$ with integers $m, n$, $n \ne 0$. Dividing by common factors, we may assume $\gcd(m,n) = 1$.
+
+Squaring gives $m^2 = 2n^2$, so $m^2$ is even, hence $m$ is even (the square of an odd number is odd). Write $m = 2x$. Then $4x^2 = 2n^2$, i.e. $n^2 = 2x^2$, so $n^2$ is even and $n$ is even.
+
+Now 2 divides both $m$ and $n$, contradicting $\gcd(m,n) = 1$. Hence $\sqrt 2$ is irrational. $\blacksquare$
+SOLUTION: Counting factors of 2
+Suppose $m^2 = 2n^2$ with positive integers $m, n$. By unique prime factorisation, let $2^a$ be the exact power of 2 dividing $m$ and $2^b$ the one dividing $n$. The exact power of 2 dividing $m^2$ is $2^{2a}$ (even exponent), and the one dividing $2n^2$ is $2^{2b+1}$ (odd exponent). An even exponent cannot equal an odd one, so no such $m, n$ exist. The same argument shows that $\sqrt p$ is irrational for every prime $p$.
+===END===
+
+===TEASER===
+SLUG: rainbow-hats-seven-prisoners
+IDS: G2-38
+SECTION: brainteaser
+CATEGORY: Invariants, parity & pigeonhole
+DIFFICULTY: hard
+TITLE: Rainbow hats
+QUESTION:
+Seven prisoners are given a chance to be freed tomorrow. An executioner puts a hat on each prisoner's head; each hat is one of the 7 colours of the rainbow, and the executioner chooses the colours as he likes (repeats allowed). Each prisoner sees the other six hats but not his own. They cannot communicate in any way. Each prisoner then writes down (secretly) a guess of his own hat colour. If **at least one** prisoner guesses correctly, they are all freed; otherwise they are all executed.
+
+They have the night to agree on a strategy. Is there a strategy that guarantees they are freed?
+HINT1:
+Code the colours as $0,1,\dots,6$ and consider the total $S$ of all seven codes modulo 7. It takes one of 7 values, and there are 7 prisoners.
+HINT2:
+Let prisoner $i$ bet that $S \bmod 7 = i$. Given what he sees, that bet determines exactly one guess for his own hat.
+ANSWER:
+Yes: prisoner $i$ ($i = 0,\dots,6$) guesses the colour that would make the sum of all codes $\equiv i \pmod 7$; exactly one prisoner is always right.
+REFRESH:
+**Residues mod 7.** Every integer has exactly one remainder in $\{0,\dots,6\}$ modulo 7, and for a fixed integer $x$ the numbers $x + 0, x+1, \dots, x+6$ have 7 different remainders mod 7.
+EXPLANATION:
+Each prisoner is right with probability $1/7$ whatever he does, so on average exactly one correct guess is made per round, whatever the strategy. The trick is to arrange the guesses so that the correct guesses never happen together: exactly one prisoner is right in every case, instead of sometimes several and sometimes none.
+
+The sum $S$ of all hat codes mod 7 is an unknown number in $\{0,\dots,6\}$. Prisoner $i$ "covers" the case $S \equiv i$: he assumes it and deduces his own hat from the six he sees. Whatever $S$ actually is, the prisoner whose number equals it made a correct assumption and therefore a correct guess. The 7 prisoners cover the 7 possible cases.
+SOLUTION: Sum modulo 7
+Number the prisoners $0,\dots,6$ and code the colours $0,\dots,6$. Let $x_k$ be prisoner $k$'s hat code and $S = \sum_{k=0}^6 x_k$.
+
+**Strategy.** Prisoner $i$ computes $T_i = \sum_{k\ne i} x_k$ (he sees these hats) and writes down the unique $g_i \in \{0,\dots,6\}$ with
+$$g_i + T_i \equiv i \pmod 7, \qquad\text{i.e.}\quad g_i \equiv i - T_i \pmod 7 .$$
+
+**Why it works.** Let $r = S \bmod 7 \in \{0,\dots,6\}$. For prisoner $r$: $x_r + T_r = S \equiv r$, and also $g_r + T_r \equiv r$. So $g_r \equiv x_r \pmod 7$, and since both are in $\{0,\dots,6\}$, $g_r = x_r$. Prisoner $r$ guesses correctly, and everyone is freed. (For $i \ne r$, $g_i + T_i \equiv i \not\equiv S = x_i + T_i$, so $g_i \ne x_i$: exactly one prisoner is right.)
+
+**Yes**, freedom is guaranteed, whatever colours the executioner chooses.
+SOLUTION: Proof by contradiction (the book's framing)
+With the same guesses $g_i$, suppose every prisoner is wrong: $g_i \ne x_i$ for all $i$. Since $g_i$ and $x_i$ both lie in $\{0,\dots,6\}$ and $g_i + T_i \equiv i$, we get $x_i + T_i = S \not\equiv i \pmod 7$ for every $i = 0,\dots,6$. Then $S \bmod 7$ is none of $0,1,\dots,6$, which is impossible. So at least one guess is correct.
+===END===
+
+===TEASER===
+SLUG: coin-toss-n-plus-one-vs-n
+IDS: G4A-01
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Coin toss game
+QUESTION:
+Gambler $A$ has $n+1$ fair coins and gambler $B$ has $n$ fair coins. Both flip all their coins. What is the probability that $A$ gets strictly more heads than $B$?
+HINT1:
+If both had $n$ coins, symmetry would make "A ahead" and "B ahead" equally likely. Set $A$'s extra coin aside for a moment.
+HINT2:
+Compare $A$'s first $n$ coins with $B$'s $n$ coins: A ahead, tie, or B ahead. In each case, what does $A$'s last coin do?
+ANSWER:
+$1/2$ (for every $n$).
+REFRESH:
+**Law of total probability.** If $E_1, E_2, E_3$ partition the sample space, $P(W) = \sum_k P(W \mid E_k)P(E_k)$.
+
+**Symmetry.** If two random variables $X, Y$ are i.i.d., then $P(X > Y) = P(X < Y)$.
+EXPLANATION:
+Remove $A$'s last coin. Now both have $n$ coins, so "A ahead" and "B ahead" have the same probability $x$, and a tie has probability $y = 1 - 2x$. Put the last coin back. If $A$ was ahead, one more coin cannot hurt; if $B$ was ahead, it can at best tie ($B$ was ahead by at least 1). Only a tie is affected: the extra head turns it into a win with probability $1/2$. So $P = x + y/2 = x + (1-2x)/2 = 1/2$. The unknown $x$ cancels, so there is no need for binomial sums.
+
+A second view (method 2): since $A$ has one coin more, "$A$ has more heads than $B$" is exactly the complement of "$A$ has more tails than $B$", and swapping heads and tails shows these two events are equally likely.
+SOLUTION: Condition on the first n coins
+Let $H_A'$ be the heads among $A$'s first $n$ coins, $H_B$ the heads of $B$, and $L \in\{0,1\}$ $A$'s last coin (1 = head). $H_A'$ and $H_B$ are i.i.d. $\mathrm{Bin}(n, 1/2)$, independent of $L$.
+
+Define $E_1 = \{H_A' > H_B\}$, $E_2 = \{H_A' = H_B\}$, $E_3 = \{H_A' < H_B\}$. By symmetry $P(E_1) = P(E_3) = x$, and $P(E_2) = y$ with $2x + y = 1$.
+
+- On $E_1$: $H_A' + L \ge H_A' > H_B$, so $A$ wins for sure.
+- On $E_3$: $H_A' \le H_B - 1$, so $H_A' + L \le H_B$: $A$ never wins.
+- On $E_2$: $A$ wins iff $L = 1$, probability $1/2$ (independence).
+
+By total probability,
+$$P(A \text{ wins}) = x + \tfrac12 y = x + \tfrac12(1 - 2x) = \tfrac12 .$$
+SOLUTION: Heads-tails symmetry
+Let $H_A$ and $T_A = n + 1 - H_A$ be $A$'s heads and tails, and $H_B$, $T_B = n - H_B$ be $B$'s. Then
+$$H_A > H_B \iff H_A \ge H_B + 1 \iff n + 1 - T_A \ge n - T_B + 1 \iff T_A \le T_B \iff \text{not}(T_A > T_B).$$
+So the events $\{H_A > H_B\}$ and $\{T_A > T_B\}$ are complements. Because the coins are fair, swapping heads and tails on every coin maps one event onto the other and preserves probabilities, so they have the same probability. Two complementary events of equal probability each have probability $\tfrac12$.
+===END===
+
+===TEASER===
+SLUG: card-game-higher-card
+IDS: G4A-02
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Card game
+QUESTION:
+A casino offers a simple card game. A standard 52-card deck has 4 cards of each value $2, 3, \dots, 10, J, Q, K, A$ (ace high). The deck is thoroughly shuffled. You draw one card and the dealer draws another from the remaining 51. If your card has a strictly higher value you win; if the values are equal or yours is lower, the house wins. What is your probability of winning?
+HINT1:
+Three things can happen: you are higher, equal, or lower. Two of these are related by symmetry.
+HINT2:
+You and the dealer play symmetric roles, so $P(\text{higher}) = P(\text{lower})$. It remains to compute $P(\text{equal})$: given your card, how many of the 51 remaining cards have the same value?
+ANSWER:
+$\dfrac{8}{17} \approx 0.4706$.
+REFRESH:
+**Symmetry of exchangeable draws.** When two cards are drawn without replacement from a shuffled deck, the pair (first, second) has the same distribution as (second, first). So $P(X > Y) = P(Y > X)$.
+
+**Sum of integers.** $0 + 1 + \dots + (n-1) = \frac{n(n-1)}{2}$.
+EXPLANATION:
+The only asymmetry in the game is that ties go to the house. Without ties, you and the dealer would each win half the time, because your roles are interchangeable. So your chance is half of what is left once ties are removed. A tie happens when the dealer's card matches your value: 3 of the 51 remaining cards do, so $P(\text{tie}) = 3/51 = 1/17$. Hence $P(\text{win}) = \frac12\left(1 - \frac1{17}\right) = \frac{8}{17}$. The house edge comes entirely from the ties.
+SOLUTION: Symmetry
+Let $E_1$ = {your value higher}, $E_2$ = {equal}, $E_3$ = {your value lower}. Exchanging the roles of the two cards maps $E_1$ to $E_3$ and leaves the joint distribution unchanged, so $P(E_1) = P(E_3)$.
+
+Whatever your card is, 3 of the 51 remaining cards share its value, so $P(E_2) = \frac{3}{51} = \frac1{17}$. Then
+$$P(E_1) = \frac{1 - P(E_2)}{2} = \frac{1 - \frac1{17}}{2} = \frac{8}{17}.$$
+SOLUTION: Direct conditioning on your card
+Your card's value is uniform over the 13 values. If it is the $k$-th smallest value ($k = 1$ for 2, ..., $k = 13$ for A), you win when the dealer draws one of the $4(k-1)$ cards of lower value among 51:
+$$P(\text{win}) = \frac1{13}\sum_{k=1}^{13}\frac{4(k-1)}{51} = \frac{4}{13\cdot 51}\cdot(0 + 1 + \dots + 12) = \frac{4}{13\cdot51}\cdot\frac{12\cdot13}{2} = \frac{24}{51} = \frac{8}{17}.$$
+===END===
+
+===TEASER===
+SLUG: drunk-passenger-airplane-seat
+IDS: G4A-03, R3B-19, R3B-20, R3B-21, R3B-22
+SECTION: probability
+CATEGORY: Conditional probability & Bayes
+DIFFICULTY: medium
+TITLE: Drunk passenger
+QUESTION:
+100 passengers line up to board a plane with 100 seats. Passenger $n$ holds a ticket for seat $n$. The first passenger in line is drunk and sits in a seat chosen uniformly at random. Every other passenger sits in his own seat if it is free, and otherwise picks a free seat uniformly at random. You are passenger number 100, the last to board. What is the probability that you sit in your own seat (seat 100)?
+HINT1:
+Avoid heavy conditional-probability computations. Think about which seats can possibly be left over for the last passenger.
+HINT2:
+Show that the last free seat is always seat 1 or seat 100. Then look at the first moment someone takes one of these two seats. Is there any reason to prefer one over the other?
+ANSWER:
+$1/2$.
+REFRESH:
+**Symmetry argument.** If at every random choice two outcomes $a$ and $b$ are equally likely, and the process stops as soon as one of them is chosen, then $a$ is chosen first with probability $1/2$.
+
+**Strong induction.** Prove $P(2)$, then show $P(k)$ for all $2 \le k < n$ implies $P(n)$.
+EXPLANATION:
+Seats $2, \dots, 99$ can never be the one left for you: when passenger $k$ boards, seat $k$ is either free (and he takes it) or already taken, so seat $k$ is always occupied once passenger $k$ has boarded. So the last free seat is seat 1 (the drunk's) or seat 100 (yours).
+
+Now follow the chain of displaced people. The drunk, and later every displaced passenger, chooses uniformly among the free seats, and seats 1 and 100 are always both free until one of them is taken. If seat 1 is taken first, the chain stops: everyone after that finds his own seat free, including you. If seat 100 is taken first, you lose. Choosing any other seat only passes the problem on to another passenger. At every step seats 1 and 100 are equally likely, so the one taken first is seat 1 with probability exactly $1/2$. The number 100 plays no role.
+SOLUTION: Symmetry between seats 1 and 100
+**Step 1: the last seat is 1 or 100.** For $2 \le k \le 99$, when passenger $k$ boards, either seat $k$ is free and he takes it, or it is already taken. Either way seat $k$ is occupied before passenger 100 boards. So the seat left for passenger 100 is seat 1 or seat 100.
+
+**Step 2: symmetry.** Call a choice "random" if it is made by the drunk passenger or a displaced passenger. Before seat 1 or seat 100 is taken, both are free at every random choice, and each has the same probability $1/m$ ($m$ = number of free seats). Consider the first random choice that picks seat 1 or seat 100 (one exists, since a random choice picking anything else displaces a later passenger, and passenger 99 displaced has only seats 1 and 100 left). Given that this choice picks one of the two, each is equally likely.
+- If seat 1 is picked first: nobody else is ever displaced, and seat 100 stays free for you.
+- If seat 100 is picked first: you do not get your seat.
+
+Hence $P(\text{you get seat } 100) = \frac12$.
+SOLUTION: Recursion and induction
+Let $p_n$ be the probability that the last passenger gets his seat when there are $n \ge 2$ seats. The drunk picks seat $k$ with probability $1/n$:
+- $k = 1$: everyone gets his own seat (success);
+- $k = n$: failure;
+- $2 \le k \le n-1$: passengers $2, \dots, k-1$ sit correctly and passenger $k$ is displaced. The free seats are $1, k+1, \dots, n$, and he chooses uniformly among them. This is the original problem with $n - k + 1$ seats, passenger $k$ acting as the drunk and seat 1 playing the role of his own seat.
+
+So
+$$p_n = \frac1n + \frac1n\sum_{k=2}^{n-1} p_{n-k+1} = \frac1n + \frac1n\sum_{m=2}^{n-1} p_m .$$
+$p_2 = \frac12$ (the drunk picks seat 1 or 2). If $p_m = \frac12$ for $2 \le m \le n-1$, then $p_n = \frac1n + \frac{n-2}{2n} = \frac{n}{2n} = \frac12$. By induction $p_n = \frac12$ for all $n\ge2$; in particular $p_{100} = \frac12$.
+FOLLOWUP: N seats
+What happens with $N$ seats and $N$ passengers instead of 100?
+FOLLOWUP_ANSWER:
+The answer is $\frac12$ for every $N \ge 2$. Both arguments above never used the number 100. Seats $2,\dots,N-1$ are always filled by the time the last passenger boards, so the last free seat is seat 1 or seat $N$, and these are symmetric at every random choice. The recursion $p_N = \frac1N + \frac1N\sum_{m=2}^{N-1}p_m$ with $p_2 = \frac12$ gives $p_N = \frac12$ by induction. (Related fact: the probability that passenger $k$, for $2 \le k \le N$, finds his seat taken is $\frac{1}{N-k+2}$, by the same symmetry between seats 1, $k$, ..., $N$.)
+FOLLOWUP: The officious steward
+Same setting (100 seats, the first passenger sits at random). A steward tries to make each *displaced* passenger sit in seat 1. He succeeds with probability 0.9. When he fails, the displaced passenger picks a free seat uniformly at random as before. What is the probability that passenger 100 gets his own seat?
+FOLLOWUP_ANSWER:
+Interpretation: the steward acts on displaced passengers only, not on the first passenger, and a failed attempt leaves a uniform choice over all free seats (seat 1 included).
+
+When passenger $j \ge 2$ is displaced, seats $2,\dots,j$ are occupied and the free seats are $1, j+1, \dots, 100$: $m = 101 - j$ seats. He takes seat 1 with probability $0.9 + \frac{0.1}{m}$, seat 100 with probability $\frac{0.1}{m}$, and each other free seat $k$ with probability $\frac{0.1}{m}$, which displaces passenger $k$, who then faces $101 - k \in \{2,\dots,m-1\}$ free seats. Let $F_m$ be the probability of failure (seat 100 taken) given a displaced passenger facing $m$ free seats:
+$$F_m = \frac{0.1}{m}\Big(1 + \sum_{i=2}^{m-1} F_i\Big).$$
+With $T_m = 1 + \sum_{i=2}^{m} F_i$ this reads $T_m = T_{m-1}\left(1 + \frac{0.1}{m}\right)$, $T_1 = 1$, so $T_m = \prod_{i=2}^{m}\left(1 + \frac{1}{10i}\right)$.
+
+The first passenger picks seat 100 with probability $\frac1{100}$ and seat $k \in \{2,\dots,99\}$ with probability $\frac1{100}$ each (then passenger $k$ faces $101-k$ seats). So
+$$P(\text{fail}) = \frac1{100}\Big(1 + \sum_{i=2}^{99}F_i\Big) = \frac{T_{99}}{100} = \frac1{100}\prod_{i=2}^{99}\left(1 + \frac1{10i}\right) \approx \frac{1.5138}{100}.$$
+Hence $P(\text{passenger 100 gets his seat}) \approx 1 - 0.0151 = 0.9849$ (a simulation agrees). Sanity check: with a useless steward (0.9 replaced by 0) the same computation gives $T_{99} = \prod_{i=2}^{99}\frac{i+1}{i} = 50$ and $P(\text{fail}) = \frac12$, the original answer.
+FOLLOWUP: Grandma and grandpa
+Now the first **two** passengers both choose seats at random (the first uniformly among the 100 seats, the second uniformly among the 99 remaining). Every later passenger takes his own seat if free, otherwise a uniformly random free seat. What is the probability that passenger 100 gets his own seat?
+FOLLOWUP_ANSWER:
+$\frac13$. For $3 \le k \le 99$, seat $k$ is always occupied once passenger $k$ has boarded, so the seat left for passenger 100 is one of the three seats $1, 2, 100$ (exactly one of them, since 99 people occupy 99 seats). These three seats are symmetric: the first two passengers occupy a uniformly random pair of seats, which treats all labels alike, and passengers $3, \dots, 99$ own none of seats 1, 2, 100 and choose uniformly among free seats. So swapping the labels of any two of the seats $1, 2, 100$ does not change the law of the process. Hence the last free seat is uniform on $\{1, 2, 100\}$, and passenger 100 gets his seat with probability $\frac13$. (Check with 4 seats: of the 6 equally likely pairs taken by the first two, $\{1,2\}$ succeeds, $\{1,3\}$ and $\{2,3\}$ succeed with probability $\frac12$, and the three pairs containing seat 4 fail: $\frac{1 + \frac12 + \frac12}{6} = \frac13$.) In general, with $r$ random passengers the answer is $\frac1{r+1}$.
+===END===
+
+===TEASER===
+SLUG: n-points-on-circle-semicircle
+IDS: G4A-04
+SECTION: probability
+CATEGORY: Continuous & geometric probability
+DIFFICULTY: medium
+TITLE: N points on a circle
+QUESTION:
+$N$ points are drawn independently and uniformly at random on the circumference of a circle. What is the probability that they all lie within some semicircle?
+HINT1:
+If all the points fit in a semicircle, there is a natural "first" point: the one from which you can sweep clockwise through all the others within half a circle.
+HINT2:
+Let $E_i$ be the event that the clockwise semicircle starting at point $i$ contains all the other points. Compute $P(E_i)$ and show that the events $E_1,\dots,E_N$ are mutually exclusive.
+ANSWER:
+$\dfrac{N}{2^{N-1}}$.
+REFRESH:
+**Additivity.** If $E_1,\dots,E_N$ are pairwise disjoint, $P\left(\bigcup E_i\right) = \sum P(E_i)$.
+
+**Independence.** For independent events, $P(A_1\cap\dots\cap A_k) = \prod P(A_j)$.
+EXPLANATION:
+"All points in some semicircle" is hard to handle directly, because the semicircle can be anywhere. Fix it by anchoring: if the points fit in a semicircle, rotate the semicircle clockwise until its starting edge hits a point. That point $i$ is then the start of a clockwise semicircle containing all the others. For a fixed $i$ this has probability $(1/2)^{N-1}$, since each other point independently falls in that half with probability $1/2$. And at most one point can be such a start: the points fit in the half-circle clockwise from $i$ only if the arc just before $i$ (from the previous point to $i$) is empty and at least half the circle long, and two disjoint empty arcs of length $\ge \frac12$ cannot both exist (up to a probability-zero tie). So we can add up the $N$ disjoint cases: $N/2^{N-1}$.
+
+Checks: $N = 1$ gives 1, $N = 2$ gives 1 (two points always fit in a semicircle), $N = 3$ gives $3/4$.
+SOLUTION: Disjoint anchored events
+Let $E_i$ = {all the other $N-1$ points lie in the clockwise semicircle starting at point $i$}.
+
+**Probability of $E_i$.** Conditional on the position of point $i$, each other point lies in the clockwise half-circle starting there with probability $\frac12$, independently. So $P(E_i) = \left(\frac12\right)^{N-1}$.
+
+**Union.** All points lie in some semicircle iff some $E_i$ occurs: if they lie in a closed semicircle, rotate it clockwise until its initial end meets a point $i$; then $E_i$ holds.
+
+**Disjointness (up to probability 0).** Suppose $E_i$ holds. Then all points lie in the arc of length $\le \frac12$ (in units of the circumference) clockwise from $i$, so the arc from the last of these points back to $i$ contains no points and has length $\ge \frac12$. If also $E_j$ held for $j \ne i$, the arc ending at $j$ would be another empty arc of length $\ge\frac12$, disjoint from the first. Two disjoint arcs of total length $\ge 1$ fill the whole circle, which forces two points to be exactly antipodal, an event of probability 0. So $P(E_i \cap E_j) = 0$ for $i\neq j$.
+
+Hence
+$$P\left(\bigcup_{i=1}^N E_i\right) = \sum_{i=1}^N P(E_i) = \frac{N}{2^{N-1}} .$$
+
+**Extension.** For an arc covering a fraction $x \le \frac12$ of the circle, the same argument gives $P(\text{all points fit in such an arc}) = N x^{N-1}$. (The restriction $x \le \frac12$ is needed for disjointness.)
+===END===
+
+===TEASER===
+SLUG: poker-hands-four-kind-full-house-two-pairs
+IDS: G4A-05
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Poker hands
+QUESTION:
+A poker hand consists of 5 cards dealt from a standard 52-card deck (13 values $2,\dots,10,J,Q,K,A$ in each of 4 suits $\spadesuit,\clubsuit,\heartsuit,\diamondsuit$). What is the probability of being dealt
+1. four of a kind (four cards of the same value),
+2. a full house (three cards of one value and two of another),
+3. two pairs (two cards of one value, two of another value, and a fifth card of a third value)?
+HINT1:
+All $\binom{52}{5}$ hands are equally likely, so count the hands of each type. Build a hand step by step: choose values first, then suits.
+HINT2:
+For two pairs, be careful not to count the two pairs in order: choose the *set* of two pair values with $\binom{13}{2}$. The fifth card must avoid both pair values.
+ANSWER:
+Four of a kind $624/2{,}598{,}960 = 1/4165 \approx 0.024\%$; full house $3744/2{,}598{,}960 = 6/4165 \approx 0.144\%$; two pairs $123{,}552/2{,}598{,}960 = 198/4165 \approx 4.75\%$.
+REFRESH:
+**Multiplication principle.** If a choice is made in stages with $n_1, n_2, \dots$ options at each stage (the number of options not depending on earlier choices), the total number of outcomes is $n_1 n_2 \cdots$.
+
+**Binomial coefficient.** $\binom nk = \frac{n!}{k!(n-k)!}$ counts the $k$-element subsets of an $n$-element set.
+EXPLANATION:
+Every 5-card subset is equally likely, so each probability is (number of hands of that type)/$\binom{52}{5}$. The skill is to build each hand in stages so that every hand is produced exactly once. Choose the values, then the suits. Use ordered choices when the roles differ (in a full house the triple and the pair are distinguishable: $13\times12$) and unordered choices when they are the same (the two pairs in "two pairs" play identical roles: $\binom{13}{2}$, not $13\times 12$). Counting the two pairs in order is the classic mistake; it double-counts.
+SOLUTION: Stage-by-stage counting
+Total number of hands: $\binom{52}{5} = 2{,}598{,}960$.
+
+**Four of a kind.** Choose the value of the four (13 ways). All 4 suits of it are taken. Choose the fifth card among the other 48 cards. Count: $13 \times 48 = 624$.
+$$P = \frac{624}{2{,}598{,}960} = \frac{1}{4165} \approx 0.00024 .$$
+
+**Full house.** Value of the triple: 13; its suits: $\binom43 = 4$; value of the pair: 12 (different from the triple); its suits: $\binom42 = 6$. Count: $13\cdot4\cdot12\cdot6 = 3{,}744$.
+$$P = \frac{3744}{2{,}598{,}960} = \frac{6}{4165} \approx 0.00144 .$$
+
+**Two pairs.** The two pair values (unordered): $\binom{13}2 = 78$; suits of each pair: $\binom42\cdot\binom42 = 36$; the fifth card must have one of the 11 other values: $11 \cdot 4 = 44$ cards. Count: $78\cdot36\cdot44 = 123{,}552$.
+$$P = \frac{123{,}552}{2{,}598{,}960} = \frac{198}{4165} \approx 0.0475 .$$
+===END===
+
+===TEASER===
+SLUG: hopping-rabbit-fibonacci
+IDS: G4A-06, R8-35, R8-36, R8-37
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Hopping rabbit
+QUESTION:
+A rabbit sits at the bottom of a staircase with $n$ stairs. It can hop up either one or two stairs at a time. In how many different ways can the rabbit reach the top of the stairs?
+HINT1:
+Look at the very last hop. Where can the rabbit be just before it?
+HINT2:
+Let $f(n)$ be the number of ways to climb $n$ stairs. Split the ways according to whether the last hop is 1 or 2 stairs, and find $f(1)$ and $f(2)$.
+ANSWER:
+$f(n) = f(n-1) + f(n-2)$ with $f(1) = 1$, $f(2) = 2$: the Fibonacci number $F_{n+1}$ (1, 2, 3, 5, 8, 13, ...).
+REFRESH:
+**Fibonacci numbers.** $F_1 = F_2 = 1$, $F_{k} = F_{k-1} + F_{k-2}$. Binet's formula: $F_k = \frac{\varphi^k - \psi^k}{\sqrt5}$ with $\varphi = \frac{1+\sqrt5}2$, $\psi = \frac{1-\sqrt5}2$.
+
+**Addition principle.** If a set is split into disjoint parts, its size is the sum of the sizes of the parts.
+EXPLANATION:
+Every way of climbing ends with either a 1-hop or a 2-hop, never both, so the ways split into two disjoint groups. The ways ending with a 1-hop are "any way to reach stair $n-1$, then hop 1": $f(n-1)$ of them. The ways ending with a 2-hop are "any way to reach stair $n-2$, then hop 2": $f(n-2)$ of them. That gives the Fibonacci recursion. Setting $f(0) = 1$ (one way to climb zero stairs: do nothing) makes it work from $n = 2$ on. The count grows like $\varphi^n$ with $\varphi \approx 1.618$.
+SOLUTION: Recursion on the last hop
+Let $f(n)$ be the number of hop sequences of 1s and 2s summing to $n$. Clearly $f(1) = 1$ and $f(2) = 2$ ($1+1$ or $2$).
+
+For $n \ge 3$, split by the last hop. Last hop 1: the previous hops sum to $n-1$, giving $f(n-1)$ sequences. Last hop 2: the previous hops sum to $n-2$, giving $f(n-2)$. The cases are disjoint, so
+$$f(n) = f(n-1) + f(n-2).$$
+Values: $1, 2, 3, 5, 8, 13, 21, 34, 55, 89, \dots$, so $f(10) = 89$. With $F_1 = F_2 = 1$, $f(n) = F_{n+1}$, i.e.
+$$f(n) = \frac{1}{\sqrt5}\left[\left(\frac{1+\sqrt5}{2}\right)^{n+1} - \left(\frac{1-\sqrt5}{2}\right)^{n+1}\right].$$
+(The red book writes the same recursion backwards, with $p(k)$ = number of ways to the top from $k$ stairs below it, $p(0) = p(1) = 1$.)
+SOLUTION: Direct count by number of 2-hops
+If the rabbit makes $j$ hops of size 2, it makes $n - 2j$ hops of size 1, so $n - j$ hops in total, and a way is fixed by choosing which $j$ of these $n-j$ hops are the 2-hops. Hence
+$$f(n) = \sum_{j=0}^{\lfloor n/2\rfloor}\binom{n-j}{j}.$$
+Example: $f(5) = \binom50 + \binom41 + \binom32 = 1 + 4 + 3 = 8$. (This is the well-known identity: shallow diagonals of Pascal's triangle sum to Fibonacci numbers.)
+FOLLOWUP: Hops of 1, 2 or 3 stairs
+What if the rabbit can also hop 3 stairs at a time?
+FOLLOWUP_ANSWER:
+The same last-hop argument gives $t(n) = t(n-1) + t(n-2) + t(n-3)$, with $t(0) = 1$, $t(1) = 1$, $t(2) = 2$ (so $t(3) = 4$: $1{+}1{+}1$, $1{+}2$, $2{+}1$, $3$). These are the "tribonacci" numbers: $1, 1, 2, 4, 7, 13, 24, 44, 81, 149, 274, \dots$, so e.g. $t(10) = 274$. They grow like $\tau^n$ where $\tau \approx 1.839$ is the real root of $x^3 = x^2 + x + 1$. In general, with allowed hop sizes in a set $S$, $f(n) = \sum_{s\in S} f(n-s)$ with $f(0) = 1$ and $f(\text{negative}) = 0$.
+FOLLOWUP: A two-dimensional version
+Formulate and solve a two-dimensional analogue.
+FOLLOWUP_ANSWER:
+One natural version: the rabbit walks on a grid from $(0,0)$ to $(m,n)$. Each hop moves it 1 or 2 units to the right, or 1 or 2 units up. Let $g(m,n)$ be the number of ways. Conditioning on the last hop:
+$$g(m,n) = g(m-1,n) + g(m-2,n) + g(m,n-1) + g(m,n-2),$$
+with $g(0,0) = 1$ and $g = 0$ at negative arguments. Along the axes $g(m,0) = f(m)$, the 1D answer. Small values: $g(1,1) = 2$, $g(2,1) = g(1,1) + g(0,1) + g(2,0) = 2 + 1 + 2 = 5$, $g(2,2) = 5 + 2 + 5 + 2 = 14$.
+
+Closed form: if the rabbit makes $i$ horizontal 2-hops and $j$ vertical 2-hops, it makes $m-i$ horizontal and $n-j$ vertical hops. There are $\binom{m-i}{i}$ orders of the horizontal hop sizes and $\binom{n-j}{j}$ of the vertical ones, and $\binom{m-i+n-j}{m-i}$ ways to interleave the two sequences:
+$$g(m,n) = \sum_{i=0}^{\lfloor m/2\rfloor}\sum_{j=0}^{\lfloor n/2\rfloor}\binom{m-i}{i}\binom{n-j}{j}\binom{m-i+n-j}{m-i}.$$
+Check: $g(2,2) = 6 + 3 + 3 + 2 = 14$.
+===END===
+
+===TEASER===
+SLUG: screwy-pirates-locks-and-keys
+IDS: G4A-07
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: hard
+TITLE: Screwy pirates 2
+QUESTION:
+A group of 11 pirates puts its treasure in a safe. They agree that any majority, i.e. any group of at least 6 pirates, must be able to open the safe, while no group of 5 or fewer can. A locksmith puts some number of locks on the safe; the safe opens only when every lock is opened. Each lock may have several keys, each key opens exactly one lock, and a pirate may carry several keys.
+
+What is the smallest number of locks needed? How many keys must each pirate carry?
+HINT1:
+Take any group of 5 pirates. They must be unable to open the safe, so some lock must be closed to all of them. Who must hold keys to that lock?
+HINT2:
+Show that two different 5-pirate groups cannot be blocked by the same lock. That gives a lower bound on the number of locks. Then check that one lock per 5-group, with keys given to the complementary 6 pirates, works.
+ANSWER:
+$\binom{11}{5} = 462$ locks; each lock has 6 keys, and each pirate carries $\binom{10}{5} = 252$ keys.
+REFRESH:
+**Binomial coefficients.** $\binom{n}{k} = \frac{n!}{k!(n-k)!}$; $\binom{11}{5} = 462$, $\binom{10}{5} = 252$.
+
+**Double counting.** Counting the pairs (pirate, key he holds) in two ways: $\#\text{locks} \times \text{keys per lock} = \#\text{pirates} \times \text{keys per pirate}$.
+EXPLANATION:
+Each group of 5 pirates must be locked out, so it needs its own lock that none of its members can open. That lock must be openable by the other 6 pirates, since those 6 form a majority. So the lock "belongs" to that 5-group: no other 5-group can share it, because any other 5-group contains at least one of those 6 pirates, who has the key. Different 5-groups therefore need different locks: at least $\binom{11}{5}$ locks. And that many is enough: make one lock for each 5-group and give its keys to the 6 pirates outside the group. Any 6 pirates can then open every lock, because for each lock at least one of them is outside the corresponding 5-group. A pirate holds the keys of the locks of the 5-groups he is not in: $\binom{10}{5}$ of them.
+
+This is the simplest "threshold secret sharing" scheme; Shamir's 1979 paper *How to Share a Secret* does the same thing far more efficiently using polynomials.
+SOLUTION: Lower bound plus construction
+**Lower bound.** Let $G$ be any set of 5 pirates. Since $G$ cannot open the safe, there is a lock $L_G$ none of whose keys is held by a member of $G$. Each pirate $p \notin G$ forms, with $G$, a group of 6 that can open the safe; the members of $G$ cannot open $L_G$, so $p$ holds a key to $L_G$. Hence the key-holders of $L_G$ are exactly the 6 pirates outside $G$.
+
+If $G \ne G'$ are two 5-groups, pick $p \in G' \setminus G$. Then $p$ holds a key to $L_G$ but no member of $G'$ holds a key to $L_{G'}$, so $L_G \ne L_{G'}$. The map $G \mapsto L_G$ is one-to-one, so there are at least
+$$\binom{11}{5} = \frac{11!}{5!\,6!} = 462 \text{ locks.}$$
+
+**Construction.** Put one lock $L_G$ for each 5-group $G$ and give its keys to the 6 pirates outside $G$.
+- A group $H$ of $\ge 6$ pirates: for each $G$, $H \not\subseteq G$ (since $|H| > 5$), so some member of $H$ is outside $G$ and opens $L_G$. All locks open.
+- A group $K$ of $\le 5$ pirates: extend it to a 5-group $G \supseteq K$; nobody in $G$, hence nobody in $K$, can open $L_G$.
+
+**Keys per pirate.** Pirate $p$ holds the key of $L_G$ iff $p \notin G$, i.e. $G$ is a 5-subset of the other 10 pirates: $\binom{10}{5} = 252$ keys. Check by double counting: $462 \times 6 = 2772 = 11 \times 252$.
+
+In any minimal scheme (462 locks), the lower-bound argument shows each lock's key-holders are exactly a 6-group, so the key distribution is forced: each pirate carries **252** keys.
+===END===
+
+===TEASER===
+SLUG: knockout-tournament-top-two-meet-in-final
+IDS: G4A-08, R3A-64, R3A-65, R3A-66
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Chess tournament
+QUESTION:
+A knockout chess tournament has $2^n$ players with skills $1 > 2 > \dots > 2^n$ (player 1 is the best). After each round only the winners go on to the next round. The bracket is drawn at random, and the better player always wins a game. What is the probability that players 1 and 2 meet in the final?
+HINT1:
+Player 1 always reaches the final. The question is only whether player 2 does too.
+HINT2:
+Think of the bracket as two halves of $2^{n-1}$ players; each half sends its best player to the final. Where must player 2 be relative to player 1?
+ANSWER:
+$\dfrac{2^{n-1}}{2^n - 1}$ (slightly more than $1/2$).
+REFRESH:
+**Multiplication rule.** $P(E_1 \cap \dots \cap E_k) = P(E_1)P(E_2\mid E_1)\cdots P(E_k \mid E_1\cap\dots\cap E_{k-1})$.
+
+**Uniform random bracket.** In a uniformly random bracket, given player 1's position, player 2 is equally likely to be in any of the other $2^n - 1$ positions.
+EXPLANATION:
+The best player wins every game, and the best player of each half of the bracket wins that half. So 1 and 2 meet in the final exactly when they are in different halves. Player 1 sits somewhere; of the $2^n - 1$ remaining spots, $2^{n-1} - 1$ are in 1's half and $2^{n-1}$ are in the other half. So the probability is $\frac{2^{n-1}}{2^n - 1}$. It is a little above $\frac12$ because player 1 takes up one of the places in his own half. It equals 1 for $n = 1$, $\frac23$ for $n = 2$, and tends to $\frac12$.
+SOLUTION: Counting positions in the bracket
+The bracket splits the $2^n$ players into two halves of $2^{n-1}$ that play separately until the final. Within a half the best player wins every match, so the finalists are the best players of the two halves. Player 1 is always a finalist. Player 2 is the other finalist iff he is in the other half (if he is in player 1's half, he loses to player 1 before the final; if he is in the other half, he is the best there).
+
+Given player 1's position, player 2 is uniform over the $2^n - 1$ other positions, of which $2^{n-1}$ are in the other half. So
+$$P(1 \text{ and } 2 \text{ meet in the final}) = \frac{2^{n-1}}{2^n - 1}.$$
+SOLUTION: Round by round (multiplication rule)
+(Model: the pairings of each round are drawn uniformly at random among the survivors.) In a round with $2^k$ players ($k \ge 2$), player 1's opponent is uniform among the other $2^k - 1$, so 1 and 2 avoid each other with probability $\frac{2^k - 2}{2^k - 1}$. If they avoid each other, both win, and both are among the $2^{k-1}$ survivors. Multiply over the rounds with $2^n, 2^{n-1}, \dots, 2^2$ players:
+$$\prod_{k=2}^{n}\frac{2^k - 2}{2^k - 1} = \prod_{k=2}^{n}\frac{2(2^{k-1} - 1)}{2^k - 1} = 2^{n-1}\cdot\frac{(2^{1}-1)(2^2-1)\cdots(2^{n-1}-1)}{(2^2-1)(2^3-1)\cdots(2^n-1)} = \frac{2^{n-1}}{2^n - 1}.$$
+The product telescopes. If they have avoided each other until 2 players remain, they meet in the final.
+FOLLOWUP: How many matches?
+There are $M$ teams in a knockout tournament (byes allowed if $M$ is not a power of 2). How many matches must be played to determine the winner?
+FOLLOWUP_ANSWER:
+Exactly $M - 1$. Every match eliminates exactly one team, and the tournament ends when exactly one team is left, i.e. after $M-1$ teams have been eliminated. This does not depend on the bracket or on byes.
+FOLLOWUP: How many rounds?
+There are $M$ teams in a knockout tournament. A round is any set of simultaneous matches in which each team plays at most one match. What is the minimum number of rounds needed to determine the winner?
+FOLLOWUP_ANSWER:
+$\lceil \log_2 M\rceil$. In a round with $r$ teams at most $\lfloor r/2\rfloor$ matches are played, so at least $\lceil r/2 \rceil$ teams survive: the number of teams can at most halve (rounded up). After $k$ rounds at least $\lceil M/2^k\rceil$ teams remain, which is 1 only if $2^k \ge M$. Conversely, pairing up as many teams as possible each round (with one bye when $r$ is odd) takes the count from $r$ to $\lceil r/2\rceil$ and reaches 1 after exactly $\lceil\log_2 M\rceil$ rounds. Example: $M = 100$ needs 7 rounds and 99 matches.
+===END===
+
+===TEASER===
+SLUG: application-letters-derangements
+IDS: G4A-09, H1A-35
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: medium
+TITLE: Application letters
+QUESTION:
+You are sending job applications to 5 firms. You have 5 addressed envelopes and 5 cover letters, each personalised to one firm. Your 3-year-old helpfully puts one letter in each envelope, completely at random. What is the probability that **all 5** letters go to the wrong firms?
+HINT1:
+The complement is "at least one letter is in its correct envelope", which is a union of events. Which formula computes the probability of a union?
+HINT2:
+Let $E_i$ = {letter $i$ is in the right envelope} and use inclusion-exclusion. Compute $P(E_{i_1}\cap\dots\cap E_{i_k})$ and the number of such terms; the product simplifies to $1/k!$.
+ANSWER:
+$\dfrac{11}{30} = 1 - 1 + \dfrac1{2!} - \dfrac1{3!} + \dfrac1{4!} - \dfrac1{5!} \approx 0.367$ (for large $N$, $\to e^{-1}$).
+REFRESH:
+**Inclusion-exclusion.** $P\left(\bigcup_{i=1}^n E_i\right) = \sum_i P(E_i) - \sum_{i<j}P(E_iE_j) + \sum_{i<j<k}P(E_iE_jE_k) - \dots + (-1)^{n+1}P(E_1\cdots E_n)$.
+
+**Exponential series.** $e^{x} = \sum_{k\ge0}\frac{x^k}{k!}$, so $e^{-1} = \sum_{k\ge 0}\frac{(-1)^k}{k!} \approx 0.3679$.
+
+**Derangement.** A permutation with no fixed point.
+EXPLANATION:
+The letters form a uniformly random permutation of 5 objects, and we want it to have no fixed point (a *derangement*). Counting derangements directly is awkward, but the complement "at least one letter is right" is a union of the events $E_i$ = "letter $i$ is right", and intersections of these are easy: the probability that $k$ given letters are all right is $\frac{(5-k)!}{5!}$. There are $\binom5k$ such sets of $k$ letters, and $\binom5k\frac{(5-k)!}{5!} = \frac1{k!}$. So the inclusion-exclusion sum is simply $1 - \frac1{2!} + \frac1{3!} - \dots$, which is the start of the series for $1 - e^{-1}$. The probability of no match is $\sum_{k=0}^{5}\frac{(-1)^k}{k!} = \frac{11}{30}$, already very close to $e^{-1} \approx 0.368$. Remarkably, this barely depends on the number of letters.
+SOLUTION: Inclusion-exclusion
+Let $E_i$ = {letter $i$ is in its own envelope}, $i = 1,\dots,5$. For a fixed set of $k$ letters, the probability that all $k$ are correct is
+$$P(E_{i_1}\cap\dots\cap E_{i_k}) = \frac{(5-k)!}{5!}$$
+(the other $5-k$ letters can be in any order). There are $\binom5k$ such sets, so the $k$-th inclusion-exclusion term is $\binom5k\frac{(5-k)!}{5!} = \frac1{k!}$. Hence
+$$P\left(\bigcup_{i=1}^5 E_i\right) = 1 - \frac1{2!} + \frac1{3!} - \frac1{4!} + \frac1{5!} = 1 - \frac12 + \frac16 - \frac1{24} + \frac1{120} = \frac{120 - 60 + 20 - 5 + 1}{120} = \frac{76}{120} = \frac{19}{30}.$$
+So
+$$P(\text{all wrong}) = 1 - \frac{19}{30} = \frac{11}{30} \approx 0.3667 .$$
+SOLUTION: Derangement recursion
+Let $D_n$ be the number of derangements of $n$ objects. Look at where letter 1 goes: into envelope $j \ne 1$ ($n-1$ choices). Either letter $j$ goes into envelope 1 (the other $n-2$ letters must then be deranged: $D_{n-2}$ ways), or it does not (then, treating envelope 1 as letter $j$'s "forbidden" envelope, the remaining $n-1$ letters must be deranged: $D_{n-1}$ ways). So
+$$D_n = (n-1)(D_{n-1} + D_{n-2}),\qquad D_1 = 0,\ D_2 = 1.$$
+Then $D_3 = 2(1+0) = 2$, $D_4 = 3(2+1) = 9$, $D_5 = 4(9+2) = 44$, and
+$$P(\text{all wrong}) = \frac{D_5}{5!} = \frac{44}{120} = \frac{11}{30}.$$
+
+**Variant (Heard on the Street: random hotel keys).** $N$ guests receive the $N$ room keys at random, with $N$ very large. The probability that *at least one* guest gets his own room is
+$$1 - \sum_{k=0}^N\frac{(-1)^k}{k!} \xrightarrow[N\to\infty]{} 1 - e^{-1} \approx 0.632 .$$
+The book also gives a quick heuristic: treat the $N$ events as independent, each of probability $1/N$, so $P(\text{no match}) \approx (1 - 1/N)^N \to e^{-1}$. The events are not actually independent, so this is only a heuristic; it happens to give the correct limit, and inclusion-exclusion is the real proof. For $N = 5$ the exact value $19/30 \approx 0.633$ is already very close to the limit.
+===END===
+
+===TEASER===
+SLUG: birthday-problem-23
+IDS: G4A-10
+SECTION: probability
+CATEGORY: Counting & combinatorics
+DIFFICULTY: easy
+TITLE: Birthday problem
+QUESTION:
+How many people must be in a class for the probability that at least two of them share a birthday to exceed $1/2$? Assume 365 equally likely birthdays and ignore leap years.
+HINT1:
+Compute the complement: the probability that all $n$ birthdays are different.
+HINT2:
+Count birthday sequences with no repeat: $365\cdot364\cdots(365-n+1)$ out of $365^n$. Find the smallest $n$ for which this ratio drops below $1/2$. For a quick estimate, use $1 - x \approx e^{-x}$.
+ANSWER:
+23 people (the probability of a shared birthday is then about 50.7%; with 22 people it is about 47.6%).
+REFRESH:
+**Exponential approximation.** For small $x$, $1 - x \approx e^{-x}$, so $\prod_k (1 - x_k) \approx e^{-\sum_k x_k}$.
+
+**Sum of integers.** $\sum_{k=0}^{n-1} k = \frac{n(n-1)}{2}$.
+EXPLANATION:
+The answer is surprisingly small because what matters is the number of *pairs* of people, not the number of people. With 23 people there are $\binom{23}{2} = 253$ pairs, each matching with probability $1/365$. That is a lot of chances for a coincidence. The expected number of matching pairs, $253/365 \approx 0.69$, is already of order 1. Quantitatively, $P(\text{no match}) \approx e^{-n(n-1)/730}$, which crosses $\frac12$ when $n(n-1) \approx 730\ln 2 \approx 506$, i.e. $n \approx 23$.
+SOLUTION: Complement and direct computation
+With $n$ people there are $365^n$ equally likely birthday sequences. Those with all birthdays different number $365\cdot364\cdots(365-n+1)$ (the $k$-th person must avoid the $k-1$ earlier birthdays). So
+$$P(\text{all different}) = \prod_{k=0}^{n-1}\frac{365-k}{365} = \prod_{k=1}^{n-1}\left(1 - \frac{k}{365}\right).$$
+We need the smallest $n$ with this product $< \frac12$. Numerically: for $n = 22$ it is $\approx 0.5243$, for $n = 23$ it is $\approx 0.4927$. So $P(\text{shared birthday}) \approx 0.4757$ for 22 people and $\approx 0.5073$ for 23 people. **Answer: 23.**
+SOLUTION: Exponential approximation
+Using $1 - x \approx e^{-x}$ for small $x$,
+$$P(\text{all different}) \approx \exp\left(-\sum_{k=1}^{n-1}\frac{k}{365}\right) = \exp\left(-\frac{n(n-1)}{730}\right).$$
+Setting this equal to $\frac12$: $n(n-1) = 730\ln2 \approx 506$, and $23\cdot22 = 506$. So $n \approx 23$, consistent with the exact computation.
+===END===
+
+===TEASER===
+SLUG: hundredth-digit-one-plus-sqrt2-power
+IDS: G4A-11
+SECTION: brainteaser
+CATEGORY: Numbers & digits
+DIFFICULTY: hard
+TITLE: 100th digit
+QUESTION:
+What is the 100th digit after the decimal point in the decimal expansion of $(1+\sqrt2)^{3000}$?
+HINT1:
+Computing $(1+\sqrt2)^{3000}$ directly is hopeless. Look for a "conjugate" quantity that, added to it, gives something simple. Note that $|1 - \sqrt2| < 1$.
+HINT2:
+Show that $(1+\sqrt2)^n + (1-\sqrt2)^n$ is an integer for every $n$ (binomial theorem: the odd powers of $\sqrt2$ cancel). How big is $(1-\sqrt2)^{3000}$?
+ANSWER:
+9 (the fractional part is $1 - (\sqrt2-1)^{3000}$, i.e. $0.999\ldots$ with about 1148 nines).
+REFRESH:
+**Binomial theorem.** $(a+b)^n = \sum_{k=0}^n\binom nk a^{n-k}b^k$.
+
+**Logarithms.** $\log_{10}(x^n) = n\log_{10}x$; a number $10^{-d}$ with $d > 100$ has at least 100 zeros after the decimal point.
+EXPLANATION:
+The numbers $1+\sqrt2$ and $1-\sqrt2$ are conjugates: the two roots of $x^2 - 2x - 1 = 0$. Any symmetric combination of them, such as the sum of their $n$-th powers, is an integer. Since $|1 - \sqrt2| \approx 0.414 < 1$, its 3000-th power is astronomically small, positive because the exponent is even, about $10^{-1148}$. So $(1+\sqrt2)^{3000}$ equals an integer minus a tiny positive number, and its decimal expansion is $\ldots.999\ldots9\ldots$ with a very long run of 9s after the decimal point, far more than 100.
+SOLUTION: Conjugate trick
+Let $a = 1+\sqrt2$, $b = 1-\sqrt2$. By the binomial theorem,
+$$a^n = \sum_{k=0}^n\binom nk(\sqrt2)^k,\qquad b^n = \sum_{k=0}^n\binom nk(-\sqrt2)^k.$$
+Adding, the odd $k$ terms cancel and the even ones double:
+$$I_n := a^n + b^n = 2\sum_{j=0}^{\lfloor n/2\rfloor}\binom{n}{2j}2^{j} \in \mathbb Z .$$
+(Equivalently, $a, b$ are the roots of $x^2 = 2x + 1$, so $I_n = 2I_{n-1} + I_{n-2}$ with $I_0 = 2$, $I_1 = 2$: all integers.)
+
+Since $3000$ is even, $b^{3000} = (\sqrt2 - 1)^{3000} > 0$, and
+$$\log_{10}\left((\sqrt2-1)^{3000}\right) = 3000\log_{10}(0.41421\ldots) \approx 3000\times(-0.38278) \approx -1148.3 .$$
+So $0 < b^{3000} < 10^{-1148}$. Then
+$$(1+\sqrt2)^{3000} = I_{3000} - b^{3000} = (I_{3000} - 1) + \left(1 - b^{3000}\right),$$
+with $1 - b^{3000} = 0.\underbrace{99\ldots9}_{\ge 1148}\ldots$. The first 1148 digits after the decimal point are all 9, so the 100th digit is $\boxed{9}$.
+
+(A cruder bound is enough: $\sqrt2 - 1 < 0.5$ gives $b^{3000} < 2^{-3000} = 10^{-3000\log_{10}2} \approx 10^{-903} < 10^{-100}$.)
+===END===

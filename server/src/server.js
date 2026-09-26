@@ -417,6 +417,96 @@ app.put('/api/sections/:id/ink', requireAuth, async (req, res) => {
   res.json({ ok: true, updated_at: stamp });
 });
 
+// ---------- Brain teasers & probability puzzles ----------
+const parseJson = (s, fallback) => {
+  try {
+    return JSON.parse(s);
+  } catch {
+    return fallback;
+  }
+};
+
+// The list (no statements or solutions), with this user's progress.
+app.get('/api/teasers', requireAuth, async (req, res) => {
+  const rows = db
+    .prepare('SELECT id, slug, section, category, title, difficulty, books, position FROM teasers ORDER BY position, id')
+    .all();
+  let states = [];
+  try {
+    states = await store.teaserStates(req.user.id);
+  } catch (err) {
+    console.error('teaser states failed:', err);
+  }
+  const bySlug = new Map(states.map((s) => [s.slug, s]));
+  res.json(
+    rows.map((t) => ({
+      ...t,
+      books: parseJson(t.books, []),
+      completed: !!bySlug.get(t.slug)?.completed,
+      hasBoard: !!bySlug.get(t.slug)?.ink_filled,
+    }))
+  );
+});
+
+app.get('/api/teasers/:slug', requireAuth, async (req, res) => {
+  const t = db.prepare('SELECT * FROM teasers WHERE slug = ?').get(req.params.slug);
+  if (!t) return res.status(404).json({ error: 'Teaser not found' });
+  let completed = false;
+  try {
+    completed = !!(await store.teaserStates(req.user.id)).find((s) => s.slug === t.slug)?.completed;
+  } catch {
+    /* progress unavailable: show as not done */
+  }
+  res.json({
+    ...t,
+    solutions: parseJson(t.solutions, []),
+    followups: parseJson(t.followups, []),
+    books: parseJson(t.books, []),
+    refs: parseJson(t.refs, []),
+    completed,
+  });
+});
+
+app.put('/api/teasers/:slug/completed', requireAuth, async (req, res) => {
+  const t = db.prepare('SELECT slug FROM teasers WHERE slug = ?').get(req.params.slug);
+  if (!t) return res.status(404).json({ error: 'Teaser not found' });
+  const completed = !!req.body?.completed;
+  try {
+    await store.setTeaserCompleted(req.user.id, t.slug, completed);
+  } catch (err) {
+    console.error('teaser progress write failed:', err);
+    return res.status(503).json({ error: 'Progress storage unavailable' });
+  }
+  res.json({ ok: true, completed });
+});
+
+app.get('/api/teasers/:slug/ink', requireAuth, async (req, res) => {
+  let row;
+  try {
+    row = await store.getTeaserInk(req.user.id, req.params.slug);
+  } catch (err) {
+    console.error('teaser ink read failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+  if (!row) return res.json({ data: null, updated_at: null });
+  res.json({ data: parseJson(row.data, null), updated_at: row.updated_at });
+});
+
+app.put('/api/teasers/:slug/ink', requireAuth, async (req, res) => {
+  const t = db.prepare('SELECT slug FROM teasers WHERE slug = ?').get(req.params.slug);
+  if (!t) return res.status(404).json({ error: 'Teaser not found' });
+  const { data, updated_at } = req.body || {};
+  if (!data || typeof data !== 'object') return res.status(400).json({ error: 'data object required' });
+  const stamp = typeof updated_at === 'string' && updated_at ? updated_at : new Date().toISOString();
+  try {
+    await store.putTeaserInk(req.user.id, t.slug, JSON.stringify(data), inkFilled(data), stamp);
+  } catch (err) {
+    console.error('teaser ink write failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+  res.json({ ok: true, updated_at: stamp });
+});
+
 // ---------- Static Angular build (production mode) ----------
 const CLIENT_DIST = path.join(__dirname, '..', '..', 'client', 'dist', 'client', 'browser');
 if (fs.existsSync(CLIENT_DIST)) {
