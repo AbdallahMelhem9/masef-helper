@@ -9,6 +9,8 @@ import { PdfViewer } from './pages/pdf-viewer/pdf-viewer';
 import { NotesPage } from './pages/notes/notes';
 import { TeaserBrowse } from './pages/teasers/teaser-browse';
 import { TeaserPage } from './pages/teasers/teaser-page';
+import { TeaserLock } from './pages/teasers/teaser-lock';
+import { teaserGuard } from './core/teaser.guard';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -23,13 +25,14 @@ export const routes: Routes = [
       { path: 'lessons/:id', component: LessonDetail },
       { path: 'pdfs/:id', component: PdfViewer },
       { path: 'pdfs/:id/notes', component: NotesPage },
-      { path: 'teasers', component: TeaserBrowse, data: { view: 'home' } },
-      { path: 'teasers/topics', component: TeaserBrowse, data: { view: 'topics' } },
-      { path: 'teasers/companies', component: TeaserBrowse, data: { view: 'companies' } },
-      { path: 'teasers/company/:firm', component: TeaserBrowse, data: { view: 'company' } },
-      { path: 'teasers/:section', component: TeaserBrowse },
-      { path: 'teasers/:section/:category', component: TeaserBrowse },
-      { path: 'teaser/:slug', component: TeaserPage },
+      { path: 'teasers', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'home' } },
+      { path: 'teasers/topics', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'topics' } },
+      { path: 'teasers/companies', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'companies' } },
+      { path: 'teasers/company/:firm', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'company' } },
+      { path: 'teasers/:section', component: TeaserBrowse, canActivate: [teaserGuard] },
+      { path: 'teasers/:section/:category', component: TeaserBrowse, canActivate: [teaserGuard] },
+      { path: 'teaser/:slug', component: TeaserPage, canActivate: [teaserGuard] },
+      { path: 'puzzles-locked', component: TeaserLock },
     ],
   },
   { path: '**', redirectTo: '' },

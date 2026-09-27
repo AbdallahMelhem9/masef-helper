@@ -51,11 +51,16 @@ export class TeaserBrowse implements OnInit {
   readonly SECTION_INFO = SECTION_INFO;
   readonly sections = SECTIONS;
 
+  // Company pages list everything a firm asked, whatever the source, so the
+  // source filter only applies to the topic views.
+  companyMode = computed(() => this.view() === 'companies' || this.view() === 'company');
+
   // The list with the source filter applied (a puzzle shows if it is in any selected source).
   filtered = computed(() => {
     const list = this.all() ?? [];
     const books = this.books();
-    return books.length === BOOKS.length ? list : list.filter((t) => t.books.some((b) => books.includes(b)));
+    if (this.companyMode() || books.length === BOOKS.length) return list;
+    return list.filter((t) => t.books.some((b) => books.includes(b)));
   });
 
   stats = computed(() => {

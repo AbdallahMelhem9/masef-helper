@@ -418,6 +418,40 @@ app.put('/api/sections/:id/ink', requireAuth, async (req, res) => {
 });
 
 // ---------- Brain teasers & probability puzzles ----------
+// The puzzles are behind a password (sent by the client in X-Teaser-Pass),
+// except for the owner's account. Only a salted scrypt hash lives here; set
+// TEASER_PASSWORD_HASH to change it (hex of scrypt(password, TEASER_SALT, 32)).
+const TEASER_OWNER = 'abdallah.melhem93@gmail.com';
+const TEASER_SALT = 'masef-teasers-v1';
+const TEASER_HASH = Buffer.from(
+  process.env.TEASER_PASSWORD_HASH || 'fecdbf31bfd5f6781595b5e866ccd482312ea3ab9f7bea82f41832e53f7e95e7',
+  'hex'
+);
+const teaserPassCache = new Map();
+function teaserPassOk(pass) {
+  if (!pass || pass.length > 200) return false;
+  if (!teaserPassCache.has(pass)) {
+    const h = crypto.scryptSync(pass, TEASER_SALT, 32);
+    if (teaserPassCache.size > 100) teaserPassCache.clear();
+    teaserPassCache.set(pass, h.length === TEASER_HASH.length && crypto.timingSafeEqual(h, TEASER_HASH));
+  }
+  return teaserPassCache.get(pass);
+}
+const teaserUnlocked = (req) => req.user.email === TEASER_OWNER || teaserPassOk(req.get('X-Teaser-Pass'));
+function requireTeaserAccess(req, res, next) {
+  if (teaserUnlocked(req)) return next();
+  res.status(403).json({ error: 'The puzzles are password-protected', locked: true });
+}
+
+app.get('/api/teasers/access', requireAuth, (req, res) => {
+  res.json({ unlocked: teaserUnlocked(req) });
+});
+
+app.post('/api/teasers/unlock', requireAuth, (req, res) => {
+  if (!teaserPassOk(String(req.body?.password || ''))) return res.status(403).json({ error: 'Wrong password' });
+  res.json({ ok: true });
+});
+
 const parseJson = (s, fallback) => {
   try {
     return JSON.parse(s);
@@ -427,7 +461,7 @@ const parseJson = (s, fallback) => {
 };
 
 // The list (no statements or solutions), with this user's progress.
-app.get('/api/teasers', requireAuth, async (req, res) => {
+app.get('/api/teasers', requireAuth, requireTeaserAccess, async (req, res) => {
   const rows = db
     .prepare('SELECT id, slug, section, category, title, difficulty, books, firms, position, illustration IS NOT NULL AS hasIllustration FROM teasers ORDER BY position, id')
     .all();
@@ -458,7 +492,7 @@ app.get('/api/teasers/:slug/illustration.svg', (req, res) => {
   res.type('image/svg+xml').send(row.illustration);
 });
 
-app.get('/api/teasers/:slug', requireAuth, async (req, res) => {
+app.get('/api/teasers/:slug', requireAuth, requireTeaserAccess, async (req, res) => {
   const t = db.prepare('SELECT * FROM teasers WHERE slug = ?').get(req.params.slug);
   if (!t) return res.status(404).json({ error: 'Teaser not found' });
   let completed = false;
@@ -480,7 +514,7 @@ app.get('/api/teasers/:slug', requireAuth, async (req, res) => {
   });
 });
 
-app.put('/api/teasers/:slug/completed', requireAuth, async (req, res) => {
+app.put('/api/teasers/:slug/completed', requireAuth, requireTeaserAccess, async (req, res) => {
   const t = db.prepare('SELECT slug FROM teasers WHERE slug = ?').get(req.params.slug);
   if (!t) return res.status(404).json({ error: 'Teaser not found' });
   const completed = !!req.body?.completed;
@@ -493,7 +527,7 @@ app.put('/api/teasers/:slug/completed', requireAuth, async (req, res) => {
   res.json({ ok: true, completed });
 });
 
-app.get('/api/teasers/:slug/ink', requireAuth, async (req, res) => {
+app.get('/api/teasers/:slug/ink', requireAuth, requireTeaserAccess, async (req, res) => {
   let row;
   try {
     row = await store.getTeaserInk(req.user.id, req.params.slug);
@@ -505,7 +539,7 @@ app.get('/api/teasers/:slug/ink', requireAuth, async (req, res) => {
   res.json({ data: parseJson(row.data, null), updated_at: row.updated_at });
 });
 
-app.put('/api/teasers/:slug/ink', requireAuth, async (req, res) => {
+app.put('/api/teasers/:slug/ink', requireAuth, requireTeaserAccess, async (req, res) => {
   const t = db.prepare('SELECT slug FROM teasers WHERE slug = ?').get(req.params.slug);
   if (!t) return res.status(404).json({ error: 'Teaser not found' });
   const { data, updated_at } = req.body || {};

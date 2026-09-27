@@ -3,15 +3,19 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { TEASER_PASS_KEY } from './teaser-access.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
   const token = auth.token();
 
-  const authedReq = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const headers: Record<string, string> = {};
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  // The puzzles section's password, once entered on this browser.
+  const teaserPass = req.url.startsWith('/api/teasers') ? localStorage.getItem(TEASER_PASS_KEY) : null;
+  if (teaserPass) headers['X-Teaser-Pass'] = teaserPass;
+  const authedReq = Object.keys(headers).length ? req.clone({ setHeaders: headers }) : req;
 
   return next(authedReq).pipe(
     catchError((err) => {

@@ -29,13 +29,15 @@
       <p class="eyebrow">Interview preparation</p>
       <h1>{{ title() }}</h1>
     </div>
-    <div class="book-filter" role="group" aria-label="Sources">
-      @for (b of BOOKS; track b.key) {
-        <button type="button" [class]="'book-chip chip-' + b.key" [class.on]="books().includes(b.key)" [title]="b.full" (click)="toggleBook(b.key)">
-          {{ b.label }}
-        </button>
-      }
-    </div>
+    @if (!companyMode()) {
+      <div class="book-filter" role="group" aria-label="Sources">
+        @for (b of BOOKS; track b.key) {
+          <button type="button" [class]="'book-chip chip-' + b.key" [class.on]="books().includes(b.key)" [title]="b.full" (click)="toggleBook(b.key)">
+            {{ b.label }}
+          </button>
+        }
+      </div>
+    }
   </header>
 
   @if (error()) {
