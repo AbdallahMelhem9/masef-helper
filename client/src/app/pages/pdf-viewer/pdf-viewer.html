@@ -4,7 +4,7 @@
       <nav class="crumbs">
         <a routerLink="/courses">Courses</a>
         <span class="crumb-sep">/</span>
-        <a [routerLink]="['/courses', p.course?.id]">{{ p.course?.title }}</a>
+        <a [routerLink]="['/courses', p.course?.id]" [queryParams]="p.lesson?.track ? { track: p.lesson?.track } : {}">{{ p.course?.title }}</a>
         <span class="crumb-sep">/</span>
         <a [routerLink]="['/lessons', p.lesson_id]">{{ p.lesson?.title }}</a>
       </nav>

@@ -1,0 +1,407 @@
+===LESSON===
+TITLE: Chapter 1 — Portfolio choice: Markowitz's approach and the CAPM
+DESCRIPTION: Rosenbaum's first lecture (board photos + Magalie's notes, translated from French): the one-period market, mean–variance dominance and the efficient frontier, the optimal portfolio by a Lagrangian, the frontier as a straight line, two-fund separation, the case without a riskless asset, and the Sharpe ratio.
+INTRO:
+This chapter answers one question: **given some money today, which mix of assets should I hold until tomorrow?** Markowitz's answer (1952) is to look at only two numbers per portfolio, its expected final value (the *performance*) and its variance (the *risk*), and to keep only the portfolios that no other portfolio beats on both. That set is the **efficient frontier**.
+
+The framework is deliberately simple: two dates, Gaussian-flavoured (only means and covariances matter), no transaction costs. Rosenbaum's point is that it is *simple but gives many relevant conclusions for practice*, and the conclusions are striking:
+
+1. The optimal risky part is always **the same vector** \(\Omega^{-1}\tilde\mu\), only scaled by how much risk you accept (Proposition 1).
+2. In the plane (standard deviation, expected value) the efficient portfolios lie on a **straight line** (Proposition 2).
+3. Every efficient portfolio is a mix of just **two funds**: the riskless asset and one fixed risky portfolio \(P^*\) (Theorem 1).
+4. Every efficient portfolio has the same **Sharpe ratio** \(S = \sqrt{\tilde\mu'\Omega^{-1}\tilde\mu}\), and no portfolio can do better (Proposition 3).
+
+The tools are light: the mean and variance of a linear combination of random variables, one Lagrange multiplier, and Cauchy–Schwarz. Notation follows the board: \(x'\) is the transpose, \(e = (1, \dots, 1)'\), ASR = *actif sans risque* (riskless asset).
+
+One running example is used in every "Worked example" panel: two risky assets with prices \(p_0 = (1, 1)\), riskless rate \(r = 2\%\), gross mean returns \(\mu = (1.08, 1.05)\), volatilities \(20\%\) and \(10\%\), uncorrelated; so \(\tilde\mu = (0.06, 0.03)\) and \(\Omega = \mathrm{diag}(0.04, 0.01)\).
+
+The chapter title announces the CAPM; the lecture stopped at the Sharpe ratio, so the CAPM itself will be the next part.
+
+===BLOCK===
+KIND: remark
+TITLE: 1) Introduction — goal of the chapter
+HIGHLIGHT: 0
+STATEMENT:
+Goal of this chapter: find the combinations of securities (the portfolios) that are the most interesting statistically, i.e. that give the best performance for a given level of risk. Performance is measured by the **mean** of the returns and risk by their **variance**.
+
+This is the *mean–variance* framework, of Gaussian inspiration, due to Markowitz (1952). It is a simplified framework, but it yields many conclusions relevant in practice.
+PROOF: (none)
+REFRESH: (none)
+EXPLANATION:
+A portfolio's future value is random, so "the best portfolio" has no meaning until we say how to compare random outcomes. Markowitz's choice: compare only the mean (higher is better) and the variance (lower is better). This is exactly right if returns are Gaussian, since a Gaussian law is entirely determined by its mean and variance; otherwise it is an approximation.
+DEEP:
+Why "of Gaussian inspiration"? If the final value \(V_1\) is Gaussian, two portfolios with the same mean and variance have *exactly* the same distribution of outcomes, so nothing else could matter to an investor. For non-Gaussian returns (fat tails, skewness) two portfolios with equal mean and variance can behave very differently in a crash, and that is the main criticism of the framework.
+
+The trade-off is unavoidable: in this chapter every risky asset has a higher mean return than the riskless one, so more expected gain is only obtained by holding risky assets, which brings variance. The whole chapter is about describing the best possible trade-off curve.
+EXAMPLE: (none)
+NOTE: (none)
+
+===BLOCK===
+KIND: definition
+TITLE: 2.1) Market hypotheses
+HIGHLIGHT: 1
+STATEMENT:
+We consider a market with two dates, \(t = 0\) (the investment date) and \(t = 1\) (the horizon). There are \(N\) risky assets and one **riskless asset** (ASR). The ASR is worth \(1\) at date \(0\) and \(1 + r\) at date \(1\), with \(r\) known at \(t = 0\).
+
+We write \(p_{i,t}\) for the price of asset \(i\) at date \(t\) (\(i = 1, \dots, N\)), and \(r_i\) for its return between \(t = 0\) and \(t = 1\):
+\[
+r_i = \frac{p_{i,1}}{p_{i,0}} - 1 \overset{\text{def}}{=} y_i - 1 .
+\]
+Let \(Y = (y_1, \dots, y_N)'\) (gross returns). We assume that the following quantities are well defined and known at \(t = 0\):
+\[
+\mu = \mathbb{E}(Y) \in \mathbb{R}^N, \qquad \Omega = \mathrm{Var}(Y), \ \text{an } N \times N \text{ positive definite matrix.}
+\]
+We also assume that \(\mu_i > 1 + r\) for all \(i\): every risky asset has a mean return higher than that of the ASR.
+PROOF: (none)
+REFRESH:
+**Covariance matrix.** \(\Omega_{ij} = \mathrm{Cov}(y_i, y_j)\); it is symmetric and \(x'\Omega x = \mathrm{Var}(x'Y) \ge 0\). *Positive definite* means \(x'\Omega x > 0\) for \(x \ne 0\): no combination of the assets is riskless. Then \(\Omega\) is invertible.
+EXPLANATION:
+**Explanation.** One period, \(N\) risky assets and a bank account paying \(r\). We work with gross returns \(y_i = p_{i,1}/p_{i,0}\) (what one euro in asset \(i\) becomes) and assume we know their mean vector \(\mu\) and covariance matrix \(\Omega\). The last assumption says that risk is rewarded: each risky asset beats the bank account on average.
+DEEP:
+**Why positive definite.** If \(x'\Omega x = 0\) for some \(x \ne 0\), the combination \(x'Y\) would be a.s. constant: a riskless portfolio made of risky assets. Either it pays exactly \(1 + r\) and is redundant with the ASR, or it pays something else and there is an arbitrage. Excluding this makes \(\Omega\) invertible, and \(\Omega^{-1}\) is in every formula of the chapter.
+
+**Why \(\mu_i > 1 + r\).** It guarantees that taking some risk improves the mean, so the optimisation problem below is not trivial and the optimal portfolio holds risky assets. Only \(\tilde\mu = \mu - (1 + r)e\), the vector of **excess mean returns**, will matter.
+
+**What is not assumed.** Nothing about the law of \(Y\) beyond its first two moments: no Gaussianity is needed for the computations, only for the interpretation.
+EXAMPLE:
+Running example: \(N = 2\), \(p_0 = (1, 1)\), \(r = 0.02\), \(\mu = (1.08, 1.05)\): asset 1 gains \(8\%\) on average, asset 2 \(5\%\), both above \(2\%\). Volatilities \(0.2\) and \(0.1\), no correlation:
+\[
+\Omega = \begin{pmatrix} 0.04 & 0 \\ 0 & 0.01 \end{pmatrix}, \qquad \tilde\mu = \mu - 1.02\, e = \begin{pmatrix} 0.06 \\ 0.03 \end{pmatrix}.
+\]
+NOTE: (none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Value of a portfolio, its mean and its variance
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+A portfolio contains \(a_0\) units of the ASR and \(a_i\) units of each risky asset \(i\); write \(a = (a_1, \dots, a_N)'\) and \(p_t = (p_{1,t}, \dots, p_{N,t})'\). Its value at date \(t\) is
+\[
+V_t = a_0\, p^{ASR}_t + a' p_t .
+\]
+Hence \(V_0 = a_0 + a' p_0\) and
+\[
+V_1 = a_0(1 + r) + \sum_{i=1}^N a_i\, p_{i,0}\, y_i = a_0(1 + r) + a'\,\mathrm{diag}(p_0)\, Y,
+\]
+where \(\mathrm{diag}(p_0)\) is the diagonal matrix with diagonal entries \(p_{i,0}\). Consequently
+\[
+\mathbb{E} V_1 = a_0(1 + r) + a'\,\mathrm{diag}(p_0)\,\mu, \qquad \mathrm{Var}\, V_1 = a'\,\mathrm{diag}(p_0)\,\Omega\,\mathrm{diag}(p_0)\, a .
+\]
+PROOF:
+\(p_{i,1} = p_{i,0}\,y_i\), so \(a'p_1 = \sum_i a_i p_{i,0} y_i = a'\mathrm{diag}(p_0)Y\). Write \(w = \mathrm{diag}(p_0)a\), a deterministic vector. By linearity \(\mathbb{E}V_1 = a_0(1 + r) + w'\mu\). The constant \(a_0(1 + r)\) does not change the variance, and \(\mathrm{Var}(w'Y) = \sum_{i,j} w_iw_j\mathrm{Cov}(y_i, y_j) = w'\Omega w\).
+REFRESH:
+**Mean and variance of a linear combination.** For a deterministic vector \(w\) and a random vector \(Y\) with mean \(\mu\) and covariance \(\Omega\): \(\mathbb{E}[w'Y] = w'\mu\) and \(\mathrm{Var}(w'Y) = w'\Omega w\). Adding a constant changes the mean, not the variance.
+EXPLANATION:
+**Explanation.** Today's value is the cash \(a_0\) plus the cost of the shares. Tomorrow the cash has grown by \(1 + r\) and the money placed in asset \(i\), namely \(a_ip_{i,0}\), has been multiplied by \(y_i\). Only the risky part is random, so it carries all the variance.
+DEEP:
+The vector \(w = \mathrm{diag}(p_0)\,a\), i.e. \(w_i = a_ip_{i,0}\), is the **amount of money** put in each risky asset at \(t = 0\). In terms of \(w\) everything becomes cleaner:
+\[
+V_0 = a_0 + w'e, \qquad \mathbb{E}V_1 = a_0(1 + r) + w'\mu, \qquad \mathrm{Var}\,V_1 = w'\Omega w .
+\]
+This is why the optimisation (section 2.2) is done in \(w\) (the board's \(w_a\)) and the number of shares is recovered at the end by \(a = \mathrm{diag}(p_0)^{-1}w\).
+
+Nothing forbids negative entries: \(a_0 < 0\) is borrowing at rate \(r\), \(a_i < 0\) is a short sale. The model has no constraints of that kind.
+EXAMPLE:
+Running example, \(v = V_0 = 100\): put \(30\) in asset 1, \(50\) in asset 2 and \(20\) in the bank, so \(w = (30, 50)\), \(a_0 = 20\). Then
+\(\mathbb{E}V_1 = 20 \times 1.02 + 30 \times 1.08 + 50 \times 1.05 = 20.4 + 32.4 + 52.5 = 105.3\) and
+\(\mathrm{Var}\,V_1 = 30^2 \times 0.04 + 50^2 \times 0.01 = 36 + 25 = 61\), a standard deviation of about \(7.81\).
+NOTE: (none)
+
+===BLOCK===
+KIND: definition
+TITLE: 2.2) Mean–variance optimisation: dominance and the efficient frontier
+HIGHLIGHT: 1
+STATEMENT:
+We consider portfolios of value \(v\) at \(t = 0\): \(V_0 = V_0(a_0, a) = v\). We look for portfolios with maximal expected return for a variance below a given level. Thus we say that portfolio \(A\) **dominates** portfolio \(B\) if
+\[
+\mathbb{E}V_1^A > \mathbb{E}V_1^B \quad \text{and} \quad \mathrm{Var}\,V_1^A \le \mathrm{Var}\,V_1^B .
+\]
+The **efficient frontier** is the set of non-dominated portfolios. To determine it, for each variance level \(\sigma^2\) one must solve the problem
+\[
+(E) \qquad \max_{a_0,\, a}\ \mathbb{E}V_1(a_0, a) \quad \text{s.c.} \quad \mathrm{Var}\,V_1(a_0, a) \le \sigma^2, \quad V_0(a_0, a) = v .
+\]
+PROOF: (none)
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** \(A\) dominates \(B\) when it earns more on average without being riskier. A rational mean–variance investor never holds a dominated portfolio, so only the efficient frontier is worth studying. Problem \((E)\) finds it one risk budget \(\sigma^2\) at a time: the best mean you can get for at most that much variance, with the same initial capital \(v\).
+DEEP:
+Dominance is only a **partial order**: a portfolio with more mean *and* more variance is neither better nor worse than one with less of both. So there is no single best portfolio, but a whole curve of "best compromises", one per risk level. Which point of the curve an investor picks depends on their taste for risk, which the model does not decide.
+
+Why the budget constraint \(V_0 = v\)? Without it you could always do better by investing more money. Comparing at equal cost makes the comparison fair.
+
+Why does \((E)\) give the frontier? A solution of \((E)\) cannot be dominated by a portfolio of variance \(\le \sigma^2\) (it would have a larger mean, contradicting the maximality). Taking all \(\sigma^2 > 0\) traces the whole frontier.
+
+Existence: the constraint set in \(w\) is \(\{w'\Omega w \le \sigma^2\}\), an ellipsoid, closed and bounded because \(\Omega\) is positive definite, and the objective is linear, so a maximum exists.
+EXAMPLE:
+With \(v = 100\): the portfolio of the previous example (\(w = (30, 50)\): mean \(105.3\), variance \(61\)) dominates "everything in asset 2" (\(w = (0, 100)\): mean \(1.05 \times 100 = 105\), variance \(100^2 \times 0.01 = 100\)). It does **not** dominate "everything in asset 1" (mean \(108\), variance \(400\)): more risk, more mean, no verdict.
+NOTE: (none)
+
+===BLOCK===
+KIND: lemma
+TITLE: The variance constraint is binding: (E) reduces to an equality constraint
+IMPORTANCE: half imp
+HIGHLIGHT: 0
+STATEMENT:
+Let \(\sigma > 0\). Every solution of \((E)\) satisfies \(\mathrm{Var}\,V_1 = \sigma^2\). Hence \((E)\) has the same solutions as
+\[
+(E') \qquad \max_{a_0,\, a}\ \mathbb{E}V_1(a_0, a) \quad \text{s.c.} \quad \mathrm{Var}\,V_1(a_0, a) = \sigma^2, \quad V_0(a_0, a) = v .
+\]
+PROOF:
+Work with \(w = \mathrm{diag}(p_0)a\); since \(a_0 = v - w'e\),
+\[
+\mathbb{E}V_1 = (v - w'e)(1 + r) + w'\mu = v(1 + r) + w'\tilde\mu, \qquad \mathrm{Var}\,V_1 = w'\Omega w .
+\]
+Indeed, let \(A\) be a solution of \((E)\) such that \(\mathrm{Var}\,V_1^A < \sigma^2\), with risky amounts \(w_A\).
+
+*Step 1: \(w_A'\tilde\mu > 0\).* The portfolio \(w = \eta e\) has mean \(v(1 + r) + \eta\, e'\tilde\mu\) with \(e'\tilde\mu > 0\) (all \(\tilde\mu_i > 0\)), and variance \(\eta^2 e'\Omega e \le \sigma^2\) for small \(\eta > 0\). By optimality of \(A\), \(w_A'\tilde\mu \ge \eta\, e'\tilde\mu > 0\).
+
+*Step 2.* Consider the portfolio \(B = (a_0^B, \delta a^A)\) with \(\delta = 1 + \varepsilon\), \(\varepsilon > 0\), and \(a_0^B\) such that \(V_0^B = v\). Then
+\[
+\mathbb{E}V_1^A = (v - a^{A\prime}p_0)(1 + r) + a^{A\prime}\mathrm{diag}(p_0)\mu,
+\]
+\[
+\mathbb{E}V_1^B = (v - \delta a^{A\prime}p_0)(1 + r) + \delta a^{A\prime}\mathrm{diag}(p_0)\mu = \mathbb{E}V_1^A + \varepsilon\,\underbrace{\big(a^{A\prime}\mathrm{diag}(p_0)\mu - a^{A\prime}p_0(1 + r)\big)}_{=\ \mathbb{E}V_1^A - v(1 + r)\ =\ w_A'\tilde\mu\ >\ 0},
+\]
+and \(\mathrm{Var}\,V_1^B = \delta^2\,\mathrm{Var}\,V_1^A \le \sigma^2\) for \(\varepsilon\) small enough. So \(B\) is admissible and strictly better: portfolio \(B\) is a better solution of \((E)\) than portfolio \(A\), which is absurd.
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** If an optimal portfolio left part of the risk budget unused, you could scale its risky part up a little (borrowing or using cash to pay for it): the mean goes up because risk is rewarded, and the variance stays under \(\sigma^2\). So at the optimum the whole risk budget is used.
+DEEP:
+**The scaling trick.** Multiplying the risky amounts by \(\delta = 1 + \varepsilon\) multiplies the excess gain \(w'\tilde\mu\) by \(\delta\) and the variance by \(\delta^2\). If the variance was strictly below \(\sigma^2\), there is room for a small \(\varepsilon\), and the gain increases by \(\varepsilon\, w_A'\tilde\mu\).
+
+**Where the hypotheses bite.** That increase is positive only if \(w_A'\tilde\mu > 0\), i.e. the optimal portfolio beats the bank account on average. This is where \(\mu_i > 1 + r\) is used (Step 1): holding a little of every asset already beats the bank, so the optimum does too. Without excess return (\(\tilde\mu = 0\)) all portfolios have the same mean and the constraint would not need to bind.
+
+**Why bother.** An equality constraint is what the Lagrange method handles directly, which is the next step.
+EXAMPLE:
+Running example, \(v = 100\), \(\sigma = 10\): \(w_A = (30, 50)\) has variance \(61 < 100\). Scale by \(\delta = 10/\sqrt{61} \approx 1.28\): \(w_B \approx (38.4, 64.0)\), variance exactly \(100\), excess gain \(w_B'\tilde\mu \approx 38.4 \times 0.06 + 64 \times 0.03 \approx 4.22\) instead of \(3.3\). So \(A\) was not optimal.
+NOTE: (none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 1 (the efficient portfolios)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(w_a = \mathrm{diag}(p_0)\,a\) be the vector of amounts (in euros) invested in the risky assets. Since \(v = a_0 + w_a'e\) with \(e = (1, \dots, 1)'\), problem \((E')\) is equivalent to
+\[
+\max_{w_a}\ (v - w_a'e)(1 + r) + w_a'\mu \ \ \text{s.c.}\ \ w_a'\Omega w_a = \sigma^2
+\iff
+\max_{w_a}\ w_a'\tilde\mu \ \ \text{s.c.}\ \ w_a'\Omega w_a = \sigma^2, \qquad \text{with } \tilde\mu = \mu - (1 + r)e .
+\]
+For portfolios of value \(v\) at \(t = 0\), the efficient frontier consists of the portfolios such that
+\[
+a = \frac{1}{\lambda}\,\big(\mathrm{diag}(p_0)\big)^{-1}\Omega^{-1}\tilde\mu, \qquad a_0 = v - \frac{1}{\lambda}\,\tilde\mu'\Omega^{-1}e, \qquad \lambda = \frac{1}{\sigma}\big(\tilde\mu'\Omega^{-1}\tilde\mu\big)^{1/2}.
+\]
+PROOF:
+The equivalence: \((v - w_a'e)(1 + r) + w_a'\mu = v(1 + r) + w_a'\tilde\mu\), and \(v(1 + r)\) does not depend on \(w_a\).
+
+We solve \((E')\) by looking for the stationary points of the Lagrangian
+\[
+\mathcal{L}(w_a, \lambda) = w_a'\tilde\mu - \frac{\lambda}{2}\big(w_a'\Omega w_a - \sigma^2\big) = \sum_{i=1}^N w_{a,i}\tilde\mu_i - \frac{\lambda}{2}\Big(\sum_{i=1}^N w_{a,i}^2\Omega_{ii} + \sum_{j \ne i} w_{a,i}w_{a,j}\Omega_{ij} - \sigma^2\Big).
+\]
+The computations are elementary:
+\[
+\frac{\partial\mathcal{L}}{\partial w_{a,i}} = \tilde\mu_i - \lambda\Big(w_{a,i}\Omega_{ii} + \sum_{j \ne i} w_{a,j}\Omega_{ij}\Big) = 0, \qquad \frac{\partial\mathcal{L}}{\partial\lambda} = -\frac12\big(w_a'\Omega w_a - \sigma^2\big) = 0 .
+\]
+Thus \(\tilde\mu - \lambda\Omega w_a = 0\) and \(w_a'\Omega w_a - \sigma^2 = 0\). The first gives \(w_a = \frac1\lambda\Omega^{-1}\tilde\mu\); plugging into the second, \(\frac{1}{\lambda^2}\tilde\mu'\Omega^{-1}\tilde\mu = \sigma^2\), so \(\lambda = \pm\frac1\sigma(\tilde\mu'\Omega^{-1}\tilde\mu)^{1/2}\). The objective at these points is \(w_a'\tilde\mu = \frac1\lambda\tilde\mu'\Omega^{-1}\tilde\mu\), maximal for \(\lambda > 0\) (the other sign is the minimum). Finally \(a = \mathrm{diag}(p_0)^{-1}w_a\) and \(a_0 = v - w_a'e = v - \frac1\lambda\tilde\mu'\Omega^{-1}e\) (\(\Omega^{-1}\) is symmetric).
+REFRESH:
+**Lagrange multipliers.** To maximise \(f(w)\) under \(g(w) = 0\), a maximiser (with \(\nabla g \ne 0\)) satisfies \(\nabla f = \lambda\nabla g\) for some \(\lambda\). Gradients here: \(\nabla(w'\tilde\mu) = \tilde\mu\), \(\nabla(w'\Omega w) = 2\Omega w\) for symmetric \(\Omega\).
+EXPLANATION:
+**Explanation.** Since the cash pays a fixed \(1 + r\), maximising the mean is maximising the **excess gain** \(w_a'\tilde\mu\) of the risky part. Maximising a linear function on an ellipsoid has a closed-form answer: go in the direction \(\Omega^{-1}\tilde\mu\), as far as the risk budget \(\sigma\) allows. The rest of the money \(v - w_a'e\) sits in the riskless asset (negative = borrowed).
+DEEP:
+**The direction \(\Omega^{-1}\tilde\mu\).** If assets were uncorrelated (\(\Omega\) diagonal), \(w_i \propto \tilde\mu_i/\sigma_i^2\): invest more in an asset the higher its excess return and the lower its variance. With correlations, \(\Omega^{-1}\) corrects for the fact that two correlated assets are partly the same bet.
+
+**The multiplier \(\lambda\).** It measures the extra mean obtained per extra unit of variance allowed. A small risk budget \(\sigma\) means a large \(\lambda\) and a small risky position \(1/\lambda\); that is why it is read as **risk aversion** (see the remarks below).
+
+**Why stationarity suffices.** The objective is linear and the constraint set compact, so a maximum exists (block 2.2) and must be a stationary point of \(\mathcal{L}\), since \(\nabla(w'\Omega w) = 2\Omega w \ne 0\) on the constraint. There are only two stationary points (\(\pm\lambda\)), and comparing their values picks \(\lambda > 0\).
+EXAMPLE:
+Running example, \(v = 100\), \(\sigma = 10\). \(\Omega^{-1}\tilde\mu = (0.06/0.04,\ 0.03/0.01) = (1.5, 3)\) and \(\tilde\mu'\Omega^{-1}\tilde\mu = 0.09 + 0.09 = 0.18\). So \(\lambda = \sqrt{0.18}/10 \approx 0.0424\), \(1/\lambda \approx 23.57\):
+\[
+w_a \approx (35.36,\ 70.71), \qquad a_0 = 100 - 106.07 = -6.07 .
+\]
+You borrow about \(6\) euros. Check: variance \(35.36^2 \times 0.04 + 70.71^2 \times 0.01 = 50 + 50 = 100\), and \(\mathbb{E}V_1 = 102 + 35.36 \times 0.06 + 70.71 \times 0.03 \approx 106.24\).
+NOTE: (none)
+
+===BLOCK===
+KIND: remark
+TITLE: Remarks: the role of v and of λ
+HIGHLIGHT: 0
+STATEMENT:
+- The initial value of the portfolio \(v\) only enters the number of units of ASR \(a_0\).
+- \(\lambda\) is proportional to \(\frac1\sigma\): it is a **risk-aversion parameter**. If \(\lambda\) is large, there are very few risky assets in the portfolio.
+PROOF: (none)
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** How much you put in risky assets depends only on how much risk you accept, not on how rich you are: extra capital just goes to the bank. And \(\lambda = S/\sigma\) (with \(S = (\tilde\mu'\Omega^{-1}\tilde\mu)^{1/2}\)) is large exactly when \(\sigma\) is small, i.e. for a cautious investor.
+DEEP:
+The first remark says the risky holdings \(w_a = \frac1\lambda\Omega^{-1}\tilde\mu\) contain no \(v\). This is a feature of the variance constraint being in **euros squared**: a risk budget of \(\sigma = 10\) euros is the same whether you have \(100\) or \(10^6\). With a constraint on the variance of the *return* (variance \(\le \sigma^2v^2\)) the holdings would scale with \(v\).
+
+The second remark gives a second reading of the frontier: instead of fixing \(\sigma\), fix \(\lambda\). The investor who solves \(\max_w\ w'\tilde\mu - \frac\lambda2 w'\Omega w\) (mean minus a variance penalty) gets exactly \(w = \frac1\lambda\Omega^{-1}\tilde\mu\). This "mean–variance utility" form is how \(\lambda\) is used in practice, and it is how the next section parametrises the frontier.
+EXAMPLE:
+Running example: with \(v = 1000\) instead of \(100\) and the same \(\sigma = 10\), \(w_a\) stays \((35.36, 70.71)\) and \(a_0 = 1000 - 106.07 = 893.93\). With \(\sigma = 5\) instead, \(\lambda\) doubles and \(w_a\) halves: \((17.68, 35.36)\).
+NOTE: (none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 2 — 2.3) Analysis of the efficient frontier: it is a straight line
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+For an efficient portfolio,
+\[
+\mathbb{E}V_1 = a_0(1 + r) + a'\mathrm{diag}(p_0)\mu = v(1 + r) + \frac1\lambda\,\tilde\mu'\Omega^{-1}\tilde\mu, \qquad \sqrt{\mathrm{Var}\,V_1} = \sigma = \frac{(\tilde\mu'\Omega^{-1}\tilde\mu)^{1/2}}{\lambda}.
+\]
+So, parametrising by \(\lambda\),
+\[
+\mathbb{E}V_1(\lambda) = v(1 + r) + \sqrt{\mathrm{Var}\,V_1(\lambda)}\,\big(\tilde\mu'\Omega^{-1}\tilde\mu\big)^{1/2}.
+\]
+Hence in the plane (standard deviation, expected value), the efficient frontier, i.e. the set of optimal pairs (standard deviation, mean), is a **straight line**.
+PROOF:
+Plug the formulas of Proposition 1: \(a_0(1 + r) + a'\mathrm{diag}(p_0)\mu = \big(v - \frac1\lambda\tilde\mu'\Omega^{-1}e\big)(1 + r) + \frac1\lambda\tilde\mu'\Omega^{-1}\mu = v(1 + r) + \frac1\lambda\tilde\mu'\Omega^{-1}\big(\mu - (1 + r)e\big) = v(1 + r) + \frac1\lambda\tilde\mu'\Omega^{-1}\tilde\mu\). The value of \(\sigma\) is the definition of \(\lambda\) rewritten. Replacing \(\frac1\lambda = \sigma(\tilde\mu'\Omega^{-1}\tilde\mu)^{-1/2}\) gives the last formula, affine in \(\sigma\).
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** Each extra euro of standard deviation buys the same extra expected value, \(S = (\tilde\mu'\Omega^{-1}\tilde\mu)^{1/2}\). The line starts at \(v(1 + r)\) for \(\sigma = 0\) (everything in the bank) and rises with slope \(S\). It is called the **capital market line**.
+DEEP:
+Why a line and not a curve? Because all efficient portfolios share the same risky direction \(\Omega^{-1}\tilde\mu\); only the size \(1/\lambda\) of the position changes. Doubling the position doubles the excess mean and doubles the standard deviation, so mean and standard deviation move proportionally. Mixing the ASR with a single risky fund always draws a straight line in this plane, because the ASR has zero variance and zero covariance with everything.
+
+The slope \(S\) is the best reward per unit of risk the market offers; it will be called the market's **Sharpe ratio** (section 2.4). Portfolios strictly below the line are dominated, points above it are unreachable.
+EXAMPLE:
+Running example, \(v = 100\): \(\mathbb{E}V_1 = 102 + 0.4243\,\sigma\). At \(\sigma = 10\): \(106.24\) (as computed before); at \(\sigma = 5\): \(104.12\); at \(\sigma = 20\): \(110.49\). The non-efficient portfolio \(w = (30, 50)\) had \(\sigma \approx 7.81\) and mean \(105.3\), below the line value \(102 + 0.4243 \times 7.81 \approx 105.31\) — barely, because \((30, 50)\) is almost proportional to \((1.5, 3)\).
+NOTE: (none)
+
+===BLOCK===
+KIND: theorem
+TITLE: Theorem 1 (two-fund separation)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+From the previous proposition, every optimal portfolio \(P\) can be written
+\[
+P = \alpha_0(\lambda)\,P^{ASR} + \alpha^*(\lambda)\,P^*, \qquad P^* = \big(\mathrm{diag}(p_0)\big)^{-1}\Omega^{-1}\tilde\mu, \quad \alpha_0(\lambda) = v - \frac1\lambda\tilde\mu'\Omega^{-1}e, \quad \alpha^*(\lambda) = \frac1\lambda .
+\]
+**Theorem (separation into 2 funds).** Every efficient portfolio is a combination of 2 particular portfolios:
+- the ASR;
+- \(P^*\), which contains only risky assets.
+PROOF:
+Read off Proposition 1: the vector of risky units is \(a = \frac1\lambda\,\mathrm{diag}(p_0)^{-1}\Omega^{-1}\tilde\mu = \alpha^*(\lambda)P^*\) and the ASR units are \(a_0 = \alpha_0(\lambda)\).
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** All investors, cautious or bold, hold the **same** risky basket \(P^*\); they only differ in how much of it they buy (\(1/\lambda\)) and how much they keep in, or borrow from, the bank. Choosing a portfolio reduces to choosing one number.
+DEEP:
+This is the practical punchline of Markowitz: a fund manager does not need to build a custom risky portfolio for each client. Build \(P^*\) once (it depends only on \(\mu\), \(\Omega\), \(r\), not on the client), then each client sets the split between \(P^*\) and cash according to their risk tolerance.
+
+It is also the bridge to the CAPM: if every investor holds the same risky basket, then in equilibrium that basket must be the whole market, which is the starting point of the CAPM.
+
+Caveat: \(P^*\) is in "units of assets" and its total cost \(p_0'P^* = \tilde\mu'\Omega^{-1}e\) can be anything, even negative. Normalising it to cost one euro gives the tangency portfolio \(\tilde P^*\) of the next block, possible when \(\tilde\mu'\Omega^{-1}e \ne 0\).
+EXAMPLE:
+Running example: \(P^* = (1.5, 3)\) units (prices are \(1\)), costing \(4.5\). Investor with \(\sigma = 10\): \(\alpha^* = 23.57\) units of \(P^*\), \(\alpha_0 = -6.07\). Investor with \(\sigma = 5\): \(\alpha^* = 11.79\), \(\alpha_0 = 100 - 53.03 = 46.97\). Same risky mix (one third in asset 1, two thirds in asset 2), different amounts.
+NOTE: (none)
+
+===BLOCK===
+KIND: remark
+TITLE: Without a riskless asset: a half-hyperbola, and the tangency portfolio
+HIGHLIGHT: 1
+STATEMENT:
+Consider the case with **no ASR** on the market. Proceeding as before, one can show that in the plane (standard deviation, expectation) the efficient frontier is a **half-hyperbola**. Its leftmost point is the *minimum-variance portfolio*; the lower half of the hyperbola is not admissible (dominated).
+
+Note that for a given \(v\), assuming \(\tilde\mu'\Omega^{-1}e > 0\), in the case with ASR one can find \(\sigma\) such that \(a_0 = 0\). So there exists a portfolio proportional to \(P^*\), denoted \(\tilde P^*\), that is efficient in the presence of an ASR: it lies on the efficient frontier with ASR. As this portfolio contains no ASR, it is also optimal in the absence of ASR, and therefore lies on the efficient frontier without ASR. With ASR, every optimal portfolio is a combination of \(P^{ASR}\) and \(\tilde P^*\), and \(\tilde P^*\) belongs to both efficient frontiers.
+
+The efficient frontier with ASR is necessarily above the one without ASR (with more possibilities, one must do at least as well). \(\tilde P^*\) is the **point of tangency** between the 2 frontiers.
+PROOF: (none)
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** Without a bank account the best risk–return trade-off is a curve (a half-hyperbola) bending to the right. Adding the bank turns it into a straight line from \(v(1 + r)\) that just touches the curve at one portfolio, \(\tilde P^*\): the risky mix that needs no cash at all. This \(\tilde P^*\) is the **tangency portfolio**.
+DEEP:
+**Why \(a_0 = 0\) is reachable.** \(a_0 = v - \frac1\lambda\tilde\mu'\Omega^{-1}e\). If \(\tilde\mu'\Omega^{-1}e > 0\), choosing \(\frac1\lambda = v/(\tilde\mu'\Omega^{-1}e)\), i.e. a suitable \(\sigma\), makes \(a_0 = 0\): the whole capital \(v\) is in \(P^*\).
+
+**Why it is on both frontiers.** It is the best portfolio of its risk level among *all* portfolios (with ASR). Portfolios without ASR are fewer, and \(\tilde P^*\) is one of them, so nothing without ASR beats it either.
+
+**Why tangency.** The line is above the hyperbola everywhere (more choices can only help) and the two meet at \(\tilde P^*\); a line that stays on one side of a curve and touches it is tangent to it.
+
+**Why a hyperbola.** Without ASR one minimises \(w'\Omega w\) under two linear constraints (\(w'e = v\), \(w'\mu = m\)); the minimal variance is a quadratic function of \(m\), so the standard deviation is \(\sqrt{\text{quadratic in } m}\), which is a hyperbola in the (standard deviation, mean) plane.
+EXAMPLE:
+Running example: \(\tilde\mu'\Omega^{-1}e = 1.5 + 3 = 4.5 > 0\). With \(v = 100\), \(a_0 = 0\) needs \(\frac1\lambda = 100/4.5 = 22.22\), i.e. \(\sigma = 0.4243 \times 22.22 \approx 9.43\). Then \(w = (33.33, 66.67)\): one third in asset 1, two thirds in asset 2, nothing in the bank. That is \(\tilde P^*\), mean \(102 + 0.4243 \times 9.43 = 106\) (check: \(33.33 \times 1.08 + 66.67 \times 1.05 = 36 + 70 = 106\)).
+NOTE: (none)
+
+===BLOCK===
+KIND: definition
+TITLE: 2.4) The Sharpe ratio
+HIGHLIGHT: 1
+STATEMENT:
+The **Sharpe ratio of the market** is the quantity
+\[
+S = \sqrt{\tilde\mu'\Omega^{-1}\tilde\mu}.
+\]
+When \(\Omega\) is diagonal, with \(\Omega_{ii} = \sigma_i^2\),
+\[
+S = \Big(\sum_{i=1}^N \frac{\big(\mu_i - (1 + r)\big)^2}{\sigma_i^2}\Big)^{1/2}.
+\]
+The **Sharpe ratio of a portfolio** \((a_0, a)\) is defined by
+\[
+S(a) = \frac{\mathbb{E}\big[V_1(a_0, a)\big] - (1 + r)v}{\sqrt{\mathrm{Var}\,V_1(a_0, a)}} = \frac{w_a'\tilde\mu}{(w_a'\Omega w_a)^{1/2}}
+\]
+(since \(v = a_0 + w_a'e\) and \(\mathbb{E}V_1 = a_0(1 + r) + w_a'\mu\)). Note that \(S(a)\) depends neither on \(a_0\) nor on \(v\), and that all efficient portfolios have the same Sharpe ratio:
+\[
+\frac{\frac1\lambda\tilde\mu'\Omega^{-1}\tilde\mu}{\sigma} = \big(\tilde\mu'\Omega^{-1}\tilde\mu\big)^{1/2} = S .
+\]
+PROOF: (none)
+REFRESH: (none)
+EXPLANATION:
+**Explanation.** A portfolio's Sharpe ratio is its expected gain over the bank account divided by its risk: *excess return per unit of risk*. The market's Sharpe ratio \(S\) is the slope of the efficient line of Proposition 2, and every efficient portfolio achieves exactly that slope.
+DEEP:
+**Why it ignores \(a_0\) and \(v\).** The numerator subtracts what the whole capital would have earned in the bank, so only the risky part \(w_a\) is left; the cash has zero variance, so it is absent from the denominator too. Scaling \(w_a\) by \(c > 0\) multiplies numerator and denominator by \(c\): the Sharpe ratio measures the **quality** of the risky mix, not its size.
+
+**Diagonal case.** Each asset alone has Sharpe ratio \(s_i = (\mu_i - (1 + r))/\sigma_i\), and \(S = \sqrt{\sum_i s_i^2}\): with independent assets, diversification combines the individual Sharpe ratios like the sides of a right triangle, so \(S\) is larger than every single \(s_i\).
+
+**Efficient portfolios.** With \(w_a = \frac1\lambda\Omega^{-1}\tilde\mu\), numerator \(\frac1\lambda S^2\), denominator \(\sigma = \frac1\lambda S\): the ratio is \(S\) whatever \(\lambda\).
+EXAMPLE:
+Running example: asset 1 alone has Sharpe ratio \(0.06/0.2 = 0.3\), asset 2 alone \(0.03/0.1 = 0.3\). The market: \(S = \sqrt{0.3^2 + 0.3^2} = \sqrt{0.18} \approx 0.4243\), better than either asset alone. The portfolio \(w = (30, 50)\): \(S = 3.3/7.81 \approx 0.4225\), slightly below \(S\).
+NOTE: (none)
+
+===BLOCK===
+KIND: proposition
+TITLE: Proposition 3 (no portfolio beats the market's Sharpe ratio)
+IMPORTANCE: imp
+HIGHLIGHT: 1
+STATEMENT:
+Let \(A = (a_0, a)\) be a portfolio with risky part \(w_a \ne 0\). Then \(S(a) \le S\).
+
+A portfolio is therefore efficient if and only if its Sharpe ratio equals \(S\).
+PROOF:
+\(\Omega \in S_N^{++}\) (symmetric positive definite), so there exists \(R \in S_N^{++}\) such that \(\Omega = R^2\); we set \(R = \Omega^{1/2}\). Then
+\[
+S(a) = \frac{w_a'\tilde\mu}{\sqrt{w_a'\Omega w_a}} = \frac{w_a'\Omega^{1/2}\,\Omega^{-1/2}\tilde\mu}{\sqrt{w_a'\Omega w_a}} = \frac{\big(\Omega^{1/2}w_a\big)'\big(\Omega^{-1/2}\tilde\mu\big)}{\sqrt{w_a'\Omega w_a}} \underset{\text{C.S.}}{\le} \frac{\sqrt{w_a'\Omega w_a}\,\sqrt{\tilde\mu'\Omega^{-1}\tilde\mu}}{\sqrt{w_a'\Omega w_a}} = \sqrt{\tilde\mu'\Omega^{-1}\tilde\mu} = S,
+\]
+using \(\|\Omega^{1/2}w_a\|^2 = w_a'\Omega w_a\) and \(\|\Omega^{-1/2}\tilde\mu\|^2 = \tilde\mu'\Omega^{-1}\tilde\mu\).
+
+*Equivalence.* Equality in Cauchy–Schwarz with a positive inner product holds iff \(\Omega^{1/2}w_a = c\,\Omega^{-1/2}\tilde\mu\) with \(c > 0\), i.e. \(w_a = c\,\Omega^{-1}\tilde\mu\): exactly the efficient portfolios of Proposition 1 (with \(c = 1/\lambda\)). Conversely, efficient portfolios have Sharpe ratio \(S\) (block 2.4).
+REFRESH:
+**Square root of a matrix.** A symmetric positive definite \(\Omega = U\,\mathrm{diag}(d_i)\,U'\) (\(U\) orthogonal, \(d_i > 0\)) has \(\Omega^{1/2} = U\,\mathrm{diag}(\sqrt{d_i})\,U'\), symmetric, with \(\Omega^{1/2}\Omega^{1/2} = \Omega\). **Cauchy–Schwarz:** \(x'y \le \|x\|\,\|y\|\), equality iff \(x, y\) are positively proportional.
+EXPLANATION:
+**Explanation.** No mix of the assets can earn more excess return per unit of risk than \(S\), and the only mixes that reach \(S\) are the multiples of \(\Omega^{-1}\tilde\mu\). So "efficient" has a one-line test: compute the portfolio's Sharpe ratio and compare it to \(S\).
+DEEP:
+**The idea of the proof.** In the coordinates \(x = \Omega^{1/2}w\) the risk becomes the ordinary length: \(\mathrm{Var} = \|x\|^2\). The excess gain becomes \(x'u\) with \(u = \Omega^{-1/2}\tilde\mu\). Maximising \(x'u\) for a fixed length of \(x\) is the most basic geometry: point \(x\) in the direction of \(u\). The best ratio is \(\|u\| = S\), and pointing in the direction of \(u\) means \(w \propto \Omega^{-1}\tilde\mu\).
+
+This gives a second proof of Proposition 1 with no Lagrangian: it explains both the optimal direction and the slope of the efficient line in one inequality.
+
+**Where \(w_a \ne 0\) is needed.** For \(w_a = 0\) (all cash) the ratio is \(0/0\), undefined.
+EXAMPLE:
+Running example: \(\Omega^{1/2} = \mathrm{diag}(0.2, 0.1)\), \(u = \Omega^{-1/2}\tilde\mu = (0.3, 0.3)\). For \(w = (30, 50)\): \(x = (6, 5)\), \(x'u = 3.3\), \(\|x\| = 7.81\), \(\|u\| = 0.4243\); indeed \(3.3 \le 7.81 \times 0.4243 = 3.314\). Equality needs \(x \propto (1, 1)\), i.e. \(w \propto (5, 10) \propto (1.5, 3)\).
+NOTE: (none)
+
+===NOTE===
+TITLE: Summary of the chapter so far, and what comes next
+CONTENT:
+**The chain of results.**
+1. Compare portfolios by mean and variance; keep the non-dominated ones (efficient frontier).
+2. At the optimum the risk budget is fully used, and the optimal risky amounts are \(w = \frac1\lambda\Omega^{-1}\tilde\mu\).
+3. Efficient portfolios: \(\mathbb{E}V_1 = v(1 + r) + S\,\sigma\), a straight line of slope \(S = \sqrt{\tilde\mu'\Omega^{-1}\tilde\mu}\).
+4. Two funds suffice: the ASR and \(P^*\); without ASR the frontier is a half-hyperbola, tangent to the line at \(\tilde P^*\).
+5. Every portfolio has Sharpe ratio \(\le S\), with equality exactly for efficient portfolios.
+
+**Formulas to know by heart:** \(\tilde\mu = \mu - (1 + r)e\), \(w^* \propto \Omega^{-1}\tilde\mu\), \(S = \sqrt{\tilde\mu'\Omega^{-1}\tilde\mu}\), and in the diagonal case \(S^2 = \sum_i\big((\mu_i - (1 + r))/\sigma_i\big)^2\).
+
+**Next: the CAPM.** If all investors are mean–variance optimisers with the same \(\mu\) and \(\Omega\), they all hold \(\tilde P^*\) (two-fund separation), so \(\tilde P^*\) must be the market portfolio itself. The CAPM turns this into a formula for each asset's expected return in terms of its covariance with the market (its *beta*).
+
+*Source: Rosenbaum's lecture 1 (board photos), with the last four pages from Magalie's notes, translated from French.*

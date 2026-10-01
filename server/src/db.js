@@ -140,6 +140,14 @@ for (const [name, ddl] of [
 const courseCols = db.prepare('PRAGMA table_info(courses)').all().map((c) => c.name);
 if (!courseCols.includes('unavailable_reason')) db.exec('ALTER TABLE courses ADD COLUMN unavailable_reason TEXT');
 
+// Courses taught from more than one source (e.g. the teacher's own lectures and
+// a reference survey): courses.tracks is a JSON list [{key, label, teacher,
+// description}] and lessons.track names the track a lesson belongs to. The
+// course page then asks which track to open. NULL = a single-track course.
+if (!courseCols.includes('tracks')) db.exec('ALTER TABLE courses ADD COLUMN tracks TEXT');
+const lessonCols = db.prepare('PRAGMA table_info(lessons)').all().map((c) => c.name);
+if (!lessonCols.includes('track')) db.exec('ALTER TABLE lessons ADD COLUMN track TEXT');
+
 // Interview puzzles from the books and free question banks (content, rebuilt
 // by scripts/build-teasers.js). A table created before the 'trading' section
 // existed is dropped and recreated: it holds content only, user progress

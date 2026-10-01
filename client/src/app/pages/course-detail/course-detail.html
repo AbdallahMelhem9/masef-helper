@@ -35,9 +35,27 @@
       <p class="error-note">{{ error() }}</p>
     }
 
-    @if (c.lessons && c.lessons.length > 0) {
+    @if (choosing()) {
+      <p class="track-prompt">This course is followed from two sources. Which one do you want to open?</p>
+      <div class="track-grid">
+        @for (t of tracks(); track t.key) {
+          <button type="button" class="track-card" (click)="chooseTrack(t.key)">
+            <span class="eyebrow">{{ t.teacher }}</span>
+            <span class="track-label">{{ t.label }}</span>
+            <span class="track-desc">{{ t.description }}</span>
+            <span class="track-meta">{{ lessonCountFor(t.key) }} {{ lessonCountFor(t.key) === 1 ? 'chapter' : 'chapters' }} &rarr;</span>
+          </button>
+        }
+      </div>
+    } @else if (visibleLessons().length > 0) {
+      @if (activeTrack(); as t) {
+        <div class="track-bar">
+          <span><strong>{{ t.label }}</strong> · {{ t.teacher }}</span>
+          <button type="button" class="link-btn" (click)="chooseTrack(null)">Switch source</button>
+        </div>
+      }
       <ol class="lesson-list">
-        @for (lesson of c.lessons; track lesson.id; let i = $index) {
+        @for (lesson of visibleLessons(); track lesson.id; let i = $index) {
           <li>
             <a class="lesson-row" [routerLink]="['/lessons', lesson.id]">
               <span class="lesson-num">{{ (i + 1).toString().padStart(2, '0') }}</span>

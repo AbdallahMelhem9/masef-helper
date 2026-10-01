@@ -3,7 +3,7 @@
     <nav class="crumbs">
       <a routerLink="/courses">Courses</a>
       <span class="crumb-sep">/</span>
-      <a [routerLink]="['/courses', l.course_id]">{{ l.course?.title }}</a>
+      <a [routerLink]="['/courses', l.course_id]" [queryParams]="l.track ? { track: l.track } : {}">{{ l.course?.title }}</a>
       <span class="crumb-sep">/</span>
       <span>{{ l.title }}</span>
     </nav>

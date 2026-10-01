@@ -6,8 +6,17 @@ export interface Course {
   position: number;
   created_at: string;
   unavailable_reason?: string | null;
+  /** JSON list of CourseTrack when the course has several sources, else null. */
+  tracks?: string | null;
   lessonCount?: number;
   lessons?: Lesson[];
+}
+
+export interface CourseTrack {
+  key: string;
+  label: string;
+  teacher: string;
+  description: string;
 }
 
 export interface Lesson {
@@ -16,6 +25,7 @@ export interface Lesson {
   title: string;
   description: string;
   position: number;
+  track?: string | null;
   pdfCount?: number;
   course?: Course;
   pdfs?: Pdf[];

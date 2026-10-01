@@ -1,0 +1,21 @@
+{
+  "courseId": 9,
+  "filename": "rosenbaum-ch1-notes.pdf",
+  "teacherTag": "Mathieu Rosenbaum (lectures) · notes",
+  "tracks": [
+    {
+      "key": "rosenbaum",
+      "label": "Rosenbaum's lectures",
+      "teacher": "Mathieu Rosenbaum",
+      "description": "The course as taught in class, rebuilt from board photos and classmates' notes: statements translated from the French, with explanations, refreshers, worked examples and proofs."
+    },
+    {
+      "key": "gould",
+      "label": "Limit order books (survey)",
+      "teacher": "Gould, Porter, Williams, McDonald, Fenn, Howison",
+      "description": "Reference reading: the 2013 survey 'Limit Order Books' (Quantitative Finance), structure of an LOB, its mathematical description and empirical facts."
+    }
+  ],
+  "track": "rosenbaum",
+  "otherLessonsTrack": "gould"
+}
