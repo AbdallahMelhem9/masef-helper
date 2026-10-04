@@ -22,6 +22,24 @@ read (transcribed with LaTeX), each with an AI lecture and its own chat box —
 
 The server serves the built client. Use **Create account** on the login page (anyone can sign up; each account has its own notes).
 
+### Accounts, lockout and password reset
+
+- After 5 wrong passwords for an email, that email is locked for 15 minutes (the right password is refused too). A successful password reset lifts the lock.
+- **Forgot password?** on the login page emails a reset link valid for one hour. The link is single-use, and requesting a new one invalidates the old one. A reset signs the account out everywhere.
+- Emails go over SMTP. Set these environment variables (Gmail works with an app password):
+
+  | Variable | Example |
+  | --- | --- |
+  | `SMTP_HOST` | `smtp.gmail.com` |
+  | `SMTP_PORT` | `465` (or `587`) |
+  | `SMTP_USER` | your sending address |
+  | `SMTP_PASS` | app password |
+  | `MAIL_FROM` | `MASEF Helper <you@example.com>` |
+  | `APP_URL` | public address of the app, used in the link (optional; defaults to the address you came in on) |
+
+  Without `SMTP_HOST` the reset link is printed to the server log instead of emailed, which is what the local install uses.
+- The login page shows a help contact, `abdallah.melhem93@gmail.com`.
+
 ## Development
 
 ```powershell

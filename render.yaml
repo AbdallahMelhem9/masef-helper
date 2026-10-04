@@ -15,3 +15,15 @@ services:
       # Render dashboard. Without it they live in the wiped-on-restart SQLite.
       - key: DATABASE_URL
         sync: false
+      # Password-reset emails (see README, "Accounts, lockout and password reset").
+      # Without SMTP_HOST the reset link only goes to the Render log.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        sync: false

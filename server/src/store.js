@@ -15,9 +15,15 @@ function sqliteStore() {
     async findUserByEmail(email) {
       return db.prepare('SELECT * FROM users WHERE email = ?').get(email) || null;
     },
+    async findUserById(id) {
+      return db.prepare('SELECT * FROM users WHERE id = ?').get(id) || null;
+    },
     async createUser(email, passwordHash, name) {
       const info = db.prepare('INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)').run(email, passwordHash, name);
       return { id: Number(info.lastInsertRowid), email, name };
+    },
+    async updatePassword(userId, passwordHash) {
+      db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(passwordHash, userId);
     },
     async createSession(token, userId) {
       db.prepare('INSERT INTO sessions (token, user_id) VALUES (?, ?)').run(token, userId);
@@ -31,6 +37,24 @@ function sqliteStore() {
     },
     async deleteSession(token) {
       db.prepare('DELETE FROM sessions WHERE token = ?').run(token);
+    },
+    async deleteUserSessions(userId) {
+      db.prepare('DELETE FROM sessions WHERE user_id = ?').run(userId);
+    },
+    async latestResetAt(userId) {
+      return db.prepare('SELECT MAX(created_at) AS t FROM password_resets WHERE user_id = ?').get(userId).t || null;
+    },
+    // Keeps a single live reset link per user: a new request replaces the old one.
+    async replaceReset(userId, tokenHash, expiresAt, createdAt) {
+      db.prepare('DELETE FROM password_resets WHERE user_id = ?').run(userId);
+      db.prepare('INSERT INTO password_resets (token_hash, user_id, expires_at, created_at) VALUES (?, ?, ?, ?)').run(tokenHash, userId, expiresAt, createdAt);
+    },
+    // Removes the link as it is read, so a token can only be used once.
+    async takeReset(tokenHash) {
+      return db.prepare('DELETE FROM password_resets WHERE token_hash = ? RETURNING user_id, expires_at').get(tokenHash) || null;
+    },
+    async deleteUserResets(userId) {
+      db.prepare('DELETE FROM password_resets WHERE user_id = ?').run(userId);
     },
     async getInk(userId, pdfId, kind) {
       return db.prepare('SELECT data, updated_at FROM ink WHERE user_id = ? AND pdf_id = ? AND kind = ?').get(userId, pdfId, kind) || null;
@@ -107,6 +131,12 @@ async function postgresStore(url) {
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+    CREATE TABLE IF NOT EXISTS password_resets (
+      token_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      expires_at TEXT NOT NULL,
+      created_at TEXT NOT NULL
+    );
     -- No foreign key to pdfs: those live in the SQLite content database.
     CREATE TABLE IF NOT EXISTS ink (
       user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -152,8 +182,12 @@ async function postgresStore(url) {
       return Number((await one('SELECT COUNT(*) AS n FROM users')).n);
     },
     findUserByEmail: (email) => one('SELECT * FROM users WHERE email = $1', [email]),
+    findUserById: (id) => one('SELECT * FROM users WHERE id = $1', [id]),
     createUser: (email, passwordHash, name) =>
       one('INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name', [email, passwordHash, name]),
+    async updatePassword(userId, passwordHash) {
+      await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, userId]);
+    },
     async createSession(token, userId) {
       await pool.query('INSERT INTO sessions (token, user_id) VALUES ($1, $2)', [token, userId]);
     },
@@ -161,6 +195,21 @@ async function postgresStore(url) {
       one('SELECT u.id, u.email, u.name FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = $1', [token]),
     async deleteSession(token) {
       await pool.query('DELETE FROM sessions WHERE token = $1', [token]);
+    },
+    async deleteUserSessions(userId) {
+      await pool.query('DELETE FROM sessions WHERE user_id = $1', [userId]);
+    },
+    async latestResetAt(userId) {
+      return (await one('SELECT MAX(created_at) AS t FROM password_resets WHERE user_id = $1', [userId])).t || null;
+    },
+    async replaceReset(userId, tokenHash, expiresAt, createdAt) {
+      await pool.query('DELETE FROM password_resets WHERE user_id = $1', [userId]);
+      await pool.query('INSERT INTO password_resets (token_hash, user_id, expires_at, created_at) VALUES ($1, $2, $3, $4)', [tokenHash, userId, expiresAt, createdAt]);
+    },
+    takeReset: (tokenHash) =>
+      one('DELETE FROM password_resets WHERE token_hash = $1 RETURNING user_id, expires_at', [tokenHash]),
+    async deleteUserResets(userId) {
+      await pool.query('DELETE FROM password_resets WHERE user_id = $1', [userId]);
     },
     getInk: (userId, pdfId, kind) =>
       one('SELECT data, updated_at FROM ink WHERE user_id = $1 AND pdf_id = $2 AND kind = $3', [userId, pdfId, kind]),

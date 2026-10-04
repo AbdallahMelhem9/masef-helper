@@ -6,15 +6,22 @@
 
     <p class="eyebrow">Universit&eacute; Paris-Dauphine &middot; MASEF</p>
     <h1 class="login-title">MASEF Helper</h1>
-    <p class="login-sub">
-      Your course companion for the year ahead &mdash; teacher PDFs, section by section,
-      with an AI tutor at your side.
-    </p>
 
-    <div class="mode-switch" role="tablist" aria-label="Account">
-      <button type="button" role="tab" [attr.aria-selected]="mode() === 'signin'" [class.on]="mode() === 'signin'" (click)="setMode('signin')">Sign in</button>
-      <button type="button" role="tab" [attr.aria-selected]="mode() === 'signup'" [class.on]="mode() === 'signup'" (click)="setMode('signup')">Create account</button>
-    </div>
+    @if (mode() === 'forgot') {
+      <p class="login-sub">Enter the email you signed up with. We will send a link to choose a new password.</p>
+    } @else if (mode() === 'reset') {
+      <p class="login-sub">Choose a new password for your account.</p>
+    } @else {
+      <p class="login-sub">
+        Your course companion for the year ahead &mdash; teacher PDFs, section by section,
+        with an AI tutor at your side.
+      </p>
+
+      <div class="mode-switch" role="tablist" aria-label="Account">
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'signin'" [class.on]="mode() === 'signin'" (click)="setMode('signin')">Sign in</button>
+        <button type="button" role="tab" [attr.aria-selected]="mode() === 'signup'" [class.on]="mode() === 'signup'" (click)="setMode('signup')">Create account</button>
+      </div>
+    }
 
     @if (mode() === 'signup') {
       <p class="first-run-note">Your handwritten notes and pen marks are saved to your account &mdash; sign in on any device to find them again.</p>
@@ -27,24 +34,65 @@
           <input id="name" name="name" [(ngModel)]="name" placeholder="Your name" autocomplete="name" />
         </div>
       }
-      <div class="field">
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="you@example.com" autocomplete="username" />
-      </div>
-      <div class="field">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" [(ngModel)]="password" required
-          [placeholder]="mode() === 'signup' ? 'Choose a password (6+ characters)' : 'Your password'"
-          [autocomplete]="mode() === 'signup' ? 'new-password' : 'current-password'" />
-      </div>
 
+      @if (mode() !== 'reset') {
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="you@example.com" autocomplete="username" />
+        </div>
+      }
+
+      @if (mode() === 'signin' || mode() === 'signup') {
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" [(ngModel)]="password" required
+            [placeholder]="mode() === 'signup' ? 'Choose a password (6+ characters)' : 'Your password'"
+            [autocomplete]="mode() === 'signup' ? 'new-password' : 'current-password'" />
+        </div>
+      }
+
+      @if (mode() === 'reset') {
+        <div class="field">
+          <label for="new-password">New password</label>
+          <input id="new-password" name="new-password" type="password" [(ngModel)]="password" required
+            placeholder="At least 6 characters" autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label for="confirm-password">Confirm new password</label>
+          <input id="confirm-password" name="confirm-password" type="password" [(ngModel)]="confirm" required
+            placeholder="Type it again" autocomplete="new-password" />
+        </div>
+      }
+
+      @if (mode() === 'signin') {
+        <div class="forgot-row">
+          <button type="button" class="link-btn" (click)="setMode('forgot')">Forgot password?</button>
+        </div>
+      }
+
+      @if (notice()) {
+        <p class="notice-note">{{ notice() }}</p>
+      }
       @if (error()) {
         <p class="error-note">{{ error() }}</p>
       }
 
       <button class="btn" type="submit" [disabled]="loading()">
-        {{ loading() ? (mode() === 'signup' ? 'Creating account…' : 'Signing in…') : mode() === 'signup' ? 'Create account' : 'Sign in' }}
+        @switch (mode()) {
+          @case ('signup') { {{ loading() ? 'Creating account…' : 'Create account' }} }
+          @case ('forgot') { {{ loading() ? 'Sending…' : 'Send reset link' }} }
+          @case ('reset') { {{ loading() ? 'Saving…' : 'Set new password' }} }
+          @default { {{ loading() ? 'Signing in…' : 'Sign in' }} }
+        }
       </button>
+
+      @if (mode() === 'forgot' || mode() === 'reset') {
+        <button type="button" class="link-btn center" (click)="backToSignIn()">Back to sign in</button>
+      }
     </form>
+
+    <p class="help-line">
+      Need help? Contact <a href="mailto:abdallah.melhem93@gmail.com">abdallah.melhem93@gmail.com</a>
+    </p>
   </div>
 </div>

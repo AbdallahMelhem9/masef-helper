@@ -29,6 +29,15 @@ export class AuthService {
     return this.start(await firstValueFrom(this.http.post<LoginResponse>('/api/auth/signup', { email, password, name })));
   }
 
+  // Always resolves with the same message, whether or not the email has an account.
+  async forgot(email: string): Promise<{ message: string }> {
+    return firstValueFrom(this.http.post<{ message: string }>('/api/auth/forgot', { email }));
+  }
+
+  async reset(token: string, password: string): Promise<void> {
+    await firstValueFrom(this.http.post('/api/auth/reset', { token, password }));
+  }
+
   private start(res: LoginResponse): LoginResponse {
     localStorage.setItem(TOKEN_KEY, res.token);
     localStorage.setItem(EMAIL_KEY, res.email);

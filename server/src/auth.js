@@ -30,6 +30,55 @@ export function forgetSession(token) {
   sessionCache.delete(token);
 }
 
+// After a password reset every session of the account must stop working at once.
+export function forgetAllSessions() {
+  sessionCache.clear();
+}
+
+// Reset links: the emailed token is random; only its SHA-256 is stored.
+export function newToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+export function hashToken(token) {
+  return crypto.createHash('sha256').update(token).digest('hex');
+}
+
+// Wrong-password lockout, per email (checked before the account is looked up,
+// so it reveals nothing about which emails have accounts). Kept in memory: a
+// restart clears it, which is fine for this app. A successful password reset
+// clears the lock.
+const MAX_FAILURES = 5;
+const LOCK_MS = 15 * 60 * 1000;
+const failures = new Map(); // email -> { count, lockedUntil }
+
+// Minutes left on the lock for this email, 0 when it is not locked.
+export function lockMinutesLeft(email) {
+  const f = failures.get(email);
+  if (!f || !f.lockedUntil) return 0;
+  const left = f.lockedUntil - Date.now();
+  if (left <= 0) {
+    failures.delete(email);
+    return 0;
+  }
+  return Math.ceil(left / 60000);
+}
+
+export function recordFailure(email) {
+  if (failures.size > 10000) failures.clear();
+  const f = failures.get(email) || { count: 0, lockedUntil: 0 };
+  f.count += 1;
+  if (f.count >= MAX_FAILURES) {
+    f.count = 0;
+    f.lockedUntil = Date.now() + LOCK_MS;
+  }
+  failures.set(email, f);
+}
+
+export function clearFailures(email) {
+  failures.delete(email);
+}
+
 function tokenOf(req) {
   const header = req.headers.authorization || '';
   return header.startsWith('Bearer ') ? header.slice(7) : req.query.token;

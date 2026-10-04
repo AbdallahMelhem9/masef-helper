@@ -5,8 +5,21 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { db, UPLOADS_DIR } from './db.js';
-import { hashPassword, verifyPassword, createSession, forgetSession, requireAuth } from './auth.js';
+import {
+  hashPassword,
+  verifyPassword,
+  createSession,
+  forgetSession,
+  forgetAllSessions,
+  requireAuth,
+  newToken,
+  hashToken,
+  lockMinutesLeft,
+  recordFailure,
+  clearFailures,
+} from './auth.js';
 import { store } from './store.js';
+import { sendResetEmail } from './mailer.js';
 import { annotateBlock, reExplainBlock, answerQuestion, ANSWER_LENGTHS } from './ai.js';
 import { ingestPdf } from './ingest.js';
 import { GLOSSARY } from './glossary.js';
@@ -56,19 +69,96 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 });
 
+// Checked against a throwaway hash for unknown emails, so a wrong email and a
+// wrong password take the same time to answer.
+const DUMMY_HASH = hashPassword(newToken());
+
 app.post('/api/auth/login', async (req, res) => {
   const { password } = req.body || {};
   const email = cleanEmail(req.body?.email);
   if (!email || !password) return res.status(400).json({ error: 'Email and password required' });
+  const wait = lockMinutesLeft(email);
+  if (wait) {
+    return res.status(429).json({
+      error: `Too many wrong passwords. Try again in ${wait} min, reset your password, or contact abdallah.melhem93@gmail.com for help.`,
+    });
+  }
   try {
     const user = await store.findUserByEmail(email);
-    if (!user || !verifyPassword(password, user.password_hash)) {
+    const passwordOk = verifyPassword(password, user ? user.password_hash : DUMMY_HASH);
+    if (!user || !passwordOk) {
+      recordFailure(email);
       return res.status(401).json({ error: 'Invalid email or password' });
     }
+    clearFailures(email);
     const token = await createSession(user.id);
     res.json({ token, email: user.email, name: user.name, created: false });
   } catch (err) {
     console.error('login failed:', err);
+    res.status(503).json({ error: 'Account service unavailable, try again shortly' });
+  }
+});
+
+// Reset links last an hour, and a new one is not sent within two minutes of
+// the last (stops the mailbox being flooded).
+const RESET_TTL_MS = 60 * 60 * 1000;
+const RESET_COOLDOWN_MS = 2 * 60 * 1000;
+const RESET_REPLY = 'If an account exists for that email, a reset link is on its way. Check your inbox and spam folder.';
+
+// Where the emailed link points: APP_URL when set (set it on a custom domain),
+// otherwise the origin this request came in on.
+function appOrigin(req) {
+  return (process.env.APP_URL || `${req.protocol}://${req.get('host')}`).replace(/\/$/, '');
+}
+
+// Always answers the same way, so it cannot tell which emails have accounts.
+app.post('/api/auth/forgot', async (req, res) => {
+  const email = cleanEmail(req.body?.email);
+  if (!email) return res.status(400).json({ error: 'Enter your email' });
+  try {
+    const user = await store.findUserByEmail(email);
+    if (user) {
+      const last = await store.latestResetAt(user.id);
+      const recent = last && Date.now() - new Date(last).getTime() < RESET_COOLDOWN_MS;
+      if (!recent) {
+        const token = newToken();
+        const now = new Date();
+        await store.replaceReset(user.id, hashToken(token), new Date(now.getTime() + RESET_TTL_MS).toISOString(), now.toISOString());
+        try {
+          await sendResetEmail(user.email, `${appOrigin(req)}/reset-password?token=${token}`);
+        } catch (err) {
+          console.error('reset email failed:', err);
+        }
+      }
+    }
+    res.json({ message: RESET_REPLY });
+  } catch (err) {
+    console.error('forgot password failed:', err);
+    res.status(503).json({ error: 'Account service unavailable, try again shortly' });
+  }
+});
+
+app.post('/api/auth/reset', async (req, res) => {
+  const { password } = req.body || {};
+  const token = String(req.body?.token || '');
+  if (!password || password.length < 6) return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  if (!/^[0-9a-f]{64}$/.test(token)) return res.status(400).json({ error: 'This reset link is invalid or has expired. Request a new one.' });
+  try {
+    // takeReset deletes the link as it reads it, so it works only once.
+    const row = await store.takeReset(hashToken(token));
+    if (!row || new Date(row.expires_at).getTime() < Date.now()) {
+      return res.status(400).json({ error: 'This reset link is invalid or has expired. Request a new one.' });
+    }
+    await store.deleteUserResets(row.user_id);
+    await store.updatePassword(row.user_id, hashPassword(password));
+    // Signs out every device, and lifts any wrong-password lock on the account.
+    await store.deleteUserSessions(row.user_id);
+    forgetAllSessions();
+    const user = await store.findUserById(row.user_id);
+    if (user) clearFailures(user.email);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('reset password failed:', err);
     res.status(503).json({ error: 'Account service unavailable, try again shortly' });
   }
 });

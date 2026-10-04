@@ -19,6 +19,8 @@ import { Agenda } from './pages/agenda/agenda';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
+  // The emailed reset link; same card as sign-in, in reset mode.
+  { path: 'reset-password', component: Login, data: { reset: true } },
   {
     path: '',
     component: Shell,
