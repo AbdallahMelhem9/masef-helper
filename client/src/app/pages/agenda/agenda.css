@@ -1,0 +1,484 @@
+/* Course tones: a hue per subject, exams always red. */
+.c-p { --tone: #5b6ee1; }
+.c-sc { --tone: #2b54d4; }
+.c-t { --tone: #1b9aaa; }
+.c-ml { --tone: #7b4fd6; }
+.c-mc { --tone: #3f7f5f; }
+.c-hf { --tone: #0f8fb8; }
+.c-cpp { --tone: #2e9e44; }
+.c-co { --tone: #8a5a2b; }
+.c-gt { --tone: #c28a00; }
+.c-val { --tone: #b8650f; }
+.c-mcf { --tone: #a07400; }
+.c-stc { --tone: #c0457a; }
+.c-var { --tone: #4a5870; }
+.c-rates { --tone: #6d3fa0; }
+.c-exam { --tone: #c8332b; }
+
+.clock {
+  text-align: right;
+}
+
+.clock-time {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.clock-date {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+/* ---- live cards ---- */
+.live-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.live-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  border-left: 5px solid var(--tone, var(--cobalt));
+  padding: 18px 22px;
+}
+
+.live-card.now {
+  box-shadow: var(--shadow-2);
+}
+
+.live-card p {
+  margin: 0;
+}
+
+.live-card h2 {
+  font-size: 21px;
+  margin: 6px 0 10px;
+  line-height: 1.25;
+}
+
+.live-tag {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pulse {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d23b32;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(210, 59, 50, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(210, 59, 50, 0); }
+}
+
+.hall {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--tone, var(--ink));
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.hall-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.teacher {
+  color: var(--ink-2);
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.live-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--line);
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.live-bar span {
+  display: block;
+  height: 100%;
+  background: var(--tone, var(--cobalt));
+  transition: width 1s linear;
+}
+
+.live-meta,
+.countdown {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---- today / exams ---- */
+.two-col {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 26px;
+}
+
+@media (max-width: 860px) {
+  .two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 16px 20px;
+}
+
+.panel h3,
+.week-head h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.muted {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.today-row,
+.exam-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line);
+}
+
+.today-row.past {
+  opacity: 0.5;
+}
+
+.today-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  line-height: 1.3;
+  width: 42px;
+  flex-shrink: 0;
+}
+
+.swatch {
+  width: 4px;
+  align-self: stretch;
+  border-radius: 2px;
+  background: var(--tone);
+}
+
+.today-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.today-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.today-room {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: var(--paper);
+  color: var(--ink-3);
+}
+
+.badge.live {
+  background: #fbe3e1;
+  color: #c8332b;
+}
+
+.exam-date {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #c8332b;
+  width: 50px;
+  flex-shrink: 0;
+}
+
+.exam-in {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* ---- week grid ---- */
+.week {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 16px 20px 20px;
+}
+
+.week-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.week-head h3 {
+  margin: 0;
+}
+
+.week-nav {
+  display: flex;
+  gap: 6px;
+}
+
+.week-nav button,
+.filter-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-2);
+  border-radius: 7px;
+  padding: 5px 11px;
+  cursor: pointer;
+}
+
+.week-nav button:hover:not(:disabled),
+.filter-btn:hover {
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+}
+
+.week-nav button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--tone);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.chip input {
+  accent-color: var(--tone);
+}
+
+.chip.off {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+.grid-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px repeat(5, minmax(130px, 1fr));
+  min-width: 720px;
+}
+
+.hours {
+  position: relative;
+}
+
+.hours span {
+  position: absolute;
+  right: 8px;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line);
+}
+
+.day-head {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--line);
+}
+
+.day.today .day-head {
+  color: var(--cobalt);
+  font-weight: 600;
+}
+
+.day.today .day-body {
+  background: color-mix(in srgb, var(--cobalt-soft) 45%, transparent);
+}
+
+.day-body {
+  position: relative;
+  flex: 1;
+}
+
+.hour-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--line);
+}
+
+.ev {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 2px 3px;
+}
+
+.ev > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ev::before {
+  content: '';
+  position: absolute;
+  inset: 0 3px 0 3px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--tone) 14%, white);
+  border-left: 3px solid var(--tone);
+}
+
+.ev {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 4px 8px 4px 10px;
+}
+
+.ev.past {
+  opacity: 0.55;
+}
+
+.ev.live::before {
+  box-shadow: 0 0 0 2px var(--tone);
+}
+
+.ev-time {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-3);
+}
+
+.ev-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ev-room {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tone);
+  margin-top: 2px;
+}
+
+.ev-progress {
+  position: absolute !important;
+  z-index: 0 !important;
+  left: 3px;
+  right: 3px;
+  top: 0;
+  border-radius: 6px 6px 0 0;
+  background: color-mix(in srgb, var(--tone) 18%, transparent);
+}
+
+.now-line {
+  position: absolute;
+  left: -4px;
+  right: 0;
+  border-top: 2px solid #d23b32;
+  z-index: 5;
+}
+
+.now-line::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d23b32;
+}

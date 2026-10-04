@@ -11,8 +11,11 @@ import { TeaserBrowse } from './pages/teasers/teaser-browse';
 import { TeaserPage } from './pages/teasers/teaser-page';
 import { TeaserLock } from './pages/teasers/teaser-lock';
 import { teaserGuard } from './core/teaser.guard';
+import { PrepHub } from './pages/prep/prep-hub';
+import { PrepGame } from './pages/prep/prep-game';
 import { CodingHome } from './pages/coding/coding-home';
 import { CodingFirm } from './pages/coding/coding-firm';
+import { Agenda } from './pages/agenda/agenda';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -22,6 +25,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'courses' },
+      { path: 'agenda', component: Agenda },
       { path: 'courses', component: Courses },
       { path: 'courses/:id', component: CourseDetail },
       { path: 'lessons/:id', component: LessonDetail },
@@ -36,6 +40,9 @@ export const routes: Routes = [
       { path: 'teaser/:slug', component: TeaserPage, canActivate: [teaserGuard] },
       { path: 'coding', component: CodingHome, canActivate: [teaserGuard] },
       { path: 'coding/:firm', component: CodingFirm, canActivate: [teaserGuard] },
+      { path: 'prep/trading', component: PrepHub, canActivate: [teaserGuard], data: { kind: 'trading' } },
+      { path: 'prep/math', component: PrepHub, canActivate: [teaserGuard], data: { kind: 'math' } },
+      { path: 'prep/:kind/:id', component: PrepGame, canActivate: [teaserGuard] },
       { path: 'puzzles-locked', component: TeaserLock },
     ],
   },

@@ -1,0 +1,141 @@
+<div class="page wide">
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">MASEF 2026&ndash;2027 &middot; Paris time</p>
+      <h1>Agenda</h1>
+    </div>
+    <div class="clock">
+      <span class="clock-time">{{ clock() }}</span>
+      <span class="clock-date">{{ longDate(now().date) }}</span>
+    </div>
+  </header>
+
+  <section class="live-row">
+    @for (s of current(); track s.date + s.start + s.course) {
+      <article class="live-card now {{ tone(s) }}">
+        <p class="live-tag"><span class="pulse"></span>In progress &middot; {{ s.start }}&ndash;{{ s.end }}</p>
+        <h2>{{ s.title }}</h2>
+        <p class="hall"><span class="hall-label">Hall</span>{{ s.room || '—' }}</p>
+        <p class="teacher">{{ s.teacher }}</p>
+        <div class="live-bar"><span [style.width.%]="progress(s)"></span></div>
+        <p class="live-meta">{{ remaining(s) }} left</p>
+      </article>
+    }
+
+    @if (next(); as s) {
+      <article class="live-card upcoming {{ tone(s) }}">
+        <p class="live-tag">Next up &middot; {{ dayLabel(s.date) }} {{ s.start }}&ndash;{{ s.end }}</p>
+        <h2>{{ s.title }}</h2>
+        <p class="hall"><span class="hall-label">Hall</span>{{ s.room || '—' }}</p>
+        <p class="teacher">{{ s.teacher }}</p>
+        <p class="countdown">starts in <strong>{{ untilNext(s) }}</strong></p>
+      </article>
+    } @else if (!current().length) {
+      <article class="live-card upcoming"><h2>No more sessions this year</h2></article>
+    }
+  </section>
+
+  <div class="two-col">
+    <section class="panel">
+      <h3>Today</h3>
+      @for (s of today(); track s.date + s.start + s.course) {
+        <div class="today-row {{ status(s) }}">
+          <span class="today-time">{{ s.start }}<br />{{ s.end }}</span>
+          <span class="swatch {{ tone(s) }}"></span>
+          <span class="today-body">
+            <span class="today-title">{{ s.title }}</span>
+            <span class="today-room">{{ s.room || '—' }} &middot; {{ s.teacher }}</span>
+          </span>
+          @if (status(s) === 'live') {
+            <span class="badge live">Live</span>
+          } @else if (status(s) === 'past') {
+            <span class="badge">Done</span>
+          }
+        </div>
+      } @empty {
+        <p class="muted">Nothing scheduled today.</p>
+      }
+    </section>
+
+    <section class="panel">
+      <h3>Upcoming exams</h3>
+      @for (s of upcomingExams(); track s.date + s.start + s.course) {
+        <div class="exam-row">
+          <span class="exam-date">{{ shortDate(s.date) }}</span>
+          <span class="today-body">
+            <span class="today-title">{{ s.title.replace('Exam — ', '') }}</span>
+            <span class="today-room">{{ s.start }}&ndash;{{ s.end }} &middot; {{ s.room || '—' }}</span>
+          </span>
+          <span class="exam-in">in {{ untilNext(s).split(' ')[0] }}</span>
+        </div>
+      } @empty {
+        <p class="muted">No exams left.</p>
+      }
+    </section>
+  </div>
+
+  <section class="week">
+    <div class="week-head">
+      <div class="week-nav">
+        <button (click)="weekOffset.set(weekOffset() - 1)" aria-label="Previous week">&larr;</button>
+        <button class="this-week" [disabled]="weekOffset() === 0" (click)="weekOffset.set(0)">This week</button>
+        <button (click)="weekOffset.set(weekOffset() + 1)" aria-label="Next week">&rarr;</button>
+      </div>
+      <h3>{{ weekLabel() }}</h3>
+      <button class="filter-btn" (click)="showFilters.set(!showFilters())">
+        Courses{{ hidden().size ? ' (' + hidden().size + ' hidden)' : '' }}
+      </button>
+    </div>
+
+    @if (showFilters()) {
+      <div class="filters">
+        @for (c of subjects; track c.key) {
+          <label class="chip {{ 'c-' + c.key.toLowerCase() }}" [class.off]="hidden().has(c.key)">
+            <input type="checkbox" [checked]="!hidden().has(c.key)" (change)="toggle(c.key)" />
+            {{ c.title }}
+          </label>
+        }
+      </div>
+    }
+
+    <div class="grid-scroll">
+      <div class="grid" [style.height.px]="(gridEnd() - GRID_START) * PX_PER_MIN + 46">
+        <div class="hours">
+          @for (h of hours(); track h) {
+            <span [style.top.px]="(h - GRID_START) * PX_PER_MIN + 34">{{ h / 60 }}:00</span>
+          }
+        </div>
+        @for (d of weekDays(); track d.date) {
+          <div class="day" [class.today]="isToday(d.date)">
+            <div class="day-head">{{ d.name.slice(0, 3) }} {{ shortDate(d.date) }}</div>
+            <div class="day-body">
+              @for (h of hours(); track h) {
+                <span class="hour-line" [style.top.px]="(h - GRID_START) * PX_PER_MIN"></span>
+              }
+              @for (s of d.sessions; track s.start + s.course + s.lane) {
+                <div
+                  class="ev {{ tone(s) }} {{ status(s) }}"
+                  [style.top.px]="s.top"
+                  [style.height.px]="s.height"
+                  [style.left.%]="(100 * s.lane) / s.lanes"
+                  [style.width.%]="100 / s.lanes"
+                  [title]="s.title + '\n' + s.start + '–' + s.end + '\n' + s.room + '\n' + s.teacher"
+                >
+                  <span class="ev-time">{{ s.start }}&ndash;{{ s.end }}</span>
+                  <span class="ev-title">{{ s.title }}</span>
+                  <span class="ev-room">{{ s.room }}</span>
+                  @if (status(s) === 'live') {
+                    <span class="ev-progress" [style.height.%]="progress(s)"></span>
+                  }
+                </div>
+              }
+              @if (isToday(d.date) && nowLineTop() !== null) {
+                <span class="now-line" [style.top.px]="nowLineTop()"></span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>
