@@ -482,3 +482,11 @@
   border-radius: 50%;
   background: #d23b32;
 }
+
+.sim-tag {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #c8332b;
+}

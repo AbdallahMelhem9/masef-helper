@@ -32,6 +32,16 @@ const toMin = (hhmm: string) => +hhmm.slice(0, 2) * 60 + +hhmm.slice(3, 5);
 const dayNum = (iso: string) => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10)) / 86400000;
 const isoOf = (n: number) => new Date(n * 86400000).toISOString().slice(0, 10);
 const weekday = (iso: string) => (new Date(dayNum(iso) * 86400000).getUTCDay() + 6) % 7; // 0 = Monday
+// Preview another moment: /agenda?at=2026-10-05T09:30 (Paris time) shifts the clock, which keeps ticking.
+const AT = new URLSearchParams(location.search).get('at')?.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})$/);
+const absMin = (n: Now) => dayNum(n.date) * 1440 + n.min;
+const shift = AT ? dayNum(AT[1]) * 1440 + toMin(AT[2]) - absMin(parisNow()) : 0;
+function agendaNow(): Now {
+  if (!shift) return parisNow();
+  const t = absMin(parisNow()) + shift;
+  return { date: isoOf(Math.floor(t / 1440)), min: t - Math.floor(t / 1440) * 1440 };
+}
+
 // TD sessions share the lecture's filter toggle.
 export const subject = (s: Session) => s.course.replace(/TD$/, '');
 
@@ -51,8 +61,9 @@ export class Agenda implements OnDestroy {
   readonly GRID_START = 8 * 60;
   readonly PX_PER_MIN = 0.9;
 
-  now = signal(parisNow());
-  private timer = setInterval(() => this.now.set(parisNow()), 1000);
+  now = signal(agendaNow());
+  simulated = !!shift;
+  private timer = setInterval(() => this.now.set(agendaNow()), 1000);
 
   hidden = signal<Set<string>>(this.loadHidden());
   weekOffset = signal(0);
