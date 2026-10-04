@@ -13,7 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const headers: Record<string, string> = {};
   if (token) headers['Authorization'] = `Bearer ${token}`;
   // The interview-prep password (puzzles, coding), once entered on this browser.
-  const locked = req.url.startsWith('/api/teasers') || req.url.startsWith('/api/coding');
+  const locked = req.url.startsWith('/api/teasers') || req.url.startsWith('/api/coding') || req.url.startsWith('/api/games');
   const teaserPass = locked ? localStorage.getItem(TEASER_PASS_KEY) : null;
   if (teaserPass) headers['X-Teaser-Pass'] = teaserPass;
   const authedReq = Object.keys(headers).length ? req.clone({ setHeaders: headers }) : req;

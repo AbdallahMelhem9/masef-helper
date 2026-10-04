@@ -10,6 +10,7 @@ import { store } from './store.js';
 import { annotateBlock, reExplainBlock, answerQuestion, ANSWER_LENGTHS } from './ai.js';
 import { ingestPdf } from './ingest.js';
 import { GLOSSARY } from './glossary.js';
+import { gamesRouter } from './games.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -626,6 +627,9 @@ app.put('/api/coding/problems/:slug/notes', requireAuth, requireTeaserAccess, as
   }
   res.json({ ok: true });
 });
+
+// ---------- Trading games & mental maths (scores, leaderboards) ----------
+app.use('/api/games', gamesRouter(requireAuth, requireTeaserAccess));
 
 // ---------- Static Angular build (production mode) ----------
 const CLIENT_DIST = path.join(__dirname, '..', '..', 'client', 'dist', 'client', 'browser');

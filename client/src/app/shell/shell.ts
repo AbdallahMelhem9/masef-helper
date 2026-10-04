@@ -17,7 +17,7 @@ export class Shell {
   private teaserAccess = inject(TeaserAccessService);
 
   // Every page of the interview-prep tab (puzzles, coding prep, the lock page).
-  private readonly PREP_PREFIXES = ['/teasers', '/teaser/', '/coding', '/puzzles-locked'];
+  private readonly PREP_PREFIXES = ['/teasers', '/teaser/', '/coding', '/prep', '/puzzles-locked'];
   private url = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
