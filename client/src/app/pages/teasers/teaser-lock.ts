@@ -11,9 +11,9 @@ import { TeaserAccessService } from '../../core/teaser-access.service';
     <div class="lock">
       <div class="lock-card">
         <span class="lock-glyph" aria-hidden="true">?</span>
-        <p class="eyebrow">Interview puzzles</p>
+        <p class="eyebrow">Interview prep</p>
         <h1>This section is locked</h1>
-        <p class="lock-sub">Enter the password to open the brain teasers, probability and company questions.</p>
+        <p class="lock-sub">Enter the password to open the puzzles and the coding prep.</p>
         <form (ngSubmit)="submit()">
           <input
             type="password"

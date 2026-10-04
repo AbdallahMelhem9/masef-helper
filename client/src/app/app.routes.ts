@@ -11,6 +11,8 @@ import { TeaserBrowse } from './pages/teasers/teaser-browse';
 import { TeaserPage } from './pages/teasers/teaser-page';
 import { TeaserLock } from './pages/teasers/teaser-lock';
 import { teaserGuard } from './core/teaser.guard';
+import { CodingHome } from './pages/coding/coding-home';
+import { CodingFirm } from './pages/coding/coding-firm';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
@@ -32,6 +34,8 @@ export const routes: Routes = [
       { path: 'teasers/:section', component: TeaserBrowse, canActivate: [teaserGuard] },
       { path: 'teasers/:section/:category', component: TeaserBrowse, canActivate: [teaserGuard] },
       { path: 'teaser/:slug', component: TeaserPage, canActivate: [teaserGuard] },
+      { path: 'coding', component: CodingHome, canActivate: [teaserGuard] },
+      { path: 'coding/:firm', component: CodingFirm, canActivate: [teaserGuard] },
       { path: 'puzzles-locked', component: TeaserLock },
     ],
   },

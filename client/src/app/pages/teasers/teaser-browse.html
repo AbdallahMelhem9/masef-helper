@@ -1,6 +1,6 @@
 <div class="page">
   <nav class="crumbs">
-    <a routerLink="/teasers">Puzzles</a>
+    <a routerLink="/teasers">Interview prep</a>
     @switch (view()) {
       @case ('topics') {
         <span class="crumb-sep">/</span><span>By topic</span>
@@ -65,6 +65,17 @@
               <div class="bar"><span [style.width.%]="pct(stats().firmDone, stats().firmTotal)"></span></div>
               <span class="count">{{ stats().firmDone }} / {{ stats().firmTotal }} done</span>
             </div>
+          </a>
+          <a class="section-card sec-trading" routerLink="/coding">
+            <span class="section-glyph" aria-hidden="true">&lt;/&gt;</span>
+            <h2>Coding prep</h2>
+            <p>LeetCode questions asked by finance firms &mdash; trading shops, hedge funds, banks, fintech &mdash; ticked off as you solve them.</p>
+            @if (coding(); as c) {
+              <div class="progress-line">
+                <div class="bar"><span [style.width.%]="pct(c.solvedProblems, c.totalProblems)"></span></div>
+                <span class="count">{{ c.solvedProblems }} / {{ c.totalProblems }} solved</span>
+              </div>
+            }
           </a>
         </div>
       }

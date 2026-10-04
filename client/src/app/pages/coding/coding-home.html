@@ -1,0 +1,60 @@
+<div class="page">
+  <nav class="crumbs">
+    <a routerLink="/teasers">Interview prep</a>
+    <span class="crumb-sep">/</span><span>Coding prep</span>
+  </nav>
+
+  <header class="page-head">
+    <div>
+      <p class="eyebrow">Interview preparation</p>
+      <h1>Coding prep</h1>
+    </div>
+    @if (data(); as d) {
+      <div class="overall">
+        <div class="progress-line">
+          <div class="bar"><span [style.width.%]="pct(d.solvedProblems, d.totalProblems)"></span></div>
+          <span class="count">{{ d.solvedProblems }} / {{ d.totalProblems }} solved</span>
+        </div>
+      </div>
+    }
+  </header>
+
+  <p class="intro">
+    LeetCode problems reported for each firm, merged from four public company-wise lists on GitHub and ordered by how often
+    they come up. Tick a problem once and it counts as solved under every firm that asks it.
+  </p>
+
+  @if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  } @else if (!data()) {
+    <p class="loading">Loading&hellip;</p>
+  } @else {
+    <input class="search" type="search" placeholder="Find a firm…" [value]="query()" (input)="query.set($any($event.target).value)" />
+    @for (g of groups(); track g.key) {
+      <h2 class="group-title">{{ g.label }}</h2>
+      <div class="cat-grid">
+        @for (f of g.firms; track f.slug) {
+          <a class="cat-card firm-card" [routerLink]="['/coding', f.slug]" [class.all-done]="f.solved === f.count">
+            <h2>{{ f.name }}</h2>
+            <p class="firm-meta">
+              {{ f.count }} problem{{ f.count === 1 ? '' : 's' }}
+              @if (f.recent) {
+                <span class="recent-tag">{{ f.recent }} recent</span>
+              }
+            </p>
+            <div class="progress-line">
+              <div class="bar"><span [style.width.%]="pct(f.solved, f.count)"></span></div>
+              <span class="count">{{ f.solved }} / {{ f.count }}</span>
+            </div>
+          </a>
+        }
+      </div>
+    } @empty {
+      <p class="loading">No firm matches.</p>
+    }
+    <p class="credits">
+      Sources: liquidslr/leetcode-company-wise-problems, snehasishroy/leetcode-companywise-interview-questions,
+      krishnadey30/LeetCode-Questions-CompanyWise, hxu296/leetcode-company-wise-problems-2022 (MIT). Lists merged {{ data()!.builtAt }}.
+    </p>
+  }
+</div>

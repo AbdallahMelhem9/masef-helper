@@ -10,7 +10,7 @@
 
     <nav class="nav">
       <a routerLink="/courses" routerLinkActive="active" class="nav-link">Courses</a>
-      <a routerLink="/teasers" routerLinkActive="active" class="nav-link">Brain teasers</a>
+      <a routerLink="/teasers" class="nav-link" [class.active]="prepActive()">Interview prep</a>
     </nav>
 
     <div class="sidebar-foot">

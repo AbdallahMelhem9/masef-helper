@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { ChatMessage, Course, Lesson, Pdf, Section, Teaser, TeaserSummary } from './models';
+import { ChatMessage, CodingFirmDetail, CodingSummary, Course, Lesson, Pdf, Section, Teaser, TeaserSummary } from './models';
 
 // How long the tutor's chat answer should be; 'auto' lets it read the wanted
 // length off the question itself.
@@ -63,6 +63,22 @@ export class ApiService {
     return firstValueFrom(
       this.http.post<{ user: ChatMessage; assistant: ChatMessage }>(`/api/sections/${sectionId}/messages`, { content, length })
     );
+  }
+
+  getCoding(): Promise<CodingSummary> {
+    return firstValueFrom(this.http.get<CodingSummary>('/api/coding'));
+  }
+
+  getCodingFirm(firm: string): Promise<CodingFirmDetail> {
+    return firstValueFrom(this.http.get<CodingFirmDetail>(`/api/coding/firms/${firm}`));
+  }
+
+  setCodingSolved(slug: string, solved: boolean): Promise<{ ok: boolean; solved: boolean }> {
+    return firstValueFrom(this.http.put<{ ok: boolean; solved: boolean }>(`/api/coding/problems/${slug}/solved`, { solved }));
+  }
+
+  setCodingNotes(slug: string, notes: string): Promise<{ ok: boolean }> {
+    return firstValueFrom(this.http.put<{ ok: boolean }>(`/api/coding/problems/${slug}/notes`, { notes }));
   }
 
   getTeasers(): Promise<TeaserSummary[]> {

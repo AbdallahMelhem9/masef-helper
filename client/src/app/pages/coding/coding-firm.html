@@ -1,0 +1,120 @@
+<div class="page">
+  <nav class="crumbs">
+    <a routerLink="/teasers">Interview prep</a>
+    <span class="crumb-sep">/</span><a routerLink="/coding">Coding prep</a>
+    <span class="crumb-sep">/</span><span>{{ firm()?.name }}</span>
+  </nav>
+
+  @if (error()) {
+    <p class="error-note">{{ error() }}</p>
+  } @else if (!firm()) {
+    <p class="loading">Loading&hellip;</p>
+  } @else {
+    <header class="page-head">
+      <div>
+        <p class="eyebrow">Coding prep</p>
+        <h1>{{ firm()!.name }}</h1>
+      </div>
+      <div class="overall">
+        <div class="progress-line">
+          <div class="bar"><span [style.width.%]="pct(solvedCount(), problems().length)"></span></div>
+          <span class="count">{{ solvedCount() }} / {{ problems().length }} solved</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="coding-tools">
+      <input class="search" type="search" placeholder="Search title, topic or number…" [value]="query()" (input)="query.set($any($event.target).value); shown.set(100)" />
+      <div class="tool-row">
+        @for (d of DIFFS; track d) {
+          <button type="button" [class]="'head-btn diff-btn d-' + d" [class.on]="prefs().diffs.includes(d)" (click)="toggleDiff(d)">
+            {{ d }} <span class="n">{{ diffCounts()[d] }}</span>
+          </button>
+        }
+        <span class="tool-sep"></span>
+        <button type="button" class="head-btn" [class.on]="prefs().recentOnly" (click)="setPref('recentOnly', !prefs().recentOnly)">Last 3 months</button>
+        <button type="button" class="head-btn" [class.on]="prefs().hideSolved" (click)="setPref('hideSolved', !prefs().hideSolved)">Hide solved</button>
+        <label class="sort">
+          Sort
+          <select [value]="prefs().sort" (change)="setPref('sort', $any($event.target).value)">
+            <option value="frequency">Most asked</option>
+            <option value="difficulty">Difficulty</option>
+            <option value="number">Problem number</option>
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <p class="count list-count">{{ visible().length }} shown</p>
+
+    <ol class="lc-list">
+      @for (p of visible().slice(0, shown()); track p.slug) {
+        <li class="lc-item" [class.solved]="p.solved">
+          <div class="lc-row">
+            <button
+              type="button"
+              class="tick"
+              [class.on]="p.solved"
+              [attr.aria-pressed]="p.solved"
+              [title]="p.solved ? 'Solved — click to untick' : 'Mark as solved'"
+              (click)="toggleSolved(p)"
+            >
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" /></svg>
+            </button>
+            <div class="lc-main">
+              <a class="lc-title" [href]="'https://leetcode.com/problems/' + p.slug + '/'" target="_blank" rel="noopener">
+                @if (p.id) {
+                  <span class="lc-num">{{ p.id }}.</span>
+                }
+                {{ p.title }}
+              </a>
+              @if (p.topics.length) {
+                <span class="lc-topics">{{ p.topics.slice(0, 4).join(' · ') }}</span>
+              }
+            </div>
+            @if (p.recent) {
+              <span class="recent-tag" title="Reported in the last 3 months">recent</span>
+            }
+            <span [class]="'diff d-' + p.difficulty">{{ p.difficulty || '?' }}</span>
+            <span class="freq" [title]="'Frequency score ' + p.score + ' · in ' + p.sources.length + ' of 4 lists'">
+              <span [style.width.%]="p.score * 100"></span>
+            </span>
+            <button type="button" class="head-btn notes-btn" [class.on]="open().has(p.slug)" [class.has]="p.notes.trim()" (click)="toggleNotes(p.slug)">
+              Notes
+            </button>
+          </div>
+          @if (open().has(p.slug)) {
+            <div class="lc-notes">
+              <textarea
+                rows="4"
+                placeholder="Your approach, complexity, the trick you missed…"
+                [value]="p.notes"
+                (input)="onNotes(p.slug, $any($event.target).value)"
+                (blur)="saveNotes(p.slug)"
+              ></textarea>
+              <div class="notes-foot">
+                <span>
+                  @if (p.askedBy.length) {
+                    Also asked by {{ p.askedBy.join(', ') }}
+                  }
+                </span>
+                <span class="save-state">
+                  @switch (saveState()[p.slug]) {
+                    @case ('saving') { Saving&hellip; }
+                    @case ('saved') { Saved }
+                    @case ('error') { <span class="bad">Not saved — check your connection</span> }
+                  }
+                </span>
+              </div>
+            </div>
+          }
+        </li>
+      } @empty {
+        <p class="loading">Nothing matches these filters.</p>
+      }
+    </ol>
+    @if (visible().length > shown()) {
+      <button type="button" class="head-btn more" (click)="shown.set(shown() + 100)">Show {{ visible().length - shown() > 100 ? 100 : visible().length - shown() }} more</button>
+    }
+  }
+</div>

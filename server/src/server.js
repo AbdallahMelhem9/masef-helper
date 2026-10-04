@@ -440,7 +440,7 @@ function teaserPassOk(pass) {
 const teaserUnlocked = (req) => req.user.email === TEASER_OWNER || teaserPassOk(req.get('X-Teaser-Pass'));
 function requireTeaserAccess(req, res, next) {
   if (teaserUnlocked(req)) return next();
-  res.status(403).json({ error: 'The puzzles are password-protected', locked: true });
+  res.status(403).json({ error: 'Interview prep is password-protected', locked: true });
 }
 
 app.get('/api/teasers/access', requireAuth, (req, res) => {
@@ -552,6 +552,79 @@ app.put('/api/teasers/:slug/ink', requireAuth, requireTeaserAccess, async (req, 
     return res.status(503).json({ error: 'Notes storage unavailable' });
   }
   res.json({ ok: true, updated_at: stamp });
+});
+
+// ---------- Coding prep: LeetCode problems by finance firm ----------
+// Same password as the puzzles. Content is content/coding/coding.json (built
+// by scripts/build-coding.js); progress and notes are keyed by problem slug,
+// so a problem solved once counts under every firm that asks it.
+const CODING = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'content', 'coding', 'coding.json'), 'utf8'));
+
+async function codingStateMap(userId) {
+  try {
+    return new Map((await store.codingStates(userId)).map((s) => [s.slug, s]));
+  } catch (err) {
+    console.error('coding states failed:', err);
+    return new Map();
+  }
+}
+
+app.get('/api/coding', requireAuth, requireTeaserAccess, async (req, res) => {
+  const states = await codingStateMap(req.user.id);
+  const solved = new Set([...states.values()].filter((s) => s.solved).map((s) => s.slug));
+  res.json({
+    builtAt: CODING.builtAt,
+    groups: CODING.groups,
+    firms: CODING.firms.map((f) => ({ ...f, solved: CODING.lists[f.slug].filter((i) => solved.has(i.slug)).length })),
+    totalProblems: Object.keys(CODING.problems).length,
+    solvedProblems: [...solved].filter((s) => CODING.problems[s]).length,
+  });
+});
+
+app.get('/api/coding/firms/:firm', requireAuth, requireTeaserAccess, async (req, res) => {
+  const firm = CODING.firms.find((f) => f.slug === req.params.firm);
+  if (!firm) return res.status(404).json({ error: 'Company not found' });
+  const states = await codingStateMap(req.user.id);
+  res.json({
+    ...firm,
+    problems: CODING.lists[firm.slug].map((i) => ({
+      ...CODING.problems[i.slug],
+      ...i,
+      solved: !!states.get(i.slug)?.solved,
+      notes: states.get(i.slug)?.notes || '',
+      askedBy: CODING.firms.filter((f) => f.slug !== firm.slug && CODING.lists[f.slug].some((x) => x.slug === i.slug)).map((f) => f.name),
+    })),
+  });
+});
+
+const codingProblem = (req, res) => {
+  if (CODING.problems[req.params.slug]) return true;
+  res.status(404).json({ error: 'Problem not found' });
+  return false;
+};
+
+app.put('/api/coding/problems/:slug/solved', requireAuth, requireTeaserAccess, async (req, res) => {
+  if (!codingProblem(req, res)) return;
+  const solved = !!req.body?.solved;
+  try {
+    await store.setCodingSolved(req.user.id, req.params.slug, solved);
+  } catch (err) {
+    console.error('coding progress write failed:', err);
+    return res.status(503).json({ error: 'Progress storage unavailable' });
+  }
+  res.json({ ok: true, solved });
+});
+
+app.put('/api/coding/problems/:slug/notes', requireAuth, requireTeaserAccess, async (req, res) => {
+  if (!codingProblem(req, res)) return;
+  const notes = String(req.body?.notes ?? '').slice(0, 20000);
+  try {
+    await store.setCodingNotes(req.user.id, req.params.slug, notes);
+  } catch (err) {
+    console.error('coding notes write failed:', err);
+    return res.status(503).json({ error: 'Notes storage unavailable' });
+  }
+  res.json({ ok: true });
 });
 
 // ---------- Static Angular build (production mode) ----------

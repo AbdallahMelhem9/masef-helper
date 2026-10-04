@@ -72,6 +72,21 @@ function sqliteStore() {
          ON CONFLICT (user_id, slug) DO UPDATE SET completed = excluded.completed, completed_at = excluded.completed_at`
       ).run(userId, slug, completed ? 1 : 0, completed ? new Date().toISOString() : null);
     },
+    async codingStates(userId) {
+      return db.prepare('SELECT slug, solved, notes FROM coding_user WHERE user_id = ?').all(userId);
+    },
+    async setCodingSolved(userId, slug, solved) {
+      db.prepare(
+        `INSERT INTO coding_user (user_id, slug, solved, solved_at) VALUES (?, ?, ?, ?)
+         ON CONFLICT (user_id, slug) DO UPDATE SET solved = excluded.solved, solved_at = excluded.solved_at`
+      ).run(userId, slug, solved ? 1 : 0, solved ? new Date().toISOString() : null);
+    },
+    async setCodingNotes(userId, slug, notes) {
+      db.prepare(
+        `INSERT INTO coding_user (user_id, slug, notes, notes_updated_at) VALUES (?, ?, ?, ?)
+         ON CONFLICT (user_id, slug) DO UPDATE SET notes = excluded.notes, notes_updated_at = excluded.notes_updated_at`
+      ).run(userId, slug, notes, new Date().toISOString());
+    },
   };
 }
 
@@ -118,6 +133,15 @@ async function postgresStore(url) {
       ink TEXT,
       ink_filled BOOLEAN NOT NULL DEFAULT false,
       ink_updated_at TEXT,
+      PRIMARY KEY (user_id, slug)
+    );
+    CREATE TABLE IF NOT EXISTS coding_user (
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      slug TEXT NOT NULL,
+      solved BOOLEAN NOT NULL DEFAULT false,
+      solved_at TEXT,
+      notes TEXT NOT NULL DEFAULT '',
+      notes_updated_at TEXT,
       PRIMARY KEY (user_id, slug)
     );
   `);
@@ -180,6 +204,24 @@ async function postgresStore(url) {
         `INSERT INTO teaser_user (user_id, slug, completed, completed_at) VALUES ($1, $2, $3, $4)
          ON CONFLICT (user_id, slug) DO UPDATE SET completed = excluded.completed, completed_at = excluded.completed_at`,
         [userId, slug, completed, completed ? new Date().toISOString() : null]
+      );
+    },
+    async codingStates(userId) {
+      const r = await pool.query('SELECT slug, solved, notes FROM coding_user WHERE user_id = $1', [userId]);
+      return r.rows.map((x) => ({ slug: x.slug, solved: x.solved ? 1 : 0, notes: x.notes }));
+    },
+    async setCodingSolved(userId, slug, solved) {
+      await pool.query(
+        `INSERT INTO coding_user (user_id, slug, solved, solved_at) VALUES ($1, $2, $3, $4)
+         ON CONFLICT (user_id, slug) DO UPDATE SET solved = excluded.solved, solved_at = excluded.solved_at`,
+        [userId, slug, solved, solved ? new Date().toISOString() : null]
+      );
+    },
+    async setCodingNotes(userId, slug, notes) {
+      await pool.query(
+        `INSERT INTO coding_user (user_id, slug, notes, notes_updated_at) VALUES ($1, $2, $3, $4)
+         ON CONFLICT (user_id, slug) DO UPDATE SET notes = excluded.notes, notes_updated_at = excluded.notes_updated_at`,
+        [userId, slug, notes, new Date().toISOString()]
       );
     },
   };

@@ -123,3 +123,40 @@ export interface Teaser extends Omit<TeaserSummary, 'hasBoard'> {
   followups: { title: string; question: string; answer: string }[];
   refs: string[];
 }
+
+// Coding prep: LeetCode problems by finance firm (merged public lists).
+export interface CodingFirm {
+  slug: string;
+  name: string;
+  group: string;
+  count: number;
+  recent: number;
+  solved: number;
+}
+
+export interface CodingSummary {
+  builtAt: string;
+  groups: { key: string; label: string }[];
+  firms: CodingFirm[];
+  totalProblems: number;
+  solvedProblems: number;
+}
+
+export interface CodingProblem {
+  slug: string;
+  id?: number;
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard' | '';
+  topics: string[];
+  score: number;
+  recent: boolean;
+  windows: string[];
+  sources: string[];
+  askedBy: string[];
+  solved: boolean;
+  notes: string;
+}
+
+export interface CodingFirmDetail extends Omit<CodingFirm, 'solved'> {
+  problems: CodingProblem[];
+}

@@ -194,6 +194,17 @@ db.exec(`
     ink_updated_at TEXT,
     PRIMARY KEY (user_id, slug)
   );
+
+  -- Per-user state on one LeetCode problem (coding prep), keyed by its slug.
+  CREATE TABLE IF NOT EXISTS coding_user (
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    slug TEXT NOT NULL,
+    solved INTEGER NOT NULL DEFAULT 0,
+    solved_at TEXT,
+    notes TEXT NOT NULL DEFAULT '',
+    notes_updated_at TEXT,
+    PRIMARY KEY (user_id, slug)
+  );
 `);
 const teaserCols = db.prepare('PRAGMA table_info(teasers)').all().map((c) => c.name);
 if (!teaserCols.includes('followups')) db.exec("ALTER TABLE teasers ADD COLUMN followups TEXT NOT NULL DEFAULT '[]'");

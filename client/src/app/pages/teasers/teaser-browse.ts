@@ -3,7 +3,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { ApiService } from '../../core/api.service';
-import { TeaserBook, TeaserSection, TeaserSummary } from '../../core/models';
+import { CodingSummary, TeaserBook, TeaserSection, TeaserSummary } from '../../core/models';
 import { BOOKS, BookTags, CATEGORIES, SECTIONS, SECTION_INFO, categorySlug, firmSlug, isSection } from './teaser-meta';
 
 // Sources switched OFF, so sources added later show by default.
@@ -46,6 +46,7 @@ export class TeaserBrowse implements OnInit {
   firmKey = signal<string | null>(null);
   books = signal<TeaserBook[]>(loadBooks());
   hideDone = signal(localStorage.getItem(HIDE_DONE_KEY) === '1');
+  coding = signal<CodingSummary | null>(null);
 
   readonly BOOKS = BOOKS;
   readonly SECTION_INFO = SECTION_INFO;
@@ -168,7 +169,7 @@ export class TeaserBrowse implements OnInit {
       case 'category':
         return this.category() ?? '';
       default:
-        return 'Interview puzzles';
+        return 'Interview prep';
     }
   });
 
@@ -185,6 +186,10 @@ export class TeaserBrowse implements OnInit {
       .getTeasers()
       .then((list) => this.all.set(list))
       .catch((err) => this.error.set(err?.error?.error || 'Could not load the puzzles'));
+    this.api
+      .getCoding()
+      .then((c) => this.coding.set(c))
+      .catch(() => {});
   }
 
   toggleBook(b: TeaserBook) {
