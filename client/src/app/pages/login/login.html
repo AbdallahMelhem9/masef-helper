@@ -8,7 +8,7 @@
     <h1 class="login-title">MASEF Helper</h1>
 
     @if (mode() === 'forgot') {
-      <p class="login-sub">Enter the email you signed up with. We will send a link to choose a new password.</p>
+      <p class="notice-note">Forgot your password? Contact Abdallah Melhem on <a href="tel:+330782686688">+33 0782686688</a> and he will reset it for you.</p>
     } @else if (mode() === 'reset') {
       <p class="login-sub">Choose a new password for your account.</p>
     } @else {
@@ -35,7 +35,7 @@
         </div>
       }
 
-      @if (mode() !== 'reset') {
+      @if (mode() === 'signin' || mode() === 'signup') {
         <div class="field">
           <label for="email">Email</label>
           <input id="email" name="email" type="email" [(ngModel)]="email" required placeholder="you@example.com" autocomplete="username" />
@@ -77,6 +77,7 @@
         <p class="error-note">{{ error() }}</p>
       }
 
+      @if (mode() !== 'forgot') {
       <button class="btn" type="submit" [disabled]="loading()">
         @switch (mode()) {
           @case ('signup') { {{ loading() ? 'Creating account…' : 'Create account' }} }
@@ -85,6 +86,7 @@
           @default { {{ loading() ? 'Signing in…' : 'Sign in' }} }
         }
       </button>
+      }
 
       @if (mode() === 'forgot' || mode() === 'reset') {
         <button type="button" class="link-btn center" (click)="backToSignIn()">Back to sign in</button>
