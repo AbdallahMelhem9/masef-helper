@@ -1,7 +1,9 @@
 <div class="page wide">
   @if (teaser(); as t) {
     <nav class="crumbs">
-      <a routerLink="/teasers">Puzzles</a>
+      <a routerLink="/teasers">Interview prep</a>
+      <span class="crumb-sep">/</span>
+      <a routerLink="/teasers/puzzles">Brain teasers</a>
       @if (viaFirm() && t.firms.includes(viaFirm()!)) {
         <span class="crumb-sep">/</span>
         <a routerLink="/teasers/companies">By company</a>

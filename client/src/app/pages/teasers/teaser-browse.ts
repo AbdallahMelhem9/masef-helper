@@ -10,7 +10,7 @@ import { BOOKS, BookTags, CATEGORIES, SECTIONS, SECTION_INFO, categorySlug, firm
 const HIDDEN_SOURCES_KEY = 'masef_teaser_hidden_sources';
 const HIDE_DONE_KEY = 'masef_teaser_hide_done';
 
-type View = 'home' | 'topics' | 'section' | 'category' | 'companies' | 'company';
+type View = 'home' | 'puzzles' | 'topics' | 'section' | 'category' | 'companies' | 'company';
 
 interface Group {
   name: string;
@@ -25,7 +25,7 @@ interface Heading {
   items: TeaserSummary[];
 }
 
-// /teasers: pick "by topic" or "by company".
+// /teasers: the interview-prep home; /teasers/puzzles: pick "by topic" or "by company".
 // By topic: /teasers/topics → /teasers/:section → /teasers/:section/:category.
 // By company: /teasers/companies → /teasers/company/:firm.
 @Component({
@@ -158,6 +158,8 @@ export class TeaserBrowse implements OnInit {
 
   title = computed(() => {
     switch (this.view()) {
+      case 'puzzles':
+        return 'Brain teasers';
       case 'topics':
         return 'By topic';
       case 'companies':

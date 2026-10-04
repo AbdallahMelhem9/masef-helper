@@ -1,6 +1,14 @@
 <div class="page">
   <nav class="crumbs">
     <a routerLink="/teasers">Interview prep</a>
+    @if (view() !== 'home') {
+      <span class="crumb-sep">/</span>
+      @if (view() === 'puzzles') {
+        <span>Brain teasers</span>
+      } @else {
+        <a routerLink="/teasers/puzzles">Brain teasers</a>
+      }
+    }
     @switch (view()) {
       @case ('topics') {
         <span class="crumb-sep">/</span><span>By topic</span>
@@ -29,7 +37,7 @@
       <p class="eyebrow">Interview preparation</p>
       <h1>{{ title() }}</h1>
     </div>
-    @if (!companyMode() && view() !== 'home') {
+    @if (!companyMode() && view() !== 'home' && view() !== 'puzzles') {
       <div class="book-filter" role="group" aria-label="Sources">
         @for (b of BOOKS; track b.key) {
           <button type="button" [class]="'book-chip chip-' + b.key" [class.on]="books().includes(b.key)" [title]="b.full" (click)="toggleBook(b.key)">
@@ -48,22 +56,13 @@
     @switch (view()) {
       @case ('home') {
         <div class="section-grid">
-          <a class="section-card" routerLink="/teasers/topics">
+          <a class="section-card" routerLink="/teasers/puzzles">
             <span class="section-glyph" aria-hidden="true">&Sigma;</span>
-            <h2>By topic</h2>
-            <p>Brain teasers, probability, trading &mdash; then a category: counting, Bayes, market making&hellip;</p>
+            <h2>Brain teasers</h2>
+            <p>Puzzles, probability and trading questions &mdash; browse by topic or by the company that asked them.</p>
             <div class="progress-line">
               <div class="bar"><span [style.width.%]="pct(stats().done, stats().total)"></span></div>
               <span class="count">{{ stats().done }} / {{ stats().total }} done</span>
-            </div>
-          </a>
-          <a class="section-card sec-probability" routerLink="/teasers/companies">
-            <span class="section-glyph" aria-hidden="true">&#8962;</span>
-            <h2>By company</h2>
-            <p>Questions reported from {{ stats().firms }} firms: Jane Street, Citadel, SIG, Optiver, IMC&hellip;</p>
-            <div class="progress-line">
-              <div class="bar"><span [style.width.%]="pct(stats().firmDone, stats().firmTotal)"></span></div>
-              <span class="count">{{ stats().firmDone }} / {{ stats().firmTotal }} done</span>
             </div>
           </a>
           <a class="section-card sec-trading" routerLink="/coding">
@@ -86,6 +85,28 @@
             <span class="section-glyph" aria-hidden="true">&#215;</span>
             <h2>Mental maths &amp; sequences</h2>
             <p>Flow Traders&ndash;style arithmetic and number-sequence tests, speed sprints and sequence practice with explanations.</p>
+          </a>
+        </div>
+      }
+      @case ('puzzles') {
+        <div class="section-grid">
+          <a class="section-card" routerLink="/teasers/topics">
+            <span class="section-glyph" aria-hidden="true">&Sigma;</span>
+            <h2>By topic</h2>
+            <p>Brain teasers, probability, trading &mdash; then a category: counting, Bayes, market making&hellip;</p>
+            <div class="progress-line">
+              <div class="bar"><span [style.width.%]="pct(stats().done, stats().total)"></span></div>
+              <span class="count">{{ stats().done }} / {{ stats().total }} done</span>
+            </div>
+          </a>
+          <a class="section-card sec-probability" routerLink="/teasers/companies">
+            <span class="section-glyph" aria-hidden="true">&#8962;</span>
+            <h2>By company</h2>
+            <p>Questions reported from {{ stats().firms }} firms: Jane Street, Citadel, SIG, Optiver, IMC&hellip;</p>
+            <div class="progress-line">
+              <div class="bar"><span [style.width.%]="pct(stats().firmDone, stats().firmTotal)"></span></div>
+              <span class="count">{{ stats().firmDone }} / {{ stats().firmTotal }} done</span>
+            </div>
           </a>
         </div>
       }

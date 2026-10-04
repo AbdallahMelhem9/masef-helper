@@ -34,6 +34,7 @@ export const routes: Routes = [
       { path: 'pdfs/:id', component: PdfViewer },
       { path: 'pdfs/:id/notes', component: NotesPage },
       { path: 'teasers', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'home' } },
+      { path: 'teasers/puzzles', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'puzzles' } },
       { path: 'teasers/topics', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'topics' } },
       { path: 'teasers/companies', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'companies' } },
       { path: 'teasers/company/:firm', component: TeaserBrowse, canActivate: [teaserGuard], data: { view: 'company' } },
