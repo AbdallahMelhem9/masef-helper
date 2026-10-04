@@ -7,9 +7,6 @@
     <div class="clock">
       <span class="clock-time">{{ clock() }}</span>
       <span class="clock-date">{{ longDate(now().date) }}</span>
-      @if (simulated) {
-        <a class="sim-tag" href="agenda">Simulated time &middot; reset</a>
-      }
     </div>
   </header>
 
